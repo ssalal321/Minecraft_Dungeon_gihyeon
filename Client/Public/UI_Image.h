@@ -17,6 +17,8 @@ public:
 	typedef struct tagUIObjectDesc : public CGameObject::GAMEOBJECT_DESC
 	{
 		_float		fX, fY, fSizeX, fSizeY, fPlayTime;
+		_wstring	strTextureComTag;
+
 	}UIIMAGE_DESC;
 
 private:
@@ -26,7 +28,7 @@ private:
 
 public:
 	HRESULT		Initialize_Prototype()				override;
-	HRESULT		Initialize(void* pArg, const wstring& strTexturePrototypeTag/*, _float fX, _float fY, _float fSizeX, _float fSizeY, _float fPlayTime*/);
+	HRESULT		Initialize(void* pArg)				override;
 
 	void		Priority_Update(_float fTimeDelta)	override;
 	void		Update(_float fTimeDelta)			override;
@@ -50,12 +52,11 @@ private:
 	CVIBuffer_Rect*		m_pVIBufferCom	= { nullptr };
 
 private:
-	HRESULT		Ready_Components(const wstring& strTextureTag);
+	HRESULT		Ready_Components();
 	HRESULT		Bind_ShaderMatrices(CShader* pShader, const _char* pViewMatrixName, const _char* pProjMatrixName);
 
 public:
 	static	 CUI_Image*		Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CGameObject*			Clone(void* pArg, const wstring& strTexturePrototypeTag/*, _float fX, _float fY, _float fSizeX, _float fSizeY, _float fPlayTime*/);
 	CGameObject*			Clone(void* pArg)	override;
 	void					Free()				override;
 };

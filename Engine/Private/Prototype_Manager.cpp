@@ -57,24 +57,6 @@ CBase* CPrototype_Manager::Clone_Prototype(PROTOTYPE ePrototype, _uint iPrototyp
 	return pCloneObject;
 }
 
-CBase* CPrototype_Manager::Clone_UIPrototype(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag,
-	const wstring& strTexturePrototypeTag, void* pArg)
-{
-	/* 원형객체를 검색한다. */
-	CBase* pPrototype = Find_Prototype(iPrototypeLevelIndex, strPrototypeTag);
-	if (nullptr == pPrototype)
-		return nullptr;
-
-	/* 복제하여 사본을 생성한다. */
-	CBase* pCloneObject = { nullptr };
-	pCloneObject = dynamic_cast<CGameObject*>(pPrototype)->Clone(pArg, strTexturePrototypeTag);
-
-	if (nullptr == pCloneObject)
-		return nullptr;
-
-	return pCloneObject;
-}
-
 void CPrototype_Manager::Clear(_uint iLevelIndex)
 {
 	if (iLevelIndex >= m_iNumLevels)

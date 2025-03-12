@@ -56,6 +56,7 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 
 	return S_OK;
 }
+
 void CGameInstance::Update_Engine(_float fTimeDelta)
 {
 	m_pInput_Device->Update();
@@ -91,6 +92,7 @@ void CGameInstance::Clear(_uint iLevelIndex)
 
 }
 
+
 #pragma region GRAPHIC_DEVICE
 HRESULT CGameInstance::Clear_BackBuffer_View(_float4 vClearColor)
 {
@@ -106,8 +108,9 @@ HRESULT CGameInstance::Present()
 {
 	return m_pGraphic_Device->Present();
 }
-
 #pragma endregion
+
+
 #pragma region INPUT_DEVICE
 
 _byte CGameInstance::Get_DIKeyState(_ubyte byKeyID)
@@ -123,6 +126,8 @@ _long CGameInstance::Get_DIMouseMove(MOUSEMOVESTATE eMouseState)
 	return m_pInput_Device->Get_DIMouseMove(eMouseState);
 }
 #pragma endregion
+
+
 #pragma region TIMER_MANAGER
 _float CGameInstance::Get_TimeDelta(const _wstring& strTimerTag)
 {
@@ -148,46 +153,38 @@ void CGameInstance::Compute_TimeDelta(const _wstring& strTimerTag)
 	return m_pTimer_Manager->Compute_TimeDelta(strTimerTag);
 }
 #pragma endregion
+
+
 #pragma region LEVEL_MANAGER
 HRESULT CGameInstance::Open_Level(_uint iLevelIndex, CLevel* pNewLevel)
 {
 	return m_pLevel_Manager->Open_Level(iLevelIndex, pNewLevel);
 }
 #pragma endregion
+
+
 #pragma region PROTOTYPE_MANAGER
 HRESULT CGameInstance::Add_Prototype(_uint iLevelIndex, const _wstring& strPrototypeTag, CBase* pPrototype)
 {
 	return m_pPrototype_Manager->Add_Prototype(iLevelIndex, strPrototypeTag, pPrototype);
 }
 
-
 CBase* CGameInstance::Clone_Prototype(PROTOTYPE ePrototype, _uint iLevelIndex, const _wstring& strPrototypeTag, void* pArg)
 {
 	return m_pPrototype_Manager->Clone_Prototype(ePrototype, iLevelIndex, strPrototypeTag, pArg);
 }
-
-CBase* CGameInstance::Clone_UIPrototype(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag,
-	const wstring& strTexturePrototypeTag, void* pArg)
-{
-	return m_pPrototype_Manager->Clone_UIPrototype(iPrototypeLevelIndex, strPrototypeTag, strTexturePrototypeTag, pArg);
-}
 #pragma endregion
+
+
 #pragma region OBJECT_MANAGER
-
-
 HRESULT CGameInstance::Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg)
 {
 	return m_pObject_Manager->Add_GameObject(iPrototypeLevelIndex, strPrototypeTag, iLayerLevelIndex, strLayerTag, pArg);
 }
-
-HRESULT CGameInstance::Add_UIGameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, const wstring& strTexturePrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg)
-{
-	return m_pObject_Manager->Add_UIGameObject(iPrototypeLevelIndex, strPrototypeTag, strTexturePrototypeTag, iLayerLevelIndex, strLayerTag, pArg);
-}
-
 #pragma endregion
-#pragma region RENDERER
 
+
+#pragma region RENDERER
 HRESULT CGameInstance::Add_RenderObject(CRenderer::RENDERGROUP eRenderGroup, CGameObject* pRenderObject)
 {
 	return m_pRenderer->Add_RenderObject(eRenderGroup, pRenderObject);
@@ -216,10 +213,10 @@ void CGameInstance::Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix Sta
 {
 	m_pPipeLine->Set_Transform(eState, StateMatrix);
 }
-
 #pragma endregion
-#pragma region LIGHT_MANAGER
 
+
+#pragma region LIGHT_MANAGER
 const LIGHT_DESC* CGameInstance::Get_LightDesc(_uint iIndex) const
 {
 	return m_pLight_Manager->Get_LightDesc(iIndex);
@@ -229,6 +226,7 @@ HRESULT CGameInstance::Add_Light(const LIGHT_DESC& LightDesc)
 	return m_pLight_Manager->Add_Light(LightDesc);
 }
 #pragma endregion
+
 
 void CGameInstance::Release_Engine()
 {

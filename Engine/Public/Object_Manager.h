@@ -15,8 +15,6 @@ public:
 	HRESULT		Initialize(_uint iNumLevels);
 	HRESULT		Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, 
 							   _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg);
-	HRESULT		Add_UIGameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, const wstring& strTexturePrototypeTag,
-								 _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg);
 	void		Priority_Update(_float fTimeDelta);
 	void		Update(_float fTimeDelta);
 	void		Last_Update(_float fTimeDelta);

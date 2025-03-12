@@ -36,20 +36,6 @@ HRESULT CObject_Manager::Add_GameObject(_uint iPrototypeLevelIndex, const _wstri
 	return Add_To_Layer(pGameObject, iLayerLevelIndex, strLayerTag);
 }
 
-HRESULT CObject_Manager::Add_UIGameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, const wstring& strTexturePrototypeTag,
-	_uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg)
-{
-	if (nullptr == m_pLayers ||
-		iLayerLevelIndex >= m_iNumLevels)
-		return E_FAIL;
-
-	CGameObject* pGameObject = dynamic_cast<CGameObject*>(m_pGameInstance->Clone_UIPrototype(iPrototypeLevelIndex, strPrototypeTag, strTexturePrototypeTag, pArg));
-	if (nullptr == pGameObject)
-		return E_FAIL;
-
-	return Add_To_Layer(pGameObject, iLayerLevelIndex, strLayerTag);
-}
-
 void CObject_Manager::Priority_Update(_float fTimeDelta)
 {
 	for (size_t i = 0; i < m_iNumLevels; i++)

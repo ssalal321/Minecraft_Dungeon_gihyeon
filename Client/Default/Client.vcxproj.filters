@@ -105,7 +105,9 @@
     <ClInclude Include="..\Public\UI_Image.h">
       <Filter>02.GameObjects\LoadingScreen</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Monster.h" />
+    <ClInclude Include="..\Public\Monster.h">
+      <Filter>02.GameObjects\Monster</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -157,7 +159,9 @@
     <ClCompile Include="..\Private\UI_Image.cpp">
       <Filter>02.GameObjects\LoadingScreen</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Monster.cpp" />
+    <ClCompile Include="..\Private\Monster.cpp">
+      <Filter>02.GameObjects\Monster</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">
@@ -166,8 +170,5 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>
