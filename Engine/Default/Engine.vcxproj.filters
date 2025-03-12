@@ -70,9 +70,6 @@
     <Filter Include="01.Utility\04.Component\VIBuffer\Terrain">
       <UniqueIdentifier>{84b9101c-338e-4c10-8fbd-9a2751e27d5b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\04.Component\VIBuffer\Model">
-      <UniqueIdentifier>{cf53faca-96ae-49ac-963b-e58fcf5c2c0d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utility\04.Component\Shader">
       <UniqueIdentifier>{705459f5-4c91-4f63-9729-fb0b11ca1a7d}</UniqueIdentifier>
     </Filter>
@@ -93,6 +90,12 @@
     </Filter>
     <Filter Include="01.Utility\07.Lights\Manager">
       <UniqueIdentifier>{ac5f3d5f-2720-45da-b91b-8240e3bb91ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Component\Model">
+      <UniqueIdentifier>{96576c03-e624-489a-bfca-60bbacdee2eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Component\Model\Mesh">
+      <UniqueIdentifier>{3e2a1abc-ed75-4cd4-9b82-a4540b261920}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -189,6 +192,12 @@
     <ClInclude Include="..\public\Light_Manager.h">
       <Filter>01.Utility\07.Lights\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Model.h">
+      <Filter>01.Utility\04.Component\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Mesh.h">
+      <Filter>01.Utility\04.Component\Model\Mesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -268,6 +277,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Light_Manager.cpp">
       <Filter>01.Utility\07.Lights\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Model.cpp">
+      <Filter>01.Utility\04.Component\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Mesh.cpp">
+      <Filter>01.Utility\04.Component\Model\Mesh</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -165,6 +165,12 @@ CBase* CGameInstance::Clone_Prototype(PROTOTYPE ePrototype, _uint iLevelIndex, c
 {
 	return m_pPrototype_Manager->Clone_Prototype(ePrototype, iLevelIndex, strPrototypeTag, pArg);
 }
+
+CBase* CGameInstance::Clone_UIPrototype(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag,
+	const wstring& strTexturePrototypeTag, void* pArg)
+{
+	return m_pPrototype_Manager->Clone_UIPrototype(iPrototypeLevelIndex, strPrototypeTag, strTexturePrototypeTag, pArg);
+}
 #pragma endregion
 #pragma region OBJECT_MANAGER
 
@@ -172,6 +178,11 @@ CBase* CGameInstance::Clone_Prototype(PROTOTYPE ePrototype, _uint iLevelIndex, c
 HRESULT CGameInstance::Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg)
 {
 	return m_pObject_Manager->Add_GameObject(iPrototypeLevelIndex, strPrototypeTag, iLayerLevelIndex, strLayerTag, pArg);
+}
+
+HRESULT CGameInstance::Add_UIGameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, const wstring& strTexturePrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg)
+{
+	return m_pObject_Manager->Add_UIGameObject(iPrototypeLevelIndex, strPrototypeTag, strTexturePrototypeTag, iLayerLevelIndex, strLayerTag, pArg);
 }
 
 #pragma endregion

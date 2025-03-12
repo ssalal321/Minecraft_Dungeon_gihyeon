@@ -18,10 +18,10 @@ private:
 	virtual ~CLoader() = default;
 
 public:
-	HRESULT Initialize(LEVEL eNextLevelID);
-	HRESULT Loading();
-	void Show_LoadingText();
-	_bool isFinished();
+	HRESULT		Initialize(LEVEL eNextLevelID);
+	HRESULT		Loading();
+	void		Show_LoadingText();
+	_bool		isFinished();
 	
 
 private:
@@ -40,13 +40,15 @@ private:
 
 
 private:
-	HRESULT Loading_For_Logo();
-	HRESULT Loading_For_GamePlay();
+	HRESULT		Loading_For_Logo();
+	HRESULT		Loading_For_GamePlay();
+	HRESULT		Loading_For_Static();
+	HRESULT		Loading_For_Title();
 
 
 public:
-	static CLoader* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevelID);
-	virtual void Free() override;
+	static	 CLoader*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevelID);
+	virtual  void		Free() override;
 };
 
 END

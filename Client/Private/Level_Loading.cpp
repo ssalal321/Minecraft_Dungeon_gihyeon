@@ -6,6 +6,7 @@
 #include "Level_GamePlay.h"
 
 #include "GameInstance.h"
+#include "Level_Title.h"
 
 CLevel_Loading::CLevel_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : CLevel { pDevice, pContext }
@@ -30,8 +31,8 @@ HRESULT CLevel_Loading::Initialize(LEVEL eNextLevelID)
 
 void CLevel_Loading::Update(_float fTimeDelta)
 {
-    if (true == m_pLoader->isFinished() && 
-        GetKeyState(VK_SPACE) & 0x8000)
+    if (true == m_pLoader->isFinished()/* && 
+        GetKeyState(VK_SPACE) & 0x8000*/)
     {
         CLevel* pNewLevel = { nullptr };
 
@@ -40,9 +41,19 @@ void CLevel_Loading::Update(_float fTimeDelta)
         case LEVEL_LOGO:
             pNewLevel = CLevel_Logo::Create(m_pDevice, m_pContext);
             break;
+
         case LEVEL_GAMEPLAY:
             pNewLevel = CLevel_GamePlay::Create(m_pDevice, m_pContext);
             break;
+
+        case LEVEL_TITLE:
+            pNewLevel = CLevel_Title::Create(m_pDevice, m_pContext);
+            break;
+
+        /*case LEVEL_LOUNGE:
+            pNewLevel = CLevel_Lounge::Create(m_pDevice, m_pContext);
+            break;*/
+
         }
 
         if (nullptr == pNewLevel)
@@ -53,10 +64,6 @@ void CLevel_Loading::Update(_float fTimeDelta)
 
         return;
     }
-
-    
-
-
 }
 
 HRESULT CLevel_Loading::Render()
@@ -71,6 +78,18 @@ HRESULT CLevel_Loading::Render()
 
 HRESULT CLevel_Loading::Ready_Layer_BackGround()
 {
+    /*CUI_Image::UIIMAGE_DESC   Desc{};
+
+    Desc.fPlayTime = 3.f;
+    Desc.pGameObjectTag = TEXT("GameObject_LoadingScreen");
+    Desc.fSpeedPerSec = 5.f;
+    Desc.fRotationPerSec = XMConvertToRadians(180.f);
+
+
+    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_LOADING, TEXT("Prototype_GameObject_TitleBase"),
+        LEVEL_LOADING, strLayerTag, &Desc)))
+        return E_FAIL;*/
+
     return S_OK;
 }
 
