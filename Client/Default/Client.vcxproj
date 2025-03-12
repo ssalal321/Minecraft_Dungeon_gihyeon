@@ -196,9 +196,6 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram.cd" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\Engine\Default\Engine.vcxproj">
       <Project>{0694625b-867a-443d-807e-05685121b6e0}</Project>
     </ProjectReference>

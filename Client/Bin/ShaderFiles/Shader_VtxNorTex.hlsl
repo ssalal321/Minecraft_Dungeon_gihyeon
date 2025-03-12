@@ -1,7 +1,7 @@
 
 matrix      g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
-vector g_vLightDir = vector(1.f, -1.f, 0.f, 0.f);
+vector      g_vLightDir = vector(1.f, -1.f, 0.f, 0.f);
 vector      g_vLightPos;
 float       g_fLightRange;
 vector      g_vLightDiffuse;
@@ -10,7 +10,7 @@ vector      g_vLightSpecular;
 
 texture2D   g_DiffuseTexture;
 vector      g_vMtrlAmbient = vector(0.3f, 0.3f, 0.3f, 0.3f);
-vector      g_vMtrlSpecular = vector(1.f, 1.f, 1.f, 1.f);
+vector      g_vMtrlSpecular = vector(1.f, 1.f, 1.f, 1.f);       // �ݻ籤(specular)
 
 vector      g_vCamPosition;
 
