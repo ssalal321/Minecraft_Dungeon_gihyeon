@@ -25,7 +25,7 @@ HRESULT CMainApp::Initialize()
     if (FAILED(m_pGameInstance->Initialize_Engine(EngineDesc, &m_pDevice, &m_pContext)))
         return E_FAIL;
 
-    if (FAILED(Start_Level(LEVEL_LOGO)))
+    if (FAILED(Start_Level(LEVEL_TITLE)))
         return E_FAIL;
 
     return S_OK;
@@ -38,7 +38,7 @@ void CMainApp::Update(_float fTimeDelta)
 
 HRESULT CMainApp::Render()
 {
-    m_pGameInstance->Clear_BackBuffer_View(_float4(0.f, 0.f, 1.f, 1.f));
+    m_pGameInstance->Clear_BackBuffer_View(_float4(0.2f, 0.0f, 0.3f, 1.0f));
     m_pGameInstance->Clear_DepthStencil_View();
 
     m_pGameInstance->Draw();

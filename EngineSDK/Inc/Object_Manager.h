@@ -5,8 +5,6 @@
 
 BEGIN(Engine)
 
-
-
 class CObject_Manager final : public CBase
 {
 private:
@@ -14,18 +12,21 @@ private:
 	virtual ~CObject_Manager() = default;
 
 public:
-	HRESULT Initialize(_uint iNumLevels);
-	HRESULT Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, 
-		_uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg);
-	void Priority_Update(_float fTimeDelta);
-	void Update(_float fTimeDelta);
-	void Last_Update(_float fTimeDelta);
-	void Clear(_uint iLevelIndex);
+	HRESULT		Initialize(_uint iNumLevels);
+	HRESULT		Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, 
+							   _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg);
+	HRESULT		Add_UIGameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, const wstring& strTexturePrototypeTag,
+								 _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg);
+	void		Priority_Update(_float fTimeDelta);
+	void		Update(_float fTimeDelta);
+	void		Last_Update(_float fTimeDelta);
+	void		Clear(_uint iLevelIndex);
 
 private:
-	class CGameInstance*				m_pGameInstance = { nullptr };
-	_uint								m_iNumLevels = {};
-	map<const _wstring, class CLayer*>* m_pLayers = { nullptr };
+	class CGameInstance*	m_pGameInstance = { nullptr };
+	_uint					m_iNumLevels = {};
+
+	map<const _wstring, class CLayer*>*		m_pLayers = { nullptr };
 
 private:
 	class CLayer* Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag);

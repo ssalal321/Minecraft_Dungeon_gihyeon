@@ -44,7 +44,8 @@ protected:
 
 
 public:
-	virtual CGameObject* Clone(void* pArg) = 0;	
+	virtual CGameObject* Clone(void* pArg) = 0;
+	virtual CGameObject* Clone(void* pArg, const wstring& strTexturePrototypeTag) { return nullptr; }
 	virtual void Free() override;
 
 
