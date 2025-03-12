@@ -19,7 +19,7 @@ HRESULT CLevel_Title::Initialize()
 
 void CLevel_Title::Update(_float fTimeDelta)
 {
-    if (GetKeyState(VK_RETURN) & 0x8000)
+    if (GetKeyState(VK_SPACE) & 0x8000)
     {
         if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING,
             CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY))))
@@ -49,9 +49,10 @@ HRESULT CLevel_Title::Ready_Layer_BackGround(const _wstring& strLayerTag)
     Desc.fSizeX             = g_iWinSizeX;
     Desc.fSizeY             = g_iWinSizeY;
     Desc.fPlayTime          = 3.f;
+    Desc.strTextureComTag   = TEXT("Prototype_Component_Texture_TitleImage");
 
-    if (FAILED(m_pGameInstance->Add_UIGameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_UIImage"), TEXT("Prototype_Component_Texture_TitleImage"),
-        LEVEL_TITLE, strLayerTag, &Desc)))
+    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_UIImage"),
+											   LEVEL_TITLE, strLayerTag, &Desc)))
         return E_FAIL;
 
     return S_OK;

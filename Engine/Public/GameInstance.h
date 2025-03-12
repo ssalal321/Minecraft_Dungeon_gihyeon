@@ -47,15 +47,11 @@ public:
 #pragma region PROTOTYPE_MANAGER
 	HRESULT		Add_Prototype(_uint iLevelIndex, const _wstring& strPrototypeTag, CBase* pPrototype);
 	CBase*		Clone_Prototype(PROTOTYPE ePrototype, _uint iLevelIndex, const _wstring& strPrototypeTag, void* pArg = nullptr);
-	CBase*		Clone_UIPrototype(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, const wstring& strTexturePrototypeTag, void* pArg = nullptr);
 #pragma endregion
 
 #pragma region GAMEOBJECT_MANAGER
 	HRESULT		Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag,
 							   _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg = nullptr);
-	HRESULT		Add_UIGameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, const wstring& strTexturePrototypeTag,
-								 _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg = nullptr);
-	
 #pragma endregion
 
 #pragma region RENDERER
@@ -77,15 +73,15 @@ public:
 #pragma endregion
 
 private:
-	class	CGraphic_Device*		m_pGraphic_Device = { nullptr };
-	class	CInput_Device*			m_pInput_Device = { nullptr };
-	class	CTimer_Manager*			m_pTimer_Manager = { nullptr };	
-	class	CLevel_Manager*			m_pLevel_Manager = { nullptr };
-	class	CPrototype_Manager*		m_pPrototype_Manager = { nullptr };
-	class	CObject_Manager*		m_pObject_Manager = { nullptr };
-	class	CRenderer*				m_pRenderer = { nullptr };
-	class	CPipeLine*				m_pPipeLine = { nullptr };
-	class	CLight_Manager*			m_pLight_Manager = { nullptr };
+	class	CGraphic_Device*		m_pGraphic_Device		= { nullptr };
+	class	CInput_Device*			m_pInput_Device			= { nullptr };
+	class	CTimer_Manager*			m_pTimer_Manager		= { nullptr };	
+	class	CLevel_Manager*			m_pLevel_Manager		= { nullptr };
+	class	CPrototype_Manager*		m_pPrototype_Manager	= { nullptr };
+	class	CObject_Manager*		m_pObject_Manager		= { nullptr };
+	class	CRenderer*				m_pRenderer				= { nullptr };
+	class	CPipeLine*				m_pPipeLine				= { nullptr };
+	class	CLight_Manager*			m_pLight_Manager		= { nullptr };
 	
 	
 public:

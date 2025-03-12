@@ -38,14 +38,13 @@ protected:
 protected:
 	class CComponent* Find_Component(const _wstring& strComponentTag);
 	HRESULT Add_Component(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag,
-		const _wstring& strComponentTag, CComponent** ppOut, void* pArg = nullptr);
+						  const _wstring& strComponentTag, CComponent** ppOut, void* pArg = nullptr);
 
 
 
 
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;
-	virtual CGameObject* Clone(void* pArg, const wstring& strTexturePrototypeTag) { return nullptr; }
 	virtual void Free() override;
 
 

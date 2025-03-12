@@ -20,7 +20,7 @@ HRESULT CUI_Image::Initialize_Prototype()
 	return S_OK;
 }
 
-HRESULT CUI_Image::Initialize(void* pArg, const wstring& strTexturePrototypeTag/*, _float fX, _float fY, _float fSizeX, _float fSizeY, _float fPlayTime*/)
+HRESULT CUI_Image::Initialize(void* pArg)
 {
 	/* 원형의 데이터를 복제하여 사본을 만들고. */
 	/* 추가적으로 필요한 데이터를 Arg로 받아와 실 사용하기위한 객체의 정보를 생성해준다. */
@@ -31,7 +31,7 @@ HRESULT CUI_Image::Initialize(void* pArg, const wstring& strTexturePrototypeTag/
 	else
 		return E_FAIL;
 
-	if (FAILED(__super::Initialize(pArg)))
+	if (FAILED(__super::Initialize(m_pDesc)))
 		return E_FAIL;
 
 	_uint				iNumViewport = 1;
@@ -46,7 +46,7 @@ HRESULT CUI_Image::Initialize(void* pArg, const wstring& strTexturePrototypeTag/
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
 		XMVectorSet(m_pDesc->fX - ViewportDesc.Width * 0.5f, -m_pDesc->fY + ViewportDesc.Height * 0.5f, 0.f, 1.f));
 	
-	if (FAILED(Ready_Components(strTexturePrototypeTag)))
+	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
 	return S_OK;
@@ -111,10 +111,10 @@ _bool CUI_Image::isHit(HWND hWnd)
 }
 
 
-HRESULT CUI_Image::Ready_Components(const wstring& strTextureTag)
+HRESULT CUI_Image::Ready_Components()
 {
 	/* Com_Texture */
-	if (FAILED(__super::Add_Component(LEVEL_TITLE, strTextureTag,
+	if (FAILED(__super::Add_Component(LEVEL_TITLE, m_pDesc->strTextureComTag,
 		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(& m_pTextureCom))))
 		return E_FAIL;
 
@@ -155,23 +155,17 @@ CUI_Image* CUI_Image::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContex
 	return pGameInstance;
 }
 
-
-CGameObject* CUI_Image::Clone(void* pArg, const wstring& strTexturePrototypeTag/*, _float fX, _float fY, _float fSizeX, _float fSizeY, _float fPlayTime*/)
+CGameObject* CUI_Image::Clone(void* pArg)
 {
 	CUI_Image* pGameInstance = new CUI_Image(*this);
 
-	if (FAILED(pGameInstance->Initialize(pArg, strTexturePrototypeTag/*, fX, fY, fSizeX, fSizeY, fPlayTime*/)))
+	if (FAILED(pGameInstance->Initialize(pArg)))
 	{
 		MSG_BOX("Failed to Clone : CUI_Image");
 		Safe_Release(pGameInstance);
 	}
 
 	return pGameInstance;
-}
-
-CGameObject* CUI_Image::Clone(void* pArg)
-{
-	return nullptr;
 }
 
 void CUI_Image::Free()
