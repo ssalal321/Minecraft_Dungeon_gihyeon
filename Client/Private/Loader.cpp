@@ -5,6 +5,9 @@
 #include "BackGround.h"
 #include "Terrain.h"
 #include "Monster.h"
+#include "TitleBase.h"
+#include "UI_Image.h"
+
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice { pDevice }
@@ -26,7 +29,6 @@ _uint LoadingMain(void* pArg)
 		return -1;
 
 	return 0;
-
 }
 
 HRESULT CLoader::Initialize(LEVEL eNextLevelID)
@@ -61,6 +63,16 @@ HRESULT CLoader::Loading()
 	case LEVEL_GAMEPLAY:
 		hr = Loading_For_GamePlay();
 		break;
+
+	//case LEVEL_STATIC:
+	//	hr = Loading_For_Static(); // UI_Image 원형 저장단계
+	//	break;
+
+	case LEVEL_TITLE:
+		hr = Loading_For_Static(); // UI_Image 원형 저장단계
+		hr = Loading_For_Title();
+		break;
+
 	}
 
 	if (FAILED(hr))
@@ -99,8 +111,6 @@ HRESULT CLoader::Loading_For_Logo()
 
 	/* 내 정점이 가지는 멤버변수에 대한 설명.  */
 
-	
-
 
 	/* For.Prototype_Component_Shader_VtxPosTex */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Shader_VtxPosTex"),
@@ -115,7 +125,6 @@ HRESULT CLoader::Loading_For_Logo()
 		CBackGround::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-
 	
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
@@ -126,8 +135,6 @@ HRESULT CLoader::Loading_For_Logo()
 
 HRESULT CLoader::Loading_For_GamePlay()
 {
-	
-
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐 로딩 중"));
 	/* For.Prototype_Component_Texture_Terrain */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Terrain"),
@@ -169,6 +176,55 @@ HRESULT CLoader::Loading_For_GamePlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Free"),
 		CCamera_Free::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
+
+	m_isFinished = true;
+
+	return S_OK;
+}
+
+HRESULT CLoader::Loading_For_Static()
+{
+	lstrcpy(m_szLoadingText, TEXT("객체원형 로딩 중"));
+
+	/* For.Prototype_GameObject_BackGround */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_UIImage"),
+		CUI_Image::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLoader::Loading_For_Title()
+{
+	lstrcpy(m_szLoadingText, TEXT("텍스쳐 로딩 중"));
+	/* For.Prototype_Component_Texture_BackGround */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TITLE, TEXT("Prototype_Component_Texture_TitleImage"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Title/LoadingTitle.png"), 1))))
+		return E_FAIL;
+
+	lstrcpy(m_szLoadingText, TEXT("모델 로딩 중"));
+	/* For.Prototype_Component_VIBuffer_Rect */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TITLE, TEXT("Prototype_Component_VIBuffer_Rect"),
+		CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	lstrcpy(m_szLoadingText, TEXT("셰이더 로딩 중"));
+	/* For.Prototype_Component_Shader_VtxPosTex */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TITLE, TEXT("Prototype_Component_Shader_VtxPosTex"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPosTex.hlsl"), VTXPOSTEX::Elements, VTXPOSTEX::iNumElements))))
+		return E_FAIL;
+
+
+	//lstrcpy(m_szLoadingText, TEXT("객체원형 로딩 중"));
+
+	///* For.Prototype_GameObject_BackGround */
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TITLE, TEXT("Prototype_GameObject_TitleBase"),
+	//	CTitleBase::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
+
+
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 

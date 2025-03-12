@@ -17,76 +17,80 @@ private:
 	virtual ~CGameInstance() = default;
 
 public:
-	HRESULT Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11Device** ppDevice, ID3D11DeviceContext** ppContext);
-	void Update_Engine(_float fTimeDelta);
-	HRESULT Draw();
-	void Clear(_uint iLevelIndex);
+	HRESULT		Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11Device** ppDevice, ID3D11DeviceContext** ppContext);
+	void		Update_Engine(_float fTimeDelta);
+	HRESULT		Draw();
+	void		Clear(_uint iLevelIndex);
 
 
 #pragma region GRAPHIC_DEVICE
-	HRESULT Clear_BackBuffer_View(_float4 vClearColor);	
-	HRESULT Clear_DepthStencil_View();
-	HRESULT Present();
+	HRESULT		Clear_BackBuffer_View(_float4 vClearColor);	
+	HRESULT		Clear_DepthStencil_View();
+	HRESULT		Present();
 #pragma endregion
 #pragma region INPUT_DEVICE
-	_byte	Get_DIKeyState(_ubyte byKeyID);
-	_byte	Get_DIMouseState(MOUSEKEYSTATE eMouse);	
-	_long	Get_DIMouseMove(MOUSEMOVESTATE eMouseState);
+	_byte		Get_DIKeyState(_ubyte byKeyID);
+	_byte		Get_DIMouseState(MOUSEKEYSTATE eMouse);	
+	_long		Get_DIMouseMove(MOUSEMOVESTATE eMouseState);
 #pragma endregion
 #pragma region TIMER_MANAGER
 public:
-	_float	Get_TimeDelta(const _wstring& strTimerTag);
-	HRESULT	Add_Timer(const _wstring& strTimerTag);
-	void	Compute_TimeDelta(const _wstring& strTimerTag);
+	_float		Get_TimeDelta(const _wstring& strTimerTag);
+	HRESULT		Add_Timer(const _wstring& strTimerTag);
+	void		Compute_TimeDelta(const _wstring& strTimerTag);
 #pragma endregion
 
 #pragma region LEVEL_MANAGER
-	HRESULT Open_Level(_uint iLevelIndex, class CLevel* pNewLevel);
+	HRESULT		Open_Level(_uint iLevelIndex, class CLevel* pNewLevel);
 #pragma endregion
 
 #pragma region PROTOTYPE_MANAGER
-	HRESULT Add_Prototype(_uint iLevelIndex, const _wstring& strPrototypeTag, CBase* pPrototype);
-	CBase* Clone_Prototype(PROTOTYPE ePrototype, _uint iLevelIndex, const _wstring& strPrototypeTag, void* pArg = nullptr);
+	HRESULT		Add_Prototype(_uint iLevelIndex, const _wstring& strPrototypeTag, CBase* pPrototype);
+	CBase*		Clone_Prototype(PROTOTYPE ePrototype, _uint iLevelIndex, const _wstring& strPrototypeTag, void* pArg = nullptr);
+	CBase*		Clone_UIPrototype(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, const wstring& strTexturePrototypeTag, void* pArg = nullptr);
 #pragma endregion
 
 #pragma region GAMEOBJECT_MANAGER
-	HRESULT Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag,
-		_uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg = nullptr);
+	HRESULT		Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag,
+							   _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg = nullptr);
+	HRESULT		Add_UIGameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, const wstring& strTexturePrototypeTag,
+								 _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg = nullptr);
+	
 #pragma endregion
 
 #pragma region RENDERER
-	HRESULT Add_RenderObject(CRenderer::RENDERGROUP eRenderGroup, class CGameObject* pRenderObject);
+	HRESULT		Add_RenderObject(CRenderer::RENDERGROUP eRenderGroup, class CGameObject* pRenderObject);
 #pragma endregion
 
 #pragma region PIPELINE
-	const _float4x4* Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE eState) const;
-	const _matrix Get_Transform_Matrix(CPipeLine::TRANSFORMSTATE eState) const;
-	const _float4x4* Get_Transform_Inverse_Float4x4(CPipeLine::TRANSFORMSTATE eState);
-	const _matrix Get_Transform_Inverse_Matrix(CPipeLine::TRANSFORMSTATE eState) const;
-	const _float4* Get_CamPosition() const;
-	void Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix StateMatrix);
+	const	_float4x4*	Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE eState) const;
+	const	_matrix		Get_Transform_Matrix(CPipeLine::TRANSFORMSTATE eState) const;
+	const	_float4x4*	Get_Transform_Inverse_Float4x4(CPipeLine::TRANSFORMSTATE eState);
+	const	_matrix		Get_Transform_Inverse_Matrix(CPipeLine::TRANSFORMSTATE eState) const;
+	const	_float4*	Get_CamPosition() const;
+	void				Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix StateMatrix);
 #pragma endregion
 
 #pragma region LIGHT_MANAGER
-	const LIGHT_DESC* Get_LightDesc(_uint iIndex) const;
-	HRESULT Add_Light(const LIGHT_DESC& LightDesc);
+	const LIGHT_DESC*	Get_LightDesc(_uint iIndex) const;
+	HRESULT				Add_Light(const LIGHT_DESC& LightDesc);
 #pragma endregion
 
 private:
-	class CGraphic_Device*			m_pGraphic_Device = { nullptr };
-	class CInput_Device*			m_pInput_Device = { nullptr };
-	class CTimer_Manager*			m_pTimer_Manager = { nullptr };	
-	class CLevel_Manager*			m_pLevel_Manager = { nullptr };
-	class CPrototype_Manager*		m_pPrototype_Manager = { nullptr };
-	class CObject_Manager*			m_pObject_Manager = { nullptr };
-	class CRenderer*				m_pRenderer = { nullptr };
-	class CPipeLine*				m_pPipeLine = { nullptr };
-	class CLight_Manager*			m_pLight_Manager = { nullptr };
+	class	CGraphic_Device*		m_pGraphic_Device = { nullptr };
+	class	CInput_Device*			m_pInput_Device = { nullptr };
+	class	CTimer_Manager*			m_pTimer_Manager = { nullptr };	
+	class	CLevel_Manager*			m_pLevel_Manager = { nullptr };
+	class	CPrototype_Manager*		m_pPrototype_Manager = { nullptr };
+	class	CObject_Manager*		m_pObject_Manager = { nullptr };
+	class	CRenderer*				m_pRenderer = { nullptr };
+	class	CPipeLine*				m_pPipeLine = { nullptr };
+	class	CLight_Manager*			m_pLight_Manager = { nullptr };
 	
 	
 public:
-	void Release_Engine();
-	virtual void Free() override;
+	void	Release_Engine();
+	void	Free()				override;
 };
 
 END

@@ -32,6 +32,10 @@ HRESULT CVIBuffer::Initialize(void* pArg)
 	return S_OK;
 }
 
+
+// 버텍스 버퍼를 바인딩하여 정점 데이터를 설정
+// 인덱스 버퍼를 바인딩하여 정점의 연결 순서 지정
+// 프리미티브 토폴로지를 설정하여 도형의 렌더링 방식을 결정
 HRESULT CVIBuffer::Input_Assembler()
 {
 	/* 그리고자하는 자원들을 장치에 바인딩한다. */

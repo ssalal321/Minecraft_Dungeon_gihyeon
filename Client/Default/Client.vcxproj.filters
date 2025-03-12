@@ -37,14 +37,20 @@
     <Filter Include="02.GameObjects\Terrain">
       <UniqueIdentifier>{86458f00-d330-413e-aa5c-1ad58db19e28}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Camra">
+    <Filter Include="02.GameObjects\Camera">
       <UniqueIdentifier>{7f6a5c1d-3c88-4637-ac65-c368fe98b7d9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Camra\Free">
+    <Filter Include="02.GameObjects\Camera\Free">
       <UniqueIdentifier>{99e5154e-49e3-4d93-ad11-54750fe0ed08}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Monster">
-      <UniqueIdentifier>{0aee25fb-a338-4376-89f0-391cab056209}</UniqueIdentifier>
+    <Filter Include="01.Levels\10. Title">
+      <UniqueIdentifier>{edd484b2-535d-4fe2-a301-1f295693c6b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Title">
+      <UniqueIdentifier>{17145a26-4b75-4fed-bcf2-4f58f3ff6423}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\LoadingScreen">
+      <UniqueIdentifier>{eeea068a-f98b-4d7a-bf24-0e2bf331d11a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -85,10 +91,16 @@
       <Filter>02.GameObjects\Terrain</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Camera_Free.h">
-      <Filter>02.GameObjects\Camra\Free</Filter>
+      <Filter>02.GameObjects\Camera\Free</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Monster.h">
-      <Filter>02.GameObjects\Monster</Filter>
+    <ClInclude Include="..\Public\TitleBase.h">
+      <Filter>02.GameObjects\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Title.h">
+      <Filter>01.Levels\10. Title</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_Image.h">
+      <Filter>02.GameObjects\LoadingScreen</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -130,10 +142,16 @@
       <Filter>02.GameObjects\Terrain</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Camera_Free.cpp">
-      <Filter>02.GameObjects\Camra\Free</Filter>
+      <Filter>02.GameObjects\Camera\Free</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Monster.cpp">
-      <Filter>02.GameObjects\Monster</Filter>
+    <ClCompile Include="..\Private\TitleBase.cpp">
+      <Filter>02.GameObjects\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Title.cpp">
+      <Filter>01.Levels\10. Title</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_Image.cpp">
+      <Filter>02.GameObjects\LoadingScreen</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -143,5 +161,8 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

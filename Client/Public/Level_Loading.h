@@ -9,12 +9,6 @@
 
 /* 자원을 로딩하는 과정 중에서도 화면에 로딩과정을 보여준다. */
 
-
-
-
-
-
-
 BEGIN(Client)
 
 class CLevel_Loading final : public CLevel
@@ -24,16 +18,16 @@ private:
 	virtual ~CLevel_Loading() = default;
 
 public:
-	virtual HRESULT Initialize(LEVEL eNextLevelID);
-	virtual void Update(_float fTimeDelta) override;
-	virtual HRESULT Render() override;
+	HRESULT		Initialize(LEVEL eNextLevelID);
+	void		Update(_float fTimeDelta)			override;
+	HRESULT		Render()							override;
 
 private:
-	LEVEL					m_eNextLevelID = { LEVEL_END };
-	class CLoader*			m_pLoader = { nullptr };
+	LEVEL				m_eNextLevelID = { LEVEL_END };
+	class  CLoader*		m_pLoader = { nullptr };
 
 private:
-	HRESULT Ready_Layer_BackGround();
+	HRESULT		Ready_Layer_BackGround();
 
 public:
 	static CLevel_Loading* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevelID);
