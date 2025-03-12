@@ -92,6 +92,12 @@ HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _wstring& strLayerTag)
         LEVEL_GAMEPLAY, strLayerTag)))
         return E_FAIL;
 
+    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Monster"),
+        LEVEL_GAMEPLAY, strLayerTag)))
+        return E_FAIL;
+
+
+
 
     return S_OK;
 }
