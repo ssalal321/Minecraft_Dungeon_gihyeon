@@ -52,6 +52,9 @@
     <Filter Include="02.GameObjects\LoadingScreen">
       <UniqueIdentifier>{eeea068a-f98b-4d7a-bf24-0e2bf331d11a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster">
+      <UniqueIdentifier>{2a866a0c-01fa-4b64-92c4-fd90f41a5923}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -102,6 +105,7 @@
     <ClInclude Include="..\Public\UI_Image.h">
       <Filter>02.GameObjects\LoadingScreen</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Monster.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -153,6 +157,7 @@
     <ClCompile Include="..\Private\UI_Image.cpp">
       <Filter>02.GameObjects\LoadingScreen</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Monster.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">
