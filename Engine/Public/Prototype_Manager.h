@@ -5,6 +5,7 @@
 #include "VIBuffer_Rect.h"
 #include "Texture.h"
 #include "Shader.h"
+#include "Model.h"
 
 /* GameObject, Component들의 원형 객체들을 보관하기 위한 클래스이다 */
 /* 원형 객체들을 보관 시, 레벨별로 구분하여 보관한다. */
