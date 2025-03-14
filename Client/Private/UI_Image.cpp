@@ -114,17 +114,17 @@ _bool CUI_Image::isHit(HWND hWnd)
 HRESULT CUI_Image::Ready_Components()
 {
 	/* Com_Texture */
-	if (FAILED(__super::Add_Component(LEVEL_TITLE, m_pDesc->strTextureComTag,
+	if (FAILED(__super::Add_Component(m_pDesc->iLayerLevelIndex, m_pDesc->strTextureComTag,
 		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(& m_pTextureCom))))
 		return E_FAIL;
 
 	/* Com_Shader */
-	if (FAILED(__super::Add_Component(LEVEL_TITLE, TEXT("Prototype_Component_Shader_VtxPosTex"),
+	if (FAILED(__super::Add_Component(m_pDesc->iPrototypeLevelIndex, TEXT("Prototype_Component_Shader_VtxPosTex"),
 		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
 		return E_FAIL;
-
+	  
 	/* Com_VIBuffer */
-	if (FAILED(__super::Add_Component(LEVEL_TITLE, TEXT("Prototype_Component_VIBuffer_Rect"),
+	if (FAILED(__super::Add_Component(m_pDesc->iPrototypeLevelIndex, TEXT("Prototype_Component_VIBuffer_Rect"),
 		TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
 		return E_FAIL;
 

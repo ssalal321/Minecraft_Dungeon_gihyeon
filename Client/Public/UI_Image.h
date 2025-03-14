@@ -16,6 +16,7 @@ class CUI_Image final : public CGameObject
 public:
 	typedef struct tagUIObjectDesc : public CGameObject::GAMEOBJECT_DESC
 	{
+		_uint		iPrototypeLevelIndex, iLayerLevelIndex;
 		_float		fX, fY, fSizeX, fSizeY, fPlayTime;
 		_wstring	strTextureComTag;
 
@@ -40,7 +41,7 @@ public:
 	_bool		isHit(HWND hWnd);
 
 private:
-	UIIMAGE_DESC*	m_pDesc;
+	UIIMAGE_DESC*	m_pDesc = { nullptr };
 
 	_float4x4		m_ViewMatrix = {};
 	_float4x4		m_ProjMatrix = {};
