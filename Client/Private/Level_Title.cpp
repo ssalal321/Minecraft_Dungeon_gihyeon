@@ -44,12 +44,14 @@ HRESULT CLevel_Title::Ready_Layer_BackGround(const _wstring& strLayerTag)
     Desc.fSpeedPerSec       = 5.f;
     Desc.fRotationPerSec    = XMConvertToRadians(180.f);
 
-    Desc.fX                 = g_iWinSizeX * 0.5f;
-    Desc.fY                 = g_iWinSizeY * 0.5f;
-    Desc.fSizeX             = g_iWinSizeX;
-    Desc.fSizeY             = g_iWinSizeY;
-    Desc.fPlayTime          = 3.f;
-    Desc.strTextureComTag   = TEXT("Prototype_Component_Texture_TitleImage");
+    Desc.iPrototypeLevelIndex   = LEVEL_STATIC;
+    Desc.iLayerLevelIndex       = LEVEL_TITLE;
+    Desc.fX                     = g_iWinSizeX * 0.5f;
+    Desc.fY                     = g_iWinSizeY * 0.5f;
+    Desc.fSizeX                 = g_iWinSizeX;
+    Desc.fSizeY                 = g_iWinSizeY;
+    Desc.fPlayTime              = 3.f;
+    Desc.strTextureComTag       = TEXT("Prototype_Component_Texture_TitleImage");
 
     if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_UIImage"),
 											   LEVEL_TITLE, strLayerTag, &Desc)))
