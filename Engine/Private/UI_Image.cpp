@@ -27,7 +27,8 @@ HRESULT CUI_Image::Initialize(void* pArg)
 	/* 추가적으로 필요한 데이터를 Arg로 받아와 실 사용하기위한 객체의 정보를 생성해준다. */
 	if (nullptr != pArg)
 	{
-		m_pDesc = static_cast<UIIMAGE_DESC*>(pArg);
+		//m_pDesc = static_cast<UIIMAGE_DESC*>(pArg);
+		m_pDesc = new UIIMAGE_DESC(*static_cast<UIIMAGE_DESC*>(pArg));
 	}
 	else
 		return E_FAIL;
@@ -60,6 +61,9 @@ void CUI_Image::Priority_Update(_float fTimeDelta)
 
 void CUI_Image::Update(_float fTimeDelta)
 {
+	if (m_pDesc->eUIState == CLICKABLE && Get_KeyDown())
+		int a = 0;
+
 	/*_bool		isClicked = {};
 
 	if (GetKeyState(VK_LBUTTON) & 0x8000)
@@ -69,8 +73,6 @@ void CUI_Image::Update(_float fTimeDelta)
 
 void CUI_Image::Last_Update(_float fTimeDelta)
 {
-
-
 	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_UI, this);
 }
 
@@ -94,21 +96,34 @@ HRESULT CUI_Image::Render()
 	return S_OK;
 }
 
-_bool CUI_Image::isHit(HWND hWnd)
+_bool CUI_Image::is_Hit()
 {
-	POINT		ptMouse{};
-
-	GetCursorPos(&ptMouse);
-
-	ScreenToClient(hWnd, &ptMouse);
+	_float3		ptMouse = m_pGameInstance->Get_MousePos();
+	POINT		MousePosition	{ static_cast<_long>(ptMouse.x), static_cast<_long>(ptMouse.y) };
 
 	RECT		rcUI = { static_cast<_long>(m_pDesc->fX - m_pDesc->fSizeX * 0.5f),
 		static_cast<_long>(m_pDesc->fY - m_pDesc->fSizeY * 0.5f),
 		static_cast<_long>(m_pDesc->fX + m_pDesc->fSizeX * 0.5f),
 		static_cast<_long>(m_pDesc->fY + m_pDesc->fSizeY * 0.5f)
 	};
+	m_pDesc;
 
-	return PtInRect(&rcUI, ptMouse);
+	return PtInRect(&rcUI, MousePosition);
+}
+
+_bool CUI_Image::Get_KeyDown()
+{
+	return is_Hit() && m_pGameInstance->Key_Down(VK_LBUTTON);
+}
+
+_bool CUI_Image::Get_KeyUp()
+{
+	return is_Hit() && m_pGameInstance->Key_Up(VK_LBUTTON);
+}
+
+_bool CUI_Image::Get_KeyPressing()
+{
+	return is_Hit() && m_pGameInstance->Key_Pressing(VK_LBUTTON);
 }
 
 

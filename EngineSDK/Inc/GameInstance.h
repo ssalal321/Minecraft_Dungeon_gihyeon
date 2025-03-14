@@ -28,11 +28,13 @@ public:
 	HRESULT		Clear_DepthStencil_View();
 	HRESULT		Present();
 #pragma endregion
+
 #pragma region INPUT_DEVICE
 	_byte		Get_DIKeyState(_ubyte byKeyID);
 	_byte		Get_DIMouseState(MOUSEKEYSTATE eMouse);	
 	_long		Get_DIMouseMove(MOUSEMOVESTATE eMouseState);
 #pragma endregion
+
 #pragma region TIMER_MANAGER
 public:
 	_float		Get_TimeDelta(const _wstring& strTimerTag);
@@ -52,6 +54,14 @@ public:
 #pragma region GAMEOBJECT_MANAGER
 	HRESULT		Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag,
 							   _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg = nullptr);
+#pragma endregion
+
+#pragma region INPUT_MANAGER
+	_bool		Get_Key(_int _iKey) const; //현재 프레임에 눌렸는지 여부
+	_bool		Key_Pressing(_int _iKey) const; //계속 눌리는 중일 때
+	_bool		Key_Down(_int _iKey) const; //처음 눌릴 때
+	_bool		Key_Up(_int _iKey) const; //처음 눌리지 않을 때
+	_float3		Get_MousePos() const;
 #pragma endregion
 
 #pragma region RENDERER
@@ -79,6 +89,7 @@ private:
 	class	CLevel_Manager*			m_pLevel_Manager		= { nullptr };
 	class	CPrototype_Manager*		m_pPrototype_Manager	= { nullptr };
 	class	CObject_Manager*		m_pObject_Manager		= { nullptr };
+	class   CInput_Manager*			m_pInput_Manager		= { nullptr };
 	class	CRenderer*				m_pRenderer				= { nullptr };
 	class	CPipeLine*				m_pPipeLine				= { nullptr };
 	class	CLight_Manager*			m_pLight_Manager		= { nullptr };

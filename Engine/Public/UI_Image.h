@@ -13,11 +13,35 @@ BEGIN(Engine)
 class ENGINE_DLL CUI_Image final : public CGameObject
 {
 public:
-	typedef struct tagUIObjectDesc : public CGameObject::GAMEOBJECT_DESC
+	enum  UI_STATE { CLICKABLE, UNCLICKABLE };
+
+	typedef struct tagUIImageDesc : public CGameObject::GAMEOBJECT_DESC
 	{
+		UI_STATE	eUIState;
 		_uint		iPrototypeLevelIndex, iLayerLevelIndex;
 		_float		fX, fY, fSizeX, fSizeY, fPlayTime;
 		_wstring	strTextureComTag;
+
+		tagUIImageDesc(const _tchar* gameObjectTag, UI_STATE uiState, _uint PrototypeLevelIndex, _uint LayerLevelIndex,
+			_float x, _float y, _float sizeX, _float sizeY,
+			_float playTime, const wstring& textureTag, _float speedPerSec = 0.f, _float rotationPerSec = 0.f)
+			: GAMEOBJECT_DESC(gameObjectTag, speedPerSec, rotationPerSec),  // 부모 생성자 호출
+			eUIState(uiState), iPrototypeLevelIndex(PrototypeLevelIndex), iLayerLevelIndex(LayerLevelIndex),
+			fX(x), fY(y), fSizeX(sizeX), fSizeY(sizeY),
+			fPlayTime(playTime), strTextureComTag(textureTag) {
+		}
+
+		// 복사 생성자
+		tagUIImageDesc(const tagUIImageDesc& other)
+			: GAMEOBJECT_DESC(other.pGameObjectTag,
+			other.fSpeedPerSec,other.fRotationPerSec),
+			eUIState(other.eUIState), iPrototypeLevelIndex(other.iPrototypeLevelIndex),
+			iLayerLevelIndex(other.iLayerLevelIndex),
+			fX(other.fX), fY(other.fY),
+			fSizeX(other.fSizeX), fSizeY(other.fSizeY),
+			fPlayTime(other.fPlayTime),
+			strTextureComTag(other.strTextureComTag) {
+		}
 
 	}UIIMAGE_DESC;
 
@@ -37,7 +61,13 @@ public:
 	HRESULT		Render()							override;
 
 public:
-	_bool		isHit(HWND hWnd);
+	_bool		is_Hit();
+
+protected:
+	_bool	Get_KeyDown();
+	_bool	Get_KeyUp();
+	_bool	Get_KeyPressing();
+
 
 private:
 	UIIMAGE_DESC*	m_pDesc = { nullptr };

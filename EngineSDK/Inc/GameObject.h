@@ -10,6 +10,10 @@ public:
 	typedef struct tagGameObjectDesc : public CTransform::TRANSFORM_DESC
 	{
 		const _tchar* pGameObjectTag;
+
+		tagGameObjectDesc(const _tchar* gameObjectTag = TEXT(""), _float speedPerSec = 0.f, _float rotationPerSec = 0.f)
+			: tagTransformDesc(speedPerSec, rotationPerSec), pGameObjectTag(gameObjectTag) {}
+
 	}GAMEOBJECT_DESC;
 
 protected:

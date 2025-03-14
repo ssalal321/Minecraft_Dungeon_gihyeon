@@ -74,4 +74,6 @@
 			return iRefCnt;											\
 		}
 
+
+#define VK_MAX 0xff
 #endif // Engine_Macro_h__
