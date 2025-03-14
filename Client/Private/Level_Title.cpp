@@ -38,7 +38,7 @@ HRESULT CLevel_Title::Render()
 
 HRESULT CLevel_Title::Ready_Layer_BackGround(const _wstring& strLayerTag)
 {
-    CUI_Image::UIIMAGE_DESC   Desc{};
+    /*CUI_Image::UIIMAGE_DESC   Desc{};
 
     Desc.pGameObjectTag     = TEXT("GameObject_TitleScreen");
     Desc.fSpeedPerSec       = 5.f;
@@ -51,10 +51,17 @@ HRESULT CLevel_Title::Ready_Layer_BackGround(const _wstring& strLayerTag)
     Desc.fSizeX                 = g_iWinSizeX;
     Desc.fSizeY                 = g_iWinSizeY;
     Desc.fPlayTime              = 3.f;
-    Desc.strTextureComTag       = TEXT("Prototype_Component_Texture_TitleImage");
+    Desc.strTextureComTag       = TEXT("Prototype_Component_Texture_TitleImage");*/
 
-    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_UIImage"),
-											   LEVEL_TITLE, strLayerTag, &Desc)))
+    CUI_Image::UIIMAGE_DESC  UIImageDesc
+	(TEXT("GameObject_TitleImage"), CUI_Image::UNCLICKABLE, LEVEL_STATIC, LEVEL_TITLE,
+	 g_iWinSizeX * 0.5f, g_iWinSizeY * 0.5f, g_iWinSizeX, g_iWinSizeY,
+	 3.0f, L"Prototype_Component_Texture_TitleImage", 5.0f, 180.0f);
+
+
+    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC,
+											   TEXT("Prototype_GameObject_UIImage"),
+											   LEVEL_TITLE, strLayerTag, &UIImageDesc)))
         return E_FAIL;
 
     return S_OK;

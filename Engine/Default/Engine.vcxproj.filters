@@ -103,6 +103,9 @@
     <Filter Include="01.Utility\04.Component\Model\Material">
       <UniqueIdentifier>{006eef37-a478-449f-98b8-f4702a23a12a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\98. InputManager">
+      <UniqueIdentifier>{31567c44-b7f8-414f-a57d-1f984f8edfb1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Base.h">
@@ -210,6 +213,9 @@
     <ClInclude Include="..\Public\Material.h">
       <Filter>01.Utility\04.Component\Model\Material</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Input_Manager.h">
+      <Filter>01.Utility\98. InputManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -301,6 +307,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Material.cpp">
       <Filter>01.Utility\04.Component\Model\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Input_Manager.cpp">
+      <Filter>01.Utility\98. InputManager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

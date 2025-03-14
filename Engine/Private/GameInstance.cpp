@@ -6,6 +6,7 @@
 #include "Level_Manager.h"
 #include "Prototype_Manager.h"
 #include "Object_Manager.h"
+#include "Input_Manager.h"
 #include "Renderer.h"
 #include "Light_Manager.h"
 
@@ -37,6 +38,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	if (nullptr == m_pObject_Manager)
 		return E_FAIL;
 
+	m_pInput_Manager = CInput_Manager::Create(EngineDesc.hWnd);
+	if (nullptr == m_pInput_Manager)
+		return E_FAIL;
+
 	m_pLevel_Manager = CLevel_Manager::Create();
 	if (nullptr == m_pLevel_Manager)
 		return E_FAIL;
@@ -60,6 +65,8 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 void CGameInstance::Update_Engine(_float fTimeDelta)
 {
 	m_pInput_Device->Update();
+
+	m_pInput_Manager->Update_Key();
 
 	m_pObject_Manager->Priority_Update(fTimeDelta);
 		
@@ -184,31 +191,65 @@ HRESULT CGameInstance::Add_GameObject(_uint iPrototypeLevelIndex, const _wstring
 #pragma endregion
 
 
+#pragma region INPUT_MANAGER
+_bool CGameInstance::Get_Key(_int _iKey) const
+{
+	return m_pInput_Manager->Get_Key(_iKey);
+}
+
+_bool CGameInstance::Key_Pressing(_int _iKey) const
+{
+	return m_pInput_Manager->Key_Pressing(_iKey);
+}
+
+_bool CGameInstance::Key_Down(_int _iKey) const
+{
+	return m_pInput_Manager->Key_Down(_iKey);
+}
+
+_bool CGameInstance::Key_Up(_int _iKey) const
+{
+	return m_pInput_Manager->Key_Up(_iKey);
+}
+
+_float3 CGameInstance::Get_MousePos() const
+{
+	return m_pInput_Manager->Get_MousePos();
+}
+#pragma endregion
+
+
 #pragma region RENDERER
 HRESULT CGameInstance::Add_RenderObject(CRenderer::RENDERGROUP eRenderGroup, CGameObject* pRenderObject)
 {
 	return m_pRenderer->Add_RenderObject(eRenderGroup, pRenderObject);
 }
+
 const _float4x4* CGameInstance::Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE eState) const
 {
 	return m_pPipeLine->Get_Transform_Float4x4(eState);
 }
+
 const _matrix CGameInstance::Get_Transform_Matrix(CPipeLine::TRANSFORMSTATE eState) const
 {
 	return m_pPipeLine->Get_Transform_Matrix(eState);
 }
+
 const _float4x4* CGameInstance::Get_Transform_Inverse_Float4x4(CPipeLine::TRANSFORMSTATE eState)
 {
 	return m_pPipeLine->Get_Transform_Inverse_Float4x4(eState);
 }
+
 const _matrix CGameInstance::Get_Transform_Inverse_Matrix(CPipeLine::TRANSFORMSTATE eState) const
 {
 	return m_pPipeLine->Get_Transform_Inverse_Matrix(eState);
 }
+
 const _float4* CGameInstance::Get_CamPosition() const
 {
 	return m_pPipeLine->Get_CamPosition();
 }
+
 void CGameInstance::Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix StateMatrix)
 {
 	m_pPipeLine->Set_Transform(eState, StateMatrix);
@@ -221,6 +262,7 @@ const LIGHT_DESC* CGameInstance::Get_LightDesc(_uint iIndex) const
 {
 	return m_pLight_Manager->Get_LightDesc(iIndex);
 }
+
 HRESULT CGameInstance::Add_Light(const LIGHT_DESC& LightDesc)
 {
 	return m_pLight_Manager->Add_Light(LightDesc);
@@ -236,6 +278,7 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pPrototype_Manager);
 	Safe_Release(m_pObject_Manager);
+	Safe_Release(m_pInput_Manager);
 	Safe_Release(m_pRenderer);
 	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pLight_Manager);

@@ -18,8 +18,14 @@ public:
 
 	typedef struct tagTransformDesc
 	{
-		_float		fSpeedPerSec{};
-		_float		fRotationPerSec{};
+		_float fSpeedPerSec;
+		_float fRotationPerSec;
+
+		// 부모 클래스 멤버를 한 번에 초기화할 수 있도록 하위 클래스 생성자에서 받음
+		tagTransformDesc(_float speedPerSec = 0.f, _float rotationPerSec = 0.f)
+			: fSpeedPerSec(speedPerSec), fRotationPerSec(rotationPerSec) {}
+
+
 	}TRANSFORM_DESC;
 
 private:
