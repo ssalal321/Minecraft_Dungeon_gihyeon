@@ -1,6 +1,7 @@
 #include "UI_Image.h"
 #include "GameInstance.h"
 
+
 CUI_Image::CUI_Image(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject{ pDevice, pContext }
 {

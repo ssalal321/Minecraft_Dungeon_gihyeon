@@ -159,7 +159,6 @@
     <ClInclude Include="..\Public\Level_Logo.h" />
     <ClInclude Include="..\Public\Level_Title.h" />
     <ClInclude Include="..\Public\Loader.h" />
-    <ClInclude Include="..\Public\UI_Image.h" />
     <ClInclude Include="..\Public\MainApp.h" />
     <ClInclude Include="..\Public\Monster.h" />
     <ClInclude Include="..\Public\Terrain.h" />
@@ -177,7 +176,6 @@
     <ClCompile Include="..\Private\Level_Logo.cpp" />
     <ClCompile Include="..\Private\Level_Title.cpp" />
     <ClCompile Include="..\Private\Loader.cpp" />
-    <ClCompile Include="..\Private\UI_Image.cpp" />
     <ClCompile Include="..\Private\MainApp.cpp" />
     <ClCompile Include="..\Private\Monster.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
@@ -192,6 +190,7 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl" />
   </ItemGroup>

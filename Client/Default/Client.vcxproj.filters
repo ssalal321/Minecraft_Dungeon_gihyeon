@@ -49,9 +49,6 @@
     <Filter Include="02.GameObjects\Title">
       <UniqueIdentifier>{17145a26-4b75-4fed-bcf2-4f58f3ff6423}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\LoadingScreen">
-      <UniqueIdentifier>{eeea068a-f98b-4d7a-bf24-0e2bf331d11a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\Monster">
       <UniqueIdentifier>{2a866a0c-01fa-4b64-92c4-fd90f41a5923}</UniqueIdentifier>
     </Filter>
@@ -101,9 +98,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\Level_Title.h">
       <Filter>01.Levels\10. Title</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\UI_Image.h">
-      <Filter>02.GameObjects\LoadingScreen</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Monster.h">
       <Filter>02.GameObjects\Monster</Filter>
@@ -156,9 +150,6 @@
     <ClCompile Include="..\Private\Level_Title.cpp">
       <Filter>01.Levels\10. Title</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\UI_Image.cpp">
-      <Filter>02.GameObjects\LoadingScreen</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Monster.cpp">
       <Filter>02.GameObjects\Monster</Filter>
     </ClCompile>
@@ -168,6 +159,9 @@
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

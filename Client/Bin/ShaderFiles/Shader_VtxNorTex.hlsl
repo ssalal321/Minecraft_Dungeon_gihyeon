@@ -73,7 +73,7 @@ PS_OUT PS_MAIN_DIRECTIONAL(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
     
-    vector vMtrlDiffuse = 1.f;
+    vector vMtrlDiffuse = g_DiffuseTexture.Sample(g_LinearSampler, In.vTexcoord * 30.f);;
     
     float fShade = max(dot(normalize(g_vLightDir) * -1.f, In.vNormal), 0.f);
     
