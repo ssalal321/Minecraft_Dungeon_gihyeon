@@ -97,6 +97,12 @@
     <Filter Include="01.Utility\04.Component\Model\Mesh">
       <UniqueIdentifier>{3e2a1abc-ed75-4cd4-9b82-a4540b261920}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\03.GameObject\UIImage">
+      <UniqueIdentifier>{04fd4813-351c-459a-bea6-2c715f15206c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Component\Model\Material">
+      <UniqueIdentifier>{006eef37-a478-449f-98b8-f4702a23a12a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Base.h">
@@ -198,6 +204,12 @@
     <ClInclude Include="..\public\Mesh.h">
       <Filter>01.Utility\04.Component\Model\Mesh</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UI_Image.h">
+      <Filter>01.Utility\03.GameObject\UIImage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Material.h">
+      <Filter>01.Utility\04.Component\Model\Material</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -283,6 +295,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Mesh.cpp">
       <Filter>01.Utility\04.Component\Model\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_Image.cpp">
+      <Filter>01.Utility\03.GameObject\UIImage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Material.cpp">
+      <Filter>01.Utility\04.Component\Model\Material</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

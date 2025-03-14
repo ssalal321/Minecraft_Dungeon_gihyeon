@@ -4,7 +4,7 @@
 
 BEGIN(Engine)
 
-class CMesh final : public CVIBuffer
+class ENGINE_DLL CMesh final : public CVIBuffer
 {
 private:
 	CMesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -12,14 +12,19 @@ private:
 	virtual ~CMesh() = default;
 
 public:
-	virtual HRESULT Initialize_Prototype(const aiMesh* pAIMesh);
-	virtual HRESULT Initialize(void* pArg) override;
-
+	_uint Get_MaterialIndex() const {	return m_iMaterialIndex;	}
 
 public:
-	static CMesh* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const aiMesh* pAIMesh);
-	virtual CComponent* Clone(void* pArg) override;
-	virtual void Free() override;
+	HRESULT		Initialize_Prototype(const aiMesh* pAIMesh, _fmatrix PreTransformMatrix);
+	HRESULT		Initialize(void* pArg)	override;
+
+private:
+	_uint	m_iMaterialIndex = {};
+
+public:
+	static CMesh*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const aiMesh* pAIMesh, _fmatrix PreTransformMatrix);
+	CComponent*		Clone(void* pArg)	override;
+	void			Free()				override;
 
 };
 

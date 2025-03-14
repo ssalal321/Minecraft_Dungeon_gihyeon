@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Client_Defines.h"
 #include "GameObject.h"
 
 BEGIN(Engine)
@@ -9,9 +8,9 @@ class CTexture;
 class CVIBuffer_Rect;
 END
 
-BEGIN(Client)
+BEGIN(Engine)
 
-class CUI_Image final : public CGameObject
+class ENGINE_DLL CUI_Image final : public CGameObject
 {
 public:
 	typedef struct tagUIObjectDesc : public CGameObject::GAMEOBJECT_DESC

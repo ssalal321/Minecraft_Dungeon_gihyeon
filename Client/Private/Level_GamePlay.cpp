@@ -41,17 +41,17 @@ HRESULT CLevel_GamePlay::Ready_Lights()
 {
     LIGHT_DESC          LightDesc{};
 
-  /*  LightDesc.eType = LIGHT_DESC::TYPE_DIRECTIONAL;
+    LightDesc.eType = LIGHT_DESC::TYPE_DIRECTIONAL;
     LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
     LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
     LightDesc.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
     LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
 
     if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
-        return E_FAIL;*/
+        return E_FAIL;
 
-    LightDesc.eType = LIGHT_DESC::TYPE_POINT;
-    // LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+    /*LightDesc.eType = LIGHT_DESC::TYPE_POINT;
+    LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
     LightDesc.vPosition = _float4(20.f, 5.f, 20.f, 1.f);
     LightDesc.fRange = 20.f;
     LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
@@ -59,7 +59,7 @@ HRESULT CLevel_GamePlay::Ready_Lights()
     LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
 
     if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
-        return E_FAIL;
+        return E_FAIL;*/
 
     return S_OK;
 }
