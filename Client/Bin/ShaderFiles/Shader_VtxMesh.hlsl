@@ -43,13 +43,11 @@ VS_OUT VS_MAIN(VS_IN In)
     /* 기타 변환들을 수행한다.*/   
     VS_OUT Out = (VS_OUT) 0;
     
-    matrix matWV, matWVP;
-    
-    matWV = mul(g_WorldMatrix, g_ViewMatrix);
-    matWVP = mul(matWV, g_ProjMatrix);
+    matrix  matWorldView  = mul(g_WorldMatrix, g_ViewMatrix);
+    matrix  matWVP        = mul(matWorldView, g_ProjMatrix);
     
     Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
-    Out.vNormal = normalize(mul(vector(In.vNormal, 0.f), g_WorldMatrix));
+    Out.vNormal   = normalize(mul(vector(In.vNormal, 0.f), g_WorldMatrix));
     Out.vTexcoord = In.vTexcoord;
     Out.vWorldPos = mul(vector(In.vPosition, 1.f), g_WorldMatrix);
     
@@ -58,10 +56,10 @@ VS_OUT VS_MAIN(VS_IN In)
 
 struct PS_IN
 {
-    float4 vPosition : SV_POSITION;
-    float4 vNormal : NORMAL;
-    float2 vTexcoord : TEXCOORD0;
-    float4 vWorldPos : TEXCOORD1;
+    float4  vPosition : SV_POSITION;
+    float4  vNormal   : NORMAL;
+    float2  vTexcoord : TEXCOORD0;
+    float4  vWorldPos : TEXCOORD1;
 };
 
 struct PS_OUT

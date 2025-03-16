@@ -68,7 +68,6 @@ void CUI_Image::Update(_float fTimeDelta)
 
 	if (GetKeyState(VK_LBUTTON) & 0x8000)
 		isClicked = isHit(g_hWnd);*/
-
 }
 
 void CUI_Image::Last_Update(_float fTimeDelta)
@@ -188,6 +187,7 @@ void CUI_Image::Free()
 {
 	__super::Free();
 
+	Safe_Delete(m_pDesc);
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pVIBufferCom);
