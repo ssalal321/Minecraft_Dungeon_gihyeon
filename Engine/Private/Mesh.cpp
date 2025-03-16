@@ -28,8 +28,8 @@ HRESULT CMesh::Initialize_Prototype(const aiMesh* pAIMesh, _fmatrix PreTransform
 	m_BufferDesc.Usage				 = D3D11_USAGE_DEFAULT;
 	m_BufferDesc.BindFlags			 = D3D11_BIND_VERTEX_BUFFER;
 	m_BufferDesc.StructureByteStride = m_iVertexStride;
-	m_BufferDesc.CPUAccessFlags = 0;
-	m_BufferDesc.MiscFlags		= 0;
+	m_BufferDesc.CPUAccessFlags		 = 0;
+	m_BufferDesc.MiscFlags			 = 0;
 
 	VTXMESH*   pVertices = new VTXMESH[m_iNumVertices];
 	ZeroMemory(pVertices, sizeof(VTXMESH) * m_iNumVertices);
@@ -60,12 +60,12 @@ HRESULT CMesh::Initialize_Prototype(const aiMesh* pAIMesh, _fmatrix PreTransform
 
 #pragma region INDEX_BUFFER
 	ZeroMemory(&m_BufferDesc, sizeof m_BufferDesc);
-	m_BufferDesc.ByteWidth = m_iIndexStride * m_iNumIndices;
-	m_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	m_BufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	m_BufferDesc.StructureByteStride = m_iIndexStride;
-	m_BufferDesc.CPUAccessFlags = 0;
-	m_BufferDesc.MiscFlags = 0;
+	m_BufferDesc.ByteWidth				= m_iIndexStride * m_iNumIndices;
+	m_BufferDesc.Usage					= D3D11_USAGE_DEFAULT;
+	m_BufferDesc.BindFlags				= D3D11_BIND_INDEX_BUFFER;
+	m_BufferDesc.StructureByteStride	= m_iIndexStride;
+	m_BufferDesc.CPUAccessFlags			= 0;
+	m_BufferDesc.MiscFlags				= 0;
 
 	_uint* pIndices = new _uint[m_iNumIndices];
 	ZeroMemory(pIndices, sizeof(_uint) * m_iNumIndices);

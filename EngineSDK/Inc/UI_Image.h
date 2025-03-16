@@ -43,6 +43,7 @@ public:
 			strTextureComTag(other.strTextureComTag) {
 		}
 
+		~tagUIImageDesc() = default;
 	}UIIMAGE_DESC;
 
 private:
