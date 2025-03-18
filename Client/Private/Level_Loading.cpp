@@ -1,7 +1,8 @@
 #include "Level_Loading.h"
 
 #include "Loader.h"
-#include "Level_Loading.h"
+#include <UI_Image.h>
+
 #include "Level_Logo.h"
 #include "Level_GamePlay.h"
 
@@ -17,13 +18,13 @@ HRESULT CLevel_Loading::Initialize(LEVEL eNextLevelID)
 {
     m_eNextLevelID = eNextLevelID;
 
-    /* 로딩레벨을 구성해주기위한 객체들을 생성한다. */
-    if (FAILED(Ready_Layer_BackGround()))
-        return E_FAIL;
-
     /* 다음레벨을 위한 자원을 준비한다. */
     m_pLoader = CLoader::Create(m_pDevice, m_pContext, eNextLevelID);
     if (nullptr == m_pLoader)
+        return E_FAIL;
+
+    /* 로딩레벨을 구성해주기위한 객체들을 생성한다. */
+    if (FAILED(Ready_Layer_BackGround()))
         return E_FAIL;
 
     return S_OK;
@@ -31,8 +32,7 @@ HRESULT CLevel_Loading::Initialize(LEVEL eNextLevelID)
 
 void CLevel_Loading::Update(_float fTimeDelta)
 {
-    if (true == m_pLoader->isFinished()/* && 
-        GetKeyState(VK_SPACE) & 0x8000*/)
+    if (true == m_pLoader->isFinished() && m_pGameInstance->Key_Down(VK_SPACE))
     {
         CLevel* pNewLevel = { nullptr };
 
@@ -53,7 +53,6 @@ void CLevel_Loading::Update(_float fTimeDelta)
         /*case LEVEL_LOUNGE:
             pNewLevel = CLevel_Lounge::Create(m_pDevice, m_pContext);
             break;*/
-
         }
 
         if (nullptr == pNewLevel)
@@ -78,17 +77,20 @@ HRESULT CLevel_Loading::Render()
 
 HRESULT CLevel_Loading::Ready_Layer_BackGround()
 {
-    /*CUI_Image::UIIMAGE_DESC   Desc{};
+    /* For.Prototype_Component_Texture_LoadingScreen */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOADING, TEXT("Prototype_Component_Texture_LoungeLoading"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Loading/Loading_Screen_Lobby%d.png"), 3))))
+        return E_FAIL;
 
-    Desc.fPlayTime = 3.f;
-    Desc.pGameObjectTag = TEXT("GameObject_LoadingScreen");
-    Desc.fSpeedPerSec = 5.f;
-    Desc.fRotationPerSec = XMConvertToRadians(180.f);
+    CUI_Image::UIIMAGE_DESC  UIImageDesc
+    (TEXT("GameObject_LoungeLoading"), CUI_Image::UNCLICKABLE, LEVEL_STATIC, LEVEL_LOADING,
+        g_iWinSizeX * 0.5f, g_iWinSizeY * 0.5f, g_iWinSizeX, g_iWinSizeY,
+        3.0f, L"Prototype_Component_Texture_LoungeLoading");
 
-
-    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_LOADING, TEXT("Prototype_GameObject_TitleBase"),
-        LEVEL_LOADING, strLayerTag, &Desc)))
-        return E_FAIL;*/
+    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC,
+        TEXT("Prototype_GameObject_UIImage"),
+        LEVEL_LOADING, TEXT("Layer_LoungeLoading"), &UIImageDesc)))
+        return E_FAIL;
 
     return S_OK;
 }

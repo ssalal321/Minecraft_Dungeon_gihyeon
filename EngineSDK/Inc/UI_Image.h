@@ -24,7 +24,7 @@ public:
 
 		tagUIImageDesc(const _tchar* gameObjectTag, UI_STATE uiState, _uint PrototypeLevelIndex, _uint LayerLevelIndex,
 			_float x, _float y, _float sizeX, _float sizeY,
-			_float playTime, const wstring& textureTag, _float speedPerSec = 0.f, _float rotationPerSec = 0.f)
+			const wstring& textureTag, _float playTime = 0.f, _float speedPerSec = 0.f, _float rotationPerSec = 0.f)
 			: GAMEOBJECT_DESC(gameObjectTag, speedPerSec, rotationPerSec),  // 부모 생성자 호출
 			eUIState(uiState), iPrototypeLevelIndex(PrototypeLevelIndex), iLayerLevelIndex(LayerLevelIndex),
 			fX(x), fY(y), fSizeX(sizeX), fSizeY(sizeY),

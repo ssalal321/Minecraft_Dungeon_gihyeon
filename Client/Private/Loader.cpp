@@ -46,7 +46,7 @@ HRESULT CLoader::Initialize(LEVEL eNextLevelID)
 	return S_OK;
 }
 
-HRESULT CLoader::Loading()
+HRESULT CLoader:: Loading()
 {
 	CoInitializeEx(nullptr, 0);
 
@@ -71,7 +71,6 @@ HRESULT CLoader::Loading()
 		hr = Loading_For_Static(); // UI_Image 원형 저장단계
 		hr = Loading_For_Title();
 		break;
-
 	}
 
 	if (FAILED(hr))
@@ -134,6 +133,10 @@ HRESULT CLoader::Loading_For_Logo()
 
 HRESULT CLoader::Loading_For_GamePlay()
 {
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_PlayerStateSlot"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStateSlot.png"), 1))))
+		return E_FAIL;
+
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐 로딩 중"));
 	/* For.Prototype_Component_Texture_Terrain */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Terrain"),
@@ -218,21 +221,10 @@ HRESULT CLoader::Loading_For_Static()
 HRESULT CLoader::Loading_For_Title()
 {
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐 로딩 중"));
-	/* For.Prototype_Component_Texture_BackGround */
+	/* For.Prototype_Component_Texture_TitleImage */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TITLE, TEXT("Prototype_Component_Texture_TitleImage"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Title/LoadingTitle.png"), 1))))
 		return E_FAIL;
-
-	
-
-
-	//lstrcpy(m_szLoadingText, TEXT("객체원형 로딩 중"));
-
-	///* For.Prototype_GameObject_BackGround */
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TITLE, TEXT("Prototype_GameObject_TitleBase"),
-	//	CTitleBase::Create(m_pDevice, m_pContext))))
-	//	return E_FAIL;
-
 
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
