@@ -15,7 +15,6 @@ namespace Engine
 		unsigned int	iNumLevels;
 	}ENGINE_DESC;	
 
-
 	typedef struct tagLightDesc
 	{
 		enum TYPE { TYPE_DIRECTIONAL, TYPE_POINT, TYPE_END };
@@ -30,7 +29,6 @@ namespace Engine
 		XMFLOAT4	vSpecular;
 	}LIGHT_DESC;
 
-
 	typedef struct ENGINE_DLL tagVertexPositionTextureCoord
 	{
 		XMFLOAT3		vPosition;
@@ -39,7 +37,6 @@ namespace Engine
 		static const unsigned int				iNumElements = { 2 };
 		static const D3D11_INPUT_ELEMENT_DESC	Elements[iNumElements];
 	}VTXPOSTEX;	
-
 
 	typedef struct ENGINE_DLL tagVertexPositionNormalTextureCoord
 	{
@@ -51,7 +48,6 @@ namespace Engine
 		static const D3D11_INPUT_ELEMENT_DESC	Elements[iNumElements];
 	}VTXNORTEX;
 
-
 	typedef struct ENGINE_DLL tagVertexMesh
 	{
 		XMFLOAT3		vPosition;
@@ -62,6 +58,22 @@ namespace Engine
 		static const unsigned int				iNumElements = { 4 };
 		static const D3D11_INPUT_ELEMENT_DESC	Elements[iNumElements];
 	}VTXMESH;
+
+
+	typedef struct ENGINE_DLL tagVertexAnimationMesh
+	{
+		XMFLOAT3		vPosition;
+		XMFLOAT3		vNormal;
+		XMFLOAT2		vTexcoord;
+		XMFLOAT3		vTangent;
+
+		XMUINT4			vBlendIndex; /* 영향을 받아야할 뼈의 인덱스 최대 4개 */
+		XMFLOAT4		vBlendWeight; /* 각 뼈의 가중치 네개의 합 1 */
+
+		static const unsigned int				iNumElements = { 6 };
+		static const D3D11_INPUT_ELEMENT_DESC	Elements[iNumElements];
+	}VTXANIMMESH;
+
 }
 
 

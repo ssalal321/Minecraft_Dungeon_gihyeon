@@ -1,5 +1,6 @@
 
 matrix      g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
+matrix      g_BoneMatrices[512]; /* 메시에게 영향을 주는 뼈 배열 */
 
 vector      g_vLightDir = vector(1.f, -1.f, 0.f, 0.f);
 vector      g_vLightPos;
@@ -7,6 +8,8 @@ float       g_fLightRange;
 vector      g_vLightDiffuse;
 vector      g_vLightAmbient;
 vector      g_vLightSpecular;
+
+
 
 texture2D   g_DiffuseTexture;
 vector      g_vMtrlAmbient = vector(0.3f, 0.3f, 0.3f, 0.3f);
@@ -27,6 +30,9 @@ struct VS_IN
     float3 vNormal : NORMAL;
     float2 vTexcoord : TEXCOORD0;
     float3 vTangent : TANGENT;
+    
+    uint4  vBlendIndex : BLENDINDEX;
+    float4 vBlendWeight : BLENDWEIGHT;
 };
 
 struct VS_OUT    
@@ -43,15 +49,25 @@ VS_OUT VS_MAIN(VS_IN In)
     /* 기타 변환들을 수행한다.*/   
     VS_OUT Out = (VS_OUT)0;
     
+    matrix BoneMatrix = g_BoneMatrices[In.vBlendIndex.x] * In.vBlendWeight.x + 
+        g_BoneMatrices[In.vBlendIndex.y] * In.vBlendWeight.y + 
+        g_BoneMatrices[In.vBlendIndex.z] * In.vBlendWeight.z + 
+        g_BoneMatrices[In.vBlendIndex.w] * In.vBlendWeight.w;
+    
+    vector vPosition = mul(vector(In.vPosition, 1.f), BoneMatrix);    
+    vector vNormal = mul(vector(In.vNormal, 0.f), BoneMatrix);
+    
     matrix matWV, matWVP;
     
     matWV = mul(g_WorldMatrix, g_ViewMatrix);
     matWVP = mul(matWV, g_ProjMatrix);
     
-    Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
-    Out.vNormal = normalize(mul(vector(In.vNormal, 0.f), g_WorldMatrix));
+    Out.vPosition = mul(vPosition, matWVP);
+    Out.vNormal = normalize(mul(vNormal, g_WorldMatrix));
     Out.vTexcoord = In.vTexcoord;
     Out.vWorldPos = mul(vector(In.vPosition, 1.f), g_WorldMatrix);
+    
+    
     
     return Out;
 }
@@ -97,8 +113,6 @@ technique11 DefaultTechnique
     {
         VertexShader = compile vs_5_0 VS_MAIN();
         PixelShader = compile ps_5_0 PS_MAIN();
-    }
-
-    
+    }    
 }
 

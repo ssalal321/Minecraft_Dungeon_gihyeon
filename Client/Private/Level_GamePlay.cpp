@@ -111,7 +111,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& strLayerTag)
     CUI_Image::UIIMAGE_DESC  UIImageDesc
     (TEXT("GameObject_PlayerStateSlot"), CUI_Image::UNCLICKABLE, LEVEL_STATIC, LEVEL_GAMEPLAY,
         g_iWinSizeX * 0.5f, g_iWinSizeY - 105.f * 0.5f, 713.f, 105.f,
-        3.0f, L"Prototype_Component_Texture_PlayerStateSlot", 5.0f, 0.f);
+        L"Prototype_Component_Texture_PlayerStateSlot", 180.f);
 
 
     if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC,

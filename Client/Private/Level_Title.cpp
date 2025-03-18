@@ -56,7 +56,7 @@ HRESULT CLevel_Title::Ready_Layer_BackGround(const _wstring& strLayerTag)
     CUI_Image::UIIMAGE_DESC  UIImageDesc
 	(TEXT("GameObject_TitleImage"), CUI_Image::UNCLICKABLE, LEVEL_STATIC, LEVEL_TITLE,
 	 g_iWinSizeX * 0.5f, g_iWinSizeY * 0.5f, g_iWinSizeX, g_iWinSizeY,
-	 L"Prototype_Component_Texture_TitleImage", 0, 0, 180.0f);
+	 L"Prototype_Component_Texture_TitleImage", 180.0f);
 
 
     if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC,
