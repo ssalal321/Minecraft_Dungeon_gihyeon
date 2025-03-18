@@ -7,7 +7,7 @@ CMainApp::CMainApp()
     : m_pGameInstance { CGameInstance::GetInstance() }
 {
      //D3D11_SAMPLER_DESC
-
+    // BaBo MeongCheong-I
     Safe_AddRef(m_pGameInstance);
 }
 
@@ -15,12 +15,12 @@ HRESULT CMainApp::Initialize()
 {
     ENGINE_DESC         EngineDesc{};
 
-    EngineDesc.hInstance = g_hInstance;
-    EngineDesc.hWnd = g_hWnd;
-    EngineDesc.isWindowed = true;
-    EngineDesc.iViewportWidth = g_iWinSizeX;
-    EngineDesc.iViewportHeight = g_iWinSizeY;
-    EngineDesc.iNumLevels = LEVEL_END;
+    EngineDesc.hInstance        = g_hInstance;
+    EngineDesc.hWnd             = g_hWnd;
+    EngineDesc.isWindowed       = true;
+    EngineDesc.iViewportWidth   = g_iWinSizeX;
+    EngineDesc.iViewportHeight  = g_iWinSizeY;
+    EngineDesc.iNumLevels       = LEVEL_END;
 
     if (FAILED(m_pGameInstance->Initialize_Engine(EngineDesc, &m_pDevice, &m_pContext)))
         return E_FAIL;

@@ -53,8 +53,12 @@ struct PS_OUT
 PS_OUT PS_MAIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
-    
-    Out.vColor = g_Texture.Sample(g_LinearSampler, In.vTexcoord);
+
+    vector vTextureInfo = g_Texture.Sample(g_LinearSampler, In.vTexcoord);
+    if (vTextureInfo.a < 0.55f)
+        discard;
+
+    Out.vColor = vTextureInfo;
     
     return Out;    
 }

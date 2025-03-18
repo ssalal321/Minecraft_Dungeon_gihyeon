@@ -20,8 +20,9 @@ public:
 
 
 private:
-	_uint											m_iNumSRVs = {};
-	vector<ID3D11ShaderResourceView*>				m_SRVs;
+	_uint									m_iNumSRVs		= {};
+	_uint									m_iRandomIndex	= {};
+	vector<ID3D11ShaderResourceView*>		m_SRVs;
 
 
 public:
