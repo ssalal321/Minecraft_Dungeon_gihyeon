@@ -106,6 +106,9 @@
     <Filter Include="01.Utility\98. InputManager">
       <UniqueIdentifier>{31567c44-b7f8-414f-a57d-1f984f8edfb1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\04.Component\Model\Bone">
+      <UniqueIdentifier>{da28d38a-024a-4002-9704-3326b5e89e7f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Base.h">
@@ -216,6 +219,9 @@
     <ClInclude Include="..\Public\Input_Manager.h">
       <Filter>01.Utility\98. InputManager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Bone.h">
+      <Filter>01.Utility\04.Component\Model\Bone</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -310,6 +316,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Input_Manager.cpp">
       <Filter>01.Utility\98. InputManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Bone.cpp">
+      <Filter>01.Utility\04.Component\Model\Bone</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

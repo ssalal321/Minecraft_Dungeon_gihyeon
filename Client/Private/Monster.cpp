@@ -2,13 +2,13 @@
 #include "GameInstance.h"
 
 CMonster::CMonster(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CGameObject(pDevice, pContext)
+	: CGameObject { pDevice, pContext }
 {
 
 }
 
 CMonster::CMonster(const CMonster& Prototype)
-	: CGameObject(Prototype)
+	: CGameObject { Prototype }
 {
 
 }
@@ -23,7 +23,7 @@ HRESULT CMonster::Initialize_Prototype()
 HRESULT CMonster::Initialize(void* pArg)
 {
 	/* 원형의 데이터를 복제하여 사본을 만들고. */
-	/* 추가적으로 필요한 데이터를 Arg로 받아와 실 사용하기위한 객체의 정보를 생성해준다. */
+	/* 추가적으로 필요한 데이터를 Arg로 받아와 실 사용하기위한 객체의 정보를 생성해준다. */	
 	CGameObject::GAMEOBJECT_DESC		Desc{};
 
 	Desc.pGameObjectTag = TEXT("GameObject_Terrain");
@@ -59,7 +59,7 @@ HRESULT CMonster::Render()
 {
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
-
+		
 
 	_uint	iNumMeshes = m_pModelCom->Get_NumMeshes();
 
@@ -67,6 +67,9 @@ HRESULT CMonster::Render()
 	{
 		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
 			return E_FAIL;
+
+		/*if (FAILED(m_pModelCom->Bind_BoneMatrices(m_pShaderCom, "g_BoneMatrices", i)))
+			return E_FAIL;*/
 
 		if (FAILED(m_pShaderCom->Begin(0)))
 			return E_FAIL;
@@ -85,7 +88,7 @@ HRESULT CMonster::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Model */
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Player"),
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Fiona"),
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
 		return E_FAIL;
 
@@ -105,7 +108,7 @@ HRESULT CMonster::Bind_ShaderResources()
 
 	if (FAILED(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4))))
 		return E_FAIL;
-
+	
 	const LIGHT_DESC* pLightDesc = m_pGameInstance->Get_LightDesc(0);
 	if (nullptr == pLightDesc)
 		return E_FAIL;
@@ -125,7 +128,7 @@ HRESULT CMonster::Bind_ShaderResources()
 		m_iPassIndex = 1;
 	}
 
-
+	
 	if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightDiffuse", &pLightDesc->vDiffuse, sizeof(_float4))))
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightAmbient", &pLightDesc->vAmbient, sizeof(_float4))))
