@@ -29,6 +29,15 @@ namespace Engine
 		XMFLOAT4	vSpecular;
 	}LIGHT_DESC;
 
+	typedef struct tagKeyFrame
+	{
+		float		fTrackPosition;
+
+		XMFLOAT3	vScale;
+		XMFLOAT4	vRotation;
+		XMFLOAT3	vTranslation;
+	}KEYFRAME;
+
 	typedef struct ENGINE_DLL tagVertexPositionTextureCoord
 	{
 		XMFLOAT3		vPosition;

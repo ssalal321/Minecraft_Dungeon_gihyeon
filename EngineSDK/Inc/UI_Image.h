@@ -25,22 +25,21 @@ public:
 		tagUIImageDesc(const _tchar* gameObjectTag, UI_STATE uiState, _uint PrototypeLevelIndex, _uint LayerLevelIndex,
 			_float x, _float y, _float sizeX, _float sizeY,
 			const wstring& textureTag, _float rotationPerSec = 0.f, _float speedPerSec = 0.f, _float playTime = 0.f)
-			: GAMEOBJECT_DESC(gameObjectTag, speedPerSec, rotationPerSec),  // 부모 생성자 호출
+			: GAMEOBJECT_DESC(gameObjectTag, rotationPerSec, speedPerSec),  // 부모 생성자 호출
 			eUIState(uiState), iPrototypeLevelIndex(PrototypeLevelIndex), iLayerLevelIndex(LayerLevelIndex),
 			fX(x), fY(y), fSizeX(sizeX), fSizeY(sizeY),
-			fPlayTime(playTime), strTextureComTag(textureTag) {
+			strTextureComTag(textureTag), fPlayTime(playTime) {
 		}
 
 		// 복사 생성자
 		tagUIImageDesc(const tagUIImageDesc& other)
 			: GAMEOBJECT_DESC(other.pGameObjectTag,
-			other.fSpeedPerSec,other.fRotationPerSec),
+			other.fSpeedPerSec, other.fRotationPerSec),
 			eUIState(other.eUIState), iPrototypeLevelIndex(other.iPrototypeLevelIndex),
 			iLayerLevelIndex(other.iLayerLevelIndex),
 			fX(other.fX), fY(other.fY),
 			fSizeX(other.fSizeX), fSizeY(other.fSizeY),
-			fPlayTime(other.fPlayTime),
-			strTextureComTag(other.strTextureComTag) {
+			strTextureComTag(other.strTextureComTag), fPlayTime(other.fPlayTime) {
 		}
 
 		~tagUIImageDesc() = default;

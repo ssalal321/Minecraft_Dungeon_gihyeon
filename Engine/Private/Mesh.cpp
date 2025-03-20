@@ -1,5 +1,6 @@
 #include "Mesh.h"
 #include "Bone.h"
+#include "Shader.h"
 
 CMesh::CMesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CVIBuffer { pDevice, pContext }
@@ -14,6 +15,8 @@ CMesh::CMesh(const CMesh& Prototype)
 HRESULT CMesh::Initialize_Prototype(CModel::TYPE eModelType, const vector<class CBone*>& Bones, const aiMesh* pAIMesh, _fmatrix PreTransformMatrix)
 {
 	/* 네모를 구성하기위한 정점과 인덱스의 정보를 채우고 버퍼를 할당할 수 있도록 함수를 호출해준다. */
+	strcpy_s(m_szName, pAIMesh->mName.data);
+
 	m_iMaterialIndex = pAIMesh->mMaterialIndex;
 	m_iNumVertexBuffers = 1;	
 	m_iNumVertices = pAIMesh->mNumVertices;
@@ -68,6 +71,18 @@ HRESULT CMesh::Initialize_Prototype(CModel::TYPE eModelType, const vector<class 
 HRESULT CMesh::Initialize(void* pArg)
 {
 	return S_OK;
+}
+
+HRESULT CMesh::Bind_BoneMatrices(CShader* pShader, const _char* pConstantName, const vector<class CBone*>& Bones)
+{
+	ZeroMemory(m_BoneMatrices, sizeof(_float4x4) * g_iMaxNumBones);
+
+	for (size_t i = 0; i < m_iNumBones; i++)
+	{
+		XMStoreFloat4x4(&m_BoneMatrices[i], XMLoadFloat4x4(&m_OffsetMatrices[i]) * Bones[m_Bones[i]]->Get_CombinedTransformationMatrix());
+	}
+
+	return pShader->Bind_Matrices(pConstantName, m_BoneMatrices, m_iNumBones);
 }
 
 HRESULT CMesh::Ready_VertexBuffer_For_NonAnim(const aiMesh* pAIMesh, _fmatrix PreTransformMatrix)
@@ -139,6 +154,8 @@ HRESULT CMesh::Ready_VertexBuffer_For_Anim(const aiMesh* pAIMesh, const vector<c
 	/* 이 메시에 영향을 주는 뼈의 갯수 */
 	m_iNumBones = pAIMesh->mNumBones;
 
+	m_OffsetMatrices.reserve(m_iNumBones);
+
 	/* 뼈를 기준으로 정점들에게 정보를 채워준다. */
 	for (size_t i = 0; i < m_iNumBones; i++)
 	{
@@ -158,7 +175,15 @@ HRESULT CMesh::Ready_VertexBuffer_For_Anim(const aiMesh* pAIMesh, const vector<c
 				return false;			
 		});
 
-		m_Bones.push_back(iBoneIndex);		
+		/* 이 메시에 영향을 주는 뼈가 모델 전체 뼈 기준 몇번째에 들어가 있었는지(iIndex)를 모아놨다. */
+		m_Bones.push_back(iBoneIndex);
+
+		_float4x4		OffsetMatrix{};
+
+		memcpy(&OffsetMatrix, &pAIBone->mOffsetMatrix, sizeof(_float4x4));
+		XMStoreFloat4x4(&OffsetMatrix, XMMatrixTranspose(XMLoadFloat4x4(&OffsetMatrix)));
+
+		m_OffsetMatrices.push_back(OffsetMatrix);
 
 		/* 이 메시에 영향을 주는 i번째 뼈는 몇개의 정점에게 영향을 주는가? */
 		_uint		iNumWeights = pAIBone->mNumWeights;
@@ -198,6 +223,31 @@ HRESULT CMesh::Ready_VertexBuffer_For_Anim(const aiMesh* pAIMesh, const vector<c
 
 	if (FAILED(__super::Create_Buffer(&m_pVB)))
 		return E_FAIL;
+
+	if (0 == m_iNumBones)
+	{
+		m_iNumBones = 1;
+
+		_uint		iBoneIndex = {};
+
+		auto	iter = find_if(Bones.begin(), Bones.end(), [&](CBone* pBone)->_bool
+			{
+				if (0 == strcmp(pBone->Get_Name(), m_szName))
+					return true;
+
+				++iBoneIndex;
+
+				return false;
+			});
+
+		m_Bones.push_back(iBoneIndex);
+
+		_float4x4	OffsetMatrix{};
+
+		XMStoreFloat4x4(&OffsetMatrix, XMMatrixIdentity());
+
+		m_OffsetMatrices.push_back(OffsetMatrix);
+	}
 
 	Safe_Delete_Array(pVertices);
 

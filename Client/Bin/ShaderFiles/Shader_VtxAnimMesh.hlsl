@@ -48,11 +48,13 @@ VS_OUT VS_MAIN(VS_IN In)
 {
     /* 기타 변환들을 수행한다.*/   
     VS_OUT Out = (VS_OUT)0;
-    
+
+    float fWeightW = 1.f - (In.vBlendWeight.x + In.vBlendWeight.y + In.vBlendWeight.z);
+
     matrix BoneMatrix = g_BoneMatrices[In.vBlendIndex.x] * In.vBlendWeight.x + 
         g_BoneMatrices[In.vBlendIndex.y] * In.vBlendWeight.y + 
         g_BoneMatrices[In.vBlendIndex.z] * In.vBlendWeight.z + 
-        g_BoneMatrices[In.vBlendIndex.w] * In.vBlendWeight.w;
+        g_BoneMatrices[In.vBlendIndex.w] * saturate(fWeightW);
     
     vector vPosition = mul(vector(In.vPosition, 1.f), BoneMatrix);    
     vector vNormal = mul(vector(In.vNormal, 0.f), BoneMatrix);

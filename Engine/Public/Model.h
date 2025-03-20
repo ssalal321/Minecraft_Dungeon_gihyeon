@@ -28,6 +28,7 @@ public:
 
 public:
 	HRESULT Bind_Material(class CShader* pShader, const _char* pConstantName, _uint iMeshIndex, aiTextureType eMaterialType, _uint iTextureIndex);
+	HRESULT Bind_BoneMatrices(class CShader* pShader, const _char* pConstantName, _uint iMeshIndex);
 
 private:
 	/* aiScene : 파일을 읽은 결과 */
@@ -51,11 +52,14 @@ private:
 	vector<class CBone*>		m_Bones;
 
 	_uint						m_iCurrentAnimIndex = {};
+	_uint						m_iNumAnimations = {};
+	vector<class CAnimation*>	m_Animations;
 
 private:
 	HRESULT Ready_Meshes();
 	HRESULT Ready_Materials(const _char* pModelFilePath);
 	HRESULT Ready_Bones(const aiNode* pAINode, _int iParentBoneIndex);
+	HRESULT Ready_Animations();
 
 public:
 	static CModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, TYPE eModelType, const _char* pModelFilePath, _fmatrix PreTransformMatrix);
