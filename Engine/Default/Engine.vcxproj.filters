@@ -109,6 +109,12 @@
     <Filter Include="01.Utility\04.Component\Model\Bone">
       <UniqueIdentifier>{da28d38a-024a-4002-9704-3326b5e89e7f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\04.Component\Model\Animation">
+      <UniqueIdentifier>{0c4806b2-3384-4930-8ac4-803fa05995cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Component\Model\Animation\Channel">
+      <UniqueIdentifier>{af50213c-8c18-4efc-84a2-fa815f467126}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Base.h">
@@ -222,6 +228,12 @@
     <ClInclude Include="..\Public\Bone.h">
       <Filter>01.Utility\04.Component\Model\Bone</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Channel.h">
+      <Filter>01.Utility\04.Component\Model\Animation\Channel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Animation.h">
+      <Filter>01.Utility\04.Component\Model\Animation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -319,6 +331,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Bone.cpp">
       <Filter>01.Utility\04.Component\Model\Bone</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Animation.cpp">
+      <Filter>01.Utility\04.Component\Model\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Channel.cpp">
+      <Filter>01.Utility\04.Component\Model\Animation\Channel</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

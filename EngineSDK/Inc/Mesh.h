@@ -21,7 +21,11 @@ public:
 	virtual HRESULT Initialize_Prototype(CModel::TYPE eModelType, const vector<class CBone*>& Bones, const aiMesh* pAIMesh, _fmatrix PreTransformMatrix);
 	virtual HRESULT Initialize(void* pArg) override;
 
+public:
+	HRESULT Bind_BoneMatrices(class CShader* pShader, const _char* pConstantName, const vector<class CBone*>& Bones);
+
 private:
+	_char				m_szName[MAX_PATH] = "";
 	_uint				m_iMaterialIndex = {};
 	_uint				m_iNumBones = { 0 };
 
@@ -29,6 +33,9 @@ private:
 	/* 이 메시에 영향을 주는 뼈들을 모아놓은 컨테이너 .*/
 	/* 뼈 : 모델을 구성하는 전체 뼈 중, 몇번째 */
 	vector<_uint>		m_Bones;
+
+	_float4x4			m_BoneMatrices[g_iMaxNumBones] = {};
+	vector<_float4x4>	m_OffsetMatrices;
 
 private:
 	HRESULT Ready_VertexBuffer_For_NonAnim(const aiMesh* pAIMesh, _fmatrix PreTransformMatrix);
