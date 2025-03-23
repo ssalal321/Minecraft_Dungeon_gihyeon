@@ -2,13 +2,13 @@
 #include "GameInstance.h"
 
 CBackGround::CBackGround(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CUIObject { pDevice, pContext }
+	: CUIObject(pDevice, pContext)
 {
 
 }
 
 CBackGround::CBackGround(const CBackGround& Prototype)
-	: CUIObject{ Prototype }
+	: CUIObject(Prototype)
 {
 
 }

@@ -38,7 +38,7 @@ HRESULT CLevel_Logo::Render()
 
 HRESULT CLevel_Logo::Ready_Layer_BackGround(const _wstring& strLayerTag)
 {
-    CBackGround::BACKGROUND_DESC        Desc{};
+    /*CBackGround::BACKGROUND_DESC        Desc{};
 
     Desc.fPlayTime = 3.f;
     Desc.pGameObjectTag = TEXT("GameObject_BackGround");
@@ -49,7 +49,7 @@ HRESULT CLevel_Logo::Ready_Layer_BackGround(const _wstring& strLayerTag)
 
     if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_LOGO, TEXT("Prototype_GameObject_BackGround"),
         LEVEL_LOGO, strLayerTag, &Desc)))
-        return E_FAIL;
+        return E_FAIL;*/
 
     return S_OK;
 }

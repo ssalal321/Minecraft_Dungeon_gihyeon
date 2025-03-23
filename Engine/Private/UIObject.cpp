@@ -42,7 +42,7 @@ HRESULT CUIObject::Initialize(void* pArg)
 
 	m_pTransformCom->SetUp_Scale(m_fSizeX, m_fSizeY);
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, 
-		XMVectorSet(m_fX - ViewportDesc.Width * 0.5f, -m_fY + ViewportDesc.Height * 0.5f, 0.f, 1.f));
+		XMVectorSet(m_fX - ViewportDesc.Width * 0.5f, -m_fY + ViewportDesc.Height * 0.5f, pDesc->fZ, 1.f));
 
 	return S_OK;
 }

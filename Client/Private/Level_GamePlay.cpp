@@ -6,6 +6,7 @@
 
 #include "Level_Loading.h"
 #include "Camera_Free.h"
+#include "../Default/HP_Bar.h"
 
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : CLevel { pDevice, pContext }
@@ -98,9 +99,9 @@ HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _wstring& strLayerTag)
         LEVEL_GAMEPLAY, strLayerTag)))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Monster"),
+    /*if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Monster"),
         LEVEL_GAMEPLAY, strLayerTag)))
-        return E_FAIL;
+        return E_FAIL;*/
 
 
     return S_OK;
@@ -108,15 +109,28 @@ HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _wstring& strLayerTag)
 
 HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& strLayerTag)
 {
+    _float fPlayerStateSlotX = g_iWinSizeX * 0.5f;
+    _float fPlayerStateSlotY = g_iWinSizeY - 105.f * 0.5f;
+
     CUI_Image::UIIMAGE_DESC  UIImageDesc
     (TEXT("GameObject_PlayerStateSlot"), CUI_Image::UNCLICKABLE, LEVEL_STATIC, LEVEL_GAMEPLAY,
-        g_iWinSizeX * 0.5f, g_iWinSizeY - 105.f * 0.5f, 713.f, 105.f,
-        L"Prototype_Component_Texture_PlayerStateSlot", 180.f);
-
+        fPlayerStateSlotX, fPlayerStateSlotY, 0.9f, 713.f, 105.f,
+        L"Prototype_Component_Texture_PlayerStateSlot");
 
     if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC,
         TEXT("Prototype_GameObject_UIImage"),
         LEVEL_GAMEPLAY, strLayerTag, &UIImageDesc)))
+        return E_FAIL;
+
+
+    CHP_Bar::UI_HPBAR_DESC  UIPlayerHPDesc
+    (TEXT("GameObject_PlayerHPBar"), CHP_Bar::PLAYERHP, LEVEL_STATIC, LEVEL_GAMEPLAY,
+        fPlayerStateSlotX + 0.3f, fPlayerStateSlotY - 7.f, 0.5f, 86.f, 65.f,
+        L"Prototype_Component_Texture_PlayerHP");
+
+    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC,
+        TEXT("Prototype_GameObject_UI_HPbar"),
+        LEVEL_GAMEPLAY, strLayerTag, &UIPlayerHPDesc)))
         return E_FAIL;
 
     return S_OK;

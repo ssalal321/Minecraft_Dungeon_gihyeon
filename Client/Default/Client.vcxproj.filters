@@ -52,6 +52,12 @@
     <Filter Include="02.GameObjects\Monster">
       <UniqueIdentifier>{2a866a0c-01fa-4b64-92c4-fd90f41a5923}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UIObjects">
+      <UniqueIdentifier>{a3414a03-ae9b-47bb-89b9-eb8aef7c3962}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObjects\PlayerHPbar">
+      <UniqueIdentifier>{a7067fff-4dc1-4601-afe6-365f223747e1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -101,6 +107,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\Monster.h">
       <Filter>02.GameObjects\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="HP_Bar.h">
+      <Filter>02.GameObjects\UIObjects\PlayerHPbar</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -153,6 +162,9 @@
     <ClCompile Include="..\Private\Monster.cpp">
       <Filter>02.GameObjects\Monster</Filter>
     </ClCompile>
+    <ClCompile Include="HP_Bar.cpp">
+      <Filter>02.GameObjects\UIObjects\PlayerHPbar</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">
@@ -165,6 +177,9 @@
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimMesh.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex_HPbar.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

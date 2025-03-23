@@ -9,7 +9,16 @@ class ENGINE_DLL CUIObject abstract : public CGameObject
 public:
 	typedef struct tagUIObjectDesc : public CGameObject::GAMEOBJECT_DESC
 	{
-		_float		fX, fY, fSizeX, fSizeY;
+		_float		fX, fY, fZ, fSizeX, fSizeY;
+
+		tagUIObjectDesc(const _tchar* GameObjectTag,
+			_float x, _float y, _float z, _float sizeX, _float sizeY, _float rotationPerSec = 0.f, _float speedPerSec = 0.f)
+			: GAMEOBJECT_DESC(GameObjectTag, rotationPerSec, speedPerSec),
+			fX(x), fY(y), fZ(z), fSizeX(sizeX), fSizeY(sizeY) {}
+
+		tagUIObjectDesc(const tagUIObjectDesc& other)
+			: GAMEOBJECT_DESC(other),
+			  fX(other.fX), fY(other.fY), fZ(other.fZ), fSizeX(other.fSizeX), fSizeY(other.fSizeY) {}
 	}UIOBJECT_DESC;
 
 protected:
@@ -18,15 +27,15 @@ protected:
 	virtual ~CUIObject() = default;
 
 public:
-	virtual HRESULT Initialize_Prototype();
-	virtual HRESULT Initialize(void* pArg);
-	virtual void Priority_Update(_float fTimeDelta);
-	virtual void Update(_float fTimeDelta);
-	virtual void Last_Update(_float fTimeDelta);
-	virtual HRESULT Render();
+	virtual		HRESULT		Initialize_Prototype();
+	virtual		HRESULT		Initialize(void* pArg);
+	virtual		void		Priority_Update(_float fTimeDelta);
+	virtual		void		Update(_float fTimeDelta);
+	virtual		void		Last_Update(_float fTimeDelta);
+	virtual		HRESULT		Render();
 
 public:
-	_bool isHit(HWND hWnd);
+	_bool	isHit(HWND hWnd);
 
 protected:
 	_float4x4		m_ViewMatrix = {};
