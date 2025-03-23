@@ -18,13 +18,15 @@ public:
 
 	typedef struct tagTransformDesc
 	{
-		_float fSpeedPerSec;
 		_float fRotationPerSec;
+		_float fSpeedPerSec;
 
 		// 부모 클래스 멤버를 한 번에 초기화할 수 있도록 하위 클래스 생성자에서 받음
-		tagTransformDesc(_float speedPerSec = 0.f, _float rotationPerSec = 0.f)
-			: fSpeedPerSec(speedPerSec), fRotationPerSec(rotationPerSec) {}
+		tagTransformDesc(_float rotationPerSec = 0.f, _float speedPerSec = 0.f)
+			: fRotationPerSec(rotationPerSec), fSpeedPerSec(speedPerSec) {}
 
+		tagTransformDesc(const tagTransformDesc &other)
+			:fRotationPerSec(other.fRotationPerSec), fSpeedPerSec(other.fSpeedPerSec) {}
 
 	}TRANSFORM_DESC;
 
@@ -51,21 +53,21 @@ public:
 	virtual HRESULT Initialize(void* pArg);	
 
 public:
-	HRESULT Bind_ShaderResource(class CShader* pShader, const _char* pConstantName);
+	HRESULT		Bind_ShaderResource(class CShader* pShader, const _char* pConstantName);
 
 public:
-	_float3 Compute_Scaled();
-	void SetUp_Scale(_float fScaleX = 1.f, _float fScaleY = 1.f, _float fScaleZ = 1.f);
+	_float3		Compute_Scaled();
+	void		SetUp_Scale(_float fScaleX = 1.f, _float fScaleY = 1.f, _float fScaleZ = 1.f);
 
 public:
-	void Go_Straight(_float fTimeDelta);
-	void Go_Left(_float fTimeDelta);
-	void Go_Right(_float fTimeDelta);
-	void Go_Backward(_float fTimeDelta);
+	void	Go_Straight(_float fTimeDelta);
+	void	Go_Left(_float fTimeDelta);
+	void	Go_Right(_float fTimeDelta);
+	void	Go_Backward(_float fTimeDelta);
 
-	void Turn(_fvector vAxis, _float fTimeDelta);
-	void Rotation(_fvector vAxis, _float fRadian);
-	void LookAt(_fvector vAt);
+	void	Turn(_fvector vAxis, _float fTimeDelta);
+	void	Rotation(_fvector vAxis, _float fRadian);
+	void	LookAt(_fvector vAt);
 
 private:
 	/* row_major = Right, Up, Look, Position */
@@ -75,9 +77,9 @@ private:
 	_float					m_fRotationPerSec = { };
 
 public:
-	static CTransform* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual CComponent* Clone(void* pArg) override;
-	virtual void Free() override;
+	static	  CTransform*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual   CComponent*	Clone(void* pArg) override;
+	virtual   void			Free() override;
 };
 
 END

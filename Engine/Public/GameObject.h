@@ -11,8 +11,12 @@ public:
 	{
 		const _tchar* pGameObjectTag;
 
-		tagGameObjectDesc(const _tchar* gameObjectTag = TEXT(""), _float speedPerSec = 0.f, _float rotationPerSec = 0.f)
-			: tagTransformDesc(speedPerSec, rotationPerSec), pGameObjectTag(gameObjectTag) {}
+		tagGameObjectDesc(const _tchar* gameObjectTag = TEXT(""), _float rotationPerSec = 0.f, _float speedPerSec = 0.f)
+			: tagTransformDesc(rotationPerSec, speedPerSec), pGameObjectTag(gameObjectTag) {}
+
+		tagGameObjectDesc(const tagGameObjectDesc &other)
+			: CTransform::TRANSFORM_DESC(other),
+			  pGameObjectTag(other.pGameObjectTag) {}
 
 	}GAMEOBJECT_DESC;
 

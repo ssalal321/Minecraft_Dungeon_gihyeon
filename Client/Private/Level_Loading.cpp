@@ -84,7 +84,7 @@ HRESULT CLevel_Loading::Ready_Layer_BackGround()
 
     CUI_Image::UIIMAGE_DESC  UIImageDesc
     (TEXT("GameObject_LoungeLoading"), CUI_Image::UNCLICKABLE, LEVEL_STATIC, LEVEL_LOADING,
-        g_iWinSizeX * 0.5f, g_iWinSizeY * 0.5f, g_iWinSizeX, g_iWinSizeY,
+        g_iWinSizeX * 0.5f, g_iWinSizeY * 0.5f, 0.9f, g_iWinSizeX, g_iWinSizeY,
         L"Prototype_Component_Texture_LoungeLoading", 180.f);
 
     if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC,

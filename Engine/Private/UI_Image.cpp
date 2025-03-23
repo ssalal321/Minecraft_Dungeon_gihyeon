@@ -3,13 +3,13 @@
 
 
 CUI_Image::CUI_Image(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CGameObject{ pDevice, pContext }
+	: CUIObject(pDevice, pContext)
 {
 
 }
 
 CUI_Image::CUI_Image(const CUI_Image& Prototype)
-	: CGameObject{ Prototype }
+	: CUIObject(Prototype)
 {
 
 }
@@ -27,7 +27,6 @@ HRESULT CUI_Image::Initialize(void* pArg)
 	/* 추가적으로 필요한 데이터를 Arg로 받아와 실 사용하기위한 객체의 정보를 생성해준다. */
 	if (nullptr != pArg)
 	{
-		//m_pDesc = static_cast<UIIMAGE_DESC*>(pArg);
 		m_pDesc = new UIIMAGE_DESC(*static_cast<UIIMAGE_DESC*>(pArg));
 	}
 	else
@@ -35,18 +34,6 @@ HRESULT CUI_Image::Initialize(void* pArg)
 
 	if (FAILED(__super::Initialize(m_pDesc)))
 		return E_FAIL;
-
-	_uint				iNumViewport = 1;
-	D3D11_VIEWPORT		ViewportDesc{};
-
-	m_pContext->RSGetViewports(&iNumViewport, &ViewportDesc);
-
-	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
-	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(ViewportDesc.Width, ViewportDesc.Height, 0.f, 1.f));
-
-	m_pTransformCom->SetUp_Scale(m_pDesc->fSizeX, m_pDesc->fSizeY);
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
-		XMVectorSet(m_pDesc->fX - ViewportDesc.Width * 0.5f, -m_pDesc->fY + ViewportDesc.Height * 0.5f, 0.f, 1.f));
 	
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
@@ -63,11 +50,6 @@ void CUI_Image::Update(_float fTimeDelta)
 {
 	if (m_pDesc->eUIState == CLICKABLE && Get_KeyDown())
 		int a = 0;
-
-	/*_bool		isClicked = {};
-
-	if (GetKeyState(VK_LBUTTON) & 0x8000)
-		isClicked = isHit(g_hWnd);*/
 }
 
 void CUI_Image::Last_Update(_float fTimeDelta)
@@ -105,7 +87,6 @@ _bool CUI_Image::is_Hit()
 		static_cast<_long>(m_pDesc->fX + m_pDesc->fSizeX * 0.5f),
 		static_cast<_long>(m_pDesc->fY + m_pDesc->fSizeY * 0.5f)
 	};
-	m_pDesc;
 
 	return PtInRect(&rcUI, MousePosition);
 }
@@ -141,17 +122,6 @@ HRESULT CUI_Image::Ready_Components()
 	/* Com_VIBuffer */
 	if (FAILED(__super::Add_Component(m_pDesc->iPrototypeLevelIndex, TEXT("Prototype_Component_VIBuffer_Rect"),
 		TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
-		return E_FAIL;
-
-	return S_OK;
-}
-
-HRESULT CUI_Image::Bind_ShaderMatrices(CShader* pShader, const _char* pViewMatrixName, const _char* pProjMatrixName)
-{
-	if (FAILED(pShader->Bind_Matrix(pViewMatrixName, &m_ViewMatrix)))
-		return E_FAIL;
-
-	if (FAILED(pShader->Bind_Matrix(pProjMatrixName, &m_ProjMatrix)))
 		return E_FAIL;
 
 	return S_OK;
