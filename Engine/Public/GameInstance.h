@@ -22,6 +22,9 @@ public:
 	HRESULT		Draw();
 	void		Clear(_uint iLevelIndex);
 
+public:
+	_float Compute_Random_Normal();
+	_float Compute_Random(_float fMin, _float fMax);
 
 #pragma region GRAPHIC_DEVICE
 	HRESULT		Clear_BackBuffer_View(_float4 vClearColor);	

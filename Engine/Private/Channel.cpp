@@ -65,6 +65,11 @@ HRESULT CChannel::Initialize(const aiNodeAnim* pAIChannel, const vector<class CB
 
 void CChannel::Update_TransformationMatrix(_float fCurrentTrackPosition, const vector<class CBone*>& Bones)
 {
+	if (0.f == fCurrentTrackPosition)
+	{
+		m_iCurrentKeyFrameIndex = 0.f;
+	}
+
 	KEYFRAME		LastKeyFrame = m_KeyFrames.back();
 
 	_vector			vScale, vRotation, vTranslation;
@@ -75,10 +80,12 @@ void CChannel::Update_TransformationMatrix(_float fCurrentTrackPosition, const v
 		vScale = XMLoadFloat3(&LastKeyFrame.vScale);
 		vRotation = XMLoadFloat4(&LastKeyFrame.vRotation);
 		vTranslation = XMVectorSetW(XMLoadFloat3(&LastKeyFrame.vTranslation), 1.f);
+
+		m_iCurrentKeyFrameIndex = m_iNumKeyFrames - 1;  // m_iCurrentKeyFrameIndex : 0부터 시작
 	}
 	else
 	{
-		if (fCurrentTrackPosition >= m_KeyFrames[m_iCurrentKeyFrameIndex + 1].fTrackPosition)
+		while (fCurrentTrackPosition >= m_KeyFrames[m_iCurrentKeyFrameIndex + 1].fTrackPosition)
 			++m_iCurrentKeyFrameIndex;
 
 		_float		fRatio = (fCurrentTrackPosition - m_KeyFrames[m_iCurrentKeyFrameIndex].fTrackPosition) /

@@ -96,7 +96,16 @@ void CGameInstance::Clear(_uint iLevelIndex)
 
 	m_pPrototype_Manager->Clear(iLevelIndex);
 
+}
 
+_float CGameInstance::Compute_Random_Normal()
+{
+	return rand() / static_cast<_float>(RAND_MAX);
+}
+
+_float CGameInstance::Compute_Random(_float fMin, _float fMax)
+{
+	return	fMin + (fMax - fMin) * Compute_Random_Normal();
 }
 
 

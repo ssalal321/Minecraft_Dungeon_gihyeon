@@ -35,6 +35,15 @@ HRESULT CMonster::Initialize(void* pArg)
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
+
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
+		XMVectorSet(m_pGameInstance->Compute_Random(0.f, 20.f),
+			5.0f,
+			m_pGameInstance->Compute_Random(0.f, 20.f),
+			1.f));
+
+	m_pModelCom->Set_Animation(rand() % 20, true);
+
 	return S_OK;
 }
 
@@ -45,7 +54,8 @@ void CMonster::Priority_Update(_float fTimeDelta)
 
 void CMonster::Update(_float fTimeDelta)
 {
-	m_pModelCom->Play_Animation(fTimeDelta);
+	if (true == m_pModelCom->Play_Animation(fTimeDelta))
+		int a = 10;
 }
 
 void CMonster::Last_Update(_float fTimeDelta)
