@@ -54,6 +54,10 @@ void CHP_Bar::Update(_float fTimeDelta)
 		if (m_CutOffY > 1.0f) m_CutOffY = 1.0f; // 최대값 제한
 
 		m_pShaderCom->Bind_RawValue("g_fCutoffY", &m_CutOffY, sizeof(float));
+
+
+		_float fYFactor = (m_CutOffY < 0.75f) ? 2.f : 5.f;
+		m_pShaderCom->Bind_RawValue("g_fYGradationFactor", &fYFactor, sizeof(float));
 		
 	}
 }

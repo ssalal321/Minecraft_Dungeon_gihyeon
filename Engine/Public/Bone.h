@@ -30,8 +30,8 @@ public:
 	}
 
 public:
-	HRESULT Initialize(const aiNode* pAINode, _int iParentBoneIndex);
-	void Update_CombinedTransformationMatrix(const vector<CBone*>& Bones);
+	HRESULT		Initialize(const aiNode* pAINode, _int iParentBoneIndex);
+	void		Update_CombinedTransformationMatrix(const vector<CBone*>& Bones, _fmatrix PreTransformMatrix);
 
 private:
 	/* 뼈 이름 : 특정 뼈를 지목해서 수행해야할 일들이 많아.  */
@@ -51,8 +51,9 @@ private:
 	_int					m_iParentBoneIndex = { -1 };
 
 public:
-	static CBone* Create(const aiNode* pAINode, _int iParentBoneIndex);
-	virtual void Free() override;
+	static  CBone*	Create(const aiNode* pAINode, _int iParentBoneIndex);
+	CBone*			Clone();
+	virtual void	Free() override;
 };
 
 END

@@ -30,8 +30,6 @@ private:
 
 	_uint				m_iCurrentKeyFrameIndex = {};
 
-
-
 	
 public:
 	static CChannel* Create(const aiNodeAnim* pAIChannel, const vector<class CBone*>& Bones);

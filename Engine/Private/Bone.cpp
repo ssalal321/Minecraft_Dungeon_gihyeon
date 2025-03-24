@@ -17,10 +17,11 @@ HRESULT CBone::Initialize(const aiNode* pAINode, _int iParentBoneIndex)
 	return S_OK;
 }
 
-void CBone::Update_CombinedTransformationMatrix(const vector<CBone*>& Bones)
+void CBone::Update_CombinedTransformationMatrix(const vector<CBone*>& Bones, _fmatrix PreTransformMatrix)
 {
     if (-1 == m_iParentBoneIndex)
-        XMStoreFloat4x4(&m_CombinedTransformationMatrix, XMLoadFloat4x4(&m_TransformationMatrix));
+        XMStoreFloat4x4(&m_CombinedTransformationMatrix,
+						XMLoadFloat4x4(&m_TransformationMatrix) * PreTransformMatrix);
 
     else
     {    
@@ -41,6 +42,11 @@ CBone* CBone::Create(const aiNode* pAINode, _int iParentBoneIndex)
     }
 
     return pGameInstance;
+}
+
+CBone* CBone::Clone()
+{
+    return new CBone(*this);
 }
 
 void CBone::Free()

@@ -18,13 +18,18 @@ public:
 		return m_iNumMeshes;
 	}
 
+	void Set_Animation(_uint iAnimIndex, _bool isLoop = true) {
+		m_iCurrentAnimIndex = iAnimIndex;
+		m_isLoop = isLoop;
+	}
+
 public:
 	virtual HRESULT Initialize_Prototype(TYPE eModelType, const _char* pModelFilePath, _fmatrix PreTransformMatrix);
 	virtual HRESULT Initialize(void* pArg) override;
 	virtual HRESULT Render(_uint iMeshIndex);
 
 public:
-	void Play_Animation(_float fTimeDelta);
+	_bool	Play_Animation(_float fTimeDelta);
 
 public:
 	HRESULT Bind_Material(class CShader* pShader, const _char* pConstantName, _uint iMeshIndex, aiTextureType eMaterialType, _uint iTextureIndex);
@@ -52,6 +57,7 @@ private:
 	vector<class CBone*>		m_Bones;
 
 	_uint						m_iCurrentAnimIndex = {};
+	_bool						m_isLoop = { false };
 	_uint						m_iNumAnimations = {};
 	vector<class CAnimation*>	m_Animations;
 

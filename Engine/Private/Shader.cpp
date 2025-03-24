@@ -118,7 +118,7 @@ HRESULT CShader::Bind_Matrices(const _char* pConstantName, const _float4x4* pMat
 	if (nullptr == pMatrixVariable)
 		return E_FAIL;
 
-	pMatrixVariable->SetMatrixArray(reinterpret_cast<const _float*>(pMatrices), 0, iNumMatrices);
+	return pMatrixVariable->SetMatrixArray(reinterpret_cast<const _float*>(pMatrices), 0, iNumMatrices);
 }
 
 HRESULT CShader::Bind_SRV(const _char* pConstantName, ID3D11ShaderResourceView* pSRV)
