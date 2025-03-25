@@ -82,7 +82,7 @@ PS_OUT PS_PlayerHP(PS_IN In)
     {
         float fDistanceFromCenter = 1.f - abs(In.vTexcoord.x - 0.5f) * 2.f;
     	// y 값이 0.75 이상일 때 급격하게 좁아지는 그라데이션 범위
-        float fYScaleFactor = saturate(1.f - (In.vTexcoord.y - g_fCutoffY) * (In.vTexcoord.y < 0.8f ? 1.5f : 8.f)); // 0.75 이상에서는 범위 좁아짐
+        float fYScaleFactor = saturate(1.f - (In.vTexcoord.y - g_fCutoffY) * g_fYGradationFactor); // 0.75 이상에서는 범위 좁아짐
         float alphaBlendFactor = saturate(fDistanceFromCenter * fYScaleFactor);
 
         Out.vColor = lerp(vTextureInfo, float4(1.f, 1.f, 1.f, 1.f), alphaBlendFactor);

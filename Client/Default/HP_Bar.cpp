@@ -62,7 +62,7 @@ void CHP_Bar::Update(_float fTimeDelta)
 	}
 }
 
-void CHP_Bar::Last_Update(_float fTimeDelta)
+void CHP_Bar::Late_Update(_float fTimeDelta)
 {
 	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_UI, this);
 }

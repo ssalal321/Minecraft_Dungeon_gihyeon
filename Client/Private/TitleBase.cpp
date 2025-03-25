@@ -59,7 +59,7 @@ void CTitleBase::Update(_float fTimeDelta)
 
 }
 
-void CTitleBase::Last_Update(_float fTimeDelta)
+void CTitleBase::Late_Update(_float fTimeDelta)
 {
 
 

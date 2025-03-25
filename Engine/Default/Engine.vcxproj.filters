@@ -73,9 +73,6 @@
     <Filter Include="01.Utility\04.Component\Shader">
       <UniqueIdentifier>{705459f5-4c91-4f63-9729-fb0b11ca1a7d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\03.GameObject\UIObject">
-      <UniqueIdentifier>{eb703664-d377-435e-849f-76d05f1671fa}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utility\03.GameObject\Camera">
       <UniqueIdentifier>{a2db6fef-bfcb-4f63-b2f7-4f5f71753e22}</UniqueIdentifier>
     </Filter>
@@ -97,9 +94,6 @@
     <Filter Include="01.Utility\04.Component\Model\Mesh">
       <UniqueIdentifier>{3e2a1abc-ed75-4cd4-9b82-a4540b261920}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\03.GameObject\UIImage">
-      <UniqueIdentifier>{04fd4813-351c-459a-bea6-2c715f15206c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utility\04.Component\Model\Material">
       <UniqueIdentifier>{006eef37-a478-449f-98b8-f4702a23a12a}</UniqueIdentifier>
     </Filter>
@@ -114,6 +108,18 @@
     </Filter>
     <Filter Include="01.Utility\04.Component\Model\Animation\Channel">
       <UniqueIdentifier>{af50213c-8c18-4efc-84a2-fa815f467126}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. UI">
+      <UniqueIdentifier>{6d9bbe0d-0245-443c-80f4-7ca7ca57a8d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. UI\Manager">
+      <UniqueIdentifier>{88d87357-e729-4697-ad6d-083a5969faaf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. UI\UIObject">
+      <UniqueIdentifier>{eb703664-d377-435e-849f-76d05f1671fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. UI\UIImage">
+      <UniqueIdentifier>{04fd4813-351c-459a-bea6-2c715f15206c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -189,9 +195,6 @@
     <ClInclude Include="..\public\Shader.h">
       <Filter>01.Utility\04.Component\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\UIObject.h">
-      <Filter>01.Utility\03.GameObject\UIObject</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\VIBuffer_Terrain.h">
       <Filter>01.Utility\04.Component\VIBuffer\Terrain</Filter>
     </ClInclude>
@@ -217,7 +220,7 @@
       <Filter>01.Utility\04.Component\Model\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\UI_Image.h">
-      <Filter>01.Utility\03.GameObject\UIImage</Filter>
+      <Filter>08. UI\UIImage</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Material.h">
       <Filter>01.Utility\04.Component\Model\Material</Filter>
@@ -233,6 +236,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\Animation.h">
       <Filter>01.Utility\04.Component\Model\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\UIObject.h">
+      <Filter>08. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_Manager.h">
+      <Filter>08. UI\Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -290,9 +299,6 @@
     <ClCompile Include="..\private\Shader.cpp">
       <Filter>01.Utility\04.Component\Shader</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\UIObject.cpp">
-      <Filter>01.Utility\03.GameObject\UIObject</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_Terrain.cpp">
       <Filter>01.Utility\04.Component\VIBuffer\Terrain</Filter>
     </ClCompile>
@@ -321,7 +327,7 @@
       <Filter>01.Utility\04.Component\Model\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\UI_Image.cpp">
-      <Filter>01.Utility\03.GameObject\UIImage</Filter>
+      <Filter>08. UI\UIImage</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Material.cpp">
       <Filter>01.Utility\04.Component\Model\Material</Filter>
@@ -337,6 +343,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Channel.cpp">
       <Filter>01.Utility\04.Component\Model\Animation\Channel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UIObject.cpp">
+      <Filter>08. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_Manager.cpp">
+      <Filter>08. UI\Manager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

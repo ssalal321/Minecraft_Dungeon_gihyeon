@@ -9,6 +9,7 @@
 #include "Input_Manager.h"
 #include "Renderer.h"
 #include "Light_Manager.h"
+#include "UI_Manager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -58,6 +59,9 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	if (nullptr == m_pLight_Manager)
 		return E_FAIL;
 
+	m_pUI_Manager = CUI_Manager::Create(EngineDesc.iNumLevels);
+	if (nullptr == m_pUI_Manager)
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -69,32 +73,38 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 	m_pInput_Manager->Update_Key();
 
 	m_pObject_Manager->Priority_Update(fTimeDelta);
+	m_pUI_Manager->Priority_Update(fTimeDelta);
 		
 	m_pObject_Manager->Update(fTimeDelta);
+	m_pUI_Manager->Update(fTimeDelta);
 
 	m_pPipeLine->Update();
 
 	m_pObject_Manager->Last_Update(fTimeDelta);
+	m_pUI_Manager->Late_Update(fTimeDelta);
 
 	m_pLevel_Manager->Update(fTimeDelta);
 }
 
 HRESULT CGameInstance::Draw()
 {
-	
 	m_pRenderer->Draw();
+
+	m_pUI_Manager->Render_UI();
 
 	m_pLevel_Manager->Render();
 
 	return S_OK;
 }
 
-void CGameInstance::Clear(_uint iLevelIndex)
+void CGameInstance::Clear(_uint iCurrentLevelIndex, _uint iNextLevelIndex)
 {
 	/* 지정한 레벨용 자원을 파괴한다. */
-	m_pObject_Manager->Clear(iLevelIndex);
+	m_pObject_Manager->Clear(iCurrentLevelIndex);
 
-	m_pPrototype_Manager->Clear(iLevelIndex);
+	m_pUI_Manager->Clear(iCurrentLevelIndex, iNextLevelIndex);
+
+	m_pPrototype_Manager->Clear(iCurrentLevelIndex);
 
 }
 
@@ -172,9 +182,9 @@ void CGameInstance::Compute_TimeDelta(const _wstring& strTimerTag)
 
 
 #pragma region LEVEL_MANAGER
-HRESULT CGameInstance::Open_Level(_uint iLevelIndex, CLevel* pNewLevel)
+HRESULT CGameInstance::Open_Level(_uint iNextLevelIndex, CLevel* pNewLevel)
 {
-	return m_pLevel_Manager->Open_Level(iLevelIndex, pNewLevel);
+	return m_pLevel_Manager->Open_Level(iNextLevelIndex, pNewLevel);
 }
 #pragma endregion
 
@@ -279,6 +289,20 @@ HRESULT CGameInstance::Add_Light(const LIGHT_DESC& LightDesc)
 #pragma endregion
 
 
+#pragma region UI_MANAGER
+HRESULT CGameInstance::Add_UIObject(_uint iPrototypeLevelIndex, _uint iCurrentLevelIndex, const _wstring& strPrototypeTag, CUI_Manager::UI_LIFETIME eUILifeTime, void* pArg)
+{
+	return m_pUI_Manager->Add_UIObject(iPrototypeLevelIndex, iCurrentLevelIndex, strPrototypeTag, eUILifeTime, pArg);
+}
+
+void CGameInstance::Set_UIObject_Callback(CUIObject* pUIObject, std::function<void()> callback)
+{
+	m_pUI_Manager->Set_UIObject_Callback(pUIObject, callback);
+}
+
+#pragma endregion
+
+
 void CGameInstance::Release_Engine()
 {
 	Safe_Release(m_pGraphic_Device);
@@ -291,6 +315,7 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pRenderer);
 	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pLight_Manager);
+	Safe_Release(m_pUI_Manager);
 
 
 	DestroyInstance();

@@ -64,6 +64,7 @@ void CInput_Manager::Update_Key()
 	GetCursorPos(&mouse);
 	ScreenToClient(m_hWnd, &mouse);
 	m_MousePos = _float3{ static_cast<_float>(mouse.x), static_cast<_float>(mouse.y), 0.f };
+
 }
 
 

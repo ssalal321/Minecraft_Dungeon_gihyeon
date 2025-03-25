@@ -87,9 +87,9 @@ HRESULT CLevel_Loading::Ready_Layer_BackGround()
         g_iWinSizeX * 0.5f, g_iWinSizeY * 0.5f, 0.9f, g_iWinSizeX, g_iWinSizeY,
         L"Prototype_Component_Texture_LoungeLoading", 180.f);
 
-    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC,
-        TEXT("Prototype_GameObject_UIImage"),
-        LEVEL_LOADING, TEXT("Layer_LoungeLoading"), &UIImageDesc)))
+    if (FAILED(m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_LOADING, 
+											 TEXT("Prototype_GameObject_UIImage"),
+									 CUI_Manager::TEMPORARY, &UIImageDesc)))
         return E_FAIL;
 
     return S_OK;
