@@ -26,7 +26,7 @@ public:
 	virtual HRESULT Initialize(void* pArg) override;
 	virtual void Priority_Update(_float fTimeDelta) override;
 	virtual void Update(_float fTimeDelta) override;
-	virtual void Last_Update(_float fTimeDelta) override;
+	virtual void Late_Update(_float fTimeDelta) override;
 
 protected:
 	/* 투영변환행렬을 만들어내기위한 정보들. */

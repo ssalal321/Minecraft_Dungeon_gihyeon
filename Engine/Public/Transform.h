@@ -28,6 +28,8 @@ public:
 		tagTransformDesc(const tagTransformDesc &other)
 			:fRotationPerSec(other.fRotationPerSec), fSpeedPerSec(other.fSpeedPerSec) {}
 
+		virtual ~tagTransformDesc() = default;
+
 	}TRANSFORM_DESC;
 
 private:

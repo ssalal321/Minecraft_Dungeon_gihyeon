@@ -56,7 +56,7 @@ void CBackGround::Update(_float fTimeDelta)
 
 }
 
-void CBackGround::Last_Update(_float fTimeDelta)
+void CBackGround::Late_Update(_float fTimeDelta)
 {
 
 

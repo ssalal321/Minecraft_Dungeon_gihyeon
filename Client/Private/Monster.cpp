@@ -58,7 +58,7 @@ void CMonster::Update(_float fTimeDelta)
 		int a = 10;
 }
 
-void CMonster::Last_Update(_float fTimeDelta)
+void CMonster::Late_Update(_float fTimeDelta)
 {
 
 

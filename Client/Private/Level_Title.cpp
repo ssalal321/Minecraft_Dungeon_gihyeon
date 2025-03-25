@@ -59,9 +59,9 @@ HRESULT CLevel_Title::Ready_Layer_BackGround(const _wstring& strLayerTag)
 	 L"Prototype_Component_Texture_TitleImage");
 
 
-    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC,
-											   TEXT("Prototype_GameObject_UIImage"),
-											   LEVEL_TITLE, strLayerTag, &UIImageDesc)))
+    if (FAILED(m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_TITLE,
+											 TEXT("Prototype_GameObject_UIImage"),
+											 CUI_Manager::TEMPORARY, &UIImageDesc)))
         return E_FAIL;
 
     return S_OK;

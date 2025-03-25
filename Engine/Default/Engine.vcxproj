@@ -183,6 +183,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\public\Transform.h" />
     <ClInclude Include="..\public\UIObject.h" />
     <ClInclude Include="..\Public\UI_Image.h" />
+    <ClInclude Include="..\Public\UI_Manager.h" />
     <ClInclude Include="..\public\VIBuffer.h" />
     <ClInclude Include="..\public\VIBuffer_Rect.h" />
     <ClInclude Include="..\Public\VIBuffer_Terrain.h" />
@@ -219,6 +220,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\private\Transform.cpp" />
     <ClCompile Include="..\private\UIObject.cpp" />
     <ClCompile Include="..\Private\UI_Image.cpp" />
+    <ClCompile Include="..\Private\UI_Manager.cpp" />
     <ClCompile Include="..\private\VIBuffer.cpp" />
     <ClCompile Include="..\private\VIBuffer_Rect.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Terrain.cpp" />

@@ -2,13 +2,13 @@
 #include "Shader.h"
 
 CUIObject::CUIObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CGameObject { pDevice, pContext }
+	: CGameObject( pDevice, pContext)
 {
 
 }
 
 CUIObject::CUIObject(const CUIObject& Prototype)
-	: CGameObject{ Prototype }
+	: CGameObject(Prototype)
 {
 
 }
@@ -55,7 +55,7 @@ void CUIObject::Update(_float fTimeDelta)
 {
 }
 
-void CUIObject::Last_Update(_float fTimeDelta)
+void CUIObject::Late_Update(_float fTimeDelta)
 {
 }
 

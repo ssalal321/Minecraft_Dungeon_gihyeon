@@ -6,10 +6,10 @@
 #include "Renderer.h"
 #include "Prototype_Manager.h"
 #include "PipeLine.h"
+#include "UI_Manager.h"
 
 BEGIN(Engine)
-
-class ENGINE_DLL CGameInstance final : public CBase
+	class ENGINE_DLL CGameInstance final : public CBase
 {
 	DECLARE_SINGLETON(CGameInstance)
 private:
@@ -20,11 +20,11 @@ public:
 	HRESULT		Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11Device** ppDevice, ID3D11DeviceContext** ppContext);
 	void		Update_Engine(_float fTimeDelta);
 	HRESULT		Draw();
-	void		Clear(_uint iLevelIndex);
+	void		Clear(_uint iCurrentLevelIndex, _uint iNextLevelIndex);
 
 public:
-	_float Compute_Random_Normal();
-	_float Compute_Random(_float fMin, _float fMax);
+	_float		Compute_Random_Normal();
+	_float		Compute_Random(_float fMin, _float fMax);
 
 #pragma region GRAPHIC_DEVICE
 	HRESULT		Clear_BackBuffer_View(_float4 vClearColor);	
@@ -46,7 +46,7 @@ public:
 #pragma endregion
 
 #pragma region LEVEL_MANAGER
-	HRESULT		Open_Level(_uint iLevelIndex, class CLevel* pNewLevel);
+	HRESULT		Open_Level(_uint iNextLevelIndex, class CLevel* pNewLevel);
 #pragma endregion
 
 #pragma region PROTOTYPE_MANAGER
@@ -54,7 +54,7 @@ public:
 	CBase*		Clone_Prototype(PROTOTYPE ePrototype, _uint iLevelIndex, const _wstring& strPrototypeTag, void* pArg = nullptr);
 #pragma endregion
 
-#pragma region GAMEOBJECT_MANAGER
+#pragma region OBJECT_MANAGER
 	HRESULT		Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag,
 							   _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg = nullptr);
 #pragma endregion
@@ -85,6 +85,12 @@ public:
 	HRESULT				Add_Light(const LIGHT_DESC& LightDesc);
 #pragma endregion
 
+#pragma region UI_Manager
+	HRESULT		Add_UIObject(_uint iPrototypeLevelIndex, _uint iCurrentLevelIndex, const _wstring& strPrototypeTag, CUI_Manager::UI_LIFETIME eUILifeTime, void* pArg = nullptr);
+	void		Set_UIObject_Callback(CUIObject* pUIObject, std::function<void()> callback);
+#pragma endregion
+
+
 private:
 	class	CGraphic_Device*		m_pGraphic_Device		= { nullptr };
 	class	CInput_Device*			m_pInput_Device			= { nullptr };
@@ -96,6 +102,7 @@ private:
 	class	CRenderer*				m_pRenderer				= { nullptr };
 	class	CPipeLine*				m_pPipeLine				= { nullptr };
 	class	CLight_Manager*			m_pLight_Manager		= { nullptr };
+	class   CUI_Manager*			m_pUI_Manager			= { nullptr };
 	
 	
 public:

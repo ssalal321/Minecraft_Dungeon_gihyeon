@@ -13,30 +13,23 @@ BEGIN(Engine)
 class ENGINE_DLL CUI_Image : public CUIObject
 {
 public:
-	enum  UI_STATE { CLICKABLE, UNCLICKABLE };
-
 	typedef struct tagUIImageDesc : public CUIObject::UIOBJECT_DESC
 	{
-		UI_STATE	eUIState;
-		_uint		iPrototypeLevelIndex, iLayerLevelIndex;
 		_float		fPlayTime;
-		_wstring	strTextureComTag;
 
-		tagUIImageDesc(const _tchar* GameObjectTag, UI_STATE uiState, _uint PrototypeLevelIndex, _uint LayerLevelIndex,
+		tagUIImageDesc(const _tchar* GameObjectTag, UI_STATE uiState, 
+			_uint prototypeLevelIndex, _uint layerLevelIndex, 
 			_float x, _float y, _float z, _float sizeX, _float sizeY,
 			const wstring& textureTag, _float rotationPerSec = 0.f, _float speedPerSec = 0.f, _float playTime = 0.f)
-			: UIOBJECT_DESC(GameObjectTag, x, y, z, sizeX, sizeY, rotationPerSec, speedPerSec),  // 부모 생성자 호출
-			eUIState(uiState), iPrototypeLevelIndex(PrototypeLevelIndex), iLayerLevelIndex(LayerLevelIndex),
-			strTextureComTag(textureTag), fPlayTime(playTime) {
+			: UIOBJECT_DESC(GameObjectTag, uiState, prototypeLevelIndex, layerLevelIndex,
+							x, y, z, sizeX, sizeY, textureTag, rotationPerSec, speedPerSec),  // 부모 생성자 호출
+			  fPlayTime(playTime) {
 		}
 
 		// 복사 생성자
 		tagUIImageDesc(const tagUIImageDesc& other)
-			: UIOBJECT_DESC(other), eUIState(other.eUIState),
-			iPrototypeLevelIndex(other.iPrototypeLevelIndex),
-			iLayerLevelIndex(other.iLayerLevelIndex),
-			fPlayTime(other.fPlayTime), strTextureComTag(other.strTextureComTag) {
-		}
+			: UIOBJECT_DESC(other),
+			fPlayTime(other.fPlayTime) { }
 
 		~tagUIImageDesc() = default;
 	}UIIMAGE_DESC;
@@ -52,17 +45,17 @@ public:
 
 	virtual   void		Priority_Update(_float fTimeDelta)	override;
 	virtual   void		Update(_float fTimeDelta)			override;
-	virtual   void		Last_Update(_float fTimeDelta)		override;
+	virtual   void		Late_Update(_float fTimeDelta)		override;
 
 	virtual	  HRESULT	Render()							override;
 
 public:
-	_bool		is_Hit();
+	_bool		is_Hovering();
 
 protected:
-	_bool	Get_KeyDown();
-	_bool	Get_KeyUp();
-	_bool	Get_KeyPressing();
+	_bool		Is_KeyDown();
+	_bool		Is_KeyUp();
+	_bool		Is_KeyPressing();
 
 
 private:

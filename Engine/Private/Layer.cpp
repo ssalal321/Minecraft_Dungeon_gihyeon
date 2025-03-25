@@ -38,7 +38,7 @@ void CLayer::Last_Update(_float fTimeDelta)
     for (auto& pGameObject : m_GameObjects)
     {
         if (nullptr != pGameObject)
-            pGameObject->Last_Update(fTimeDelta);
+            pGameObject->Late_Update(fTimeDelta);
     }
 }
 

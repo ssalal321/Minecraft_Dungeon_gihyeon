@@ -17,25 +17,19 @@ public:
 	typedef struct tagUIImageDesc : public CUIObject::UIOBJECT_DESC
 	{
 		UI_HPBAR_TYPE	eHPbarType;
-		_uint			iPrototypeLevelIndex, iLayerLevelIndex;
 		_float			fPlayTime;
-		_wstring		strTextureComTag;
 
-		tagUIImageDesc(const _tchar* GameObjectTag, UI_HPBAR_TYPE HPbarType, _uint PrototypeLevelIndex, _uint LayerLevelIndex,
+		tagUIImageDesc(const _tchar* GameObjectTag, UI_STATE uiState, UI_HPBAR_TYPE HPbarType, _uint PrototypeLevelIndex, _uint LayerLevelIndex,
 			_float x, _float y, _float z, _float sizeX, _float sizeY,
 			const wstring& textureTag, _float speedPerSec = 0.f, _float rotationPerSec = 0.f, _float playTime = 0.f)
-			: UIOBJECT_DESC(GameObjectTag, x, y, z, sizeX, sizeY, speedPerSec, rotationPerSec),  // 부모 생성자 호출
-			eHPbarType(HPbarType), iPrototypeLevelIndex(PrototypeLevelIndex), iLayerLevelIndex(LayerLevelIndex),
-			strTextureComTag(textureTag), fPlayTime(playTime) {
-		}
+			: UIOBJECT_DESC(GameObjectTag, uiState, PrototypeLevelIndex, LayerLevelIndex,
+							x, y, z, sizeX, sizeY, textureTag,
+							speedPerSec, rotationPerSec),  // 부모 생성자 호출
+			  eHPbarType(HPbarType), fPlayTime(playTime) { }
 
 		// 복사 생성자
 		tagUIImageDesc(const tagUIImageDesc& other)
-			: UIOBJECT_DESC(other), eHPbarType(other.eHPbarType),
-			iPrototypeLevelIndex(other.iPrototypeLevelIndex),
-			iLayerLevelIndex(other.iLayerLevelIndex),
-			fPlayTime(other.fPlayTime), strTextureComTag(other.strTextureComTag) {
-		}
+			: UIOBJECT_DESC(other), eHPbarType(other.eHPbarType), fPlayTime(other.fPlayTime) { }
 
 		~tagUIImageDesc() = default;
 	}UI_HPBAR_DESC;
@@ -52,7 +46,7 @@ public:
 
 	void		Priority_Update(_float fTimeDelta)	override;
 	void		Update(_float fTimeDelta)			override;
-	void		Last_Update(_float fTimeDelta)		override;
+	void		Late_Update(_float fTimeDelta)		override;
 
 	HRESULT		Render()							override;
 
@@ -72,7 +66,6 @@ private:
 
 private:
 	HRESULT		Ready_PlayerHP_Components();
-	HRESULT		Ready_PlayerHP_Top_Components();
 	_bool		is_Hit_for_Test();
 	_bool		Get_KeyDown();
 

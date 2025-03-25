@@ -127,20 +127,21 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& strLayerTag)
         fPlayerStateSlotX, fPlayerStateSlotY, 0.9f, 713.f, 105.f,
         L"Prototype_Component_Texture_PlayerStateSlot");
 
-    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC,
-        TEXT("Prototype_GameObject_UIImage"),
-        LEVEL_GAMEPLAY, strLayerTag, &UIImageDesc)))
+    if (FAILED(m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_GAMEPLAY,
+											 TEXT("Prototype_GameObject_UIImage"),
+								   CUI_Manager::PERSISTENT, &UIImageDesc)))
         return E_FAIL;
 
 
     CHP_Bar::UI_HPBAR_DESC  UIPlayerHPDesc
-    (TEXT("GameObject_PlayerHPBar"), CHP_Bar::PLAYERHP, LEVEL_STATIC, LEVEL_GAMEPLAY,
+    (TEXT("GameObject_PlayerHPBar"), CUIObject::UNCLICKABLE, CHP_Bar::PLAYERHP,
+        LEVEL_STATIC, LEVEL_GAMEPLAY,
         fPlayerStateSlotX + 0.3f, fPlayerStateSlotY - 7.f, 0.5f, 86.f, 65.f,
         L"Prototype_Component_Texture_PlayerHP");
 
-    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC,
-        TEXT("Prototype_GameObject_UI_HPbar"),
-        LEVEL_GAMEPLAY, strLayerTag, &UIPlayerHPDesc)))
+    if (FAILED(m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_GAMEPLAY,
+											 TEXT("Prototype_GameObject_UI_HPbar"),
+									 CUI_Manager::PERSISTENT, &UIPlayerHPDesc)))
         return E_FAIL;
 
     return S_OK;

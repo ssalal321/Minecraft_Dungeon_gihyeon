@@ -35,8 +35,8 @@ HRESULT CRenderer::Draw()
         return E_FAIL;
     if (FAILED(Render_Blend()))
         return E_FAIL;
-    if (FAILED(Render_UI()))
-        return E_FAIL;
+    /*if (FAILED(Render_UI()))
+        return E_FAIL;*/
 
     return S_OK;
 }
@@ -86,20 +86,20 @@ HRESULT CRenderer::Render_Blend()
     return S_OK;
 }
 
-HRESULT CRenderer::Render_UI()
-{
-    for (auto& pRenderObject : m_RenderObjects[RENDER_UI])
-    {
-        if (nullptr != pRenderObject)
-            pRenderObject->Render();
-
-        Safe_Release(pRenderObject);
-    }
-
-    m_RenderObjects[RENDER_UI].clear();
-
-    return S_OK;
-}
+//HRESULT CRenderer::Render_UI()
+//{
+//    for (auto& pRenderObject : m_RenderObjects[RENDER_UI])
+//    {
+//        if (nullptr != pRenderObject)
+//            pRenderObject->Render();
+//
+//        Safe_Release(pRenderObject);
+//    }
+//
+//    m_RenderObjects[RENDER_UI].clear();
+//
+//    return S_OK;
+//}
 
 CRenderer* CRenderer::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
