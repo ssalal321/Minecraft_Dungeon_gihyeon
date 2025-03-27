@@ -121,6 +121,12 @@
     <Filter Include="08. UI\UIImage">
       <UniqueIdentifier>{04fd4813-351c-459a-bea6-2c715f15206c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\03.GameObject\ContainerObject">
+      <UniqueIdentifier>{c921d442-99f2-49cb-90b4-4be85eeee59e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.GameObject\ContainerObject\PartObject">
+      <UniqueIdentifier>{21592565-7630-41a5-b75f-32ddf9b77557}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Base.h">
@@ -243,6 +249,12 @@
     <ClInclude Include="..\Public\UI_Manager.h">
       <Filter>08. UI\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PartObject.h">
+      <Filter>01.Utility\03.GameObject\ContainerObject\PartObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ContainerObject.h">
+      <Filter>01.Utility\03.GameObject\ContainerObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -349,6 +361,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\UI_Manager.cpp">
       <Filter>08. UI\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ContainerObject.cpp">
+      <Filter>01.Utility\03.GameObject\ContainerObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PartObject.cpp">
+      <Filter>01.Utility\03.GameObject\ContainerObject\PartObject</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

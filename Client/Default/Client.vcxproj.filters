@@ -67,6 +67,9 @@
     <Filter Include="02.GameObjects\Player">
       <UniqueIdentifier>{a79e5608-68af-4d7c-9411-323b06a388c1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Player\Body_Player">
+      <UniqueIdentifier>{5373e998-8490-442b-bc63-474356c4fb92}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -117,11 +120,14 @@
     <ClInclude Include="..\Public\Monster.h">
       <Filter>02.GameObjects\Monster</Filter>
     </ClInclude>
-    <ClInclude Include="HP_Bar.h">
-      <Filter>02.GameObjects\UIObjects\PlayerHPbar</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Player.h">
       <Filter>02.GameObjects\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\HP_Bar.h">
+      <Filter>02.GameObjects\UIObjects\PlayerHPbar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Body_Player.h">
+      <Filter>02.GameObjects\Player\Body_Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -174,11 +180,14 @@
     <ClCompile Include="..\Private\Monster.cpp">
       <Filter>02.GameObjects\Monster</Filter>
     </ClCompile>
-    <ClCompile Include="HP_Bar.cpp">
-      <Filter>02.GameObjects\UIObjects\PlayerHPbar</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Player.cpp">
       <Filter>02.GameObjects\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\HP_Bar.cpp">
+      <Filter>02.GameObjects\UIObjects\PlayerHPbar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Body_Player.cpp">
+      <Filter>02.GameObjects\Player\Body_Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

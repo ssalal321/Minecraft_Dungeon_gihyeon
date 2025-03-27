@@ -6,7 +6,7 @@
 
 #include "Level_Loading.h"
 #include "Camera_Free.h"
-#include "../Default/HP_Bar.h"
+#include "HP_Bar.h"
 
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : CLevel { pDevice, pContext }
@@ -22,6 +22,9 @@ HRESULT CLevel_GamePlay::Initialize()
         return E_FAIL;
 
     if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
+        return E_FAIL;
+
+    if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
         return E_FAIL;
 
     if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
@@ -96,14 +99,23 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& strLayerTag)
     return S_OK;
 }
 
+HRESULT CLevel_GamePlay::Ready_Layer_Player(const _wstring& strLayerTag)
+{
+    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Player"),
+        LEVEL_GAMEPLAY, strLayerTag)))
+        return E_FAIL;
+
+    return S_OK;
+}
+
 HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& strLayerTag)
 {
-    for (size_t i = 0; i < 2; i++)
+    /*for (size_t i = 0; i < 2; i++)
     {
         if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Monster"),
             LEVEL_GAMEPLAY, strLayerTag)))
             return E_FAIL;
-    }
+    }*/
 
     return S_OK;
 }
