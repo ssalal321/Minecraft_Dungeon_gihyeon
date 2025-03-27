@@ -1,25 +1,17 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "ContainerObject.h"
-
-/* 플레이어라는 객체를 구성하기위한 파츠들을 모아서 쥐고 있는 객체. */
+#include "GameObject.h"
 
 BEGIN(Engine)
-
+class CShader;
+class CModel;
 END
 
 BEGIN(Client)
 
-class CPlayer final : public CContainerObject
+class CPlayer final : public CGameObject
 {
-public:
-	enum STATE {
-		STATE_IDLE = 0x00000001,	 /* 0001 */
-		STATE_RUN = 0x00000002,		 /* 0010 */
-		STATE_ATTACK = 0x00000004,   /* 0100 */
-		STATE_END = 0
-	};
 private:
 	CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CPlayer(const CPlayer& Prototype);
@@ -30,16 +22,20 @@ public:
 	virtual HRESULT Initialize(void* pArg) override;
 	virtual void Priority_Update(_float fTimeDelta) override;
 	virtual void Update(_float fTimeDelta) override;
-	virtual void Last_Update(_float fTimeDelta) override;
+	virtual void Late_Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
-private:	
-	_uint			m_iState = { STATE_END };
-	
+private:
+
+	CShader* m_pShaderCom = { nullptr };
+	CModel* m_pModelCom = { nullptr };
+
+	_uint				m_iPassIndex = {};
+
 
 private:
-	HRESULT Ready_Components();	
-	HRESULT Ready_PartObjects();
+	HRESULT Ready_Components();
+	HRESULT Bind_ShaderResources();
 
 public:
 	static CPlayer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

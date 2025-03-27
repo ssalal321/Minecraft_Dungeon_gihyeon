@@ -42,7 +42,7 @@ HRESULT CMonster::Initialize(void* pArg)
 			m_pGameInstance->Compute_Random(0.f, 20.f),
 			1.f));
 
-	m_pModelCom->Set_Animation(0, true);
+	m_pModelCom->Set_Animation(0, false);
 
 	return S_OK;
 }

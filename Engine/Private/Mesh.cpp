@@ -1,4 +1,7 @@
 #include "Mesh.h"
+
+#include <set>
+
 #include "Bone.h"
 #include "Shader.h"
 
@@ -192,6 +195,23 @@ HRESULT CMesh::Ready_VertexBuffer_For_Anim(const aiMesh* pAIMesh, const vector<c
 		{
 			/* i번째 뼈가 영향을 주는 j번째 정점의 인덱스 :  pAIBone->mWeights[j].mVertexId */
 			_uint	iVertexIndex = pAIBone->mWeights[j].mVertexId;
+
+			/* 중복된 뼈인지 체크하기 위한 배열 */
+			_uint	boneIndex	= i; // 현재 처리 중인 뼈 인덱스
+
+			/* 현재 정점의 기존 블렌드 인덱스들과 비교 */
+			// std::set -> 중복을 자동 제거하는 컨테이너
+			set<_uint> existingBones = 
+			{
+				pVertices[iVertexIndex].vBlendIndex.x,
+				pVertices[iVertexIndex].vBlendIndex.y,
+				pVertices[iVertexIndex].vBlendIndex.z,
+				pVertices[iVertexIndex].vBlendIndex.w
+			};
+
+			/* 중복된 뼈라면 추가하지 않음 */
+			if (existingBones.find(boneIndex) != existingBones.end())
+				continue;
 
 			/* 네개 중에 아직 값이 채워지지 않은 공간을 찾는다. */
 			if (0.f == pVertices[iVertexIndex].vBlendWeight.x)
