@@ -1,4 +1,4 @@
-#include "../Public/Base.h"
+#include "Base.h"
 
 CBase::CBase()
 {
