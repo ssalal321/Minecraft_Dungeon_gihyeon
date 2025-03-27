@@ -64,7 +64,7 @@ HRESULT CUIObject::Render()
 	return S_OK;
 }
 
-_bool CUIObject::isHit(HWND hWnd)
+_bool CUIObject::Is_Hovering(HWND hWnd)
 {
 	POINT		ptMouse{};
 
