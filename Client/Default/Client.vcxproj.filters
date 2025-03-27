@@ -58,6 +58,15 @@
     <Filter Include="02.GameObjects\UIObjects\PlayerHPbar">
       <UniqueIdentifier>{a7067fff-4dc1-4601-afe6-365f223747e1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UIObjects\Inventory">
+      <UniqueIdentifier>{cf539a4e-c208-4e9c-bb27-cb0cea2dc679}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObjects\Inventory\Inventory_Base">
+      <UniqueIdentifier>{9ff9beb3-291c-43dd-86f0-378848ea6406}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Player">
+      <UniqueIdentifier>{a79e5608-68af-4d7c-9411-323b06a388c1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -110,6 +119,9 @@
     </ClInclude>
     <ClInclude Include="HP_Bar.h">
       <Filter>02.GameObjects\UIObjects\PlayerHPbar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Player.h">
+      <Filter>02.GameObjects\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -164,6 +176,9 @@
     </ClCompile>
     <ClCompile Include="HP_Bar.cpp">
       <Filter>02.GameObjects\UIObjects\PlayerHPbar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player.cpp">
+      <Filter>02.GameObjects\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

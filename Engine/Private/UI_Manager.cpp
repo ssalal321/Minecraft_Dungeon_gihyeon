@@ -7,7 +7,6 @@ CUI_Manager::CUI_Manager() : m_pGameInstance{ CGameInstance::GetInstance() }
 
 	ZeroMemory(&m_CurrentUIObjects, NULL);
 	ZeroMemory(&m_NextUIObjects, NULL);
-	ZeroMemory(&m_RenderUIObjects, NULL);
 }
 
 HRESULT CUI_Manager::Initialize(_uint iNumLevels)

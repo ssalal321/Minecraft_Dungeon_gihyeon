@@ -55,7 +55,7 @@ void CTitleBase::Update(_float fTimeDelta)
 	_bool		isClicked = {};
 
 	if (GetKeyState(VK_LBUTTON) & 0x8000)
-		isClicked = isHit(g_hWnd);
+		isClicked = Is_Hovering(g_hWnd);
 
 }
 

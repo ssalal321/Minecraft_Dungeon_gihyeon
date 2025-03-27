@@ -46,7 +46,7 @@ public:
 	virtual		HRESULT		Render();
 
 public:
-	_bool	isHit(HWND hWnd);
+	_bool	Is_Hovering(HWND hWnd);
 
 	void	SetClickCallback(std::function<void()> callback) {
 		m_ClickCallback = callback;

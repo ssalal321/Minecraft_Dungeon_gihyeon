@@ -6,8 +6,7 @@
 CMainApp::CMainApp()
     : m_pGameInstance { CGameInstance::GetInstance() }
 {
-     //D3D11_SAMPLER_DESC
-    // BaBo MeongCheong-I
+    /*XMMatrixDecompose();*/
     Safe_AddRef(m_pGameInstance);
 }
 

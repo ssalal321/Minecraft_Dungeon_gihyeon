@@ -37,8 +37,8 @@ private:
 	class CGameInstance*	    m_pGameInstance = { nullptr };
 
     std::vector<CUIObject*>     m_CurrentUIObjects[LIFETIME_END]   = {};  // 包府且 UI 按眉甸
-    std::vector<CUIObject*>     m_NextUIObjects[LIFETIME_END] = {};  // 包府且 UI 按眉甸
-    std::vector<CUIObject*>     m_RenderUIObjects           = {};
+    std::vector<CUIObject*>     m_NextUIObjects[LIFETIME_END] = {};       // 包府且 UI 按眉甸
+
 private:
     _uint   m_iNumLevels = {};
 
