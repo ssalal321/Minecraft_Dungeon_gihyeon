@@ -33,7 +33,7 @@ void CLayer::Update(_float fTimeDelta)
     }
 }
 
-void CLayer::Last_Update(_float fTimeDelta)
+void CLayer::Late_Update(_float fTimeDelta)
 {
     for (auto& pGameObject : m_GameObjects)
     {

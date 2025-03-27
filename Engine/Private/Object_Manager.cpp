@@ -56,12 +56,12 @@ void CObject_Manager::Update(_float fTimeDelta)
 	}
 }
 
-void CObject_Manager::Last_Update(_float fTimeDelta)
+void CObject_Manager::Late_Update(_float fTimeDelta)
 {
 	for (size_t i = 0; i < m_iNumLevels; i++)
 	{
 		for (auto& Pair : m_pLayers[i])
-			Pair.second->Last_Update(fTimeDelta);
+			Pair.second->Late_Update(fTimeDelta);
 	}
 }
 
