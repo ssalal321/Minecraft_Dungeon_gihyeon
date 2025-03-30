@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 
 #include "Body_Player.h"
+#include "Weapon.h"
 
 CPlayer::CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CContainerObject(pDevice, pContext)
@@ -107,7 +108,22 @@ HRESULT CPlayer::Ready_PartObjects()
 	if (FAILED(__super::Add_PartObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Body_Player"), TEXT("Part_Body"), &BodyDesc)))
 		return E_FAIL;
 
+
 	/* 무기를 추가한다. */
+	CWeapon::WEAPON_DESC				WeaponDesc{};
+
+	CModel* pBody = dynamic_cast<CModel*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Model")));
+	if (nullptr == pBody)
+		return E_FAIL;
+
+	WeaponDesc.pGameObjectTag = TEXT("GameObject_Weapon");
+	WeaponDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
+	WeaponDesc.pState = &m_iState;
+	WeaponDesc.pSocketMatrix = pBody->Get_CombindTransformationMatrix("SWORD");
+
+	if (FAILED(__super::Add_PartObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Weapon"), TEXT("Part_Weapon"), &WeaponDesc)))
+		return E_FAIL;
+
 
 	/* 이펙트를 추가한다. */
 

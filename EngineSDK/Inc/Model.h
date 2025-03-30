@@ -14,11 +14,12 @@ private:
 	virtual ~CModel() = default;
 
 public:
-	_uint Get_NumMeshes() const {
-		return m_iNumMeshes;
-	}
+	_uint	Get_NumMeshes() const { return m_iNumMeshes; }
 
-	void Set_Animation(_uint iAnimIndex, _bool isLoop = true) {
+	const _float4x4*	Get_CombindTransformationMatrix(const _char* pBoneName) const;
+
+	void	Set_Animation(_uint iAnimIndex, _bool isLoop = true)
+	{
 		m_iCurrentAnimIndex = iAnimIndex;
 		m_isLoop = isLoop;
 	}
@@ -29,11 +30,11 @@ public:
 	virtual HRESULT Render(_uint iMeshIndex);
 
 public:
-	_bool	Play_Animation(_float fTimeDelta);
+	_bool		Play_Animation(_float fTimeDelta);
 
 public:
-	HRESULT Bind_Material(class CShader* pShader, const _char* pConstantName, _uint iMeshIndex, aiTextureType eMaterialType, _uint iTextureIndex);
-	HRESULT Bind_BoneMatrices(class CShader* pShader, const _char* pConstantName, _uint iMeshIndex);
+	HRESULT		Bind_Material(class CShader* pShader, const _char* pConstantName, _uint iMeshIndex, aiTextureType eMaterialType, _uint iTextureIndex);
+	HRESULT		Bind_BoneMatrices(class CShader* pShader, const _char* pConstantName, _uint iMeshIndex);
 
 private:
 	/* aiScene : 파일을 읽은 결과 */
@@ -62,15 +63,15 @@ private:
 	vector<class CAnimation*>	m_Animations;
 
 private:
-	HRESULT Ready_Meshes();
-	HRESULT Ready_Materials(const _char* pModelFilePath);
-	HRESULT Ready_Bones(const aiNode* pAINode, _int iParentBoneIndex);
-	HRESULT Ready_Animations();
+	HRESULT		Ready_Meshes();
+	HRESULT		Ready_Materials(const _char* pModelFilePath);
+	HRESULT		Ready_Bones(const aiNode* pAINode, _int iParentBoneIndex);
+	HRESULT		Ready_Animations();
 
 public:
-	static CModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, TYPE eModelType, const _char* pModelFilePath, _fmatrix PreTransformMatrix);
-	virtual CComponent* Clone(void* pArg) override;
-	virtual void Free() override;
+	static CModel*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, TYPE eModelType, const _char* pModelFilePath, _fmatrix PreTransformMatrix);
+	CComponent*		Clone(void* pArg)	override;
+	void	Free()						override;
 };
 
 END

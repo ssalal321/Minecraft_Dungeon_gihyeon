@@ -154,6 +154,7 @@
     <ClInclude Include="..\Public\Body_Player.h" />
     <ClInclude Include="..\public\Camera_Free.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
+    <ClInclude Include="..\Public\ForkLift.h" />
     <ClInclude Include="..\Public\InventoryBase.h" />
     <ClInclude Include="..\Public\InventoryGearSlot.h" />
     <ClInclude Include="..\Public\InventoryItemSlot.h" />
@@ -166,8 +167,10 @@
     <ClInclude Include="..\Public\MainApp.h" />
     <ClInclude Include="..\Public\Monster.h" />
     <ClInclude Include="..\Public\Player.h" />
+    <ClInclude Include="..\Public\Sky.h" />
     <ClInclude Include="..\Public\Terrain.h" />
     <ClInclude Include="..\Public\UI_Image.h" />
+    <ClInclude Include="..\Public\Weapon.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Resource.h" />
@@ -176,6 +179,7 @@
   <ItemGroup>
     <ClCompile Include="..\Private\Body_Player.cpp" />
     <ClCompile Include="..\private\Camera_Free.cpp" />
+    <ClCompile Include="..\Private\ForkLift.cpp" />
     <ClCompile Include="..\Private\InventoryBase.cpp" />
     <ClCompile Include="..\Private\InventoryGearSlot.cpp" />
     <ClCompile Include="..\Private\InventoryItemSlot.cpp" />
@@ -188,8 +192,10 @@
     <ClCompile Include="..\Private\MainApp.cpp" />
     <ClCompile Include="..\Private\Monster.cpp" />
     <ClCompile Include="..\Private\Player.cpp" />
+    <ClCompile Include="..\Private\Sky.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
     <ClCompile Include="..\Private\UI_Image.cpp" />
+    <ClCompile Include="..\Private\Weapon.cpp" />
     <ClCompile Include="Client.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -201,6 +207,7 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimMesh.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCube.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl" />

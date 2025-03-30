@@ -246,6 +246,9 @@
     <ClInclude Include="..\Public\UIObject.h">
       <Filter>01.Utility\08. UI</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Cube.h">
+      <Filter>01.Utility\04. Component\VIBuffer\Cube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -355,6 +358,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\UIObject.cpp">
       <Filter>01.Utility\08. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Cube.cpp">
+      <Filter>01.Utility\04. Component\VIBuffer\Cube</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

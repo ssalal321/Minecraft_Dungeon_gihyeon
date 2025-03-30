@@ -18,7 +18,7 @@ public:
 			: CTransform::TRANSFORM_DESC(other),
 			  pGameObjectTag(other.pGameObjectTag) {}
 
-		virtual ~tagGameObjectDesc() = default;
+		~tagGameObjectDesc() override = default;
 
 	}GAMEOBJECT_DESC;
 
@@ -35,6 +35,9 @@ public:
 	virtual   void		Late_Update(_float fTimeDelta);
 	virtual   HRESULT	Render();
 
+public:
+	class CComponent*	Find_Component(const _wstring& strComponentTag);
+
 protected:
 	ID3D11Device*			m_pDevice = { nullptr };
 	ID3D11DeviceContext*	m_pContext = { nullptr };
@@ -46,9 +49,8 @@ protected:
 	map<const _wstring, class CComponent*>	m_Components;
 
 protected:
-	class CComponent*	Find_Component(const _wstring& strComponentTag);
-	HRESULT				Add_Component(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag,
-									  const _wstring& strComponentTag, CComponent** ppOut, void* pArg = nullptr);
+	HRESULT		Add_Component(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag,
+							  const _wstring& strComponentTag, CComponent** ppOut, void* pArg = nullptr);
 
 
 public:
