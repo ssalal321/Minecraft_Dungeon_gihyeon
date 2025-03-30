@@ -55,7 +55,7 @@ void CForkLift::Update(_float fTimeDelta)
 
 }
 
-void CForkLift::Last_Update(_float fTimeDelta)
+void CForkLift::Late_Update(_float fTimeDelta)
 {
 
 	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);

@@ -1,3 +1,4 @@
+#include "Engine_Shader_Defines.hlsli"
 
 matrix      g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 matrix      g_BoneMatrices[512]; /* 메시에게 영향을 주는 뼈 배열 */
@@ -19,7 +20,7 @@ vector      g_vCamPosition;
 
 sampler g_LinearSampler = sampler_state 
 {
-    Filter = MIN_MAG_MIP_LINEAR;
+    Filter = MIN_MAG_MIP_POINT;
     AddressU = WRAP;
     AddressV = WRAP;
 };
@@ -113,6 +114,10 @@ technique11 DefaultTechnique
 {
     pass Default
     {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
         VertexShader = compile vs_5_0 VS_MAIN();
         PixelShader = compile ps_5_0 PS_MAIN();
     }    

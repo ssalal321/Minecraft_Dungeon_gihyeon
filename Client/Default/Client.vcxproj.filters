@@ -70,9 +70,6 @@
     <Filter Include="02.GameObjects\UIObjects\Inventory\InventoryItemSlot">
       <UniqueIdentifier>{b75e9023-db5b-43b0-b798-c430e1058abd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\ForkLift">
-      <UniqueIdentifier>{a35214a7-3599-46bc-96d0-e0ce666aaa40}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\Sky">
       <UniqueIdentifier>{f921d5a2-b17c-4a73-a7d3-028b1053c5a0}</UniqueIdentifier>
     </Filter>
@@ -81,6 +78,12 @@
     </Filter>
     <Filter Include="01.Levels\02. GamePlay">
       <UniqueIdentifier>{fae995d6-0f45-4682-97aa-35fe9c6e9a44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\LoungeMap">
+      <UniqueIdentifier>{a35214a7-3599-46bc-96d0-e0ce666aaa40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\ForkLift">
+      <UniqueIdentifier>{97f07e9d-00c1-47e2-ad7d-79a41a661f9f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -150,11 +153,14 @@
     <ClInclude Include="..\Public\Weapon.h">
       <Filter>02.GameObjects\Player\Weapon</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\ForkLift.h">
-      <Filter>02.GameObjects\ForkLift</Filter>
+    <ClInclude Include="..\Public\LoungeMap.h">
+      <Filter>02.GameObjects\LoungeMap</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Sky.h">
       <Filter>02.GameObjects\Sky</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ForkLift.h">
+      <Filter>02.GameObjects\ForkLift</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -225,11 +231,14 @@
     <ClCompile Include="..\Private\Weapon.cpp">
       <Filter>02.GameObjects\Player\Weapon</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\ForkLift.cpp">
-      <Filter>02.GameObjects\ForkLift</Filter>
+    <ClCompile Include="..\Private\LoungeMap.cpp">
+      <Filter>02.GameObjects\LoungeMap</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Sky.cpp">
       <Filter>02.GameObjects\Sky</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ForkLift.cpp">
+      <Filter>02.GameObjects\ForkLift</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -251,5 +260,10 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCube.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Bin\ShaderFiles\Engine_Shader_Defines.hlsli">
+      <Filter>97.ShaderFiles</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -1,7 +1,7 @@
 #include "Engine_Shader_Defines.hlsli"
 
-matrix          g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
-textureCUBE     g_DiffuseTexture;
+matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
+textureCUBE g_DiffuseTexture;
 
 sampler g_LinearSampler = sampler_state
 {
@@ -72,6 +72,5 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         PixelShader = compile ps_5_0 PS_MAIN();
     }
-
 
 }
