@@ -151,41 +151,45 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\Public\Body_Player.h" />
     <ClInclude Include="..\public\Camera_Free.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
-    <ClInclude Include="..\Public\HP_Bar.h" />
+    <ClInclude Include="..\Public\InventoryBase.h" />
+    <ClInclude Include="..\Public\InventoryGearSlot.h" />
+    <ClInclude Include="..\Public\InventoryItemSlot.h" />
+    <ClInclude Include="..\Public\InventoryStoreSlot.h" />
+    <ClInclude Include="..\Public\PlayerHP.h" />
     <ClInclude Include="..\Public\Level_GamePlay.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
-    <ClInclude Include="..\Public\Level_Logo.h" />
     <ClInclude Include="..\Public\Level_Title.h" />
     <ClInclude Include="..\Public\Loader.h" />
     <ClInclude Include="..\Public\MainApp.h" />
     <ClInclude Include="..\Public\Monster.h" />
     <ClInclude Include="..\Public\Player.h" />
     <ClInclude Include="..\Public\Terrain.h" />
-    <ClInclude Include="..\Public\TitleBase.h" />
+    <ClInclude Include="..\Public\UI_Image.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\private\BackGround.cpp" />
     <ClCompile Include="..\Private\Body_Player.cpp" />
     <ClCompile Include="..\private\Camera_Free.cpp" />
-    <ClCompile Include="..\Private\HP_Bar.cpp" />
+    <ClCompile Include="..\Private\InventoryBase.cpp" />
+    <ClCompile Include="..\Private\InventoryGearSlot.cpp" />
+    <ClCompile Include="..\Private\InventoryItemSlot.cpp" />
+    <ClCompile Include="..\Private\InventoryStoreSlot.cpp" />
+    <ClCompile Include="..\Private\PlayerHP.cpp" />
     <ClCompile Include="..\Private\Level_GamePlay.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />
-    <ClCompile Include="..\Private\Level_Logo.cpp" />
     <ClCompile Include="..\Private\Level_Title.cpp" />
     <ClCompile Include="..\Private\Loader.cpp" />
     <ClCompile Include="..\Private\MainApp.cpp" />
     <ClCompile Include="..\Private\Monster.cpp" />
     <ClCompile Include="..\Private\Player.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
-    <ClCompile Include="..\Private\TitleBase.cpp" />
+    <ClCompile Include="..\Private\UI_Image.cpp" />
     <ClCompile Include="Client.cpp" />
   </ItemGroup>
   <ItemGroup>

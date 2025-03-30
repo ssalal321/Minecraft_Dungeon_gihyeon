@@ -51,7 +51,7 @@ public:
 
 #pragma region PROTOTYPE_MANAGER
 	HRESULT		Add_Prototype(_uint iLevelIndex, const _wstring& strPrototypeTag, CBase* pPrototype);
-	CBase*		Clone_Prototype(PROTOTYPE ePrototype, _uint iLevelIndex, const _wstring& strPrototypeTag, void* pArg = nullptr);
+	CBase*		Clone_Prototype(PROTOTYPE ePrototype, _uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, void* pArg = nullptr);
 #pragma endregion
 
 #pragma region OBJECT_MANAGER
@@ -86,8 +86,7 @@ public:
 #pragma endregion
 
 #pragma region UI_Manager
-	HRESULT		Add_UIObject(_uint iPrototypeLevelIndex, _uint iCurrentLevelIndex, const _wstring& strPrototypeTag, CUI_Manager::UI_LIFETIME eUILifeTime, void* pArg = nullptr);
-	void		Set_UIObject_Callback(CUIObject* pUIObject, std::function<void()> callback);
+	CUIObject*	Add_UIObject(_uint iPrototypeLevelIndex, _uint iLayerLevelIndex, const _wstring& strPrototypeTag, CUI_Manager::UI_LIFETIME eUILifeTime, void* pArg = nullptr);
 #pragma endregion
 
 

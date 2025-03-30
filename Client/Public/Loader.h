@@ -21,7 +21,7 @@ public:
 	HRESULT		Initialize(LEVEL eNextLevelID);
 	HRESULT		Loading();
 	void		Show_LoadingText();
-	_bool		isFinished();
+	_bool		Is_Finished();
 	
 
 private:
@@ -40,15 +40,14 @@ private:
 
 
 private:
-	HRESULT		Loading_For_Logo();
-	HRESULT		Loading_For_GamePlay();
 	HRESULT		Loading_For_Static();
 	HRESULT		Loading_For_Title();
+	HRESULT		Loading_For_GamePlay();
 
 
 public:
 	static	 CLoader*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevelID);
-	virtual  void		Free() override;
+	void	Free()	override;
 };
 
 END

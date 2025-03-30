@@ -1,9 +1,10 @@
 #pragma once
 #include "Base.h"
-#include "UIObject.h"
 
 BEGIN(Engine)
-class CUI_Manager : public CBase
+	class CUIObject;
+
+	class CUI_Manager : public CBase
 {
 public:
     enum UI_LIFETIME { TEMPORARY, PERSISTENT, LIFETIME_END  };
@@ -15,13 +16,8 @@ private:
 public:
     HRESULT     Initialize(_uint iNumLevels);
 
-    HRESULT     Add_UIObject(_uint iPrototypeLevelIndex, _uint iCurrentLevelIndex, const _wstring& strPrototypeTag,
+    CUIObject*   Add_UIObject(_uint iPrototypeLevelIndex, _uint iLayerLevelIndex, const _wstring& strPrototypeTag,
 							 UI_LIFETIME eUILifeTime, void* pArg = nullptr);
-  
-    void    Set_UIObject_Callback(CUIObject* pUIObject, std::function<void()> callback)
-	{
-    	pUIObject->SetClickCallback(callback);  // UI 객체에 콜백 설정
-    }
 
     void        Priority_Update(_float fDeltaTime);
     void        Update(_float fDeltaTime);
@@ -44,6 +40,6 @@ private:
 
 public:
 	static	 CUI_Manager*	Create(_uint iNumLevels);  // 디바이스랑 컨텍스트 필요하려나..?
-	virtual  void			Free() override;
+	void	 Free() override;
 };
 END

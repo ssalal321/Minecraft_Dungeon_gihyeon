@@ -16,9 +16,6 @@
     <Filter Include="01.Levels\00.Loading">
       <UniqueIdentifier>{607258ba-45a4-424e-a13c-27d6e5fe7e6b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Levels\01.Logo">
-      <UniqueIdentifier>{362a476e-0de4-485a-b76f-4edacee06e31}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Levels\02.GamePlay">
       <UniqueIdentifier>{fae995d6-0f45-4682-97aa-35fe9c6e9a44}</UniqueIdentifier>
     </Filter>
@@ -43,9 +40,6 @@
     <Filter Include="02.GameObjects\Camera\Free">
       <UniqueIdentifier>{99e5154e-49e3-4d93-ad11-54750fe0ed08}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Levels\10. Title">
-      <UniqueIdentifier>{edd484b2-535d-4fe2-a301-1f295693c6b6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\Title">
       <UniqueIdentifier>{17145a26-4b75-4fed-bcf2-4f58f3ff6423}</UniqueIdentifier>
     </Filter>
@@ -54,9 +48,6 @@
     </Filter>
     <Filter Include="02.GameObjects\UIObjects">
       <UniqueIdentifier>{a3414a03-ae9b-47bb-89b9-eb8aef7c3962}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\UIObjects\PlayerHPbar">
-      <UniqueIdentifier>{a7067fff-4dc1-4601-afe6-365f223747e1}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\UIObjects\Inventory">
       <UniqueIdentifier>{cf539a4e-c208-4e9c-bb27-cb0cea2dc679}</UniqueIdentifier>
@@ -69,6 +60,24 @@
     </Filter>
     <Filter Include="02.GameObjects\Player\Body_Player">
       <UniqueIdentifier>{5373e998-8490-442b-bc63-474356c4fb92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObjects\UI_Image%28static%29">
+      <UniqueIdentifier>{69350565-a71a-401c-9cf8-0617f0fc37b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObjects\HPbar">
+      <UniqueIdentifier>{a7067fff-4dc1-4601-afe6-365f223747e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\01. Title">
+      <UniqueIdentifier>{edd484b2-535d-4fe2-a301-1f295693c6b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObjects\Inventory\Inventory_StoreSlot">
+      <UniqueIdentifier>{81d1359e-516c-4991-8531-c558788a2579}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObjects\Inventory\InventoryGearSlot">
+      <UniqueIdentifier>{98e05a1b-0327-410e-88b1-71804a5f45cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObjects\Inventory\InventoryItemSlot">
+      <UniqueIdentifier>{b75e9023-db5b-43b0-b798-c430e1058abd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -93,17 +102,11 @@
     <ClInclude Include="..\Public\Level_Loading.h">
       <Filter>01.Levels\00.Loading</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Level_Logo.h">
-      <Filter>01.Levels\01.Logo</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Loader.h">
       <Filter>01.Levels\00.Loading\Loader</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Level_GamePlay.h">
       <Filter>01.Levels\02.GamePlay</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\BackGround.h">
-      <Filter>02.GameObjects\BackGround</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Terrain.h">
       <Filter>02.GameObjects\Terrain</Filter>
@@ -111,11 +114,8 @@
     <ClInclude Include="..\public\Camera_Free.h">
       <Filter>02.GameObjects\Camera\Free</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\TitleBase.h">
-      <Filter>02.GameObjects\Title</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Level_Title.h">
-      <Filter>01.Levels\10. Title</Filter>
+      <Filter>01.Levels\01. Title</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Monster.h">
       <Filter>02.GameObjects\Monster</Filter>
@@ -123,11 +123,26 @@
     <ClInclude Include="..\Public\Player.h">
       <Filter>02.GameObjects\Player</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\HP_Bar.h">
-      <Filter>02.GameObjects\UIObjects\PlayerHPbar</Filter>
+    <ClInclude Include="..\Public\PlayerHP.h">
+      <Filter>02.GameObjects\UIObjects\HPbar</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Body_Player.h">
       <Filter>02.GameObjects\Player\Body_Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_Image.h">
+      <Filter>02.GameObjects\UIObjects\UI_Image%28static%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\InventoryBase.h">
+      <Filter>02.GameObjects\UIObjects\Inventory\Inventory_Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\InventoryStoreSlot.h">
+      <Filter>02.GameObjects\UIObjects\Inventory\Inventory_StoreSlot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\InventoryGearSlot.h">
+      <Filter>02.GameObjects\UIObjects\Inventory\InventoryGearSlot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\InventoryItemSlot.h">
+      <Filter>02.GameObjects\UIObjects\Inventory\InventoryItemSlot</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -153,17 +168,11 @@
     <ClCompile Include="..\Private\Level_Loading.cpp">
       <Filter>01.Levels\00.Loading</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Level_Logo.cpp">
-      <Filter>01.Levels\01.Logo</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Loader.cpp">
       <Filter>01.Levels\00.Loading\Loader</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_GamePlay.cpp">
       <Filter>01.Levels\02.GamePlay</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\BackGround.cpp">
-      <Filter>02.GameObjects\BackGround</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Terrain.cpp">
       <Filter>02.GameObjects\Terrain</Filter>
@@ -171,11 +180,8 @@
     <ClCompile Include="..\private\Camera_Free.cpp">
       <Filter>02.GameObjects\Camera\Free</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\TitleBase.cpp">
-      <Filter>02.GameObjects\Title</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Level_Title.cpp">
-      <Filter>01.Levels\10. Title</Filter>
+      <Filter>01.Levels\01. Title</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Monster.cpp">
       <Filter>02.GameObjects\Monster</Filter>
@@ -183,11 +189,26 @@
     <ClCompile Include="..\Private\Player.cpp">
       <Filter>02.GameObjects\Player</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\HP_Bar.cpp">
-      <Filter>02.GameObjects\UIObjects\PlayerHPbar</Filter>
+    <ClCompile Include="..\Private\PlayerHP.cpp">
+      <Filter>02.GameObjects\UIObjects\HPbar</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Body_Player.cpp">
       <Filter>02.GameObjects\Player\Body_Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_Image.cpp">
+      <Filter>02.GameObjects\UIObjects\UI_Image%28static%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\InventoryBase.cpp">
+      <Filter>02.GameObjects\UIObjects\Inventory\Inventory_Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\InventoryStoreSlot.cpp">
+      <Filter>02.GameObjects\UIObjects\Inventory\Inventory_StoreSlot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\InventoryGearSlot.cpp">
+      <Filter>02.GameObjects\UIObjects\Inventory\InventoryGearSlot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\InventoryItemSlot.cpp">
+      <Filter>02.GameObjects\UIObjects\Inventory\InventoryItemSlot</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

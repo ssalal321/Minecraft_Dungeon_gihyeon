@@ -20,7 +20,7 @@ public:
 private:
 	CBody_Player(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CBody_Player(const CBody_Player& Prototype);
-	virtual ~CBody_Player() = default;
+	~CBody_Player() override = default;
 
 public:
 	HRESULT		Initialize_Prototype()				override;
@@ -42,13 +42,13 @@ private:
 
 
 private:
-	HRESULT Ready_Components();
-	HRESULT Bind_ShaderResources();
+	HRESULT		Ready_Components();
+	HRESULT		Bind_ShaderResources();
 
 public:
-	static CBody_Player* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual CGameObject* Clone(void* pArg) override;
-	virtual void Free() override;
+	static	CBody_Player*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CGameObject*	Clone(void* pArg)	override;
+	void			Free()				override;
 };
 
 END

@@ -1,7 +1,6 @@
 #include "UI_Image.h"
 #include "GameInstance.h"
 
-
 CUI_Image::CUI_Image(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CUIObject(pDevice, pContext)
 {
@@ -54,7 +53,6 @@ void CUI_Image::Update(_float fTimeDelta)
 
 void CUI_Image::Late_Update(_float fTimeDelta)
 {
-	//m_pGameInstance->Add_RenderObject(CRenderer::RENDER_UI, this);
 }
 
 HRESULT CUI_Image::Render()
@@ -76,36 +74,6 @@ HRESULT CUI_Image::Render()
 
 	return S_OK;
 }
-
-_bool CUI_Image::is_Hovering()
-{
-	_float3		ptMouse = m_pGameInstance->Get_MousePos();
-	POINT		MousePosition	{ static_cast<_long>(ptMouse.x), static_cast<_long>(ptMouse.y) };
-
-	RECT		rcUI = { static_cast<_long>(m_pDesc->fX - m_pDesc->fSizeX * 0.5f),
-						 static_cast<_long>(m_pDesc->fY - m_pDesc->fSizeY * 0.5f),
-						 static_cast<_long>(m_pDesc->fX + m_pDesc->fSizeX * 0.5f),
-						 static_cast<_long>(m_pDesc->fY + m_pDesc->fSizeY * 0.5f)
-	};
-
-	return PtInRect(&rcUI, MousePosition);
-}
-
-_bool CUI_Image::Is_KeyDown()
-{
-	return is_Hovering() && m_pGameInstance->Key_Down(VK_LBUTTON);
-}
-
-_bool CUI_Image::Is_KeyUp()
-{
-	return is_Hovering() && m_pGameInstance->Key_Up(VK_LBUTTON);
-}
-
-_bool CUI_Image::Is_KeyPressing()
-{
-	return is_Hovering() && m_pGameInstance->Key_Pressing(VK_LBUTTON);
-}
-
 
 HRESULT CUI_Image::Ready_Components()
 {

@@ -6,13 +6,13 @@ class CInput_Manager : public CBase
 {
 private:
 	CInput_Manager(HWND _hWnd);
-	~CInput_Manager() = default;
+	~CInput_Manager() override = default;
 
 public:
-	bool		Get_Key(int _iKey) const; //현재 프레임에 눌렸는지 여부
-	bool		Key_Pressing(int _iKey) const; //계속 눌리는 중일 때
-	bool		Key_Down(int _iKey) const; //처음 눌릴 때
-	bool		Key_Up(int _iKey) const; //처음 눌리지 않을 때
+	_bool	Get_Key(int _iKey)		const; //현재 프레임에 눌렸는지 여부
+	_bool	Key_Pressing(int _iKey) const; //계속 눌리는 중일 때
+	_bool	Key_Down(int _iKey)		const; //처음 눌릴 때
+	_bool	Key_Up(int _iKey)		const; //처음 눌리지 않을 때
 
 public:
 	_float3		Get_MousePos() const { return m_MousePos; }
@@ -31,8 +31,8 @@ private:
 
 	HWND		m_hWnd;
 	KEYSTATE	m_bKeyState[VK_MAX];
-	_float3		m_MousePos;
-	bool		m_bEditor;
+	_float3		m_MousePos = {};
+	_bool		m_bEditor  = {};
 
 public:
 	static	CInput_Manager*		Create(HWND _hWnd);

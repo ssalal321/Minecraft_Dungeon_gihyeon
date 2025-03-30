@@ -195,9 +195,9 @@ HRESULT CGameInstance::Add_Prototype(_uint iLevelIndex, const _wstring& strProto
 	return m_pPrototype_Manager->Add_Prototype(iLevelIndex, strPrototypeTag, pPrototype);
 }
 
-CBase* CGameInstance::Clone_Prototype(PROTOTYPE ePrototype, _uint iLevelIndex, const _wstring& strPrototypeTag, void* pArg)
+CBase* CGameInstance::Clone_Prototype(PROTOTYPE ePrototype, _uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, void* pArg)
 {
-	return m_pPrototype_Manager->Clone_Prototype(ePrototype, iLevelIndex, strPrototypeTag, pArg);
+	return m_pPrototype_Manager->Clone_Prototype(ePrototype, iPrototypeLevelIndex, strPrototypeTag, pArg);
 }
 #pragma endregion
 
@@ -290,16 +290,10 @@ HRESULT CGameInstance::Add_Light(const LIGHT_DESC& LightDesc)
 
 
 #pragma region UI_MANAGER
-HRESULT CGameInstance::Add_UIObject(_uint iPrototypeLevelIndex, _uint iCurrentLevelIndex, const _wstring& strPrototypeTag, CUI_Manager::UI_LIFETIME eUILifeTime, void* pArg)
+CUIObject* CGameInstance::Add_UIObject(_uint iPrototypeLevelIndex, _uint iLayerLevelIndex, const _wstring& strPrototypeTag, CUI_Manager::UI_LIFETIME eUILifeTime, void* pArg)
 {
-	return m_pUI_Manager->Add_UIObject(iPrototypeLevelIndex, iCurrentLevelIndex, strPrototypeTag, eUILifeTime, pArg);
+	return m_pUI_Manager->Add_UIObject(iPrototypeLevelIndex, iLayerLevelIndex, strPrototypeTag, eUILifeTime, pArg);
 }
-
-void CGameInstance::Set_UIObject_Callback(CUIObject* pUIObject, std::function<void()> callback)
-{
-	m_pUI_Manager->Set_UIObject_Callback(pUIObject, callback);
-}
-
 #pragma endregion
 
 

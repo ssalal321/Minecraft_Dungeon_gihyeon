@@ -2,11 +2,11 @@
 
 #include "Component.h"
 
-/* 월드변환을 위한 행렬을 보관한다. */
-/* 월드공간에서의 객체의 상태변환을 위한 함수를 제공한다. */
-/* 월드행렬을 현재 객체의 상태에 맞게 직접 갱신한다. */
+/* 월드변환을 위한 행렬을 보관한다.                     */
+/* 월드공간에서의 객체의 상태변환을 위한 함수를 제공한다.  */
+/* 월드행렬을 현재 객체의 상태에 맞게 직접 갱신한다.      */
 
-/* XMLoadxxxxx -> 저장용 타입에서 연산용타입으로 치환. */
+/* XMLoadxxxxx -> 저장용 타입에서 연산용타입으로 치환.  */
 /* XMStorexxxxx -> 연산용타입에서 저장용 타입으로 저장. */
 
 BEGIN(Engine)
@@ -33,19 +33,22 @@ public:
 	}TRANSFORM_DESC;
 
 private:
-	CTransform(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);	
-	virtual ~CTransform() = default;
+	CTransform(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	~CTransform() override = default;
 
 public:
-	_vector Get_State(STATE eState) {
+	_vector Get_State(STATE eState) const
+	{
 		return XMLoadFloat4x4(&m_WorldMatrix).r[eState];
 	}
 
-	_matrix Get_WorldMatrix_Inverse() const {
+	_matrix Get_WorldMatrix_Inverse() const
+	{
 		return XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_WorldMatrix));
 	}
 
-	const _float4x4* Get_WorldMatrix_Ptr() const {
+	const _float4x4* Get_WorldMatrix_Ptr() const
+	{
 		return &m_WorldMatrix;
 	}
 
