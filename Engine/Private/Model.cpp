@@ -35,6 +35,22 @@ CModel::CModel(const CModel& Prototype)
 		m_Bones.push_back(pPrototypeBone->Clone());
 }
 
+const _float4x4* CModel::Get_CombindTransformationMatrix(const _char* pBoneName) const
+{
+	auto	iter = find_if(m_Bones.begin(), m_Bones.end(), [&](CBone* pBone)
+		{
+			if (false == strcmp(pBone->Get_Name(), pBoneName))
+				return true;
+
+			return false;
+		});
+
+	if (iter == m_Bones.end())
+		return nullptr;
+
+	return (*iter)->Get_CombinedTransformationMatrix_Ptr();
+}
+
 HRESULT CModel::Initialize_Prototype(TYPE eModelType, const _char* pModelFilePath, _fmatrix PreTransformMatrix)
 {
 	/* 어떤 설정? */

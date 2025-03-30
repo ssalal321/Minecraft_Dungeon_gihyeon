@@ -23,8 +23,9 @@ protected:
 	map<const _wstring, class CPartObject*>				m_PartObjects;
 
 protected:
-	CPartObject* Find_PartObject(const _wstring& strPartObjectTag);
-	HRESULT Add_PartObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, const _wstring& strPartObjectTag, void* pArg = nullptr);
+	CPartObject*	Find_PartObject(const _wstring& strPartObjectTag);
+	CComponent*		Find_Part_Component(const _wstring& strPartObjectTag, const _wstring& strComponentTag);
+	HRESULT			Add_PartObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, const _wstring& strPartObjectTag, void* pArg = nullptr);
 
 public:
 	CGameObject* Clone(void* pArg)	override = 0;

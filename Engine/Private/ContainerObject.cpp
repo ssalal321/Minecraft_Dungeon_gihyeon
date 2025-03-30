@@ -67,6 +67,19 @@ CPartObject* CContainerObject::Find_PartObject(const _wstring& strPartObjectTag)
 	return iter->second;	
 }
 
+CComponent* CContainerObject::Find_Part_Component(const _wstring& strPartObjectTag, const _wstring& strComponentTag)
+{
+	CPartObject* pPartObject = Find_PartObject(strPartObjectTag);
+	if (nullptr == pPartObject)
+		return nullptr;
+
+	CComponent* pPartComponent = pPartObject->Find_Component(strComponentTag);
+	if (nullptr == pPartComponent)
+		return nullptr;
+
+	return pPartComponent;
+}
+
 HRESULT CContainerObject::Add_PartObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, const _wstring& strPartObjectTag, void* pArg)
 {
 	if (nullptr != Find_PartObject(strPartObjectTag))

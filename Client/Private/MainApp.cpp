@@ -8,6 +8,23 @@ CMainApp::CMainApp()
 {
     /*XMMatrixDecompose();*/
     Safe_AddRef(m_pGameInstance);
+
+    /*m_pGraphic_Device->SetRenderState(D3DRS_ZENABLE, FALSE);*/
+
+    //ID3D11RasterizerState*;
+    //D3D11_RASTERIZER_DESC;
+    //m_pDevice->CreateRasterizerState();
+    //m_pContext->RSSetState();
+
+    //ID3D11DepthStencilState*;
+    //D3D11_DEPTH_STENCIL_DESC;
+    //m_pDevice->CreateDepthStencilState();
+    //m_pContext->OMSetDepthStencilState();
+
+    //ID3D11BlendState*;
+    //D3D11_BLEND_DESC;
+    //m_pDevice->CreateBlendState();
+    //m_pContext->OMSetBlendState();
 }
 
 HRESULT CMainApp::Initialize()
