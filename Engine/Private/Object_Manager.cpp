@@ -3,7 +3,6 @@
 #include "GameInstance.h"
 #include "GameObject.h"
 #include "Layer.h"
-#include "../../Client/Public/Client_Defines.h"
 
 CObject_Manager::CObject_Manager()
     : m_pGameInstance { CGameInstance::GetInstance() }

@@ -9,15 +9,15 @@ class ENGINE_DLL CContainerObject abstract : public CGameObject
 protected:
 	CContainerObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CContainerObject(const CContainerObject& Prototype);
-	virtual ~CContainerObject() = default;
+	~CContainerObject() override = default;
 
 public:
-	virtual HRESULT Initialize_Prototype();
-	virtual HRESULT Initialize(void* pArg);
-	virtual void Priority_Update(_float fTimeDelta);
-	virtual void Update(_float fTimeDelta);
-	virtual void Late_Update(_float fTimeDelta);
-	virtual HRESULT Render();
+	HRESULT		Initialize_Prototype()				override;
+	HRESULT		Initialize(void* pArg)				override;
+	void		Priority_Update(_float fTimeDelta)	override;
+	void		Update(_float fTimeDelta)			override;
+	void		Late_Update(_float fTimeDelta)		override;
+	HRESULT		Render()							override;
 
 protected:
 	map<const _wstring, class CPartObject*>				m_PartObjects;
@@ -27,8 +27,8 @@ protected:
 	HRESULT Add_PartObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, const _wstring& strPartObjectTag, void* pArg = nullptr);
 
 public:
-	virtual CGameObject* Clone(void* pArg) = 0;
-	virtual void Free() override;
+	CGameObject* Clone(void* pArg)	override = 0;
+	void	Free()					override;
 };
 
 END

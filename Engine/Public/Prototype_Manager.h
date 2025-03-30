@@ -31,7 +31,7 @@ private:
 	map<const _wstring, class CBase*>*	m_pPrototypes = { nullptr };
 
 private:
-	class	CBase*	Find_Prototype(_uint iLevelIndex, const _wstring& strPrototypeTag);
+	class	CBase*	Find_Prototype(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag);
 
 public:
 	static	  CPrototype_Manager*	Create(_uint iNumLevels);

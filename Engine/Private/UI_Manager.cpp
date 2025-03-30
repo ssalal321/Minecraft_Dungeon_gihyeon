@@ -1,5 +1,7 @@
 #include "UI_Manager.h"
 #include "GameInstance.h"
+#include "UIObject.h"
+
 
 CUI_Manager::CUI_Manager() : m_pGameInstance{ CGameInstance::GetInstance() }
 {
@@ -16,17 +18,18 @@ HRESULT CUI_Manager::Initialize(_uint iNumLevels)
 	return S_OK;
 }
 
-HRESULT CUI_Manager::Add_UIObject(_uint iPrototypeLevelIndex, _uint iCurrentLevelIndex, const _wstring& strPrototypeTag, UI_LIFETIME eUILifeTime, void* pArg)
+
+CUIObject* CUI_Manager::Add_UIObject(_uint iPrototypeLevelIndex, _uint iLayerLevelIndex, const _wstring& strPrototypeTag, UI_LIFETIME eUILifeTime, void* pArg)
 {
 	if (eUILifeTime >= LIFETIME_END)
-		return E_FAIL;
+		return nullptr;
 
 	CUIObject*	pUIObject = dynamic_cast<CUIObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTOTYPE_GAMEOBJECT, iPrototypeLevelIndex, strPrototypeTag, pArg));
 	if (nullptr == pUIObject)
-		return E_FAIL;
+		return nullptr;
 
 	// UI 객체가 현재 레벨에 추가되는지, 아니면 다음 레벨에 추가되는지 구분
-	if (iCurrentLevelIndex != m_iObjectLevelIndex)
+	if (iLayerLevelIndex != m_iObjectLevelIndex)
 	{
 		// 새로운 레벨로 추가 (다음 레벨 UI)
 		m_NextUIObjects[eUILifeTime].push_back(pUIObject);
@@ -37,7 +40,7 @@ HRESULT CUI_Manager::Add_UIObject(_uint iPrototypeLevelIndex, _uint iCurrentLeve
 		m_CurrentUIObjects[eUILifeTime].push_back(pUIObject);
 	}
 
-	return S_OK;
+	return pUIObject;
 }
 
 void CUI_Manager::Priority_Update(_float fDeltaTime)

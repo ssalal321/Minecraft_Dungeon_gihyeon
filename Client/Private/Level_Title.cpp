@@ -53,16 +53,16 @@ HRESULT CLevel_Title::Ready_Layer_BackGround(const _wstring& strLayerTag)
     Desc.fPlayTime              = 3.f;
     Desc.strTextureComTag       = TEXT("Prototype_Component_Texture_TitleImage");*/
 
-    CUI_Image::UIIMAGE_DESC  UIImageDesc
-	(TEXT("GameObject_TitleImage"), CUI_Image::UNCLICKABLE, LEVEL_STATIC, LEVEL_TITLE,
+    CUI_Image::UIIMAGE_DESC  TitleDesc
+	(TEXT("GameObject_TitleImage"), CUI_Image::UNCLICKABLE, 
 	 g_iWinSizeX * 0.5f, g_iWinSizeY * 0.5f, 0.9f, g_iWinSizeX, g_iWinSizeY,
-	 L"Prototype_Component_Texture_TitleImage");
+	 L"Prototype_Component_Texture_TitleImage", LEVEL_STATIC, LEVEL_TITLE);
 
+    CUIObject* pPlayerHP = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_TITLE,
+        TEXT("Prototype_GameObject_UIImage"),
+        CUI_Manager::TEMPORARY, &TitleDesc);
 
-    if (FAILED(m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_TITLE,
-											 TEXT("Prototype_GameObject_UIImage"),
-											 CUI_Manager::TEMPORARY, &UIImageDesc)))
-        return E_FAIL;
+    if (nullptr == pPlayerHP) return E_FAIL;
 
     return S_OK;
 }

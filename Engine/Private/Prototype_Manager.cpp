@@ -68,10 +68,10 @@ void CPrototype_Manager::Clear(_uint iLevelIndex)
 	m_pPrototypes[iLevelIndex].clear();
 }
 
-CBase* CPrototype_Manager::Find_Prototype(_uint iLevelIndex, const _wstring& strPrototypeTag)
+CBase* CPrototype_Manager::Find_Prototype(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag)
 {
-	auto	iter = m_pPrototypes[iLevelIndex].find(strPrototypeTag);
-	if (iter == m_pPrototypes[iLevelIndex].end())
+	auto	iter = m_pPrototypes[iPrototypeLevelIndex].find(strPrototypeTag);
+	if (iter == m_pPrototypes[iPrototypeLevelIndex].end())
 		return nullptr;
 
 	return iter->second;
