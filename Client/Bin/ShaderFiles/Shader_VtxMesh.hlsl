@@ -1,3 +1,4 @@
+#include "Engine_Shader_Defines.hlsli"
 
 matrix      g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
@@ -16,7 +17,7 @@ vector      g_vCamPosition;
 
 sampler g_LinearSampler = sampler_state 
 {
-    Filter = MIN_MAG_MIP_LINEAR;
+    Filter   = MIN_MAG_MIP_POINT;
     AddressU = WRAP;
     AddressV = WRAP;
 };
@@ -87,7 +88,9 @@ PS_OUT PS_MAIN(PS_IN In)
     
     Out.vColor = g_vLightDiffuse * vMtrlDiffuse * saturate(fShade + (g_vLightAmbient * g_vMtrlAmbient)) +
         (g_vLightSpecular * g_vMtrlSpecular) * fSpecular;
-    
+
+    // Out.vColor.a = 0.7f;
+
     return Out;
 }
 
@@ -95,6 +98,10 @@ technique11 DefaultTechnique
 {
     pass Default
     {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
         VertexShader = compile vs_5_0 VS_MAIN();
         PixelShader = compile ps_5_0 PS_MAIN();
     }

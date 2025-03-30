@@ -42,7 +42,7 @@ void CInventoryBase::Priority_Update(_float fTimeDelta)
 
 void CInventoryBase::Update(_float fTimeDelta)
 {
-	if (m_pGameInstance->Key_Down(VK_ESCAPE))
+	if (m_pGameInstance->Key_Down('I'))
 	{
 		m_bVisible = !m_bVisible;
 	}

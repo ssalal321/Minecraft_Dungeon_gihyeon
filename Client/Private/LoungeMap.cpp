@@ -1,78 +1,67 @@
-#include "Weapon.h"
+#include "LoungeMap.h"
 #include "GameInstance.h"
 
-CWeapon::CWeapon(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CPartObject { pDevice, pContext }
+CLoungeMap::CLoungeMap(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	: CGameObject { pDevice, pContext }
 {
 
 }
 
-CWeapon::CWeapon(const CWeapon& Prototype)
-	: CPartObject { Prototype }
+CLoungeMap::CLoungeMap(const CLoungeMap& Prototype)
+	: CGameObject { Prototype }
 {
 
 }
 
-HRESULT CWeapon::Initialize_Prototype()
+HRESULT CLoungeMap::Initialize_Prototype()
 {
 	/* 외부 데이터베이스를 통해서 값을 채운다. */
 
 	return S_OK;
 }
 
-HRESULT CWeapon::Initialize(void* pArg)
+HRESULT CLoungeMap::Initialize(void* pArg)
 {
 	/* 원형의 데이터를 복제하여 사본을 만들고. */
 	/* 추가적으로 필요한 데이터를 Arg로 받아와 실 사용하기위한 객체의 정보를 생성해준다. */	
-	WEAPON_DESC* pDesc = static_cast<WEAPON_DESC*>(pArg);
+	CGameObject::GAMEOBJECT_DESC		Desc{};
 
-	m_pTargetState = pDesc->pState;
-	m_pSocketMatrix = pDesc->pSocketMatrix;
+	Desc.pGameObjectTag = TEXT("GameObject_LoungeMap");
+	Desc.fSpeedPerSec = 0.f;
+	Desc.fRotationPerSec = 0.f;
 
-	if (FAILED(__super::Initialize(pArg)))
+	if (FAILED(__super::Initialize(&Desc)))
 		return E_FAIL;
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	/*m_pTransformCom->SetUp_Scale(0.1f, 0.1f, 0.1f);*/
-	m_pTransformCom->Rotation(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMConvertToRadians(185.f));
-	//m_pTransformCom->Rotation(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMConvertToRadians(70.f));
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMVectorSet(0.f, 0.f, -0.5f, 1.f));
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
+		XMVectorSet(0.f, -91.f, 0.f, 1.f));	
+
 	return S_OK;
 }
 
-void CWeapon::Priority_Update(_float fTimeDelta)
+void CLoungeMap::Priority_Update(_float fTimeDelta)
 {
 
 }
 
-void CWeapon::Update(_float fTimeDelta)
+void CLoungeMap::Update(_float fTimeDelta)
 {
-
 
 }
 
-void CWeapon::Late_Update(_float fTimeDelta)
+void CLoungeMap::Late_Update(_float fTimeDelta)
 {
-	_matrix		SocketMatrix = XMLoadFloat4x4(m_pSocketMatrix);
-
-	for (size_t i = 0; i < 3; i++)	
-		SocketMatrix.r[i] = XMVector3Normalize(SocketMatrix.r[i]);	
-
-	XMStoreFloat4x4(&m_CombinedWorldMatrix, 
-		XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()) * 
-		SocketMatrix *
-		XMLoadFloat4x4(m_pParentWorldMatrix));
 
 	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 }
 
-HRESULT CWeapon::Render()
+HRESULT CLoungeMap::Render()
 {
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
-		
 
 	_uint	iNumMeshes = m_pModelCom->Get_NumMeshes();
 
@@ -90,7 +79,7 @@ HRESULT CWeapon::Render()
 	return S_OK;
 }
 
-HRESULT CWeapon::Ready_Components()
+HRESULT CLoungeMap::Ready_Components()
 {
 	/* Com_Shader */
 	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxMesh"),
@@ -98,16 +87,16 @@ HRESULT CWeapon::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Model */
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_GlaiveSteel"),
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_LoungeMap"),
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
 		return E_FAIL;
 
 	return S_OK;
 }
 
-HRESULT CWeapon::Bind_ShaderResources()
+HRESULT CLoungeMap::Bind_ShaderResources()
 {
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix)))
+	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
 
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Transform_Float4x4(CPipeLine::D3DTS_VIEW))))
@@ -133,13 +122,13 @@ HRESULT CWeapon::Bind_ShaderResources()
 	return S_OK;
 }
 
-CWeapon* CWeapon::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CLoungeMap* CLoungeMap::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	CWeapon* pGameInstance = new CWeapon(pDevice, pContext);
+	CLoungeMap* pGameInstance = new CLoungeMap(pDevice, pContext);
 
 	if (FAILED(pGameInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Create : CWeapon");
+		MSG_BOX("Failed to Create : CLoungeMap");
 		Safe_Release(pGameInstance);
 	}
 
@@ -147,20 +136,20 @@ CWeapon* CWeapon::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 }
 
 
-CGameObject* CWeapon::Clone(void* pArg)
+CGameObject* CLoungeMap::Clone(void* pArg)
 {
-	CWeapon* pGameInstance = new CWeapon(*this);
+	CLoungeMap* pGameInstance = new CLoungeMap(*this);
 
 	if (FAILED(pGameInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Clone : CWeapon");
+		MSG_BOX("Failed to Clone : CLoungeMap");
 		Safe_Release(pGameInstance);
 	}
 
 	return pGameInstance;
 }
 
-void CWeapon::Free()
+void CLoungeMap::Free()
 {
 	__super::Free();
 

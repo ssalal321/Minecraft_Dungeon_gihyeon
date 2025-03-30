@@ -16,15 +16,15 @@ class CSky final : public CGameObject
 private:
 	CSky(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CSky(const CSky& Prototype);
-	virtual ~CSky() = default;
+	~CSky() override = default;
 
 public:
-	virtual HRESULT Initialize_Prototype() override;
-	virtual HRESULT Initialize(void* pArg) override;
-	virtual void Priority_Update(_float fTimeDelta) override;
-	virtual void Update(_float fTimeDelta) override;
-	virtual void Last_Update(_float fTimeDelta) override;
-	virtual HRESULT Render() override;
+	HRESULT		Initialize_Prototype()				override;
+	HRESULT		Initialize(void* pArg)				override;
+	void		Priority_Update(_float fTimeDelta)	override;
+	void		Update(_float fTimeDelta)			override;
+	void		Late_Update(_float fTimeDelta)		override;
+	HRESULT		Render()							override;
 
 private:	
 	
@@ -37,9 +37,9 @@ private:
 	HRESULT Bind_ShaderResources();
 
 public:
-	static CSky* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual CGameObject* Clone(void* pArg) override;
-	virtual void Free() override;
+	static CSky*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CGameObject*	Clone(void* pArg)	override;
+	void	Free()						override;
 };
 
 END

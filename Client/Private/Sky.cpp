@@ -49,8 +49,10 @@ void CSky::Update(_float fTimeDelta)
 
 }
 
-void CSky::Last_Update(_float fTimeDelta)
+void CSky::Late_Update(_float fTimeDelta)
 {
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
+		XMLoadFloat4(m_pGameInstance->Get_CamPosition()));
 
 	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_PRIORITY, this);
 }

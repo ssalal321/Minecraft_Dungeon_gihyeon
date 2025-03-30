@@ -34,7 +34,7 @@ HRESULT CBody_Player::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_pModelCom->Set_Animation(3, true);
+	m_pModelCom->Set_Animation(10, true);
 
 	return S_OK;
 }
@@ -47,7 +47,7 @@ void CBody_Player::Priority_Update(_float fTimeDelta)
 void CBody_Player::Update(_float fTimeDelta)
 {
 	if (*m_pTargetState & CPlayer::STATE_IDLE)
-		m_pModelCom->Set_Animation(3, true);
+		m_pModelCom->Set_Animation(10, true);
 
 	if (*m_pTargetState & CPlayer::STATE_RUN)
 		m_pModelCom->Set_Animation(4, true);
@@ -96,7 +96,7 @@ HRESULT CBody_Player::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Model */
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Fiona"),
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_PlayerHex"),
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
 		return E_FAIL;
 

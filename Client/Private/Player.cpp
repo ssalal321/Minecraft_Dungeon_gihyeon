@@ -119,7 +119,7 @@ HRESULT CPlayer::Ready_PartObjects()
 	WeaponDesc.pGameObjectTag = TEXT("GameObject_Weapon");
 	WeaponDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	WeaponDesc.pState = &m_iState;
-	WeaponDesc.pSocketMatrix = pBody->Get_CombindTransformationMatrix("SWORD");
+	WeaponDesc.pSocketMatrix = pBody->Get_CombinedTransformationMatrix("J_R_Weapon_end");
 
 	if (FAILED(__super::Add_PartObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Weapon"), TEXT("Part_Weapon"), &WeaponDesc)))
 		return E_FAIL;

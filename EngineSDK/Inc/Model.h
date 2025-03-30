@@ -16,7 +16,7 @@ private:
 public:
 	_uint	Get_NumMeshes() const { return m_iNumMeshes; }
 
-	const _float4x4*	Get_CombindTransformationMatrix(const _char* pBoneName) const;
+	const _float4x4*	Get_CombinedTransformationMatrix(const _char* pBoneName) const;
 
 	void	Set_Animation(_uint iAnimIndex, _bool isLoop = true)
 	{

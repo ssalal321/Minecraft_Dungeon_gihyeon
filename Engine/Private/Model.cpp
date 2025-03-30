@@ -35,7 +35,7 @@ CModel::CModel(const CModel& Prototype)
 		m_Bones.push_back(pPrototypeBone->Clone());
 }
 
-const _float4x4* CModel::Get_CombindTransformationMatrix(const _char* pBoneName) const
+const _float4x4* CModel::Get_CombinedTransformationMatrix(const _char* pBoneName) const
 {
 	auto	iter = find_if(m_Bones.begin(), m_Bones.end(), [&](CBone* pBone)
 		{

@@ -155,6 +155,7 @@
     <ClInclude Include="..\public\Camera_Free.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\ForkLift.h" />
+    <ClInclude Include="..\Public\LoungeMap.h" />
     <ClInclude Include="..\Public\InventoryBase.h" />
     <ClInclude Include="..\Public\InventoryGearSlot.h" />
     <ClInclude Include="..\Public\InventoryItemSlot.h" />
@@ -180,6 +181,7 @@
     <ClCompile Include="..\Private\Body_Player.cpp" />
     <ClCompile Include="..\private\Camera_Free.cpp" />
     <ClCompile Include="..\Private\ForkLift.cpp" />
+    <ClCompile Include="..\Private\LoungeMap.cpp" />
     <ClCompile Include="..\Private\InventoryBase.cpp" />
     <ClCompile Include="..\Private\InventoryGearSlot.cpp" />
     <ClCompile Include="..\Private\InventoryItemSlot.cpp" />
@@ -217,6 +219,9 @@
     <ProjectReference Include="..\..\Engine\Default\Engine.vcxproj">
       <Project>{0694625b-867a-443d-807e-05685121b6e0}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Bin\ShaderFiles\Engine_Shader_Defines.hlsli" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
