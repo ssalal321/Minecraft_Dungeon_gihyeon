@@ -74,16 +74,16 @@ void CChannel::Update_TransformationMatrix(_float fCurrentTrackPosition, const v
 
 	_vector			vScale, vRotation, vTranslation;
 
-	if (fCurrentTrackPosition >= LastKeyFrame.fTrackPosition)
+	if (fCurrentTrackPosition >= LastKeyFrame.fTrackPosition)  // 모션이 끝났다면
 	{
 		/*마지막 모션을 취한다. */
 		vScale = XMLoadFloat3(&LastKeyFrame.vScale);
 		vRotation = XMLoadFloat4(&LastKeyFrame.vRotation);
 		vTranslation = XMVectorSetW(XMLoadFloat3(&LastKeyFrame.vTranslation), 1.f);
 
-		m_iCurrentKeyFrameIndex = m_iNumKeyFrames - 1;  // m_iCurrentKeyFrameIndex : 0부터 시작
+		m_iCurrentKeyFrameIndex = m_iNumKeyFrames - 1;  // m_iCurrentKeyFrameIndex : 0부터 시작이므로 -1 해줌
 	}
-	else
+	else  // 키프레임 간 보간
 	{
 		while (fCurrentTrackPosition >= m_KeyFrames[m_iCurrentKeyFrameIndex + 1].fTrackPosition)
 			++m_iCurrentKeyFrameIndex;

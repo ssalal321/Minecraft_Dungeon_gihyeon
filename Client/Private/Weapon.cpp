@@ -2,13 +2,13 @@
 #include "GameInstance.h"
 
 CWeapon::CWeapon(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CPartObject { pDevice, pContext }
+	: CPartObject(pDevice, pContext)
 {
 
 }
 
 CWeapon::CWeapon(const CWeapon& Prototype)
-	: CPartObject { Prototype }
+	: CPartObject(Prototype)
 {
 
 }
@@ -35,9 +35,7 @@ HRESULT CWeapon::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	/*m_pTransformCom->SetUp_Scale(0.1f, 0.1f, 0.1f);*/
-	m_pTransformCom->Rotation(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMConvertToRadians(185.f));
-	//m_pTransformCom->Rotation(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMConvertToRadians(70.f));
+	m_pTransformCom->Rotation(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMConvertToRadians(270.f));
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMVectorSet(0.f, 0.f, -0.5f, 1.f));
 	return S_OK;
 }
