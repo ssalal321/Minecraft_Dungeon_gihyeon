@@ -221,7 +221,7 @@ HRESULT CLoader::Loading_For_GamePlay()
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Player/PlayerHex.fbx", PreTransformMatrix))))
 		return E_FAIL;
 
-	PreTransformMatrix = XMMatrixIdentity();
+	//PreTransformMatrix = XMMatrixIdentity();
 	/* For.Prototype_Component_Model_GlaiveSteel */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_GlaiveSteel"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Weapon/GlaiveSteel.fbx", PreTransformMatrix))))
