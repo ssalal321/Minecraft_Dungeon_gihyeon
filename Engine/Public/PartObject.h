@@ -30,8 +30,8 @@ protected:
 	_float4x4			m_CombinedWorldMatrix	= {};
 
 public:
-	virtual CGameObject* Clone(void* pArg) = 0;
-	virtual void Free() override;
+	CGameObject* Clone(void* pArg)	override = 0;
+	void	Free()					override;
 };
 
 END

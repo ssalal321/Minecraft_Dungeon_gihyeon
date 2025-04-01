@@ -40,6 +40,12 @@ HRESULT CPlayer::Initialize(void* pArg)
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;
 
+	CPartObject* pBody_Player = Find_PartObject(TEXT("Part_Body"));
+
+	CTransform* pPlayerTransformCom = Get_ContainerObject_TransformCom();  // Find_Component()도 있지만 그냥 Transform만 반환하는 거 만들었음
+
+
+
 	return S_OK;
 }
 

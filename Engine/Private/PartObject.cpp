@@ -45,10 +45,7 @@ HRESULT CPartObject::Render()
 	return S_OK;
 }
 
-
-
 void CPartObject::Free()
 {
 	__super::Free();
-
 }

@@ -49,9 +49,6 @@
     <Filter Include="02.GameObjects\Player">
       <UniqueIdentifier>{a79e5608-68af-4d7c-9411-323b06a388c1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Player\Body_Player">
-      <UniqueIdentifier>{5373e998-8490-442b-bc63-474356c4fb92}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\UIObjects\UI_Image%28static%29">
       <UniqueIdentifier>{69350565-a71a-401c-9cf8-0617f0fc37b2}</UniqueIdentifier>
     </Filter>
@@ -73,9 +70,6 @@
     <Filter Include="02.GameObjects\Sky">
       <UniqueIdentifier>{f921d5a2-b17c-4a73-a7d3-028b1053c5a0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Player\Weapon">
-      <UniqueIdentifier>{e7e9d8fd-6248-4abe-9a63-c2fbf55b89dc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Levels\02. GamePlay">
       <UniqueIdentifier>{fae995d6-0f45-4682-97aa-35fe9c6e9a44}</UniqueIdentifier>
     </Filter>
@@ -84,6 +78,15 @@
     </Filter>
     <Filter Include="02.GameObjects\ForkLift">
       <UniqueIdentifier>{97f07e9d-00c1-47e2-ad7d-79a41a661f9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Player\00. Body_Player">
+      <UniqueIdentifier>{5373e998-8490-442b-bc63-474356c4fb92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Player\01. Weapon">
+      <UniqueIdentifier>{e7e9d8fd-6248-4abe-9a63-c2fbf55b89dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Player\02. State">
+      <UniqueIdentifier>{f9107163-f31d-4f6f-9fe1-b689765a2b57}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -133,7 +136,7 @@
       <Filter>02.GameObjects\UIObjects\HPbar</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Body_Player.h">
-      <Filter>02.GameObjects\Player\Body_Player</Filter>
+      <Filter>02.GameObjects\Player\00. Body_Player</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\UI_Image.h">
       <Filter>02.GameObjects\UIObjects\UI_Image%28static%29</Filter>
@@ -151,7 +154,7 @@
       <Filter>02.GameObjects\UIObjects\Inventory\InventoryItemSlot</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Weapon.h">
-      <Filter>02.GameObjects\Player\Weapon</Filter>
+      <Filter>02.GameObjects\Player\01. Weapon</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\LoungeMap.h">
       <Filter>02.GameObjects\LoungeMap</Filter>
@@ -161,6 +164,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\ForkLift.h">
       <Filter>02.GameObjects\ForkLift</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Player_Idle.h">
+      <Filter>02.GameObjects\Player\02. State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Client_Struct.h">
+      <Filter>99.Defines</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -211,7 +220,7 @@
       <Filter>02.GameObjects\UIObjects\HPbar</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Body_Player.cpp">
-      <Filter>02.GameObjects\Player\Body_Player</Filter>
+      <Filter>02.GameObjects\Player\00. Body_Player</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\UI_Image.cpp">
       <Filter>02.GameObjects\UIObjects\UI_Image%28static%29</Filter>
@@ -229,7 +238,7 @@
       <Filter>02.GameObjects\UIObjects\Inventory\InventoryItemSlot</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Weapon.cpp">
-      <Filter>02.GameObjects\Player\Weapon</Filter>
+      <Filter>02.GameObjects\Player\01. Weapon</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\LoungeMap.cpp">
       <Filter>02.GameObjects\LoungeMap</Filter>
@@ -239,6 +248,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\ForkLift.cpp">
       <Filter>02.GameObjects\ForkLift</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player_Idle.cpp">
+      <Filter>02.GameObjects\Player\02. State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

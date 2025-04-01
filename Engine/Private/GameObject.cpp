@@ -69,8 +69,6 @@ HRESULT CGameObject::Render()
 	return S_OK;
 }
 
-
-
 CComponent* CGameObject::Find_Component(const _wstring& strComponentTag)
 {
 	auto	iter = m_Components.find(strComponentTag);

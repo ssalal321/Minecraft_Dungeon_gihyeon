@@ -3,12 +3,12 @@
 #include "GameInstance.h"
 
 CContainerObject::CContainerObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CGameObject { pDevice, pContext }
+	: CGameObject(pDevice, pContext)
 {
 }
 
 CContainerObject::CContainerObject(const CContainerObject& Prototype)
-	: CGameObject{ Prototype }
+	: CGameObject(Prototype)
 {
 }
 

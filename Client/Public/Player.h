@@ -19,6 +19,11 @@ public:
 		STATE_ATTACK = 0x00000004,   /* 0100 */
 		STATE_END = 0
 	};
+
+	struct PlayerInfo
+	{
+		
+	};
 private:
 	CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CPlayer(const CPlayer& Prototype);
@@ -42,8 +47,8 @@ private:
 
 public:
 	static CPlayer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual CGameObject* Clone(void* pArg) override;
-	virtual void Free() override;
+	CGameObject*	Clone(void* pArg)	override;
+	void	Free()						override;
 };
 
 END

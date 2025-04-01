@@ -42,7 +42,7 @@ protected:
 	ID3D11Device*			m_pDevice = { nullptr };
 	ID3D11DeviceContext*	m_pContext = { nullptr };
 	class CGameInstance*	m_pGameInstance = { nullptr };
-	class CTransform*		m_pTransformCom = { nullptr };
+	CTransform*				m_pTransformCom = { nullptr };
 
 protected:
 	_tchar									m_szGameObjectTag[MAX_PATH] = {};
