@@ -56,21 +56,24 @@ void CPlayer::Update(_float fTimeDelta)
 	}
 	if (GetKeyState(VK_RIGHT) & 0x8000)
 	{
-		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta);
+		m_iState |= STATE_ATTACK;
+		//m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta);
 	}
 	if (GetKeyState(VK_DOWN) & 0x8000)
 	{
-		m_pTransformCom->Go_Backward(fTimeDelta);
+		m_iState |= STATE_RUN;
+		//m_pTransformCom->Go_Backward(fTimeDelta);
 	}
 
 	if (GetKeyState(VK_UP) & 0x8000)
 	{
-		m_pTransformCom->Go_Straight(fTimeDelta);
+		m_iState |= STATE_IDLE;
+		/*m_pTransformCom->Go_Straight(fTimeDelta);
 
 		if (m_iState & STATE_IDLE)
 			m_iState ^= STATE_IDLE;
 
-		m_iState |= STATE_RUN;
+		m_iState |= STATE_RUN;*/
 	}
 
 	else

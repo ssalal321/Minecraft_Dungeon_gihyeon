@@ -34,8 +34,8 @@ HRESULT CBody_Player::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_pModelCom->Set_Animation(16, true);
-
+	m_pModelCom->Set_InitAnimIndex(4, true);
+	
 	return S_OK;
 }
 
@@ -46,11 +46,14 @@ void CBody_Player::Priority_Update(_float fTimeDelta)
 
 void CBody_Player::Update(_float fTimeDelta)
 {
-	if (*m_pTargetState & CPlayer::STATE_IDLE)
+	if (m_pGameInstance->Get_Key(VK_NUMPAD7))
+		m_pModelCom->Set_Animation(6, true);
+
+	if (m_pGameInstance->Get_Key(VK_NUMPAD8))
 		m_pModelCom->Set_Animation(10, true);
 
-	if (*m_pTargetState & CPlayer::STATE_RUN)
-		m_pModelCom->Set_Animation(4, true);
+	if (m_pGameInstance->Get_Key(VK_NUMPAD9))
+		m_pModelCom->Set_Animation(15, true);
 
 	if (true == m_pModelCom->Play_Animation(fTimeDelta))
 		int a = 10;
@@ -58,7 +61,6 @@ void CBody_Player::Update(_float fTimeDelta)
 
 void CBody_Player::Late_Update(_float fTimeDelta)
 {
-
 	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()) * XMLoadFloat4x4(m_pParentWorldMatrix));
 
 	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
