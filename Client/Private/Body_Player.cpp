@@ -34,7 +34,7 @@ HRESULT CBody_Player::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_pModelCom->Set_InitAnimIndex(4, true);
+	//m_pModelCom->Set_InitAnimIndex(4, true);
 	
 	return S_OK;
 }

@@ -124,6 +124,12 @@
     <Filter Include="01.Utility\09. Fonts">
       <UniqueIdentifier>{8815e7bd-7ae0-4c2d-9af9-26481116fa7e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\10. FSM">
+      <UniqueIdentifier>{3ff19b29-33ec-4d1e-8201-553d4dbf52f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\10. FSM\State">
+      <UniqueIdentifier>{9ef4515f-f1d9-4cbc-8c8c-0ca0ddce7ba3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Base.h">
@@ -255,6 +261,12 @@
     <ClInclude Include="..\Public\Font_Manager.h">
       <Filter>01.Utility\09. Fonts</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\State.h">
+      <Filter>01.Utility\10. FSM\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\FSM.h">
+      <Filter>01.Utility\10. FSM</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -370,6 +382,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Font_Manager.cpp">
       <Filter>01.Utility\09. Fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State.cpp">
+      <Filter>01.Utility\10. FSM\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\FSM.cpp">
+      <Filter>01.Utility\10. FSM</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
