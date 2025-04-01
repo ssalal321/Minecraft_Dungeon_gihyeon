@@ -11,16 +11,23 @@ public:
 private:
 	CModel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CModel(const CModel& Prototype);
-	virtual ~CModel() = default;
+	~CModel() override = default;
 
 public:
 	_uint	Get_NumMeshes() const { return m_iNumMeshes; }
 
 	const _float4x4*	Get_CombinedTransformationMatrix(const _char* pBoneName) const;
 
+	void	Set_InitAnimIndex(_uint iInitAnimIndex, _bool isLoop = true)
+	{
+		m_iCurrentAnimIndex = iInitAnimIndex;
+		m_iNextAnimIndex	= iInitAnimIndex;
+		m_isLoop = isLoop;
+	}
+
 	void	Set_Animation(_uint iAnimIndex, _bool isLoop = true)
 	{
-		m_iCurrentAnimIndex = iAnimIndex;
+		m_iNextAnimIndex = iAnimIndex;
 		m_isLoop = isLoop;
 	}
 
@@ -58,9 +65,11 @@ private:
 	vector<class CBone*>		m_Bones;
 
 	_uint						m_iCurrentAnimIndex = {};
+	_uint						m_iNextAnimIndex = {};
 	_bool						m_isLoop = { false };
 	_uint						m_iNumAnimations = {};
 	vector<class CAnimation*>	m_Animations;
+
 
 private:
 	HRESULT		Ready_Meshes();

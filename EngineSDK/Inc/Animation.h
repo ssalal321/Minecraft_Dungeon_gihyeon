@@ -17,8 +17,9 @@ private:
 	virtual ~CAnimation() = default;
 
 public:
-	HRESULT Initialize(const aiAnimation* pAIAnimation, const vector<class CBone*>& Bones);
-	_bool	Update_TransformationMatrices(_float fTimeDelta, const vector<class CBone*>& Bones, _bool isLoop);
+	HRESULT		Initialize(const aiAnimation* pAIAnimation, const vector<class CBone*>& Bones);
+	_bool		Update_TransformationMatrices(_float fTimeDelta, const vector<class CBone*>& Bones,
+											  _bool isLoop, _bool animationChanged);
 
 private:
 	_char					m_szName[MAX_PATH] = {};
@@ -30,7 +31,9 @@ private:
 
 	/* 각 뼈의 정보를 가진다. */
 	/* 정보 : 해당 뼈가 시간별로 취해야할 상태들. */
-	vector<class CChannel*>	m_Channels;	
+	vector<class CChannel*>	m_Channels;
+
+	_bool			m_StartLerp = { false };
 
 public:
 	static CAnimation* Create(const aiAnimation* pAIAnimation, const vector<class CBone*>& Bones);

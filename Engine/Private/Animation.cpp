@@ -26,7 +26,7 @@ HRESULT CAnimation::Initialize(const aiAnimation* pAIAnimation, const vector<cla
     return S_OK;
 }
 
-_bool CAnimation::Update_TransformationMatrices(_float fTimeDelta, const vector<class CBone*>& Bones, _bool isLoop)
+_bool CAnimation::Update_TransformationMatrices(_float fTimeDelta, const vector<class CBone*>& Bones, _bool isLoop, _bool animationChanged)
 {
 	_bool		isFinished = { false };  // 기본적으로는 루프를 돌도록 false로 설정
 
@@ -43,9 +43,14 @@ _bool CAnimation::Update_TransformationMatrices(_float fTimeDelta, const vector<
 		}
 	}
 
+	if (animationChanged)
+	{
+		m_fCurrentTrackPosition = 0.f;
+	}
+
 	for (auto& pChannel : m_Channels)
 	{
-		pChannel->Update_TransformationMatrix(m_fCurrentTrackPosition, Bones);
+		pChannel->Update_TransformationMatrix(m_fCurrentTrackPosition, Bones, animationChanged);
 	}
 
 	return isFinished;

@@ -14,8 +14,8 @@ private:
 	virtual ~CChannel() = default;
 
 public:
-	HRESULT Initialize(const aiNodeAnim* pAIChannel, const vector<class CBone*>& Bones);
-	void Update_TransformationMatrix(_float fCurrentTrackPosition, const vector<class CBone*>& Bones);
+	HRESULT		Initialize(const aiNodeAnim* pAIChannel, const vector<class CBone*>& Bones);
+	void		Update_TransformationMatrix(_float& fCurrentTrackPosition, const vector<class CBone*>& Bones, _bool animationChanged);
 private:
 	_char				m_szName[MAX_PATH] = {};
 
@@ -24,13 +24,19 @@ private:
 	/* 이 뼈가 표현해야할 상태의 갯수 */
 	_uint				m_iNumKeyFrames = {};
 
+	_bool			m_AnimationChanged = {};
+	_bool			m_StartedLerp = { false };
+	_vector			m_vLeftScale, m_vLeftRotation, m_vLeftTranslation = {};
+	_matrix			PreviousTransformMatrix = {};
 	/* 시간대 별 상태들을 모아놓은거 */
 	/* KEYFRAME : 특정 시간대의 상태! */
 	vector<KEYFRAME>	m_KeyFrames;
 
 	_uint				m_iCurrentKeyFrameIndex = {};
 
-	
+	_float4x4 m_PrevTransformMatrix = {};
+
+
 public:
 	static CChannel* Create(const aiNodeAnim* pAIChannel, const vector<class CBone*>& Bones);
 	virtual void Free() override;

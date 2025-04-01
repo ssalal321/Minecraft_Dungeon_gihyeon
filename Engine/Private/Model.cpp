@@ -7,12 +7,12 @@
 #include "Material.h"
 
 CModel::CModel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-    : CComponent { pDevice, pContext }
+    : CComponent (pDevice, pContext)
 {
 }
 
 CModel::CModel(const CModel& Prototype)
-    : CComponent{ Prototype }
+    : CComponent(Prototype)
 	, m_eModelType { Prototype.m_eModelType }
 	, m_iNumMeshes { Prototype.m_iNumMeshes }
 	, m_Meshes { Prototype.m_Meshes }
@@ -101,11 +101,17 @@ HRESULT CModel::Render(_uint iMeshIndex)
 
 _bool CModel::Play_Animation(_float fTimeDelta)
 {
-	_bool		isFinished = { false };
+	_bool	isFinished = { false };
+	_bool	animationChanged = { false };
+
+ 	if (m_iCurrentAnimIndex != m_iNextAnimIndex)
+	{
+		animationChanged = true;
+		m_iCurrentAnimIndex = m_iNextAnimIndex;
+	}
 
 	/* 뼈들의 m_TransformationMatrix를 애니메이터분들이 제공해준 시간에 맞는 뼈의 상태로 갱신해준다. */
-	isFinished = m_Animations[m_iCurrentAnimIndex]->Update_TransformationMatrices(fTimeDelta, m_Bones, m_isLoop);
-
+	isFinished = m_Animations[m_iCurrentAnimIndex]->Update_TransformationMatrices(fTimeDelta, m_Bones, m_isLoop, animationChanged);
 
 	/* 모든 뼈들의 CombinedTransformationMatrix를 셋한다. */
 	for (auto& pBone : m_Bones)
@@ -140,7 +146,6 @@ HRESULT CModel::Ready_Meshes()
 
 	for (size_t i = 0; i < m_iNumMeshes; i++)
 	{
-
 		/* VertexBuffer, IndexBuffer */
 		CMesh* pMesh = CMesh::Create(m_pDevice, m_pContext, m_eModelType, m_Bones, m_pAIScene->mMeshes[i], XMLoadFloat4x4(&m_PreTransformMatrix));
 		if (nullptr == pMesh)
