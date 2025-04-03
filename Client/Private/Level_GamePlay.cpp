@@ -128,9 +128,9 @@ HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _wstring& strLayerTag)
         LEVEL_GAMEPLAY, strLayerTag)))
         return E_FAIL;*/
 
-   /* if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_LoungeMap"),
+    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_LoungeMap"),
         LEVEL_GAMEPLAY, strLayerTag)))
-        return E_FAIL;*/
+        return E_FAIL;
 
     /*if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Sky"),
         LEVEL_GAMEPLAY, strLayerTag)))

@@ -1,15 +1,28 @@
 #pragma once
 
+
 namespace Client
 {
-	typedef struct tagPlayerDesc
-	{
-		int     _currentHP;
-        int     _maxHP;
-        int     _attackPoint;      // 보통 1 per 플레이어 하트 1/2
-        float   _speed;
-        float   _effectiveRange;   // 무기별 공격 유효 사거리
-        bool    _bStunned  = false;
+    struct OBJECT_DESC
+    {
+        virtual ~OBJECT_DESC() {}
+    };
 
-	}PLAYER_DESC;
+    struct PLAYER_DESC : public OBJECT_DESC
+    {
+        int     iCurrentHP;
+        int     iMaxHP;
+        int     iAttackPoint;
+        float   fSpeed;
+        float   fEffectiveRange;
+        bool    bStunned;
+
+        PLAYER_DESC(int currentHP, int maxHP, int attackPoint, float speed, float effectiveRange, bool stunned = false)
+            : iCurrentHP(currentHP), iMaxHP(maxHP), iAttackPoint(attackPoint),
+            fSpeed(speed), fEffectiveRange(effectiveRange), bStunned(stunned) {
+        }
+
+        ~PLAYER_DESC() override = default;
+    };
+
 }

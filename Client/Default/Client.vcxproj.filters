@@ -88,6 +88,12 @@
     <Filter Include="02.GameObjects\Player\02. State">
       <UniqueIdentifier>{f9107163-f31d-4f6f-9fe1-b689765a2b57}</UniqueIdentifier>
     </Filter>
+    <Filter Include="96. FSM">
+      <UniqueIdentifier>{020092ce-9d28-4df2-9763-9f771b196d1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96. FSM\State">
+      <UniqueIdentifier>{ff95e289-b11b-4bc8-a789-3ea3d6113962}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -171,6 +177,15 @@
     <ClInclude Include="..\Public\Client_Struct.h">
       <Filter>99.Defines</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\State.h">
+      <Filter>96. FSM\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\FSM.h">
+      <Filter>96. FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Client_Enum.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -251,6 +266,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Player_Idle.cpp">
       <Filter>02.GameObjects\Player\02. State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State.cpp">
+      <Filter>96. FSM\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\FSM.cpp">
+      <Filter>96. FSM</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
