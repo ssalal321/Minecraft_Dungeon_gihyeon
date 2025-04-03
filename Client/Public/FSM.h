@@ -1,13 +1,13 @@
 #pragma once
-
+#include "Base.h"
 #include "State.h"
 
-BEGIN(Engine)
+BEGIN(Client)
 
-class ENGINE_DLL FSM : public CBase
+class FSM final : public CBase
 {
 public:
-	FSM() : m_curState(nullptr) {}
+	FSM() {}
 	~FSM() override = default;
 
 public:
@@ -27,15 +27,15 @@ public:
 
 		if (_pNextState == m_curState)
 			return;
-		
+
 		if (m_curState != nullptr)
- 			m_curState->State_Exit();
+			m_curState->State_Exit();
 
 		m_curState = _pNextState;
 		m_curState->State_Enter();
 	}
 
-	void Fixed_Update_State()
+	void Priority_Update_State()
 	{
 		if (m_curState != nullptr)
 			m_curState->State_Priority_Update();
@@ -71,16 +71,28 @@ public:
 			m_curState->On_CollisionExit(_other);
 	}*/
 
-
 	CState*  Get_CurrentState() const { return m_curState; }
 
 private:
-	CState*		m_curState;
-	//unordered_map<int, vector<CState*>>	  m_StateMap;
+	CState*		m_curState = { nullptr };
 
 public:
-	static	FSM*	Create();
-	void   Free()    override;
+	static FSM* Create()
+	{
+		FSM* pGameInstance = new FSM();
+
+		if (nullptr == pGameInstance)
+		{
+			MSG_BOX("Failed to Create : FSM");
+			Safe_Release(pGameInstance);
+		}
+
+		return pGameInstance;
+	}
+
+	void Free()
+	{
+	}
 };
 
 END

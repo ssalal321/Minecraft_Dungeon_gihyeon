@@ -1,4 +1,5 @@
 #pragma once
+#include "Client_Defines.h"
 #include "State.h"
 
 BEGIN(Client)
@@ -6,11 +7,11 @@ BEGIN(Client)
 class CPlayer_Idle final: public CState
 {
 private:
-	CPlayer_Idle(CPartObject* pActor, CTransform* pTransformCom);
+	CPlayer_Idle(CGameObject* pActor, CGameObject* pPartObject, OBJECT_DESC* pGameObjectDesc);
 	~CPlayer_Idle() override = default;
 
 public:
-    void   Init_State()             override;
+    HRESULT   Init_State()          override;
 
     void   State_Enter()            override;
     void   State_Priority_Update()  override;
@@ -18,8 +19,15 @@ public:
     void   State_Late_Update()      override;
     void   State_Exit()             override;
 
+private:
+    class CPlayer*          m_pPlayer = { nullptr };
+    class CBody_Player*     m_pBodyPlayer = { nullptr };
+    CModel*                 m_pBodyPlayerModelCom = { nullptr };
+    PLAYER_DESC*            m_pPlayerDesc = { nullptr };
+
 public:
-    void   Free()                   override;
+    static CState*  Create(CGameObject* pActor, CGameObject* pPartObject, OBJECT_DESC* pGameObjectDesc);
+    void   Free()    override;
 };
 
 END

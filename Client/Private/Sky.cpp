@@ -2,13 +2,13 @@
 #include "GameInstance.h"
 
 CSky::CSky(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CGameObject { pDevice, pContext }
+	: CGameObject(pDevice, pContext)
 {
 
 }
 
 CSky::CSky(const CSky& Prototype)
-	: CGameObject { Prototype }
+	: CGameObject(Prototype)
 {
 
 }

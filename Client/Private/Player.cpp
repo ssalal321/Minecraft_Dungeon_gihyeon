@@ -2,18 +2,19 @@
 #include "GameInstance.h"
 
 #include "Body_Player.h"
+#include "Player_Idle.h"
 #include "Weapon.h"
+#include "FSM.h"
+
 
 CPlayer::CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CContainerObject(pDevice, pContext)
 {
-
 }
 
 CPlayer::CPlayer(const CPlayer& Prototype)
 	: CContainerObject(Prototype)
 {
-
 }
 
 HRESULT CPlayer::Initialize_Prototype()
@@ -40,11 +41,8 @@ HRESULT CPlayer::Initialize(void* pArg)
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;
 
-	CPartObject* pBody_Player = Find_PartObject(TEXT("Part_Body"));
-
-	CTransform* pPlayerTransformCom = Get_ContainerObject_TransformCom();  // Find_Component()도 있지만 그냥 Transform만 반환하는 거 만들었음
-
-
+	if (FAILED(Ready_States()))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -52,51 +50,32 @@ HRESULT CPlayer::Initialize(void* pArg)
 void CPlayer::Priority_Update(_float fTimeDelta)
 {
 	__super::Priority_Update(fTimeDelta);
+
+	m_pPlayerFSM->Priority_Update_State();
 }
 
 void CPlayer::Update(_float fTimeDelta)
 {
-	if (GetKeyState(VK_LEFT) & 0x8000)
-	{
-		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * -1.f);
-	}
-	if (GetKeyState(VK_RIGHT) & 0x8000)
-	{
-		m_iState |= STATE_ATTACK;
-		//m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta);
-	}
-	if (GetKeyState(VK_DOWN) & 0x8000)
-	{
-		m_iState |= STATE_RUN;
-		//m_pTransformCom->Go_Backward(fTimeDelta);
-	}
-
-	if (GetKeyState(VK_UP) & 0x8000)
-	{
-		m_iState |= STATE_IDLE;
-		/*m_pTransformCom->Go_Straight(fTimeDelta);
-
-		if (m_iState & STATE_IDLE)
-			m_iState ^= STATE_IDLE;
-
-		m_iState |= STATE_RUN;*/
-	}
-
-	else
-		m_iState = STATE_IDLE;
-
-
 	__super::Update(fTimeDelta);
+
+ 	m_pPlayerFSM->Update_State();
 }
 
 void CPlayer::Late_Update(_float fTimeDelta)
 {
 	__super::Late_Update(fTimeDelta);
+
+	m_pPlayerFSM->Late_Update_State();
 }
 
 HRESULT CPlayer::Render()
 {
 	return S_OK;
+}
+
+void CPlayer::Change_State(class CState* _nextState)
+{
+	m_pPlayerFSM->Change_State(_nextState);
 }
 
 HRESULT CPlayer::Ready_Components()
@@ -119,7 +98,7 @@ HRESULT CPlayer::Ready_PartObjects()
 
 
 	/* 무기를 추가한다. */
-	CWeapon::WEAPON_DESC				WeaponDesc{};
+	CWeapon::WEAPON_DESC	WeaponDesc{};
 
 	CModel* pBody = dynamic_cast<CModel*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Model")));
 	if (nullptr == pBody)
@@ -135,6 +114,21 @@ HRESULT CPlayer::Ready_PartObjects()
 
 
 	/* 이펙트를 추가한다. */
+
+	return S_OK;
+}
+
+HRESULT CPlayer::Ready_States()
+{
+	m_pPlayerInfo = new PLAYER_DESC(10, 10, 2, 2.f, 5.f);
+	m_StatesVec.resize(STATE_END);	// state vector 자리 예약
+
+	CBody_Player* pBodyPlayer = dynamic_cast<CBody_Player*>(Find_PartObject(TEXT("Part_Body")));
+	m_StatesVec[IDLE] = CPlayer_Idle::Create(this, pBodyPlayer, m_pPlayerInfo);
+
+	m_pPlayerFSM = FSM::Create();
+
+	m_pPlayerFSM->Init_State(m_StatesVec[PLAYER_ANIMATION::IDLE]);
 
 	return S_OK;
 }
@@ -170,4 +164,12 @@ void CPlayer::Free()
 {
 	__super::Free();
 
+	Safe_Delete(m_pPlayerInfo);
+	Safe_Delete(m_pPlayerFSM);
+
+	for (auto& stateVec : m_StatesVec)
+	{
+		if (stateVec!= nullptr)
+			Safe_Release(stateVec) ;
+	}
 }

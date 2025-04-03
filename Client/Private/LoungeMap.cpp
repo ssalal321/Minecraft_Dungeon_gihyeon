@@ -37,7 +37,7 @@ HRESULT CLoungeMap::Initialize(void* pArg)
 		return E_FAIL;
 
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
-		XMVectorSet(0.f, -91.f, 0.f, 1.f));	
+		XMVectorSet(0.f, -54.95f, 0.f, 1.f));	
 
 	return S_OK;
 }
