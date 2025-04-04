@@ -9,6 +9,7 @@
 #include "Input_Manager.h"
 #include "Renderer.h"
 #include "Light_Manager.h"
+#include "Picking.h"
 #include "UI_Manager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
@@ -43,6 +44,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	if (nullptr == m_pInput_Manager)
 		return E_FAIL;
 
+	m_pPicking = CPicking::Create(*ppDevice, *ppContext, EngineDesc.hWnd, EngineDesc.iViewportWidth, EngineDesc.iViewportHeight);
+	if (nullptr == m_pPicking)
+		return E_FAIL;
+
 	m_pLevel_Manager = CLevel_Manager::Create();
 	if (nullptr == m_pLevel_Manager)
 		return E_FAIL;
@@ -71,6 +76,7 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 	m_pInput_Device->Update();
 
 	m_pInput_Manager->Update_Key();
+	//m_pPicking->Compute_MouseRay();  // 난 클릭할 때만 update하도록 처리하겠다.
 
 	m_pObject_Manager->Priority_Update(fTimeDelta);
 	m_pUI_Manager->Priority_Update(fTimeDelta);
@@ -237,6 +243,13 @@ _float3 CGameInstance::Get_MousePos() const
 }
 #pragma endregion
 
+#pragma region PICKING
+void CGameInstance::Compute_MouseRay() const
+{
+	return m_pPicking->Compute_MouseRay();
+}
+#pragma endregion
+
 
 #pragma region RENDERER
 HRESULT CGameInstance::Add_RenderObject(CRenderer::RENDERGROUP eRenderGroup, CGameObject* pRenderObject)
@@ -306,6 +319,7 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pPrototype_Manager);
 	Safe_Release(m_pObject_Manager);
 	Safe_Release(m_pInput_Manager);
+	Safe_Release(m_pPicking);
 	Safe_Release(m_pRenderer);
 	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pLight_Manager);

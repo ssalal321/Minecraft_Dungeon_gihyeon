@@ -34,12 +34,12 @@ void CPlayer_Idle::State_Priority_Update()
 
 void CPlayer_Idle::State_Update()
 {
-	m_pBodyPlayerModelCom->Set_Animation(PLAYER_ANIMATION::WHIP_COMBO, true);
+	m_pBodyPlayerModelCom->Set_Animation(PLAYER_STATE::WHIP_COMBO, true);
 
-	if (m_pGameInstance->Key_Down(VK_LBUTTON))
+	/*if (m_pGameInstance->Key_Down(VK_LBUTTON))
 	{
-		
-	}
+		m_pPlayer->Change_State(m_pPlayer->Get_StateVec()[PLAYER_STATE::WALK]);
+	}*/
 }
 
 void CPlayer_Idle::State_Late_Update()
