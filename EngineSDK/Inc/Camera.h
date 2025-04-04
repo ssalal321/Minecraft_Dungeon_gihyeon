@@ -19,7 +19,7 @@ public:
 protected:
 	CCamera(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CCamera(const CCamera& Prototype);
-	virtual ~CCamera() = default;
+	~CCamera() override = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;

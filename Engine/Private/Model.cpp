@@ -203,6 +203,7 @@ HRESULT CModel::Ready_Animations()
 
 		m_Animations.push_back(pAnimation);
 	}
+
 	return S_OK;
 }
 

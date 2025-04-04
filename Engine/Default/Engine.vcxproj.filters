@@ -124,6 +124,9 @@
     <Filter Include="01.Utility\09. Fonts">
       <UniqueIdentifier>{8815e7bd-7ae0-4c2d-9af9-26481116fa7e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\10. Picking">
+      <UniqueIdentifier>{25bbd5a5-e681-40de-b31e-b876cb9bbf44}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Base.h">
@@ -255,6 +258,9 @@
     <ClInclude Include="..\Public\Font_Manager.h">
       <Filter>01.Utility\09. Fonts</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Picking.h">
+      <Filter>01.Utility\10. Picking</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -370,6 +376,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Font_Manager.cpp">
       <Filter>01.Utility\09. Fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Picking.cpp">
+      <Filter>01.Utility\10. Picking</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

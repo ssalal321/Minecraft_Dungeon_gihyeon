@@ -51,6 +51,8 @@ void CPlayer::Priority_Update(_float fTimeDelta)
 {
 	__super::Priority_Update(fTimeDelta);
 
+
+
 	m_pPlayerFSM->Priority_Update_State();
 }
 
@@ -128,7 +130,7 @@ HRESULT CPlayer::Ready_States()
 
 	m_pPlayerFSM = FSM::Create();
 
-	m_pPlayerFSM->Init_State(m_StatesVec[PLAYER_ANIMATION::IDLE]);
+	m_pPlayerFSM->Init_State(m_StatesVec[PLAYER_STATE::IDLE]);
 
 	return S_OK;
 }

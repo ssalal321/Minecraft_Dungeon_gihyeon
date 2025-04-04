@@ -14,7 +14,7 @@ BEGIN(Engine)
 	DECLARE_SINGLETON(CGameInstance)
 private:
 	CGameInstance();
-	virtual ~CGameInstance() = default;
+	~CGameInstance() override = default;
 
 public:
 	HRESULT		Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11Device** ppDevice, ID3D11DeviceContext** ppContext);
@@ -67,6 +67,12 @@ public:
 	_float3		Get_MousePos() const;
 #pragma endregion
 
+#pragma region PICKING
+	void	Compute_MouseRay() const;
+	_bool   Picking_In_World(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC) const;
+	_bool   Picking_In_Local(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC, const _float4x4& WorldMatrixInverse);
+#pragma endregion
+
 #pragma region RENDERER
 	HRESULT		Add_RenderObject(CRenderer::RENDERGROUP eRenderGroup, class CGameObject* pRenderObject);
 #pragma endregion
@@ -85,7 +91,7 @@ public:
 	HRESULT				Add_Light(const LIGHT_DESC& LightDesc);
 #pragma endregion
 
-#pragma region UI_Manager
+#pragma region UI_MANAGER
 	CUIObject*	Add_UIObject(_uint iPrototypeLevelIndex, _uint iLayerLevelIndex, const _wstring& strPrototypeTag, CUI_Manager::UI_LIFETIME eUILifeTime, void* pArg = nullptr);
 #pragma endregion
 
@@ -102,7 +108,7 @@ private:
 	class	CPipeLine*				m_pPipeLine				= { nullptr };
 	class	CLight_Manager*			m_pLight_Manager		= { nullptr };
 	class   CUI_Manager*			m_pUI_Manager			= { nullptr };
-	
+	class	CPicking*				m_pPicking				= { nullptr };
 	
 public:
 	void	Release_Engine();
