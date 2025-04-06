@@ -16,7 +16,15 @@ HRESULT CLevel::Initialize()
 	return S_OK;
 }
 
+void CLevel::Priority_Update(_float fTimeDelta)
+{
+}
+
 void CLevel::Update(_float fTimeDelta)
+{
+}
+
+void CLevel::Late_Update(_float fTimeDelta)
 {
 }
 

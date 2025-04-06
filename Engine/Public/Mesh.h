@@ -31,11 +31,11 @@ public:
 	// ray와 BoundingBox간 min max Time 연산 후 충돌 여부 반환
 	_bool	Collision_AABB(const _float3& vRayOrigin, const _float3& vRayDir, const _float3& vWorldMin, const _float3& vWorldMax);
 
-	// 정적 모델 피킹용 (Picking_Triangle 호출)
-	_bool	Picking_In_World(const _float3& vMousePos, const _float3& vMouseRay, _float3& vPickedPos) const;
+	//// 정적 모델 피킹용 (Picking_Triangle 호출)
+	//_bool	Picking_In_World(const _float3& vMousePos, const _float3& vMouseRay, _float3& vPickedPos) const;
 
 	// 동적 모델 피킹용 (Picking_Triangle 호출)
-	_bool	Picking_In_Local(const _float3& vMousePos, const _float3& vMouseRay, _float3& vPickedPos, const _float4x4& WorldMatrix) const;
+	_bool	Picking_In_Mesh(const _float3& vMousePos, const _float3& vMouseRay, _float3& vPickedPos, const _float4x4& WorldMatrix) const;
 
 private:
 	_char				m_szName[MAX_PATH] = "";
@@ -44,7 +44,7 @@ private:
 	_uint				m_iNumFaces = {};
 	_float3				m_vBoundingMin = {};
 	_float3				m_vBoundingMax = {};
-	aiVector3D*			m_pVertices = {};
+	_float3*			m_pVertices = {};
 
 	_uint*				m_pIndices = { nullptr };
 

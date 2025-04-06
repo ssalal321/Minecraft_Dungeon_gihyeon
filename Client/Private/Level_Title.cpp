@@ -1,4 +1,4 @@
-#include "Level_Title.h"
+﻿#include "Level_Title.h"
 #include "GameInstance.h"
 
 #include "Level_Loading.h"
@@ -17,6 +17,11 @@ HRESULT CLevel_Title::Initialize()
     return S_OK;
 }
 
+void CLevel_Title::Priority_Update(_float fTimeDelta)
+{
+	CLevel::Priority_Update(fTimeDelta);
+}
+
 void CLevel_Title::Update(_float fTimeDelta)
 {
     if (m_pGameInstance->Key_Down(VK_SPACE))
@@ -27,10 +32,15 @@ void CLevel_Title::Update(_float fTimeDelta)
     }
 }
 
+void CLevel_Title::Late_Update(_float fTimeDelta)
+{
+	CLevel::Late_Update(fTimeDelta);
+}
+
 HRESULT CLevel_Title::Render()
 {
 #ifdef _DEBUG
-    SetWindowText(g_hWnd, TEXT("Ÿ��Ʋ�Դϴ�."));
+    SetWindowText(g_hWnd, TEXT("타이틀입니다."));
 #endif
 
     return S_OK;

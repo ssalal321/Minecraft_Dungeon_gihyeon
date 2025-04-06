@@ -37,7 +37,12 @@ public:
 public:
 	vector<CState*>   Get_StateVec() { return m_StatesVec; }
 
-	void	Change_State(class CState* _nextState);
+	void	Set_NextPosition(const _float4& nextPosition)
+	{
+		m_NextPosition = nextPosition;
+	}
+
+	void	Change_State(PLAYER_STATE playerState);
 	
 
 private:
@@ -45,6 +50,8 @@ private:
 	class FSM*			m_pPlayerFSM = { nullptr };
 	PLAYER_DESC*		m_pPlayerInfo = { nullptr };
 	vector<CState*>     m_StatesVec;
+
+	_float4				m_NextPosition = {0.f, 0.f, 0.f, 1.f};
 
 private:
 	HRESULT		Ready_Components();

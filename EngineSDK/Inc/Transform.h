@@ -47,6 +47,11 @@ public:
 		return XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_WorldMatrix));
 	}
 
+	const _float4x4& Get_WorldMatrix() const
+	{
+		return m_WorldMatrix;
+	}
+
 	const _float4x4* Get_WorldMatrix_Ptr() const
 	{
 		return &m_WorldMatrix;

@@ -32,6 +32,7 @@ HRESULT CPlayer::Initialize(void* pArg)
 	Desc.fSpeedPerSec = 10.f;
 	Desc.fRotationPerSec = XMConvertToRadians(90.0f);
 
+
 	if (FAILED(__super::Initialize(&Desc)))
 		return E_FAIL;
 
@@ -43,31 +44,31 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 	if (FAILED(Ready_States()))
 		return E_FAIL;
-
 	return S_OK;
 }
 
 void CPlayer::Priority_Update(_float fTimeDelta)
 {
-	__super::Priority_Update(fTimeDelta);
-
-
-
 	m_pPlayerFSM->Priority_Update_State();
+
+	__super::Priority_Update(fTimeDelta);
 }
 
 void CPlayer::Update(_float fTimeDelta)
 {
-	__super::Update(fTimeDelta);
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&m_NextPosition));
+	//const _float4x4& position = m_pTransformCom->Get_WorldMatrix();
 
- 	m_pPlayerFSM->Update_State();
+	m_pPlayerFSM->Update_State();
+
+	__super::Update(fTimeDelta);
 }
 
 void CPlayer::Late_Update(_float fTimeDelta)
 {
-	__super::Late_Update(fTimeDelta);
-
 	m_pPlayerFSM->Late_Update_State();
+
+	__super::Late_Update(fTimeDelta);
 }
 
 HRESULT CPlayer::Render()
@@ -75,9 +76,10 @@ HRESULT CPlayer::Render()
 	return S_OK;
 }
 
-void CPlayer::Change_State(class CState* _nextState)
+void CPlayer::Change_State(PLAYER_STATE playerState)
 {
-	m_pPlayerFSM->Change_State(_nextState);
+	m_iState = playerState;
+	m_pPlayerFSM->Change_State(m_StatesVec[m_iState]);
 }
 
 HRESULT CPlayer::Ready_Components()
