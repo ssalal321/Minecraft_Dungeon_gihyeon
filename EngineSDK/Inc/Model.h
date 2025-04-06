@@ -38,6 +38,7 @@ public:
 
 public:
 	_bool		Play_Animation(_float fTimeDelta);
+	_bool		Picking_Model(const _float3& vMousePos, const _float3& vMouseRay, _float3& vPickedPos, const _float4x4& WorldMatrix) const;
 
 public:
 	HRESULT		Bind_Material(class CShader* pShader, const _char* pConstantName, _uint iMeshIndex, aiTextureType eMaterialType, _uint iTextureIndex);

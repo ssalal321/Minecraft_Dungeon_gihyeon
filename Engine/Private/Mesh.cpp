@@ -6,12 +6,12 @@
 #include "Shader.h"
 
 CMesh::CMesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CVIBuffer { pDevice, pContext }
+	: CVIBuffer (pDevice, pContext)
 {
 }
 
 CMesh::CMesh(const CMesh& Prototype)
-	: CVIBuffer{ Prototype }
+	: CVIBuffer(Prototype)
 {
 }
 
@@ -21,7 +21,9 @@ HRESULT CMesh::Initialize_Prototype(CModel::TYPE eModelType, const vector<class 
 	strcpy_s(m_szName, pAIMesh->mName.data);
 	m_pVertices = pAIMesh->mVertices;
 	m_iMaterialIndex = pAIMesh->mMaterialIndex;
-	m_iNumVertexBuffers = 1;	
+	m_iNumVertexBuffers = 1;
+	m_iNumFaces = pAIMesh->mNumFaces;
+	pAIMesh->mFaces;
 	m_iNumVertices = pAIMesh->mNumVertices;
 	m_iIndexStride = 4;
 	m_iNumIndices = pAIMesh->mNumFaces * 3;
@@ -47,25 +49,24 @@ HRESULT CMesh::Initialize_Prototype(CModel::TYPE eModelType, const vector<class 
 	m_BufferDesc.CPUAccessFlags = 0;
 	m_BufferDesc.MiscFlags = 0;
 
-	_uint* pIndices = new _uint[m_iNumIndices];
-	ZeroMemory(pIndices, sizeof(_uint) * m_iNumIndices);
+	m_pIndices = new _uint[m_iNumIndices];
+	ZeroMemory(m_pIndices, sizeof(_uint) * m_iNumIndices);
 
 	_uint		iNumIndices = {};
 
 	for (size_t i = 0; i < pAIMesh->mNumFaces; i++)
 	{
-		pIndices[iNumIndices++] = pAIMesh->mFaces[i].mIndices[0];
-		pIndices[iNumIndices++] = pAIMesh->mFaces[i].mIndices[1];
-		pIndices[iNumIndices++] = pAIMesh->mFaces[i].mIndices[2];
+		m_pIndices[iNumIndices++] = pAIMesh->mFaces[i].mIndices[0];
+		m_pIndices[iNumIndices++] = pAIMesh->mFaces[i].mIndices[1];
+		m_pIndices[iNumIndices++] = pAIMesh->mFaces[i].mIndices[2];
 	}
 	
 	ZeroMemory(&m_InitialDesc, sizeof m_InitialDesc);
-	m_InitialDesc.pSysMem = pIndices;
+	m_InitialDesc.pSysMem = m_pIndices;
 
 	if (FAILED(__super::Create_Buffer(&m_pIB)))
 		return E_FAIL;
 
-	Safe_Delete_Array(pIndices);
 #pragma endregion
 
 	Compute_BoundingBox();
@@ -301,68 +302,36 @@ void CMesh::Compute_BoundingBox()
 }
 
 
-_bool CMesh::Picking_Triangle(_float3& vPickedPos, const _float3& vRayOrigin, const _float3& vRayDir,
-							  const _float3& vPointA, const _float3& vPointB, const _float3& vPointC)
+_bool CMesh::Check_BoundingBox_Collision(const _float3& vMouseRayPos, const _float3& vMouseRayDir, const _float4x4& WorldMatrix)
 {
-	_float fDist;
+	_float3 vWorldMin = {}, vWorldMax = {};
+	XMStoreFloat3(&vWorldMin, XMVector3TransformCoord(XMLoadFloat3(&m_vBoundingMin), XMLoadFloat4x4(&WorldMatrix)));
+	XMStoreFloat3(&vWorldMax, XMVector3TransformCoord(XMLoadFloat3(&m_vBoundingMax), XMLoadFloat4x4(&WorldMatrix)));
 
-	_vector  vOrigin = XMLoadFloat3(&vRayOrigin);
-	_vector  vDir = XMLoadFloat3(&vRayDir);
-	_vector  vA = XMLoadFloat3(&vPointA);
-	_vector  vB = XMLoadFloat3(&vPointB);
-	_vector  vC = XMLoadFloat3(&vPointC);
-
-	_bool isPicked = TriangleTests::Intersects(vOrigin, vDir, vA, vB, vC, fDist);
-
-	if (isPicked)
-	{
-		XMStoreFloat3(&vPickedPos, vOrigin + vDir * fDist);
-	}
-
-	return isPicked;
+	return Collision_AABB(vMouseRayPos, vMouseRayDir, vWorldMin, vWorldMax);
 }
 
-_bool CMesh::Check_BoundingBox_Collsion(const _float3& vMouseRayPos, const _float3& vMouseRayDir, const _float4x4& WorldMatrix)
-{
-	_float3 vMin, vMax;
-	XMStoreFloat3(&vMin, XMVector3TransformCoord(XMLoadFloat3(&m_vBoundingMin), XMLoadFloat4x4(&WorldMatrix)));
-	XMStoreFloat3(&vMax, XMVector3TransformCoord(XMLoadFloat3(&m_vBoundingMax), XMLoadFloat4x4(&WorldMatrix)));
-
-	return Picking_AABB(vMouseRayPos, vMouseRayDir, vMin, vMax);
-}
-
-_bool CMesh::Picking_AABB(const _float3& vRayOrigin, const _float3& vRayDir, const _float3& vWorldMin, const _float3& vWorldMax)
+_bool CMesh::Collision_AABB(const _float3& vRayOrigin, const _float3& vRayDir, const _float3& vWorldMin, const _float3& vWorldMax)
 {
 	_float tMin = 0.0f, tMax = FLT_MAX;
 
-	std::vector<_float>		rayOrigin, rayDir, AABBmin, AABBmax;
-	rayOrigin.push_back(vRayOrigin.x);
-	rayOrigin.push_back(vRayOrigin.y);
-	rayOrigin.push_back(vRayOrigin.z);
+	_float rayOrigin[3] = { vRayOrigin.x, vRayOrigin.y, vRayOrigin.z };
+	_float rayDir[3] = { vRayDir.x, vRayDir.y, vRayDir.z };
+	_float worldMin[3] = { vWorldMin.x, vWorldMin.y, vWorldMin.z };
+	_float worldMax[3] = { vWorldMax.x, vWorldMax.y, vWorldMax.z };
 
-	rayDir.push_back(vRayDir.x);
-	rayDir.push_back(vRayDir.y);
-	rayDir.push_back(vRayDir.z);
-
-	AABBmin.push_back(vWorldMin.x);
-	AABBmin.push_back(vWorldMin.y);
-	AABBmin.push_back(vWorldMin.z);
-
-	AABBmax.push_back(vWorldMax.x);
-	AABBmax.push_back(vWorldMax.y);
-	AABBmax.push_back(vWorldMax.z);
-
+	// rayDir는 정규화된 상태
 	for (int i = 0; i < 3; i++)  // X, Y, Z 축에 대해 검사
 	{
 		if (abs(rayDir[i]) < 1e-6f)
 		{
-			if (rayOrigin[i] < AABBmin[i] || rayOrigin[i] > AABBmax[i])
+			if (rayOrigin[i] < worldMin[i] || rayOrigin[i] > worldMax[i])
 				return false;
 		}
 		else
 		{
-			_float t1 = (AABBmin[i] - rayOrigin[i]) / rayDir[i];
-			_float t2 = (AABBmax[i] - rayOrigin[i]) / rayDir[i];
+			_float t1 = (worldMin[i] - rayOrigin[i]) / rayDir[i];
+			_float t2 = (worldMax[i] - rayOrigin[i]) / rayDir[i];
 
 			if (t1 > t2) swap(t1, t2);
 
@@ -377,31 +346,55 @@ _bool CMesh::Picking_AABB(const _float3& vRayOrigin, const _float3& vRayDir, con
 	return true;	// BoundingBox AABB 충돌 시 true 반환
 }
 
-_bool CMesh::Picking_In_World(const _float3& vMouseRay, const _float3& vMousePos, _float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC)
+_bool CMesh::Picking_In_World(const _float3& vMousePos, const _float3& vMouseRay, _float3& vPickedPos) const
 {
-	return Picking_Triangle(vPickedPos, vMousePos, vMouseRay, vPointA, vPointB, vPointC);
+	return Picking_Triangle(vPickedPos, vMousePos, vMouseRay);
 }
 
-_bool CMesh::Picking_In_Local(const _float3& vMouseRay, const _float3& vMousePos, _float3& vStoreLocalMouseRay, _float3& vStoreLocalMousePos, _float3& vPickedPos, const _float3& vPointA, const _float3& vPointB,
-	const _float3& vPointC, const _float4x4& WorldMatrixInverse)
+_bool CMesh::Picking_In_Local(const _float3& vMousePos, const _float3& vMouseRay, _float3& vPickedPos, const _float4x4& WorldMatrix) const
 {
-	// 월드 -> 로컬 변환
-	Transform_To_LocalSpace(vMouseRay, vMousePos, vStoreLocalMouseRay, vStoreLocalMousePos, WorldMatrixInverse);
+	_float3	localMousePos = {}, localMouseRay = {};
+	_matrix		InvWorldMatrix = {};
+
+	InvWorldMatrix = XMMatrixInverse(nullptr, XMLoadFloat4x4(&WorldMatrix));
+
+	XMStoreFloat3(&localMousePos, XMVector3TransformCoord(XMLoadFloat3(&vMousePos), InvWorldMatrix));
+	XMStoreFloat3(&localMouseRay, XMVector3TransformNormal(XMLoadFloat3(&vMouseRay), InvWorldMatrix));  // 정규화까지 완료
 
 	// 로컬 좌표에서 피킹 실행
-	return Picking_Triangle(vPickedPos, vStoreLocalMousePos, vStoreLocalMouseRay, vPointA, vPointB, vPointC);
+	return Picking_Triangle(vPickedPos, localMousePos, localMouseRay);
 }
 
-void CMesh::Transform_To_LocalSpace(const _float3& vMouseRay, const _float3& vMousePos, 
-									_float3& vLocalMouseRay, _float3& vLocalMousePos, 
-									const _float4x4& WorldMatrixInverse)
+_bool CMesh::Picking_Triangle(_float3& vPickedPos, const _float3& vRayPos, const _float3& vRayDir) const
 {
-	_matrix  InvWorldMatrix = XMLoadFloat4x4(&WorldMatrixInverse);
-	XMStoreFloat3(&vLocalMousePos, XMVector3TransformCoord(XMLoadFloat3(&vMousePos), InvWorldMatrix));
+	_float	fDist;
 
-	_vector LocalMouseRay = XMVector3TransformNormal(XMLoadFloat3(&vMouseRay), InvWorldMatrix);
-	XMStoreFloat3(&vLocalMouseRay, XMVector3Normalize(LocalMouseRay));		// 방향 벡터 정규화
+	_vector  vOrigin = XMLoadFloat3(&vRayPos);
+	_vector  vDir = XMLoadFloat3(&vRayDir);
+
+
+	for (_uint i = 0; i < m_iNumIndices; i += 3)
+	{
+		_float3		vA = { m_pVertices[m_pIndices[i * 0]].x, m_pVertices[m_pIndices[i + 0]].y, m_pVertices[m_pIndices[i + 0]].z };
+		_float3		vB = { m_pVertices[m_pIndices[i + 1]].x, m_pVertices[m_pIndices[i + 1]].y, m_pVertices[m_pIndices[i + 1]].z };
+		_float3		vC = { m_pVertices[m_pIndices[i + 2]].x, m_pVertices[m_pIndices[i + 2]].y, m_pVertices[m_pIndices[i + 2]].z };
+
+		_vector		v0 = XMLoadFloat3(&vA);
+		_vector		v1 = XMLoadFloat3(&vB);
+		_vector		v2 = XMLoadFloat3(&vC);
+
+		_bool isPicked = TriangleTests::Intersects(vOrigin, vDir, v0, v1, v2, fDist);
+
+		if (isPicked)
+		{
+			XMStoreFloat3(&vPickedPos, vOrigin + vDir * fDist);
+			return true;
+		}
+	}
+
+	return false;
 }
+
 
 CMesh* CMesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CModel::TYPE eModelType, const vector<CBone*>& Bones, const aiMesh* pAIMesh, _fmatrix PreTransformMatrix)
 {
@@ -434,4 +427,6 @@ CComponent* CMesh::Clone(void* pArg)
 void CMesh::Free()
 {
 	__super::Free();
+
+	Safe_Delete_Array(m_pIndices);
 }

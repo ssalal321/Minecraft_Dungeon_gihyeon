@@ -40,6 +40,18 @@ HRESULT CLevel_GamePlay::Initialize()
 
 void CLevel_GamePlay::Update(_float fTimeDelta)
 {
+    //if (m_pGameInstance->Key_Down(VK_LBUTTON))
+    //{
+    //    m_pGameInstance->Compute_MouseRay();
+
+    //    // 2. LoungeMap에 피킹 요청 (BoundingBox 충돌 체크)
+    //    _float3 vPickedPos{};
+    //    if (m_pLoungeMap->Is_Picked(&vPickedPos, vMouseRayPos, vMouseRayDir))
+    //    {
+    //        // 3. 피킹 성공 → 플레이어 이동 요청
+    //        m_pPlayer->Move_To(vPickedPos);
+    //    }
+    //}
    
 }
 
