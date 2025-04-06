@@ -110,20 +110,20 @@ void CTransform::Turn(_fvector vAxis, _float fTimeDelta)
 
 void CTransform::Rotation(_fvector vAxis, _float fRadian)
 {
-	_float3		vScaled = Compute_Scaled();
+	// 기존 방향 벡터를 가져옴
+	_vector vRight	= Get_State(STATE_RIGHT);
+	_vector vUp		= Get_State(STATE_UP);
+	_vector vLook	= Get_State(STATE_LOOK);
 
-	_vector		vRight = XMVectorSet(1.f, 0.f, 0.f, 0.f) * vScaled.x;
-	_vector		vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f) * vScaled.y;
-	_vector		vLook = XMVectorSet(0.f, 0.f, 1.f, 0.f) * vScaled.z;
+	// 입력된 축을 중심으로 회전 행렬 생성
+	_matrix RotationMatrix = XMMatrixRotationAxis(vAxis, fRadian);
 
-	_matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, fRadian);
-
-	/*XMVector4Transform();
-	XMVector3TransformCoord();*/
+	// 기존 방향 벡터를 회전 행렬로 변환하여 적용 (누적 회전)
 	Set_State(STATE_RIGHT, XMVector3TransformNormal(vRight, RotationMatrix));
 	Set_State(STATE_UP, XMVector3TransformNormal(vUp, RotationMatrix));
 	Set_State(STATE_LOOK, XMVector3TransformNormal(vLook, RotationMatrix));
 }
+
 
 void CTransform::LookAt(_fvector vAt)
 {

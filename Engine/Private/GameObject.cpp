@@ -60,7 +60,7 @@ void CGameObject::Update(_float fTimeDelta)
 {
 }
 
-void CGameObject::Last_Update(_float fTimeDelta)
+void CGameObject::Late_Update(_float fTimeDelta)
 {
 }
 
@@ -68,8 +68,6 @@ HRESULT CGameObject::Render()
 {
 	return S_OK;
 }
-
-
 
 CComponent* CGameObject::Find_Component(const _wstring& strComponentTag)
 {

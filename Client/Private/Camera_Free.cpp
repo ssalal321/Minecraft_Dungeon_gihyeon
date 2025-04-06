@@ -70,7 +70,7 @@ void CCamera_Free::Update(_float fTimeDelta)
 
 }
 
-void CCamera_Free::Last_Update(_float fTimeDelta)
+void CCamera_Free::Late_Update(_float fTimeDelta)
 {
 }
 

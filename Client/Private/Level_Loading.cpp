@@ -1,11 +1,9 @@
 #include "Level_Loading.h"
-
-#include "Loader.h"
-#include "Level_Loading.h"
-#include "Level_Logo.h"
-#include "Level_GamePlay.h"
-
 #include "GameInstance.h"
+#include "Loader.h"
+
+#include "UI_Image.h"
+#include "Level_GamePlay.h"
 #include "Level_Title.h"
 
 CLevel_Loading::CLevel_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -17,13 +15,13 @@ HRESULT CLevel_Loading::Initialize(LEVEL eNextLevelID)
 {
     m_eNextLevelID = eNextLevelID;
 
-    /* 로딩레벨을 구성해주기위한 객체들을 생성한다. */
-    if (FAILED(Ready_Layer_BackGround()))
-        return E_FAIL;
-
     /* 다음레벨을 위한 자원을 준비한다. */
     m_pLoader = CLoader::Create(m_pDevice, m_pContext, eNextLevelID);
     if (nullptr == m_pLoader)
+        return E_FAIL;
+
+    /* 로딩레벨을 구성해주기위한 객체들을 생성한다. */
+    if (FAILED(Ready_Layer_BackGround()))
         return E_FAIL;
 
     return S_OK;
@@ -31,29 +29,24 @@ HRESULT CLevel_Loading::Initialize(LEVEL eNextLevelID)
 
 void CLevel_Loading::Update(_float fTimeDelta)
 {
-    if (true == m_pLoader->isFinished()/* && 
-        GetKeyState(VK_SPACE) & 0x8000*/)
+    if (true == m_pLoader->Is_Finished() && m_pGameInstance->Key_Down(VK_SPACE))
     {
         CLevel* pNewLevel = { nullptr };
 
         switch (m_eNextLevelID)
         {
-        case LEVEL_LOGO:
-            pNewLevel = CLevel_Logo::Create(m_pDevice, m_pContext);
-            break;
-
-        case LEVEL_GAMEPLAY:
-            pNewLevel = CLevel_GamePlay::Create(m_pDevice, m_pContext);
-            break;
-
         case LEVEL_TITLE:
             pNewLevel = CLevel_Title::Create(m_pDevice, m_pContext);
             break;
 
-        /*case LEVEL_LOUNGE:
+            /*case LEVEL_LOUNGE:
             pNewLevel = CLevel_Lounge::Create(m_pDevice, m_pContext);
             break;*/
 
+        case LEVEL_GAMEPLAY:
+            pNewLevel = CLevel_GamePlay::Create(m_pDevice, m_pContext);
+            break;
+        
         }
 
         if (nullptr == pNewLevel)
@@ -78,17 +71,36 @@ HRESULT CLevel_Loading::Render()
 
 HRESULT CLevel_Loading::Ready_Layer_BackGround()
 {
-    /*CUI_Image::UIIMAGE_DESC   Desc{};
+    /* For.Prototype_Component_Shader_VtxPosTex */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOADING, TEXT("Prototype_Component_Shader_VtxPosTex"),
+        CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPosTex.hlsl"), VTXPOSTEX::Elements, VTXPOSTEX::iNumElements))))
+        return E_FAIL;
 
-    Desc.fPlayTime = 3.f;
-    Desc.pGameObjectTag = TEXT("GameObject_LoadingScreen");
-    Desc.fSpeedPerSec = 5.f;
-    Desc.fRotationPerSec = XMConvertToRadians(180.f);
+    /* For.Prototype_Component_VIBuffer_Rect */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOADING, TEXT("Prototype_Component_VIBuffer_Rect"),
+        CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
+    /* For.Prototype_Component_Texture_LoadingScreen */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOADING, TEXT("Prototype_Component_Texture_LoungeLoading"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Loading/Loading_Screen_Lobby%d.png"), 3))))
+        return E_FAIL; 
 
-    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_LOADING, TEXT("Prototype_GameObject_TitleBase"),
-        LEVEL_LOADING, strLayerTag, &Desc)))
-        return E_FAIL;*/
+    /* For.Prototype_GameObject_UIImage */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOADING, TEXT("Prototype_GameObject_UIImage"),
+        CUI_Image::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    CUI_Image::UIIMAGE_DESC  LoungeLoadingDesc
+    (TEXT("GameObject_LoungeLoading"), CUI_Image::UNCLICKABLE, 
+        g_iWinSizeX * 0.5f, g_iWinSizeY * 0.5f, 0.9f, g_iWinSizeX, g_iWinSizeY,
+        L"Prototype_Component_Texture_LoungeLoading", LEVEL_LOADING, LEVEL_LOADING, 180.f);
+
+    CUIObject* pLoungeLoading = m_pGameInstance->Add_UIObject(LEVEL_LOADING, LEVEL_LOADING,
+        TEXT("Prototype_GameObject_UIImage"),
+        CUI_Manager::TEMPORARY, &LoungeLoadingDesc);
+
+    if (nullptr == pLoungeLoading) return E_FAIL;
 
     return S_OK;
 }
@@ -99,7 +111,7 @@ CLevel_Loading* CLevel_Loading::Create(ID3D11Device* pDevice, ID3D11DeviceContex
 
     if (FAILED(pGameInstance->Initialize(eNextLevelID)))
     {
-        MSG_BOX("Failed to Created : CLevel_Loading");
+        MSG_BOX("Failed to Create : CLevel_Loading");
         Safe_Release(pGameInstance);
     }
 

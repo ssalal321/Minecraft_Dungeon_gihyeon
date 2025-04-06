@@ -56,7 +56,7 @@ void CCamera::Update(_float fTimeDelta)
 {
 }
 
-void CCamera::Last_Update(_float fTimeDelta)
+void CCamera::Late_Update(_float fTimeDelta)
 {
 }
 

@@ -7,10 +7,10 @@ CShader::CShader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 }
 
 CShader::CShader(const CShader& Prototype)
-    : CComponent{ Prototype }
-	, m_pEffect { Prototype.m_pEffect }
-	, m_iNumPasses { Prototype.m_iNumPasses }
-	, m_InputLayouts { Prototype.m_InputLayouts }
+    : CComponent{ Prototype },
+	  m_pEffect(Prototype.m_pEffect),
+	  m_iNumPasses(Prototype.m_iNumPasses),
+	  m_InputLayouts(Prototype.m_InputLayouts)
 {
 	Safe_AddRef(m_pEffect);
 
@@ -84,6 +84,7 @@ HRESULT CShader::Begin(_uint iPassIndex)
 	return pPass->Apply(0, m_pContext);	
 }
 
+
 HRESULT CShader::Bind_RawValue(const _char* pConstantName, const void* pValue, _uint iLength)
 {
 	ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(pConstantName);
@@ -104,6 +105,20 @@ HRESULT CShader::Bind_Matrix(const _char* pConstantName, const _float4x4* pMatri
 		return E_FAIL;	
 
 	return pMatrixVariable->SetMatrix(reinterpret_cast<const _float*>(pMatrix));	
+}
+
+HRESULT CShader::Bind_Matrices(const _char* pConstantName, const _float4x4* pMatrices, _uint iNumMatrices)
+{
+
+	ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(pConstantName);
+	if (nullptr == pVariable)
+		return E_FAIL;
+
+	ID3DX11EffectMatrixVariable* pMatrixVariable = pVariable->AsMatrix();
+	if (nullptr == pMatrixVariable)
+		return E_FAIL;
+
+	return pMatrixVariable->SetMatrixArray(reinterpret_cast<const _float*>(pMatrices), 0, iNumMatrices);
 }
 
 HRESULT CShader::Bind_SRV(const _char* pConstantName, ID3D11ShaderResourceView* pSRV)

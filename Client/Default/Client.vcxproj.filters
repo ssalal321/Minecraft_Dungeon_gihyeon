@@ -16,20 +16,11 @@
     <Filter Include="01.Levels\00.Loading">
       <UniqueIdentifier>{607258ba-45a4-424e-a13c-27d6e5fe7e6b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Levels\01.Logo">
-      <UniqueIdentifier>{362a476e-0de4-485a-b76f-4edacee06e31}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Levels\02.GamePlay">
-      <UniqueIdentifier>{fae995d6-0f45-4682-97aa-35fe9c6e9a44}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Levels\00.Loading\Loader">
       <UniqueIdentifier>{56d2dee4-1011-4964-8602-09f9d154fec6}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects">
       <UniqueIdentifier>{6e49a0c9-230f-450f-8cb5-eeaa76ddef7c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\BackGround">
-      <UniqueIdentifier>{78a99929-a688-4a4c-9db4-1ac4ff21b51f}</UniqueIdentifier>
     </Filter>
     <Filter Include="97.ShaderFiles">
       <UniqueIdentifier>{0ec719f1-ae5d-4711-9dcb-96a12621ee33}</UniqueIdentifier>
@@ -43,17 +34,65 @@
     <Filter Include="02.GameObjects\Camera\Free">
       <UniqueIdentifier>{99e5154e-49e3-4d93-ad11-54750fe0ed08}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Levels\10. Title">
-      <UniqueIdentifier>{edd484b2-535d-4fe2-a301-1f295693c6b6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Title">
-      <UniqueIdentifier>{17145a26-4b75-4fed-bcf2-4f58f3ff6423}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\LoadingScreen">
-      <UniqueIdentifier>{eeea068a-f98b-4d7a-bf24-0e2bf331d11a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\Monster">
       <UniqueIdentifier>{2a866a0c-01fa-4b64-92c4-fd90f41a5923}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObjects">
+      <UniqueIdentifier>{a3414a03-ae9b-47bb-89b9-eb8aef7c3962}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObjects\Inventory">
+      <UniqueIdentifier>{cf539a4e-c208-4e9c-bb27-cb0cea2dc679}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObjects\Inventory\Inventory_Base">
+      <UniqueIdentifier>{9ff9beb3-291c-43dd-86f0-378848ea6406}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Player">
+      <UniqueIdentifier>{a79e5608-68af-4d7c-9411-323b06a388c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObjects\UI_Image%28static%29">
+      <UniqueIdentifier>{69350565-a71a-401c-9cf8-0617f0fc37b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObjects\HPbar">
+      <UniqueIdentifier>{a7067fff-4dc1-4601-afe6-365f223747e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\01. Title">
+      <UniqueIdentifier>{edd484b2-535d-4fe2-a301-1f295693c6b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObjects\Inventory\Inventory_StoreSlot">
+      <UniqueIdentifier>{81d1359e-516c-4991-8531-c558788a2579}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObjects\Inventory\InventoryGearSlot">
+      <UniqueIdentifier>{98e05a1b-0327-410e-88b1-71804a5f45cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObjects\Inventory\InventoryItemSlot">
+      <UniqueIdentifier>{b75e9023-db5b-43b0-b798-c430e1058abd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Sky">
+      <UniqueIdentifier>{f921d5a2-b17c-4a73-a7d3-028b1053c5a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\02. GamePlay">
+      <UniqueIdentifier>{fae995d6-0f45-4682-97aa-35fe9c6e9a44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\LoungeMap">
+      <UniqueIdentifier>{a35214a7-3599-46bc-96d0-e0ce666aaa40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\ForkLift">
+      <UniqueIdentifier>{97f07e9d-00c1-47e2-ad7d-79a41a661f9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Player\00. Body_Player">
+      <UniqueIdentifier>{5373e998-8490-442b-bc63-474356c4fb92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Player\01. Weapon">
+      <UniqueIdentifier>{e7e9d8fd-6248-4abe-9a63-c2fbf55b89dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Player\02. State">
+      <UniqueIdentifier>{f9107163-f31d-4f6f-9fe1-b689765a2b57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96. FSM">
+      <UniqueIdentifier>{020092ce-9d28-4df2-9763-9f771b196d1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96. FSM\State">
+      <UniqueIdentifier>{ff95e289-b11b-4bc8-a789-3ea3d6113962}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -78,17 +117,11 @@
     <ClInclude Include="..\Public\Level_Loading.h">
       <Filter>01.Levels\00.Loading</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Level_Logo.h">
-      <Filter>01.Levels\01.Logo</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Loader.h">
       <Filter>01.Levels\00.Loading\Loader</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Level_GamePlay.h">
-      <Filter>01.Levels\02.GamePlay</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\BackGround.h">
-      <Filter>02.GameObjects\BackGround</Filter>
+      <Filter>01.Levels\02. GamePlay</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Terrain.h">
       <Filter>02.GameObjects\Terrain</Filter>
@@ -96,17 +129,62 @@
     <ClInclude Include="..\public\Camera_Free.h">
       <Filter>02.GameObjects\Camera\Free</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\TitleBase.h">
-      <Filter>02.GameObjects\Title</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Level_Title.h">
-      <Filter>01.Levels\10. Title</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\UI_Image.h">
-      <Filter>02.GameObjects\LoadingScreen</Filter>
+      <Filter>01.Levels\01. Title</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Monster.h">
       <Filter>02.GameObjects\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Player.h">
+      <Filter>02.GameObjects\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerHP.h">
+      <Filter>02.GameObjects\UIObjects\HPbar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Body_Player.h">
+      <Filter>02.GameObjects\Player\00. Body_Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_Image.h">
+      <Filter>02.GameObjects\UIObjects\UI_Image%28static%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\InventoryBase.h">
+      <Filter>02.GameObjects\UIObjects\Inventory\Inventory_Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\InventoryStoreSlot.h">
+      <Filter>02.GameObjects\UIObjects\Inventory\Inventory_StoreSlot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\InventoryGearSlot.h">
+      <Filter>02.GameObjects\UIObjects\Inventory\InventoryGearSlot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\InventoryItemSlot.h">
+      <Filter>02.GameObjects\UIObjects\Inventory\InventoryItemSlot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Weapon.h">
+      <Filter>02.GameObjects\Player\01. Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\LoungeMap.h">
+      <Filter>02.GameObjects\LoungeMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Sky.h">
+      <Filter>02.GameObjects\Sky</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ForkLift.h">
+      <Filter>02.GameObjects\ForkLift</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Player_Idle.h">
+      <Filter>02.GameObjects\Player\02. State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Client_Struct.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State.h">
+      <Filter>96. FSM\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\FSM.h">
+      <Filter>96. FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Client_Enum.h">
+      <Filter>99.Defines</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -132,17 +210,11 @@
     <ClCompile Include="..\Private\Level_Loading.cpp">
       <Filter>01.Levels\00.Loading</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Level_Logo.cpp">
-      <Filter>01.Levels\01.Logo</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Loader.cpp">
       <Filter>01.Levels\00.Loading\Loader</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_GamePlay.cpp">
-      <Filter>01.Levels\02.GamePlay</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\BackGround.cpp">
-      <Filter>02.GameObjects\BackGround</Filter>
+      <Filter>01.Levels\02. GamePlay</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Terrain.cpp">
       <Filter>02.GameObjects\Terrain</Filter>
@@ -150,17 +222,56 @@
     <ClCompile Include="..\private\Camera_Free.cpp">
       <Filter>02.GameObjects\Camera\Free</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\TitleBase.cpp">
-      <Filter>02.GameObjects\Title</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Level_Title.cpp">
-      <Filter>01.Levels\10. Title</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\UI_Image.cpp">
-      <Filter>02.GameObjects\LoadingScreen</Filter>
+      <Filter>01.Levels\01. Title</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Monster.cpp">
       <Filter>02.GameObjects\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player.cpp">
+      <Filter>02.GameObjects\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerHP.cpp">
+      <Filter>02.GameObjects\UIObjects\HPbar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Body_Player.cpp">
+      <Filter>02.GameObjects\Player\00. Body_Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_Image.cpp">
+      <Filter>02.GameObjects\UIObjects\UI_Image%28static%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\InventoryBase.cpp">
+      <Filter>02.GameObjects\UIObjects\Inventory\Inventory_Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\InventoryStoreSlot.cpp">
+      <Filter>02.GameObjects\UIObjects\Inventory\Inventory_StoreSlot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\InventoryGearSlot.cpp">
+      <Filter>02.GameObjects\UIObjects\Inventory\InventoryGearSlot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\InventoryItemSlot.cpp">
+      <Filter>02.GameObjects\UIObjects\Inventory\InventoryItemSlot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Weapon.cpp">
+      <Filter>02.GameObjects\Player\01. Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\LoungeMap.cpp">
+      <Filter>02.GameObjects\LoungeMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Sky.cpp">
+      <Filter>02.GameObjects\Sky</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ForkLift.cpp">
+      <Filter>02.GameObjects\ForkLift</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player_Idle.cpp">
+      <Filter>02.GameObjects\Player\02. State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State.cpp">
+      <Filter>96. FSM\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\FSM.cpp">
+      <Filter>96. FSM</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -170,5 +281,22 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimMesh.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex_HPbar.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCube.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Bin\ShaderFiles\Engine_Shader_Defines.hlsli">
+      <Filter>97.ShaderFiles</Filter>
+    </None>
   </ItemGroup>
 </Project>

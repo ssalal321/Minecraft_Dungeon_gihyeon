@@ -1,0 +1,132 @@
+#include "InventoryBase.h"
+#include "GameInstance.h"
+
+CInventoryBase::CInventoryBase(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	: CUIObject(pDevice, pContext)
+{
+}
+
+CInventoryBase::CInventoryBase(const CInventoryBase& Prototype)
+	: CUIObject(Prototype)
+{
+}
+
+HRESULT CInventoryBase::Initialize_Prototype()
+{
+	return S_OK;
+}
+
+HRESULT CInventoryBase::Initialize(void* pArg)
+{
+	if (nullptr != pArg)
+	{
+		m_pDesc = new INVENTORY_BASE_DESC(*static_cast<INVENTORY_BASE_DESC*>(pArg));
+	}
+	else
+		return E_FAIL;
+
+	if (FAILED(__super::Initialize(m_pDesc)))
+		return E_FAIL;
+
+
+	if (FAILED(Ready_Components()))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+void CInventoryBase::Priority_Update(_float fTimeDelta)
+{
+
+}
+
+void CInventoryBase::Update(_float fTimeDelta)
+{
+	if (m_pGameInstance->Key_Down('I'))
+	{
+		m_bVisible = !m_bVisible;
+	}
+}
+
+void CInventoryBase::Late_Update(_float fTimeDelta)
+{
+}
+
+HRESULT CInventoryBase::Render()
+{
+	if (!Is_Visible())
+		return S_OK;
+
+	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
+		return E_FAIL;
+
+	if (FAILED(Bind_ShaderMatrices(m_pShaderCom, "g_ViewMatrix", "g_ProjMatrix")))
+		return E_FAIL;
+
+
+	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture")))
+		return E_FAIL;
+
+	m_pVIBufferCom->Input_Assembler();
+	m_pShaderCom->Begin(0);
+
+	m_pVIBufferCom->Render();
+
+	return S_OK;
+}
+
+HRESULT CInventoryBase::Ready_Components()
+{
+	/* Com_Texture */
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, m_pDesc->strTextureComTag,
+		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+		return E_FAIL;
+
+	/* Com_Shader */
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex"),
+		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
+		return E_FAIL;
+
+	/* Com_VIBuffer */
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
+		TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+CInventoryBase* CInventoryBase::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+{
+	CInventoryBase* pGameInstance = new CInventoryBase(pDevice, pContext);
+
+	if (FAILED(pGameInstance->Initialize_Prototype()))
+	{
+		MSG_BOX("Failed to Create : CInventoryBase");
+		Safe_Release(pGameInstance);
+	}
+
+	return pGameInstance;
+}
+
+CGameObject* CInventoryBase::Clone(void* pArg)
+{
+	CInventoryBase* pGameInstance = new CInventoryBase(*this);
+
+	if (FAILED(pGameInstance->Initialize(pArg)))
+	{
+		MSG_BOX("Failed to Clone : CInventoryBase");
+		Safe_Release(pGameInstance);
+	}
+
+	return pGameInstance;
+}
+
+void CInventoryBase::Free()
+{
+	__super::Free();
+
+	Safe_Delete(m_pDesc);
+	Safe_Release(m_pTextureCom);
+	Safe_Release(m_pShaderCom);
+	Safe_Release(m_pVIBufferCom);
+}

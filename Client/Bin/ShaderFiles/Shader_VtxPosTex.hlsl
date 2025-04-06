@@ -1,3 +1,4 @@
+#include "Engine_Shader_Defines.hlsli"
 
 matrix      g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 texture2D   g_Texture;
@@ -53,8 +54,12 @@ struct PS_OUT
 PS_OUT PS_MAIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
-    
-    Out.vColor = g_Texture.Sample(g_LinearSampler, In.vTexcoord);
+
+    vector vTextureInfo = g_Texture.Sample(g_LinearSampler, In.vTexcoord);
+    if (vTextureInfo.a < 0.55f)
+        discard;
+
+    Out.vColor = vTextureInfo;
     
     return Out;    
 }
@@ -63,10 +68,12 @@ technique11 DefaultTechnique
 {
     pass DefaultPass
     {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
         VertexShader = compile vs_5_0 VS_MAIN();
         PixelShader = compile ps_5_0 PS_MAIN();
     }
-
-
 }
 

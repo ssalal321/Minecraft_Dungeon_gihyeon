@@ -14,7 +14,7 @@ HRESULT CLevel_Manager::Initialize()
     return S_OK;
 }
 
-HRESULT CLevel_Manager::Open_Level(_uint iLevelIndex, class CLevel* pNewLevel)
+HRESULT CLevel_Manager::Open_Level(_uint iNextLevelIndex, class CLevel* pNewLevel)
 {
     if (nullptr == pNewLevel)
         return E_FAIL;
@@ -22,16 +22,15 @@ HRESULT CLevel_Manager::Open_Level(_uint iLevelIndex, class CLevel* pNewLevel)
     if (nullptr != m_pCurrentLevel)
     {
         /* 기존 레벨용 자원(CPrototypeManager, CObjectManager) 을 파괴한다.  */
-        m_pGameInstance->Clear(m_iLevelIndex);
+        m_pGameInstance->Clear(m_iLevelIndex, iNextLevelIndex);
     }
-   
 
     if (0 != Safe_Release(m_pCurrentLevel))
         return E_FAIL;        
 
     m_pCurrentLevel = pNewLevel;
 
-    m_iLevelIndex = iLevelIndex;
+    m_iLevelIndex = iNextLevelIndex;
 
     return S_OK;
 }

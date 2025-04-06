@@ -6,8 +6,11 @@
 #include "Level_Manager.h"
 #include "Prototype_Manager.h"
 #include "Object_Manager.h"
+#include "Input_Manager.h"
 #include "Renderer.h"
 #include "Light_Manager.h"
+#include "Picking.h"
+#include "UI_Manager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -37,6 +40,14 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	if (nullptr == m_pObject_Manager)
 		return E_FAIL;
 
+	m_pInput_Manager = CInput_Manager::Create(EngineDesc.hWnd);
+	if (nullptr == m_pInput_Manager)
+		return E_FAIL;
+
+	m_pPicking = CPicking::Create(*ppDevice, *ppContext, EngineDesc.hWnd, EngineDesc.iViewportWidth, EngineDesc.iViewportHeight);
+	if (nullptr == m_pPicking)
+		return E_FAIL;
+
 	m_pLevel_Manager = CLevel_Manager::Create();
 	if (nullptr == m_pLevel_Manager)
 		return E_FAIL;
@@ -53,6 +64,9 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	if (nullptr == m_pLight_Manager)
 		return E_FAIL;
 
+	m_pUI_Manager = CUI_Manager::Create(EngineDesc.iNumLevels);
+	if (nullptr == m_pUI_Manager)
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -61,35 +75,53 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 {
 	m_pInput_Device->Update();
 
+	m_pInput_Manager->Update_Key();
+	//m_pPicking->Compute_MouseRay();  // 난 클릭할 때만 update하도록 처리하겠다.
+
 	m_pObject_Manager->Priority_Update(fTimeDelta);
+	m_pUI_Manager->Priority_Update(fTimeDelta);
 		
 	m_pObject_Manager->Update(fTimeDelta);
+	m_pUI_Manager->Update(fTimeDelta);
 
 	m_pPipeLine->Update();
 
-	m_pObject_Manager->Last_Update(fTimeDelta);
+	m_pObject_Manager->Late_Update(fTimeDelta);
+	m_pUI_Manager->Late_Update(fTimeDelta);
 
 	m_pLevel_Manager->Update(fTimeDelta);
 }
 
 HRESULT CGameInstance::Draw()
 {
-	
 	m_pRenderer->Draw();
+
+	m_pUI_Manager->Render_UI();
 
 	m_pLevel_Manager->Render();
 
 	return S_OK;
 }
 
-void CGameInstance::Clear(_uint iLevelIndex)
+void CGameInstance::Clear(_uint iCurrentLevelIndex, _uint iNextLevelIndex)
 {
 	/* 지정한 레벨용 자원을 파괴한다. */
-	m_pObject_Manager->Clear(iLevelIndex);
+	m_pObject_Manager->Clear(iCurrentLevelIndex);
 
-	m_pPrototype_Manager->Clear(iLevelIndex);
+	m_pUI_Manager->Clear(iCurrentLevelIndex, iNextLevelIndex);
 
+	m_pPrototype_Manager->Clear(iCurrentLevelIndex);
 
+}
+
+_float CGameInstance::Compute_Random_Normal()
+{
+	return rand() / static_cast<_float>(RAND_MAX);
+}
+
+_float CGameInstance::Compute_Random(_float fMin, _float fMax)
+{
+	return	fMin + (fMax - fMin) * Compute_Random_Normal();
 }
 
 
@@ -156,9 +188,9 @@ void CGameInstance::Compute_TimeDelta(const _wstring& strTimerTag)
 
 
 #pragma region LEVEL_MANAGER
-HRESULT CGameInstance::Open_Level(_uint iLevelIndex, CLevel* pNewLevel)
+HRESULT CGameInstance::Open_Level(_uint iNextLevelIndex, CLevel* pNewLevel)
 {
-	return m_pLevel_Manager->Open_Level(iLevelIndex, pNewLevel);
+	return m_pLevel_Manager->Open_Level(iNextLevelIndex, pNewLevel);
 }
 #pragma endregion
 
@@ -169,17 +201,58 @@ HRESULT CGameInstance::Add_Prototype(_uint iLevelIndex, const _wstring& strProto
 	return m_pPrototype_Manager->Add_Prototype(iLevelIndex, strPrototypeTag, pPrototype);
 }
 
-CBase* CGameInstance::Clone_Prototype(PROTOTYPE ePrototype, _uint iLevelIndex, const _wstring& strPrototypeTag, void* pArg)
+CBase* CGameInstance::Clone_Prototype(PROTOTYPE ePrototype, _uint iPrototypeLevelIndex, _wstring strPrototypeTag, void* pArg)
 {
-	return m_pPrototype_Manager->Clone_Prototype(ePrototype, iLevelIndex, strPrototypeTag, pArg);
+	return m_pPrototype_Manager->Clone_Prototype(ePrototype, iPrototypeLevelIndex, strPrototypeTag, pArg);
 }
 #pragma endregion
 
 
 #pragma region OBJECT_MANAGER
-HRESULT CGameInstance::Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg)
+HRESULT CGameInstance::Add_GameObject(_uint iPrototypeLevelIndex, _wstring strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg)
 {
 	return m_pObject_Manager->Add_GameObject(iPrototypeLevelIndex, strPrototypeTag, iLayerLevelIndex, strLayerTag, pArg);
+}
+
+CGameObject* CGameInstance::Find_GameObject(_wstring strPrototypeTag, _uint iLayerLevelIndex,
+	const _wstring& strLayerTag)
+{
+	return m_pObject_Manager->Find_GameObject(strPrototypeTag, iLayerLevelIndex, strLayerTag);
+}
+#pragma endregion
+
+
+#pragma region INPUT_MANAGER
+_bool CGameInstance::Get_Key(_int _iKey) const
+{
+	return m_pInput_Manager->Get_Key(_iKey);
+}
+
+_bool CGameInstance::Key_Pressing(_int _iKey) const
+{
+	return m_pInput_Manager->Key_Pressing(_iKey);
+}
+
+_bool CGameInstance::Key_Down(_int _iKey) const
+{
+	return m_pInput_Manager->Key_Down(_iKey);
+}
+
+_bool CGameInstance::Key_Up(_int _iKey) const
+{
+	return m_pInput_Manager->Key_Up(_iKey);
+}
+
+_float3 CGameInstance::Get_MousePos() const
+{
+	return m_pInput_Manager->Get_MousePos();
+}
+#pragma endregion
+
+#pragma region PICKING
+void CGameInstance::Compute_MouseRay() const
+{
+	return m_pPicking->Compute_MouseRay();
 }
 #pragma endregion
 
@@ -189,26 +262,32 @@ HRESULT CGameInstance::Add_RenderObject(CRenderer::RENDERGROUP eRenderGroup, CGa
 {
 	return m_pRenderer->Add_RenderObject(eRenderGroup, pRenderObject);
 }
+
 const _float4x4* CGameInstance::Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE eState) const
 {
 	return m_pPipeLine->Get_Transform_Float4x4(eState);
 }
+
 const _matrix CGameInstance::Get_Transform_Matrix(CPipeLine::TRANSFORMSTATE eState) const
 {
 	return m_pPipeLine->Get_Transform_Matrix(eState);
 }
+
 const _float4x4* CGameInstance::Get_Transform_Inverse_Float4x4(CPipeLine::TRANSFORMSTATE eState)
 {
 	return m_pPipeLine->Get_Transform_Inverse_Float4x4(eState);
 }
+
 const _matrix CGameInstance::Get_Transform_Inverse_Matrix(CPipeLine::TRANSFORMSTATE eState) const
 {
 	return m_pPipeLine->Get_Transform_Inverse_Matrix(eState);
 }
+
 const _float4* CGameInstance::Get_CamPosition() const
 {
 	return m_pPipeLine->Get_CamPosition();
 }
+
 void CGameInstance::Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix StateMatrix)
 {
 	m_pPipeLine->Set_Transform(eState, StateMatrix);
@@ -221,9 +300,18 @@ const LIGHT_DESC* CGameInstance::Get_LightDesc(_uint iIndex) const
 {
 	return m_pLight_Manager->Get_LightDesc(iIndex);
 }
+
 HRESULT CGameInstance::Add_Light(const LIGHT_DESC& LightDesc)
 {
 	return m_pLight_Manager->Add_Light(LightDesc);
+}
+#pragma endregion
+
+
+#pragma region UI_MANAGER
+CUIObject* CGameInstance::Add_UIObject(_uint iPrototypeLevelIndex, _uint iLayerLevelIndex, const _wstring& strPrototypeTag, CUI_Manager::UI_LIFETIME eUILifeTime, void* pArg)
+{
+	return m_pUI_Manager->Add_UIObject(iPrototypeLevelIndex, iLayerLevelIndex, strPrototypeTag, eUILifeTime, pArg);
 }
 #pragma endregion
 
@@ -236,9 +324,12 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pPrototype_Manager);
 	Safe_Release(m_pObject_Manager);
+	Safe_Release(m_pInput_Manager);
+	Safe_Release(m_pPicking);
 	Safe_Release(m_pRenderer);
 	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pLight_Manager);
+	Safe_Release(m_pUI_Manager);
 
 
 	DestroyInstance();
@@ -247,6 +338,4 @@ void CGameInstance::Release_Engine()
 void CGameInstance::Free()
 {
 	__super::Free();
-
-
 }

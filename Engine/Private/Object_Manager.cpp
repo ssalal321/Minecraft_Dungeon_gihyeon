@@ -3,7 +3,6 @@
 #include "GameInstance.h"
 #include "GameObject.h"
 #include "Layer.h"
-#include "../../Client/Public/Client_Defines.h"
 
 CObject_Manager::CObject_Manager()
     : m_pGameInstance { CGameInstance::GetInstance() }
@@ -23,7 +22,7 @@ HRESULT CObject_Manager::Initialize(_uint iNumLevels)
 	return S_OK;
 }
 
-HRESULT CObject_Manager::Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg)
+HRESULT CObject_Manager::Add_GameObject(_uint iPrototypeLevelIndex, _wstring strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg)
 {
 	if (nullptr == m_pLayers || 
 		iLayerLevelIndex >= m_iNumLevels)
@@ -33,7 +32,7 @@ HRESULT CObject_Manager::Add_GameObject(_uint iPrototypeLevelIndex, const _wstri
 	if (nullptr == pGameObject)
 		return E_FAIL;
 
-	return Add_To_Layer(pGameObject, iLayerLevelIndex, strLayerTag);
+	return Add_To_Layer(pGameObject, iLayerLevelIndex, strLayerTag, strPrototypeTag);
 }
 
 void CObject_Manager::Priority_Update(_float fTimeDelta)
@@ -56,12 +55,12 @@ void CObject_Manager::Update(_float fTimeDelta)
 	}
 }
 
-void CObject_Manager::Last_Update(_float fTimeDelta)
+void CObject_Manager::Late_Update(_float fTimeDelta)
 {
 	for (size_t i = 0; i < m_iNumLevels; i++)
 	{
 		for (auto& Pair : m_pLayers[i])
-			Pair.second->Last_Update(fTimeDelta);
+			Pair.second->Late_Update(fTimeDelta);
 	}
 }
 
@@ -76,6 +75,19 @@ void CObject_Manager::Clear(_uint iLevelIndex)
 	m_pLayers[iLevelIndex].clear();
 }
 
+CGameObject* CObject_Manager::Find_GameObject(_wstring strPrototypeTag, _uint iLayerLevelIndex,
+	const _wstring& strLayerTag)
+{
+	if (nullptr == m_pLayers || iLayerLevelIndex >= m_iNumLevels)
+		return nullptr;
+
+	CLayer* pLayer = Find_Layer(iLayerLevelIndex, strLayerTag);
+	if (nullptr == pLayer)
+		return nullptr;
+
+	return pLayer->Find_GameObject(strPrototypeTag);
+}
+
 CLayer* CObject_Manager::Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag)
 {
 	auto	iter = m_pLayers[iLevelIndex].find(strLayerTag);
@@ -86,7 +98,7 @@ CLayer* CObject_Manager::Find_Layer(_uint iLevelIndex, const _wstring& strLayerT
 	return iter->second;
 }
 
-HRESULT CObject_Manager::Add_To_Layer(CGameObject* pGameObject, _uint iLayerLevelIndex, const _wstring& strLayerTag)
+HRESULT CObject_Manager::Add_To_Layer(CGameObject* pGameObject, _uint iLayerLevelIndex, const _wstring& strLayerTag, _wstring strPrototypeTag)
 {
 	CLayer* pLayer = Find_Layer(iLayerLevelIndex, strLayerTag);
 
@@ -96,13 +108,13 @@ HRESULT CObject_Manager::Add_To_Layer(CGameObject* pGameObject, _uint iLayerLeve
 		if (nullptr == pLayer)
 			return E_FAIL;
 
-		if (FAILED(pLayer->Add_GameObject(pGameObject)))
+		if (FAILED(pLayer->Add_GameObject(strPrototypeTag, pGameObject)))
 			return E_FAIL;
 
 		m_pLayers[iLayerLevelIndex].emplace(strLayerTag, pLayer);
 	}
 	else
-		if (FAILED(pLayer->Add_GameObject(pGameObject)))
+		if (FAILED(pLayer->Add_GameObject(strPrototypeTag, pGameObject)))
 			return E_FAIL;
 
 

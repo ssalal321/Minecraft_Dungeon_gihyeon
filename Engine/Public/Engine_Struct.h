@@ -29,6 +29,24 @@ namespace Engine
 		XMFLOAT4	vSpecular;
 	}LIGHT_DESC;
 
+	typedef struct tagKeyFrame
+	{
+		float		fTrackPosition;
+
+		XMFLOAT3	vScale;
+		XMFLOAT4	vRotation;
+		XMFLOAT3	vTranslation;
+	}KEYFRAME;
+
+	typedef struct ENGINE_DLL tagVertexCube
+	{
+		XMFLOAT3		vPosition;
+		XMFLOAT3		vTexcoord;
+
+		static const unsigned int				iNumElements = { 2 };
+		static const D3D11_INPUT_ELEMENT_DESC	Elements[iNumElements];
+	}VTXCUBE;
+
 	typedef struct ENGINE_DLL tagVertexPositionTextureCoord
 	{
 		XMFLOAT3		vPosition;
@@ -47,6 +65,33 @@ namespace Engine
 		static const unsigned int				iNumElements = { 3 };
 		static const D3D11_INPUT_ELEMENT_DESC	Elements[iNumElements];
 	}VTXNORTEX;
+
+	typedef struct ENGINE_DLL tagVertexMesh
+	{
+		XMFLOAT3		vPosition;
+		XMFLOAT3		vNormal;
+		XMFLOAT2		vTexcoord;
+		XMFLOAT3		vTangent;
+
+		static const unsigned int				iNumElements = { 4 };
+		static const D3D11_INPUT_ELEMENT_DESC	Elements[iNumElements];
+	}VTXMESH;
+
+
+	typedef struct ENGINE_DLL tagVertexAnimationMesh
+	{
+		XMFLOAT3		vPosition;
+		XMFLOAT3		vNormal;
+		XMFLOAT2		vTexcoord;
+		XMFLOAT3		vTangent;
+
+		XMUINT4			vBlendIndex; /* 영향을 받아야할 뼈의 인덱스 최대 4개 */
+		XMFLOAT4		vBlendWeight; /* 각 뼈의 가중치 네개의 합 1 */
+
+		static const unsigned int				iNumElements = { 6 };
+		static const D3D11_INPUT_ELEMENT_DESC	Elements[iNumElements];
+	}VTXANIMMESH;
+
 }
 
 

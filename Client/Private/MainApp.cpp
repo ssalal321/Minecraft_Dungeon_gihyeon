@@ -1,4 +1,4 @@
-#include "../Public/MainApp.h"
+#include "MainApp.h"
 #include "GameInstance.h"
 
 #include "Level_Loading.h"
@@ -6,21 +6,37 @@
 CMainApp::CMainApp()
     : m_pGameInstance { CGameInstance::GetInstance() }
 {
-     //D3D11_SAMPLER_DESC
-
+    /*XMMatrixDecompose();*/
     Safe_AddRef(m_pGameInstance);
+
+    /*m_pGraphic_Device->SetRenderState(D3DRS_ZENABLE, FALSE);*/
+
+    // ID3D11RasterizerState*;
+    // D3D11_RASTERIZER_DESC;
+    // m_pDevice->CreateRasterizerState();
+    // m_pContext->RSSetState();
+
+    // ID3D11DepthStencilState*;
+    // D3D11_DEPTH_STENCIL_DESC;
+    // m_pDevice->CreateDepthStencilState();
+    // m_pContext->OMSetDepthStencilState();
+
+    // ID3D11BlendState*;
+    // D3D11_BLEND_DESC;
+    // m_pDevice->CreateBlendState();
+    // m_pContext->OMSetBlendState();
 }
 
 HRESULT CMainApp::Initialize()
 {
     ENGINE_DESC         EngineDesc{};
 
-    EngineDesc.hInstance = g_hInstance;
-    EngineDesc.hWnd = g_hWnd;
-    EngineDesc.isWindowed = true;
-    EngineDesc.iViewportWidth = g_iWinSizeX;
-    EngineDesc.iViewportHeight = g_iWinSizeY;
-    EngineDesc.iNumLevels = LEVEL_END;
+    EngineDesc.hInstance        = g_hInstance;
+    EngineDesc.hWnd             = g_hWnd;
+    EngineDesc.isWindowed       = true;
+    EngineDesc.iViewportWidth   = g_iWinSizeX;
+    EngineDesc.iViewportHeight  = g_iWinSizeY;
+    EngineDesc.iNumLevels       = LEVEL_END;
 
     if (FAILED(m_pGameInstance->Initialize_Engine(EngineDesc, &m_pDevice, &m_pContext)))
         return E_FAIL;

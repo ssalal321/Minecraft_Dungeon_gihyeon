@@ -48,7 +48,7 @@ void CTerrain::Update(_float fTimeDelta)
 
 }
 
-void CTerrain::Last_Update(_float fTimeDelta)
+void CTerrain::Late_Update(_float fTimeDelta)
 {
 
 

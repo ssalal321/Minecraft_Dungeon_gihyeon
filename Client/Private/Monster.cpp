@@ -35,6 +35,15 @@ HRESULT CMonster::Initialize(void* pArg)
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
+
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
+		XMVectorSet(m_pGameInstance->Compute_Random(0.f, 20.f),
+			5.0f,
+			m_pGameInstance->Compute_Random(0.f, 20.f),
+			1.f));
+
+	m_pModelCom->Set_Animation(0, false);
+
 	return S_OK;
 }
 
@@ -45,10 +54,11 @@ void CMonster::Priority_Update(_float fTimeDelta)
 
 void CMonster::Update(_float fTimeDelta)
 {
-
+	if (true == m_pModelCom->Play_Animation(fTimeDelta))
+		int a = 10;
 }
 
-void CMonster::Last_Update(_float fTimeDelta)
+void CMonster::Late_Update(_float fTimeDelta)
 {
 
 
@@ -60,25 +70,36 @@ HRESULT CMonster::Render()
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 		
-	m_pShaderCom->Begin(0);
 
-	m_pVIBufferCom->Render();
+	_uint	iNumMeshes = m_pModelCom->Get_NumMeshes();
 
+	for (size_t i = 0; i < iNumMeshes; i++)
+	{
+		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
+			return E_FAIL;
+
+		if (FAILED(m_pModelCom->Bind_BoneMatrices(m_pShaderCom, "g_BoneMatrices", i)))
+			return E_FAIL;
+
+		if (FAILED(m_pShaderCom->Begin(0)))
+			return E_FAIL;
+
+		if (FAILED(m_pModelCom->Render(i)))
+			return E_FAIL;
+	}
 	return S_OK;
 }
 
 HRESULT CMonster::Ready_Components()
 {
-	
-
 	/* Com_Shader */
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxNorTex"),
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxAnimMesh"),
 		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
 		return E_FAIL;
 
-	/* Com_VIBuffer */
+	/* Com_Model */
 	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Fiona"),
-		TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
+		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
 		return E_FAIL;
 
 	return S_OK;
@@ -160,5 +181,5 @@ void CMonster::Free()
 	__super::Free();
 
 	Safe_Release(m_pShaderCom);
-	Safe_Release(m_pVIBufferCom);
+	Safe_Release(m_pModelCom);
 }
