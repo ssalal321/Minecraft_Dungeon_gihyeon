@@ -133,24 +133,24 @@ _bool CModel::Picking_Model(const _float3& vMousePos, const _float3& vMouseRay, 
 		_float3 vLocalPickedPos = {};
 		_bool bMeshHit = false;
 
-		if (m_eModelType == TYPE_NONANIM)
+		/*if (m_eModelType == TYPE_NONANIM)
 		{
 			bMeshHit = pMesh->Picking_In_World(vMousePos, vMouseRay, vLocalPickedPos);
 		}
 		else
-		{
-			bMeshHit = pMesh->Picking_In_Local(vMousePos, vMouseRay, vLocalPickedPos, WorldMatrix);
-		}
+		{*/
+			bMeshHit = pMesh->Picking_In_Mesh(vMousePos, vMouseRay, vLocalPickedPos, WorldMatrix);
+		/*}*/
 
 		if (bMeshHit)
 		{
-			_float3 vWorldPickedPos = vLocalPickedPos;
+			_float3 vWorldPickedPos/*= vLocalPickedPos*/;
 
-			// 애니메이션 모델이면 로컬 -> 월드 변환
-			if (m_eModelType == TYPE_ANIM)
-			{
+			//// 애니메이션 모델이면 로컬 -> 월드 변환
+			//if (m_eModelType == TYPE_ANIM)
+			//{
 				XMStoreFloat3(&vWorldPickedPos, XMVector3TransformCoord(XMLoadFloat3(&vLocalPickedPos), XMLoadFloat4x4(&WorldMatrix)));
-			}
+			//}
 
 			_vector		vWorldMousePos = XMLoadFloat3(&vMousePos);
 

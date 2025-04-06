@@ -69,9 +69,7 @@ public:
 #pragma endregion
 
 #pragma region PICKING
-	void	Compute_MouseRay() const;
-	_bool   Picking_In_World(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC) const;
-	_bool   Picking_In_Local(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC, const _float4x4& WorldMatrixInverse);
+	void	Compute_MouseRay(_float3& worldMousePos, _float3& worldMouseRay) const;
 #pragma endregion
 
 #pragma region RENDERER

@@ -19,9 +19,10 @@ private:
 
 public:
 	HRESULT		Initialize(LEVEL eNextLevelID);
+	void		Priority_Update(_float fTimeDelta)	override;
 	void		Update(_float fTimeDelta)			override;
+	void		Late_Update(_float fTimeDelta)		override;
 	HRESULT		Render()							override;
-
 private:
 	LEVEL				m_eNextLevelID = { LEVEL_END };
 	class  CLoader*		m_pLoader = { nullptr };

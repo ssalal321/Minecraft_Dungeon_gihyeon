@@ -80,16 +80,19 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 
 	m_pObject_Manager->Priority_Update(fTimeDelta);
 	m_pUI_Manager->Priority_Update(fTimeDelta);
+	m_pLevel_Manager->Priority_Update(fTimeDelta);
 		
 	m_pObject_Manager->Update(fTimeDelta);
 	m_pUI_Manager->Update(fTimeDelta);
+	m_pLevel_Manager->Update(fTimeDelta);
 
 	m_pPipeLine->Update();
 
 	m_pObject_Manager->Late_Update(fTimeDelta);
 	m_pUI_Manager->Late_Update(fTimeDelta);
+	m_pLevel_Manager->Late_Update(fTimeDelta);
 
-	m_pLevel_Manager->Update(fTimeDelta);
+	
 }
 
 HRESULT CGameInstance::Draw()
@@ -250,9 +253,9 @@ _float3 CGameInstance::Get_MousePos() const
 #pragma endregion
 
 #pragma region PICKING
-void CGameInstance::Compute_MouseRay() const
+void CGameInstance::Compute_MouseRay(_float3& worldMousePos, _float3& worldMouseRay) const
 {
-	return m_pPicking->Compute_MouseRay();
+	return m_pPicking->Compute_MouseRay(worldMousePos, worldMouseRay);
 }
 #pragma endregion
 

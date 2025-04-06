@@ -21,7 +21,7 @@ HRESULT CPicking::Initialize(HWND hWnd, _uint iWinSizeX, _uint iWinSizeY)
 	return S_OK;
 }
 
-void CPicking::Compute_MouseRay()
+void CPicking::Compute_MouseRay(_float3& worldMousePos, _float3& worldMouseRay)
 {
     POINT ptMouse = {};
     GetCursorPos(&ptMouse);
@@ -35,19 +35,17 @@ void CPicking::Compute_MouseRay()
     );
 
     // 2. 투영 행렬 역변환
-    _matrix  InvProjMatrix  = XMMatrixInverse(nullptr, m_pGameInstance->Get_Transform_Matrix(CPipeLine::D3DTS_PROJ));
-    _vector  vTransformed   = XMVector3TransformCoord(vPosition, InvProjMatrix);
+    _matrix  InvProjMatrix  = m_pGameInstance->Get_Transform_Inverse_Matrix(CPipeLine::D3DTS_PROJ);
+    _vector  vViewPosition  = XMVector3TransformCoord(vPosition, InvProjMatrix);
 
     // 3. 뷰 행렬 역변환
-    _matrix  InvViewMatrix  = XMMatrixInverse(nullptr, m_pGameInstance->Get_Transform_Matrix(CPipeLine::D3DTS_VIEW));
-    _vector  vMouseRay      = XMVector3TransformCoord(vTransformed, InvViewMatrix);
+    _matrix  InvViewMatrix  = m_pGameInstance->Get_Transform_Inverse_Matrix(CPipeLine::D3DTS_VIEW);
+    _vector  vWorldPosition = XMVector3TransformCoord(vViewPosition, InvViewMatrix);
     _vector  vCamPosition   = XMLoadFloat4(m_pGameInstance->Get_CamPosition());
 
-    // 레이 방향 벡터 정규화
-    vMouseRay = XMVector3Normalize(vMouseRay - vCamPosition);
-
-    XMStoreFloat3(&m_vMousePos, vCamPosition);
-    XMStoreFloat3(&m_vMouseRay, vMouseRay);
+    // 마우스 포지션과 정규화된 레이 반환
+    XMStoreFloat3(&worldMousePos, vCamPosition);
+	XMStoreFloat3(&worldMouseRay, XMVector3Normalize(vWorldPosition - vCamPosition));
 }
 
 

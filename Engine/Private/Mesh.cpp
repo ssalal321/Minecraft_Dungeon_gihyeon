@@ -19,11 +19,9 @@ HRESULT CMesh::Initialize_Prototype(CModel::TYPE eModelType, const vector<class 
 {
 	/* 네모를 구성하기위한 정점과 인덱스의 정보를 채우고 버퍼를 할당할 수 있도록 함수를 호출해준다. */
 	strcpy_s(m_szName, pAIMesh->mName.data);
-	m_pVertices = pAIMesh->mVertices;
 	m_iMaterialIndex = pAIMesh->mMaterialIndex;
 	m_iNumVertexBuffers = 1;
 	m_iNumFaces = pAIMesh->mNumFaces;
-	pAIMesh->mFaces;
 	m_iNumVertices = pAIMesh->mNumVertices;
 	m_iIndexStride = 4;
 	m_iNumIndices = pAIMesh->mNumFaces * 3;
@@ -106,11 +104,15 @@ HRESULT CMesh::Ready_VertexBuffer_For_NonAnim(const aiMesh* pAIMesh, _fmatrix Pr
 	VTXMESH* pVertices = new VTXMESH[m_iNumVertices];
 	ZeroMemory(pVertices, sizeof(VTXMESH) * m_iNumVertices);
 
+	m_pVertices = new _float3[m_iNumVertices];
+	ZeroMemory(m_pVertices, sizeof(_float3) * m_iNumVertices);
+
 	for (size_t i = 0; i < m_iNumVertices; i++)
 	{
 		memcpy(&pVertices[i].vPosition, &pAIMesh->mVertices[i], sizeof(_float3));
 		XMStoreFloat3(&pVertices[i].vPosition,
 			XMVector3TransformCoord(XMLoadFloat3(&pVertices[i].vPosition), PreTransformMatrix));
+		m_pVertices[i] = pVertices[i].vPosition;
 
 		memcpy(&pVertices[i].vNormal, &pAIMesh->mNormals[i], sizeof(_float3));
 		XMStoreFloat3(&pVertices[i].vNormal,
@@ -146,9 +148,14 @@ HRESULT CMesh::Ready_VertexBuffer_For_Anim(const aiMesh* pAIMesh, const vector<c
 	VTXANIMMESH* pVertices = new VTXANIMMESH[m_iNumVertices];
 	ZeroMemory(pVertices, sizeof(VTXANIMMESH) * m_iNumVertices);
 
+	m_pVertices = new _float3[m_iNumVertices];
+	ZeroMemory(m_pVertices, sizeof(_float3) * m_iNumVertices);
+
 	for (size_t i = 0; i < m_iNumVertices; i++)
 	{
 		memcpy(&pVertices[i].vPosition, &pAIMesh->mVertices[i], sizeof(_float3));
+		m_pVertices[i] = pVertices[i].vPosition;
+
 		memcpy(&pVertices[i].vNormal, &pAIMesh->mNormals[i], sizeof(_float3));
 		memcpy(&pVertices[i].vTexcoord, &pAIMesh->mTextureCoords[0][i], sizeof(_float2));
 		memcpy(&pVertices[i].vTangent, &pAIMesh->mTangents[i], sizeof(_float3));
@@ -346,12 +353,7 @@ _bool CMesh::Collision_AABB(const _float3& vRayOrigin, const _float3& vRayDir, c
 	return true;	// BoundingBox AABB 충돌 시 true 반환
 }
 
-_bool CMesh::Picking_In_World(const _float3& vMousePos, const _float3& vMouseRay, _float3& vPickedPos) const
-{
-	return Picking_Triangle(vPickedPos, vMousePos, vMouseRay);
-}
-
-_bool CMesh::Picking_In_Local(const _float3& vMousePos, const _float3& vMouseRay, _float3& vPickedPos, const _float4x4& WorldMatrix) const
+_bool CMesh::Picking_In_Mesh(const _float3& vMousePos, const _float3& vMouseRay, _float3& vPickedPos, const _float4x4& WorldMatrix) const
 {
 	_float3	localMousePos = {}, localMouseRay = {};
 	_matrix		InvWorldMatrix = {};
@@ -359,7 +361,7 @@ _bool CMesh::Picking_In_Local(const _float3& vMousePos, const _float3& vMouseRay
 	InvWorldMatrix = XMMatrixInverse(nullptr, XMLoadFloat4x4(&WorldMatrix));
 
 	XMStoreFloat3(&localMousePos, XMVector3TransformCoord(XMLoadFloat3(&vMousePos), InvWorldMatrix));
-	XMStoreFloat3(&localMouseRay, XMVector3TransformNormal(XMLoadFloat3(&vMouseRay), InvWorldMatrix));  // 정규화까지 완료
+	XMStoreFloat3(&localMouseRay, XMVector3Normalize(XMVector3TransformNormal(XMLoadFloat3(&vMouseRay), InvWorldMatrix)));
 
 	// 로컬 좌표에서 피킹 실행
 	return Picking_Triangle(vPickedPos, localMousePos, localMouseRay);
@@ -367,33 +369,36 @@ _bool CMesh::Picking_In_Local(const _float3& vMousePos, const _float3& vMouseRay
 
 _bool CMesh::Picking_Triangle(_float3& vPickedPos, const _float3& vRayPos, const _float3& vRayDir) const
 {
-	_float	fDist;
-
 	_vector  vOrigin = XMLoadFloat3(&vRayPos);
 	_vector  vDir = XMLoadFloat3(&vRayDir);
 
+	_bool bHit = false;
+	_float fMinDist = FLT_MAX;
 
 	for (_uint i = 0; i < m_iNumIndices; i += 3)
 	{
-		_float3		vA = { m_pVertices[m_pIndices[i * 0]].x, m_pVertices[m_pIndices[i + 0]].y, m_pVertices[m_pIndices[i + 0]].z };
-		_float3		vB = { m_pVertices[m_pIndices[i + 1]].x, m_pVertices[m_pIndices[i + 1]].y, m_pVertices[m_pIndices[i + 1]].z };
-		_float3		vC = { m_pVertices[m_pIndices[i + 2]].x, m_pVertices[m_pIndices[i + 2]].y, m_pVertices[m_pIndices[i + 2]].z };
+		_float3 vA = { m_pVertices[m_pIndices[i + 0]].x, m_pVertices[m_pIndices[i + 0]].y, m_pVertices[m_pIndices[i + 0]].z };
+		_float3 vB = { m_pVertices[m_pIndices[i + 1]].x, m_pVertices[m_pIndices[i + 1]].y, m_pVertices[m_pIndices[i + 1]].z };
+		_float3 vC = { m_pVertices[m_pIndices[i + 2]].x, m_pVertices[m_pIndices[i + 2]].y, m_pVertices[m_pIndices[i + 2]].z };
 
-		_vector		v0 = XMLoadFloat3(&vA);
-		_vector		v1 = XMLoadFloat3(&vB);
-		_vector		v2 = XMLoadFloat3(&vC);
+		_vector v0 = XMLoadFloat3(&vA);
+		_vector v1 = XMLoadFloat3(&vB);
+		_vector v2 = XMLoadFloat3(&vC);
 
-		_bool isPicked = TriangleTests::Intersects(vOrigin, vDir, v0, v1, v2, fDist);
-
-		if (isPicked)
+		_float fDist;
+		if (TriangleTests::Intersects(vOrigin, vDir, v0, v1, v2, fDist))
 		{
-			XMStoreFloat3(&vPickedPos, vOrigin + vDir * fDist);
-			return true;
+			if (fDist < fMinDist)
+			{
+				fMinDist = fDist;
+				XMStoreFloat3(&vPickedPos, vOrigin + vDir * fDist);
+				bHit = true;
+			}
 		}
 	}
-
-	return false;
+	return bHit;
 }
+
 
 
 CMesh* CMesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CModel::TYPE eModelType, const vector<CBone*>& Bones, const aiMesh* pAIMesh, _fmatrix PreTransformMatrix)
@@ -429,4 +434,5 @@ void CMesh::Free()
 	__super::Free();
 
 	Safe_Delete_Array(m_pIndices);
+	Safe_Delete_Array(m_pVertices);
 }
