@@ -51,12 +51,13 @@ public:
 
 #pragma region PROTOTYPE_MANAGER
 	HRESULT		Add_Prototype(_uint iLevelIndex, const _wstring& strPrototypeTag, CBase* pPrototype);
-	CBase*		Clone_Prototype(PROTOTYPE ePrototype, _uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, void* pArg = nullptr);
+	CBase*		Clone_Prototype(PROTOTYPE ePrototype, _uint iPrototypeLevelIndex, _wstring strPrototypeTag, void* pArg = nullptr);
 #pragma endregion
 
 #pragma region OBJECT_MANAGER
-	HRESULT		Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag,
+	HRESULT		Add_GameObject(_uint iPrototypeLevelIndex, _wstring strPrototypeTag,
 							   _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg = nullptr);
+	CGameObject* Find_GameObject(_wstring strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag);
 #pragma endregion
 
 #pragma region INPUT_MANAGER

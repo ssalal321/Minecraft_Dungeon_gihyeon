@@ -5,12 +5,12 @@ CLayer::CLayer()
 {
 }
 
-HRESULT CLayer::Add_GameObject(CGameObject* pGameObject)
+HRESULT CLayer::Add_GameObject(_wstring strLayerTag, CGameObject* pGameObject)
 {
     if (nullptr == pGameObject)
         return E_FAIL;
 
-    m_GameObjects.push_back(pGameObject);
+    m_GameObjects.insert({ strLayerTag, pGameObject });
 
     return S_OK;
 }
@@ -19,8 +19,8 @@ void CLayer::Priority_Update(_float fTimeDelta)
 {
     for (auto& pGameObject : m_GameObjects)
     {
-        if (nullptr != pGameObject)
-            pGameObject->Priority_Update(fTimeDelta);
+        if (nullptr != pGameObject.second)
+            pGameObject.second->Priority_Update(fTimeDelta);
     }
 }
 
@@ -28,8 +28,8 @@ void CLayer::Update(_float fTimeDelta)
 {
     for (auto& pGameObject : m_GameObjects)
     {
-        if (nullptr != pGameObject)
-            pGameObject->Update(fTimeDelta);
+        if (nullptr != pGameObject.second)
+            pGameObject.second->Update(fTimeDelta);
     }
 }
 
@@ -37,9 +37,18 @@ void CLayer::Late_Update(_float fTimeDelta)
 {
     for (auto& pGameObject : m_GameObjects)
     {
-        if (nullptr != pGameObject)
-            pGameObject->Late_Update(fTimeDelta);
+        if (nullptr != pGameObject.second)
+            pGameObject.second->Late_Update(fTimeDelta);
     }
+}
+
+CGameObject* CLayer::Find_GameObject(_wstring strPrototypeTag)
+{
+    auto iter = m_GameObjects.find(strPrototypeTag);
+    if (iter != m_GameObjects.end())
+    	return iter->second;
+
+    return nullptr;
 }
 
 CLayer* CLayer::Create()
@@ -52,7 +61,7 @@ void CLayer::Free()
     __super::Free();
 
     for (auto& pGameObject : m_GameObjects)
-        Safe_Release(pGameObject);
+        Safe_Release(pGameObject.second);
 
     m_GameObjects.clear();
 }

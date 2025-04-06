@@ -120,6 +120,53 @@ _bool CModel::Play_Animation(_float fTimeDelta)
 	return isFinished;
 }
 
+_bool CModel::Picking_Model(const _float3& vMousePos, const _float3& vMouseRay, _float3& vPickedPos, const _float4x4& WorldMatrix) const
+{
+	_float	fMinDist = FLT_MAX;
+	_bool	bHit = false;
+
+	for (auto& pMesh : m_Meshes)
+	{
+		if (false == pMesh->Check_BoundingBox_Collision(vMousePos, vMouseRay, WorldMatrix))
+			continue;
+
+		_float3 vLocalPickedPos = {};
+		_bool bMeshHit = false;
+
+		if (m_eModelType == TYPE_NONANIM)
+		{
+			bMeshHit = pMesh->Picking_In_World(vMousePos, vMouseRay, vLocalPickedPos);
+		}
+		else
+		{
+			bMeshHit = pMesh->Picking_In_Local(vMousePos, vMouseRay, vLocalPickedPos, WorldMatrix);
+		}
+
+		if (bMeshHit)
+		{
+			_float3 vWorldPickedPos = vLocalPickedPos;
+
+			// 애니메이션 모델이면 로컬 -> 월드 변환
+			if (m_eModelType == TYPE_ANIM)
+			{
+				XMStoreFloat3(&vWorldPickedPos, XMVector3TransformCoord(XMLoadFloat3(&vLocalPickedPos), XMLoadFloat4x4(&WorldMatrix)));
+			}
+
+			_vector		vWorldMousePos = XMLoadFloat3(&vMousePos);
+
+			_float		fDist = XMVectorGetX(XMVector3Length(XMLoadFloat3(&vWorldPickedPos) - vWorldMousePos));
+
+			if (fDist < fMinDist)
+			{
+				fMinDist = fDist;
+				vPickedPos = vWorldPickedPos;
+				bHit = true;
+			}
+		}
+	}
+	return bHit;
+}
+
 HRESULT CModel::Bind_Material(CShader* pShader, const _char* pConstantName, _uint iMeshIndex, aiTextureType eMaterialType, _uint iTextureIndex)
 {
 	if (iMeshIndex >= m_iNumMeshes)
