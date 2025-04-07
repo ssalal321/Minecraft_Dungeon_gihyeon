@@ -16,8 +16,10 @@ private:
 public:
     HRESULT     Initialize(_uint iNumLevels);
 
-    CUIObject*   Add_UIObject(_uint iPrototypeLevelIndex, _uint iLayerLevelIndex, const _wstring& strPrototypeTag,
+    CUIObject*  Add_UIObject(_uint iPrototypeLevelIndex, _uint iLayerLevelIndex, const _wstring& strPrototypeTag,
 							 UI_LIFETIME eUILifeTime, void* pArg = nullptr);
+
+    CUIObject*  Find_UIGameObject(_wstring strGameObjectTag, UI_LIFETIME eUILifeTime) const;
 
     void        Priority_Update(_float fDeltaTime);
     void        Update(_float fDeltaTime);
@@ -25,15 +27,15 @@ public:
 
     HRESULT     Render_UI();
     void        Clear(_uint iCurrentLevelIndex, _uint iNextLevelIndex);
-   
+
 
 private:
     _uint   m_iObjectLevelIndex     = {};  // 현재 레벨의 UI 객체 인덱스
 
 	class CGameInstance*	    m_pGameInstance = { nullptr };
 
-    vector<CUIObject*>     m_CurrentUIObjects[LIFETIME_END]   = {};  // 관리할 UI 객체들
-    vector<CUIObject*>     m_NextUIObjects[LIFETIME_END] = {};       // 관리할 UI 객체들
+    unordered_map<_wstring, CUIObject*>   m_CurrentUIObjects[LIFETIME_END]   = {};  // 관리할 UI 객체들
+    unordered_map<_wstring, CUIObject*>   m_NextUIObjects[LIFETIME_END]      = {};       // 관리할 UI 객체들
 
 private:
     _uint   m_iNumLevels = {};

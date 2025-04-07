@@ -26,11 +26,11 @@ public:
 			 iPrototypeLevelIndex(PrototypeLevelIndex), iLayerLevelIndex(LayerLevelIndex) {
 		}
 
-		// 복사 생성자
-		tagUIImageDesc(const tagUIImageDesc& other)
-			: UIOBJECT_DESC(other),
-			  iPrototypeLevelIndex(other.iPrototypeLevelIndex), iLayerLevelIndex(other.iLayerLevelIndex) {
-		}
+		//// 복사 생성자
+		//tagUIImageDesc(const tagUIImageDesc& other)
+		//	: UIOBJECT_DESC(other),
+		//	  iPrototypeLevelIndex(other.iPrototypeLevelIndex), iLayerLevelIndex(other.iLayerLevelIndex) {
+		//}
 
 		~tagUIImageDesc() override = default;
 

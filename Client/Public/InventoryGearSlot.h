@@ -24,9 +24,9 @@ public:
 							speedPerSec, rotationPerSec),  // 부모 생성자 호출
 			  fPlayTime(playTime) { }
 
-		// 복사 생성자
-		INVENTORY_GEARSLOT_DESC(const INVENTORY_GEARSLOT_DESC& other)
-			: UIOBJECT_DESC(other), fPlayTime(other.fPlayTime) { }
+		//// 복사 생성자
+		//INVENTORY_GEARSLOT_DESC(const INVENTORY_GEARSLOT_DESC& other)
+		//	: UIOBJECT_DESC(other), fPlayTime(other.fPlayTime) { }
 
 		~INVENTORY_GEARSLOT_DESC() override = default;
 

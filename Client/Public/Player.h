@@ -10,6 +10,24 @@ class CState;
 class CPlayer final : public CContainerObject
 {
 public:
+	struct PLAYER_DESC : public GAMEOBJECT_DESC
+	{
+		_int     iCurrentHP;
+		_int     iMaxHP;
+		_int     iAttackPoint;
+		_float   fEffectiveRange;
+		_bool    bStunned;
+
+		PLAYER_DESC(const _tchar* GameObjectTag, _int currentHP, _int maxHP, _int attackPoint,
+			_float effectiveRange, _bool stunned = false,
+			_float rotationPerSec = 0.f, _float speedPerSec = 0.f)
+			: GAMEOBJECT_DESC(GameObjectTag, rotationPerSec, speedPerSec), iCurrentHP(currentHP), iMaxHP(maxHP), iAttackPoint(attackPoint),
+			fEffectiveRange(effectiveRange), bStunned(stunned) {
+		}
+
+		~PLAYER_DESC() override = default;
+	};
+
 	/*enum PLAYERSTATE
 	{
 		IDLE, IDLE_CLAYMORE, IDLE_GLAIVE, IDLE_HAMMER, IDLE_KATANA, IDLE_LOOKAROUND,
@@ -36,6 +54,8 @@ public:
 
 public:
 	vector<CState*>   Get_StateVec() { return m_StatesVec; }
+
+	const _float4&	Get_NextPosition() const { return m_NextPosition; }
 
 	void	Set_NextPosition(const _float4& nextPosition)
 	{

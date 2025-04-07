@@ -14,9 +14,9 @@ public:
 		tagGameObjectDesc(const _tchar* gameObjectTag = TEXT(""), _float rotationPerSec = 0.f, _float speedPerSec = 0.f)
 			: tagTransformDesc(rotationPerSec, speedPerSec), pGameObjectTag(gameObjectTag) {}
 
-		tagGameObjectDesc(const tagGameObjectDesc &other)
+		/*tagGameObjectDesc(const tagGameObjectDesc &other)
 			: CTransform::TRANSFORM_DESC(other),
-			  pGameObjectTag(other.pGameObjectTag) {}
+			  pGameObjectTag(other.pGameObjectTag) {}*/
 
 		~tagGameObjectDesc() override = default;
 

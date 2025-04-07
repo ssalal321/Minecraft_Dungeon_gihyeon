@@ -5,6 +5,7 @@
 #include "Player_Idle.h"
 #include "Weapon.h"
 #include "FSM.h"
+#include "Player_Walk.h"
 
 
 CPlayer::CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -26,14 +27,9 @@ HRESULT CPlayer::Initialize_Prototype()
 
 HRESULT CPlayer::Initialize(void* pArg)
 {
-	CGameObject::GAMEOBJECT_DESC		Desc{};
+	m_pPlayerInfo = new PLAYER_DESC(TEXT("GameObject_Player"), 10, 10, 2, 5.f, false, 90.f, 3.f);
 
-	Desc.pGameObjectTag = TEXT("GameObject_Player");
-	Desc.fSpeedPerSec = 10.f;
-	Desc.fRotationPerSec = XMConvertToRadians(90.0f);
-
-
-	if (FAILED(__super::Initialize(&Desc)))
+	if (FAILED(__super::Initialize(m_pPlayerInfo)))
 		return E_FAIL;
 
 	if (FAILED(Ready_Components()))
@@ -44,29 +40,32 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 	if (FAILED(Ready_States()))
 		return E_FAIL;
+
+	m_pTransformCom->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(180.f));
+
 	return S_OK;
 }
 
 void CPlayer::Priority_Update(_float fTimeDelta)
 {
-	m_pPlayerFSM->Priority_Update_State();
+	m_pPlayerFSM->Priority_Update_State(fTimeDelta);
 
 	__super::Priority_Update(fTimeDelta);
 }
 
 void CPlayer::Update(_float fTimeDelta)
 {
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&m_NextPosition));
+	//m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&m_NextPosition));
 	//const _float4x4& position = m_pTransformCom->Get_WorldMatrix();
 
-	m_pPlayerFSM->Update_State();
+	m_pPlayerFSM->Update_State(fTimeDelta);
 
 	__super::Update(fTimeDelta);
 }
 
 void CPlayer::Late_Update(_float fTimeDelta)
 {
-	m_pPlayerFSM->Late_Update_State();
+	m_pPlayerFSM->Late_Update_State(fTimeDelta);
 
 	__super::Late_Update(fTimeDelta);
 }
@@ -124,11 +123,11 @@ HRESULT CPlayer::Ready_PartObjects()
 
 HRESULT CPlayer::Ready_States()
 {
-	m_pPlayerInfo = new PLAYER_DESC(10, 10, 2, 2.f, 5.f);
 	m_StatesVec.resize(STATE_END);	// state vector 자리 예약
 
 	CBody_Player* pBodyPlayer = dynamic_cast<CBody_Player*>(Find_PartObject(TEXT("Part_Body")));
-	m_StatesVec[IDLE] = CPlayer_Idle::Create(this, pBodyPlayer, m_pPlayerInfo);
+	m_StatesVec[PLAYER_STATE::IDLE] = CPlayer_Idle::Create(this, pBodyPlayer, m_pPlayerInfo);
+	m_StatesVec[PLAYER_STATE::WALK] = CPlayer_Walk::Create(this, pBodyPlayer, m_pPlayerInfo);
 
 	m_pPlayerFSM = FSM::Create();
 

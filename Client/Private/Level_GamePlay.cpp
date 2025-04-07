@@ -8,6 +8,7 @@
 #include "Camera_Free.h"
 #include "InventoryBase.h"
 #include "InventoryGearSlot.h"
+#include "InventoryItemSlot.h"
 #include "Player.h"
 #include "PlayerHP.h"
 
@@ -41,6 +42,19 @@ HRESULT CLevel_GamePlay::Initialize()
 
 void CLevel_GamePlay::Priority_Update(_float fTimeDelta)
 {
+    /*if (m_pGameInstance->Key_Down('I'))
+    {
+        bShowInventory = !bShowInventory;
+        CGameObject* pInventoryBase = m_pGameInstance->Find_UIGameObject(TEXT("GameObject_InventoryBase"),
+            CUI_Manager::PERSISTENT);
+        CUIObject* pUIObject = dynamic_cast<CUIObject*>(pInventoryBase);
+        pUIObject->Set_Visible(bShowInventory);
+        CGameObject* pPlayer = m_pGameInstance->Find_GameObject(TEXT("Prototype_GameObject_PlayerHex"),
+            LEVEL_GAMEPLAY, TEXT("Layer_Player"));
+        CPlayer* pPlayerHex = dynamic_cast<CPlayer*>(pPlayer);
+        pPlayerHex->Show_Player_Inventory(bShowInventory);
+    }*/
+
     if (m_pGameInstance->Key_Down(VK_LBUTTON))
     {
         _float3 fWorldMousePos, fWorldMouseRay = {};
@@ -61,7 +75,7 @@ void CLevel_GamePlay::Priority_Update(_float fTimeDelta)
             CPlayer* pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("Prototype_GameObject_PlayerHex"),
                 LEVEL_GAMEPLAY, TEXT("Layer_Player")));
             pPlayer->Set_NextPosition({ fWorldPickedPos.x, fWorldPickedPos.y, fWorldPickedPos.z, 1.f });
-            //pPlayer->Change_State(WALK);
+            pPlayer->Change_State(PLAYER_STATE::WALK);
         }
     }
 }
@@ -238,8 +252,10 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& strLayerTag)
         _float fXPosition = fStartX + (fRightSlotWidth + fStoreSlotSpacing) * static_cast<float>(col);   // 열에 맞게 X 좌표 계산
         _float fYPosition = fStartY + (fRightSlotWidth + fStoreSlotSpacing) * static_cast<float>(row);  // 행에 맞게 Y 좌표 계산
 
+        std::wstring strSlotName = L"GameObject_InventoryStoreSlot_" + std::to_wstring(i);
+
         CInventoryBase::INVENTORY_BASE_DESC  InventoryStoreSlotDesc
-        (TEXT("GameObject_InventoryStoreSlot"), CUIObject::CLICKABLE,
+        (strSlotName.c_str(), CUIObject::CLICKABLE,
             fXPosition, fYPosition, 0.5f, fRightSlotWidth, fRightSlotWidth,
             L"Prototype_Component_Texture_InventoryStoreSlot");
 
@@ -303,8 +319,10 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& strLayerTag)
 
         float fSlotX = fItemSlotStartX + static_cast<float>(i) * (fLeftSlotsWidth + fItemSlotSpacing); // 겹치지 않도록 계산
 
+        std::wstring strSlotName = L"GameObject_InventoryItemSlot_Empty_" + std::to_wstring(i);
+
         CInventoryGearSlot::INVENTORY_GEARSLOT_DESC InventoryItemSlotDesc
-        (TEXT("GameObject_InventoryItemSlot_Empty"), CUIObject::UNCLICKABLE,
+        (strSlotName.c_str(), CUIObject::UNCLICKABLE,
             fSlotX, 626.f, 0.4f, 80.f, 80.f,
             L"Prototype_Component_Texture_InventoryItemSlot_Empty");
 
@@ -315,11 +333,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& strLayerTag)
         if (nullptr == pInventoryItemSlot) return E_FAIL;
         pInventoryItemSlot->Set_Parent(pInventoryBase);  // 부모 설정
     }
-
-
-
 #pragma endregion
-
 
     return S_OK;
 }

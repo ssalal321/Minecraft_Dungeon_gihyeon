@@ -111,7 +111,7 @@ _bool CModel::Play_Animation(_float fTimeDelta)
 	}
 
 	/* 뼈들의 m_TransformationMatrix를 애니메이터분들이 제공해준 시간에 맞는 뼈의 상태로 갱신해준다. */
-	isFinished = m_Animations[m_iCurrentAnimIndex]->Update_TransformationMatrices(fTimeDelta, m_Bones, m_isLoop, animationChanged);
+	isFinished = m_Animations[m_iCurrentAnimIndex]->Update_TransformationMatrices(fTimeDelta, m_Bones, m_isLoop, m_fSpeedFactor, animationChanged);
 
 	/* 모든 뼈들의 CombinedTransformationMatrix를 셋한다. */
 	for (auto& pBone : m_Bones)

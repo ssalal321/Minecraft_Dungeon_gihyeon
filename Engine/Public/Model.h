@@ -25,10 +25,11 @@ public:
 		m_isLoop = isLoop;
 	}
 
-	void	Set_Animation(_uint iAnimIndex, _bool isLoop = true)
+	void	Set_Animation(_uint iAnimIndex, _bool isLoop = true, _float speedFactor = 1.f)
 	{
 		m_iNextAnimIndex = iAnimIndex;
 		m_isLoop = isLoop;
+		m_fSpeedFactor = speedFactor;
 	}
 
 public:
@@ -68,6 +69,7 @@ private:
 	_uint						m_iCurrentAnimIndex = {};
 	_uint						m_iNextAnimIndex = {};
 	_bool						m_isLoop = { false };
+	_float						m_fSpeedFactor = {};
 	_uint						m_iNumAnimations = {};
 	vector<class CAnimation*>	m_Animations;
 

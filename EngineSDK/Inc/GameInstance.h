@@ -92,6 +92,7 @@ public:
 
 #pragma region UI_MANAGER
 	CUIObject*	Add_UIObject(_uint iPrototypeLevelIndex, _uint iLayerLevelIndex, const _wstring& strPrototypeTag, CUI_Manager::UI_LIFETIME eUILifeTime, void* pArg = nullptr);
+	CUIObject*  Find_UIGameObject(_wstring strGameObjectTag, CUI_Manager::UI_LIFETIME eUILifeTime) const;
 #pragma endregion
 
 

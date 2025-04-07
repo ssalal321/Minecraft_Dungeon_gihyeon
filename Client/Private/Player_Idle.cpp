@@ -1,9 +1,7 @@
 #include "Player_Idle.h"
-
-#include "Player.h"
 #include "Body_Player.h"
 
-CPlayer_Idle::CPlayer_Idle(CGameObject* pActor, CGameObject* pPartObject, OBJECT_DESC* pGameObjectDesc)
+CPlayer_Idle::CPlayer_Idle(CGameObject* pActor, CGameObject* pPartObject, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc)
 	: CState(pActor, pPartObject, pGameObjectDesc)
 {
 }
@@ -16,9 +14,9 @@ HRESULT CPlayer_Idle::Init_State()
 	m_pBodyPlayer = dynamic_cast<CBody_Player*>(m_pPartObject);
 	m_pBodyPlayerModelCom = dynamic_cast<CModel*>(m_pBodyPlayer->Find_Component(TEXT("Com_Model")));
 
-	m_pPlayerDesc = dynamic_cast<PLAYER_DESC*>(m_pGameObjectDesc);
+	m_pPlayerDesc = static_cast<CPlayer::PLAYER_DESC*>(m_pGameObjectDesc);
 
-	if (nullptr == m_pPlayer || nullptr == m_pTransformCom)
+	if (nullptr == m_pPlayer || nullptr == m_pTransformCom || nullptr == m_pPlayerDesc)
 		return E_FAIL;
 
 	return S_OK;
@@ -28,21 +26,16 @@ void CPlayer_Idle::State_Enter()
 {
 }
 
-void CPlayer_Idle::State_Priority_Update()
+void CPlayer_Idle::State_Priority_Update(_float fTimeDelta)
 {
 }
 
-void CPlayer_Idle::State_Update()
+void CPlayer_Idle::State_Update(_float fTimeDelta)
 {
-	m_pBodyPlayerModelCom->Set_Animation(PLAYER_STATE::WHIP_COMBO, true);
-
-	/*if (m_pGameInstance->Key_Down(VK_LBUTTON))
-	{
-		m_pPlayer->Change_State(m_pPlayer->Get_StateVec()[PLAYER_STATE::WALK]);
-	}*/
+	m_pBodyPlayerModelCom->Set_Animation(PLAYER_STATE::IDLE_GLAIVE, true);
 }
 
-void CPlayer_Idle::State_Late_Update()
+void CPlayer_Idle::State_Late_Update(_float fTimeDelta)
 {
 }
 
@@ -50,7 +43,7 @@ void CPlayer_Idle::State_Exit()
 {
 }
 
-CState* CPlayer_Idle::Create(CGameObject* pActor, CGameObject* pPartObject, OBJECT_DESC* pGameObjectDesc)
+CState* CPlayer_Idle::Create(CGameObject* pActor, CGameObject* pPartObject, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc)
 {
 	CState* pGameInstance = new CPlayer_Idle(pActor, pPartObject, pGameObjectDesc);
 

@@ -216,7 +216,7 @@ HRESULT CLoader::Loading_For_GamePlay()
 	_matrix		PreTransformMatrix = XMMatrixIdentity();
 
 	/* For.Prototype_Component_Model_PlayerHex */
-	PreTransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f));
+	//PreTransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f));
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_PlayerHex"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Player/PlayerHex.fbx", PreTransformMatrix))))
 		return E_FAIL;

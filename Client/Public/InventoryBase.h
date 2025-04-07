@@ -24,9 +24,9 @@ public:
 							speedPerSec, rotationPerSec),  // 부모 생성자 호출
 			  fPlayTime(playTime) { }
 
-		// 복사 생성자
-		INVENTORY_BASE_DESC(const INVENTORY_BASE_DESC& other)
-			: UIOBJECT_DESC(other), fPlayTime(other.fPlayTime) { }
+		//// 복사 생성자
+		//INVENTORY_BASE_DESC(const INVENTORY_BASE_DESC& other)
+		//	: UIOBJECT_DESC(other), fPlayTime(other.fPlayTime) { }
 
 		~INVENTORY_BASE_DESC() override = default;
 

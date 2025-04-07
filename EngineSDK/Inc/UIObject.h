@@ -20,11 +20,11 @@ public:
 			eUIState(uiState), fX(x), fY(y), fZ(z), fSizeX(sizeX), fSizeY(sizeY), strTextureComTag(textureTag) {
 }
 
-tagUIObjectDesc(const tagUIObjectDesc& other)
-	: GAMEOBJECT_DESC(other), eUIState(other.eUIState),
-	  fX(other.fX), fY(other.fY), fZ(other.fZ), fSizeX(other.fSizeX), fSizeY(other.fSizeY),
-	  strTextureComTag(other.strTextureComTag) {
-}
+//tagUIObjectDesc(const tagUIObjectDesc& other)
+//	: GAMEOBJECT_DESC(other), eUIState(other.eUIState),
+//	  fX(other.fX), fY(other.fY), fZ(other.fZ), fSizeX(other.fSizeX), fSizeY(other.fSizeY),
+//	  strTextureComTag(other.strTextureComTag) {
+//}
 
 ~tagUIObjectDesc() override = default;
 
