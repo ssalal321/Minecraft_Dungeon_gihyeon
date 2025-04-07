@@ -25,8 +25,8 @@ public:
 		tagTransformDesc(_float rotationPerSec = 0.f, _float speedPerSec = 0.f)
 			: fRotationPerSec(rotationPerSec), fSpeedPerSec(speedPerSec) {}
 
-		tagTransformDesc(const tagTransformDesc &other)
-			:fRotationPerSec(other.fRotationPerSec), fSpeedPerSec(other.fSpeedPerSec) {}
+		/*tagTransformDesc(const tagTransformDesc &other)
+			:fRotationPerSec(other.fRotationPerSec), fSpeedPerSec(other.fSpeedPerSec) {}*/
 
 		virtual ~tagTransformDesc() = default;
 
@@ -63,8 +63,8 @@ public:
 	}
 
 public:
-	virtual HRESULT Initialize_Prototype() override;
-	virtual HRESULT Initialize(void* pArg);	
+	HRESULT Initialize_Prototype() override;
+	HRESULT Initialize(void* pArg) override;	
 
 public:
 	HRESULT		Bind_ShaderResource(class CShader* pShader, const _char* pConstantName);

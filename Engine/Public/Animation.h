@@ -19,7 +19,7 @@ private:
 public:
 	HRESULT		Initialize(const aiAnimation* pAIAnimation, const vector<class CBone*>& Bones);
 	_bool		Update_TransformationMatrices(_float fTimeDelta, const vector<class CBone*>& Bones,
-											  _bool isLoop, _bool animationChanged);
+											  _bool isLoop, _float speedFactor, _bool animationChanged);
 
 private:
 	_char					m_szName[MAX_PATH] = {};

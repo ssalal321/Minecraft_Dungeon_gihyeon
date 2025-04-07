@@ -25,9 +25,9 @@ public:
 							speedPerSec, rotationPerSec),  // 부모 생성자 호출
 			  fPlayTime(playTime) { }
 
-		// 복사 생성자
-		PLAYERHP_DESC(const PLAYERHP_DESC& other)
-			: UIOBJECT_DESC(other), fPlayTime(other.fPlayTime) { }
+		//// 복사 생성자
+		//PLAYERHP_DESC(const PLAYERHP_DESC& other)
+		//	: UIOBJECT_DESC(other), fPlayTime(other.fPlayTime) { }
 
 		~PLAYERHP_DESC() override = default;
 

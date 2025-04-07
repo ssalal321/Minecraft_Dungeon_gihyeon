@@ -35,22 +35,22 @@ public:
 		m_curState->State_Enter();
 	}
 
-	void Priority_Update_State()
+	void Priority_Update_State(_float fTimeDelta)
 	{
 		if (m_curState != nullptr)
-			m_curState->State_Priority_Update();
+			m_curState->State_Priority_Update(fTimeDelta);
 	}
 
-	void Update_State()
+	void Update_State(_float fTimeDelta)
 	{
 		if (m_curState != nullptr)
-			m_curState->State_Update();
+			m_curState->State_Update(fTimeDelta);
 	}
 
-	void Late_Update_State()
+	void Late_Update_State(_float fTimeDelta)
 	{
 		if (m_curState != nullptr)
-			m_curState->State_Late_Update();
+			m_curState->State_Late_Update(fTimeDelta);
 	}
 
 	/*void Collision_Enter(GameEngine::Collision _other)

@@ -316,6 +316,11 @@ CUIObject* CGameInstance::Add_UIObject(_uint iPrototypeLevelIndex, _uint iLayerL
 {
 	return m_pUI_Manager->Add_UIObject(iPrototypeLevelIndex, iLayerLevelIndex, strPrototypeTag, eUILifeTime, pArg);
 }
+
+CUIObject* CGameInstance::Find_UIGameObject(_wstring strGameObjectTag, CUI_Manager::UI_LIFETIME eUILifeTime) const
+{
+	return m_pUI_Manager->Find_UIGameObject(strGameObjectTag, eUILifeTime);
+}
 #pragma endregion
 
 

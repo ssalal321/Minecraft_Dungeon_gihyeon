@@ -1,15 +1,15 @@
 #pragma once
 #include "Client_Defines.h"
-#include "Player.h"
 #include "State.h"
+#include "Player.h"
 
 BEGIN(Client)
 
-class CPlayer_Idle final: public CState
+class CPlayer_Walk final: public CState
 {
 private:
-	CPlayer_Idle(CGameObject* pActor, CGameObject* pPartObject, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc);
-	~CPlayer_Idle() override = default;
+    CPlayer_Walk(CGameObject* pActor, CGameObject* pPartObject, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc);
+	~CPlayer_Walk() override = default;
 
 public:
     HRESULT   Init_State()          override;
