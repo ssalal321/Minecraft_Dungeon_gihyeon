@@ -1,5 +1,6 @@
 #include "Transform.h"
 
+#include "Navigation.h"
 #include "Shader.h"
 
 CTransform::CTransform(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -52,14 +53,17 @@ void CTransform::SetUp_Scale(_float fScaleX, _float fScaleY, _float fScaleZ)
 	Set_State(STATE_LOOK, XMVector3Normalize(Get_State(STATE_LOOK)) * fScaleZ);
 }
 
-void CTransform::Go_Straight(_float fTimeDelta)
+void CTransform::Go_Straight(_float fTimeDelta, CNavigation* pNavigation)
 {
 	_vector		vLook = Get_State(STATE::STATE_LOOK);
 	_vector		vPosition = Get_State(STATE::STATE_POSITION);
-		
+
 	vPosition += XMVector3Normalize(vLook) * m_fSpeedPerSec * fTimeDelta;
 
 	Set_State(STATE_POSITION, vPosition);
+	if (nullptr == pNavigation ||
+		true == pNavigation->Is_Move(vPosition))
+		Set_State(STATE_POSITION, vPosition);
 }
 
 void CTransform::Go_Left(_float fTimeDelta)

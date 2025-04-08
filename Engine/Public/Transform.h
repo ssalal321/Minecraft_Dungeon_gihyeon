@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Component.h"
+#include "Navigation.h"
 
 /* 월드변환을 위한 행렬을 보관한다.                     */
 /* 월드공간에서의 객체의 상태변환을 위한 함수를 제공한다.  */
@@ -74,7 +75,7 @@ public:
 	void		SetUp_Scale(_float fScaleX = 1.f, _float fScaleY = 1.f, _float fScaleZ = 1.f);
 
 public:
-	void	Go_Straight(_float fTimeDelta);
+	void	Go_Straight(_float fTimeDelta, CNavigation* pNavigation);
 	void	Go_Left(_float fTimeDelta);
 	void	Go_Right(_float fTimeDelta);
 	void	Go_Backward(_float fTimeDelta);

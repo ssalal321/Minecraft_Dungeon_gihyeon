@@ -56,7 +56,7 @@ void CPlayer_Walk::State_Update(_float fTimeDelta)
 
 	m_pTransformCom->LookAt(vNextPos);
 
-	m_pTransformCom->Go_Straight(fTimeDelta);
+	//m_pTransformCom->Go_Straight(fTimeDelta, TODO);
 }
 
 void CPlayer_Walk::State_Late_Update(_float fTimeDelta)

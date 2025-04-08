@@ -326,7 +326,6 @@ CUIObject* CGameInstance::Find_UIGameObject(_wstring strGameObjectTag, CUI_Manag
 
 void CGameInstance::Release_Engine()
 {
-	Safe_Release(m_pGraphic_Device);
 	Safe_Release(m_pInput_Device);
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pLevel_Manager);
@@ -339,6 +338,7 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pLight_Manager);
 	Safe_Release(m_pUI_Manager);
 
+	Safe_Release(m_pGraphic_Device);
 
 	DestroyInstance();
 }
