@@ -16,13 +16,14 @@ public:
 	virtual HRESULT Initialize(void* pArg);
 
 protected:
-	ID3D11Device*					m_pDevice = { nullptr };
-	ID3D11DeviceContext*			m_pContext = { nullptr };
+	ID3D11Device*				m_pDevice = { nullptr };
+	ID3D11DeviceContext*		m_pContext = { nullptr };
+	class CGameInstance*		m_pGameInstance = { nullptr };
 
 
 public:
 	virtual CComponent* Clone(void* pArg) = 0;
-	virtual void Free() override;
+	void Free() override;
 };
 
 END

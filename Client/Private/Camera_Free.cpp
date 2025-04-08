@@ -2,12 +2,12 @@
 #include "GameInstance.h"
 
 CCamera_Free::CCamera_Free(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CCamera { pDevice, pContext }
+	: CCamera (pDevice, pContext)
 {
 }
 
 CCamera_Free::CCamera_Free(const CCamera_Free& Prototype)
-	: CCamera{ Prototype }
+	: CCamera(Prototype )
 {
 }
 
@@ -38,7 +38,7 @@ void CCamera_Free::Update(_float fTimeDelta)
 {
 	if (GetKeyState('W') & 0x8000)
 	{
-		m_pTransformCom->Go_Straight(fTimeDelta);
+		//m_pTransformCom->Go_Straight(fTimeDelta, TODO);
 	}
 	if (GetKeyState('S') & 0x8000)
 	{
