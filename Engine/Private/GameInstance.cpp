@@ -253,9 +253,9 @@ _float3 CGameInstance::Get_MousePos() const
 #pragma endregion
 
 #pragma region PICKING
-void CGameInstance::Compute_MouseRay(_float3& worldMousePos, _float3& worldMouseRay) const
+_bool CGameInstance::Picked_Model(_float3& fWorldPickedPos, _wstring strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag)
 {
-	return m_pPicking->Compute_MouseRay(worldMousePos, worldMouseRay);
+	return m_pPicking->Picked_Model(fWorldPickedPos, strPrototypeTag, iLayerLevelIndex, strLayerTag);
 }
 #pragma endregion
 

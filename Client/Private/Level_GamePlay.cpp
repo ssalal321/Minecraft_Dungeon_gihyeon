@@ -57,19 +57,11 @@ void CLevel_GamePlay::Priority_Update(_float fTimeDelta)
 
     if (m_pGameInstance->Key_Down(VK_LBUTTON))
     {
-        _float3 fWorldMousePos, fWorldMouseRay = {};
         _float3 fWorldPickedPos = {};
-
-        m_pGameInstance->Compute_MouseRay(fWorldMousePos, fWorldMouseRay);
-
-        CGameObject* pLoungeMap = m_pGameInstance->Find_GameObject(TEXT("Prototype_GameObject_LoungeMap"),
-            LEVEL_GAMEPLAY, TEXT("Layer_BackGround"));
-        CModel* pLoungeMapModelCom = dynamic_cast<CModel*>(pLoungeMap->Find_Component(TEXT("Com_Model")));
-        CTransform* pLoungeMapTransformCom = dynamic_cast<CTransform*>(pLoungeMap->Find_Component(TEXT("Com_Transform")));
-        const _float4x4& pLoungeMapWorldMatrix = pLoungeMapTransformCom->Get_WorldMatrix();
-
+       
         // 2. LoungeMap에 피킹 요청 (BoundingBox 충돌 체크)
-        if (pLoungeMapModelCom->Picking_Model(fWorldMousePos, fWorldMouseRay, fWorldPickedPos, pLoungeMapWorldMatrix))
+        if (m_pGameInstance->Picked_Model(fWorldPickedPos, TEXT("Prototype_GameObject_LoungeMap"),
+										  LEVEL_GAMEPLAY, TEXT("Layer_BackGround")))
         {
             // 3. 피킹 성공 → 플레이어 이동 요청
             CPlayer* pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("Prototype_GameObject_PlayerHex"),

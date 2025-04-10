@@ -69,7 +69,7 @@ public:
 #pragma endregion
 
 #pragma region PICKING
-	void	Compute_MouseRay(_float3& worldMousePos, _float3& worldMouseRay) const;
+	_bool   Picked_Model(_float3& fWorldPickedPos, _wstring strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag);
 #pragma endregion
 
 #pragma region RENDERER

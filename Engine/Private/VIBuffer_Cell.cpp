@@ -12,7 +12,7 @@ CVIBuffer_Cell::CVIBuffer_Cell(const CVIBuffer_Cell& Prototype)
 
 HRESULT CVIBuffer_Cell::Initialize_Prototype(const _float3* pPoints)
 {
-	/* 네모를 구성하기위한 정점과 인덱스의 정보를 채우고 버퍼를 할당할 수 있도록 함수를 호출해준다. */
+	/* 세모를 구성하기위한 정점과 인덱스의 정보를 채우고 버퍼를 할당할 수 있도록 함수를 호출해준다. */
 	m_iNumVertexBuffers = 1;
 	m_iVertexStride = sizeof(VTXPOS);
 	m_iNumVertices = 3;
