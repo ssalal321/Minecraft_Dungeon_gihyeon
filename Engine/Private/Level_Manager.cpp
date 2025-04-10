@@ -35,22 +35,10 @@ HRESULT CLevel_Manager::Open_Level(_uint iNextLevelIndex, class CLevel* pNewLeve
     return S_OK;
 }
 
-void CLevel_Manager::Priority_Update(_float fTimeDelta)
-{
-    if (nullptr != m_pCurrentLevel)
-        m_pCurrentLevel->Priority_Update(fTimeDelta);
-}
-
 void CLevel_Manager::Update(_float fTimeDelta)
 {
     if (nullptr != m_pCurrentLevel)
         m_pCurrentLevel->Update(fTimeDelta);
-}
-
-void CLevel_Manager::Late_Update(_float fTimeDelta)
-{
-    if (nullptr != m_pCurrentLevel)
-        m_pCurrentLevel->Late_Update(fTimeDelta);
 }
 
 HRESULT CLevel_Manager::Render()

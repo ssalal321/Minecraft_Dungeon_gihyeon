@@ -26,9 +26,9 @@ public:
 	HRESULT		Render()							override;
 
 private:	
-	
-	CShader*	m_pShaderCom = { nullptr };
-	CModel*		m_pModelCom = { nullptr };
+	CShader*		m_pShaderCom	 = { nullptr };
+	CModel*			m_pModelCom		 = { nullptr };
+	CNavigation*	m_pNavigationCom = { nullptr };
 
 private:
 	HRESULT		Ready_Components();

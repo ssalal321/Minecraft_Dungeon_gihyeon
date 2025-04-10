@@ -8,7 +8,7 @@
 const _float4x4* CNavigation::m_pWorldMatrix = { nullptr };
 
 CNavigation::CNavigation(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CComponent (pDevice, pContext )
+	: CComponent ( pDevice, pContext )
 {
 }
 
@@ -30,7 +30,7 @@ CNavigation::CNavigation(const CNavigation& Prototype)
 
 HRESULT CNavigation::Initialize_Prototype(const _tchar* pNavigationDataFilePath)
 {
-	_ulong		dwByte = { };
+	/*_ulong		dwByte = { };
 	HANDLE		hFile = CreateFile(pNavigationDataFilePath, GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 	if (0 == hFile)
 		return E_FAIL;
@@ -51,12 +51,23 @@ HRESULT CNavigation::Initialize_Prototype(const _tchar* pNavigationDataFilePath)
 		m_Cells.push_back(pCell);
 	}
 
-	CloseHandle(hFile);
+	CloseHandle(hFile);*/
 
-
-	if (FAILED(SetUp_Neighbors()))
+//
+//	if (FAILED(SetUp_Neighbors()))
+//		return E_FAIL;
+//
+#ifdef _DEBUG
+	m_pShader = CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_Cell.hlsl"), VTXPOS::Elements, VTXPOS::iNumElements);
+	if (nullptr == m_pShader)
 		return E_FAIL;
+#endif
 
+	return S_OK;
+}
+
+HRESULT CNavigation::Initialize_Prototype()
+{
 #ifdef _DEBUG
 	m_pShader = CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_Cell.hlsl"), VTXPOS::Elements, VTXPOS::iNumElements);
 	if (nullptr == m_pShader)
@@ -74,9 +85,31 @@ HRESULT CNavigation::Initialize(void* pArg)
 void CNavigation::Update(const _float4x4* pWorldMatrix)
 {
 	m_pWorldMatrix = pWorldMatrix;
+
+#ifdef _DEBUG
+	if (m_pGameInstance->Key_Down('T') & 0x0001)
+	{
+		m_bLineRender = !m_bLineRender;
+
+		for (auto& pCell : m_Cells)
+			pCell->Set_RenderMode(m_bLineRender ? RENDER_MODE::LINE : RENDER_MODE::FILL);
+	}
+#endif
+}
+ 
+void CNavigation::Make_Cell(const _float3* fCellPoints)
+{
+	CCell* pCell = CCell::Create(m_pDevice, m_pContext, fCellPoints, m_Cells.size());
+	if (nullptr == pCell)
+		return;
+
+	m_Cells.push_back(pCell);
+
+	if (m_Cells.size() > 1)
+		SetUp_Neighbors();
 }
 
-_bool CNavigation::Is_Move(_fvector vWorldPos)
+_bool CNavigation::Can_Move(_fvector vWorldPos)
 {
 	_matrix		WorldMatrixInv = XMMatrixInverse(nullptr, XMLoadFloat4x4(m_pWorldMatrix));
 
@@ -84,7 +117,7 @@ _bool CNavigation::Is_Move(_fvector vWorldPos)
 
 	_int		iNeighborIndex = { -1 };
 
-	if (true == m_Cells[m_iCurrentCellIndex]->is_In(vPosition, &iNeighborIndex))
+	if (true == m_Cells[m_iCurrentCellIndex]->Is_In(vPosition, &iNeighborIndex))
 	{
 		return true;
 	}
@@ -124,30 +157,65 @@ HRESULT CNavigation::SetUp_Neighbors()
 	return S_OK;
 }
 
+void CNavigation::SetUp_OnNavigation(CTransform* pTransform)
+{
+	_vector		vWorldPos = pTransform->Get_State(CTransform::STATE_POSITION);
+	_matrix		WorldMatrixInv = XMMatrixInverse(nullptr, XMLoadFloat4x4(m_pWorldMatrix));
+
+	_vector		vPosition = XMVector3TransformCoord(vWorldPos, WorldMatrixInv);
+
+	_float		fHeight = m_Cells[m_iCurrentCellIndex]->Compute_Height(vPosition);
+
+	vPosition = XMVectorSetY(vPosition, fHeight);
+
+	pTransform->Set_State(CTransform::STATE_POSITION, XMVector3TransformCoord(vPosition, XMLoadFloat4x4(m_pWorldMatrix)));
+}
+
 #ifdef _DEBUG
 HRESULT CNavigation::Render()
 {
-	if (FAILED(m_pShader->Bind_Matrix("g_WorldMatrix", m_pWorldMatrix)))
+	_float4x4 WorldMatrix = *m_pWorldMatrix;
+	WorldMatrix._42 += 0.1f; // »ìÂ¦ À§·Î
+
+	if (FAILED(m_pShader->Bind_Matrix("g_WorldMatrix", &WorldMatrix)))
 		return E_FAIL;
 	if (FAILED(m_pShader->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Transform_Float4x4(CPipeLine::D3DTS_VIEW))))
 		return E_FAIL;
 	if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(CPipeLine::D3DTS_PROJ))))
 		return E_FAIL;
 
+	_float4 vColor = _float4(1.f, 0.f, 0.f, 1.f); // ºÓÀº»ö
+	if (FAILED(m_pShader->Bind_RawValue("g_vColor", &vColor, sizeof(_float4))))
+		return E_FAIL;
+
 	m_pShader->Begin(0);
 
 	for (auto& pCell : m_Cells)
-		pCell->Render();	
+		pCell->Render();
 
 	return S_OK;
 }
 #endif
+
 
 CNavigation* CNavigation::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pNavigationDataFilePath)
 {
 	CNavigation* pGameInstance = new CNavigation(pDevice, pContext);
 
 	if (FAILED(pGameInstance->Initialize_Prototype(pNavigationDataFilePath)))
+	{
+		MSG_BOX("Failed to Create : CNavigation");
+		Safe_Release(pGameInstance);
+	}
+
+	return pGameInstance;
+}
+
+CNavigation* CNavigation::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+{
+	CNavigation* pGameInstance = new CNavigation(pDevice, pContext);
+
+	if (FAILED(pGameInstance->Initialize_Prototype()))
 	{
 		MSG_BOX("Failed to Create : CNavigation");
 		Safe_Release(pGameInstance);

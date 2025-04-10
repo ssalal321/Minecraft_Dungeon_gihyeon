@@ -22,9 +22,9 @@ HRESULT CPicking::Initialize(HWND hWnd, _uint iWinSizeX, _uint iWinSizeY)
 	return S_OK;
 }
 
-_bool CPicking::Picked_Model(_float3& fWorldPickedPos, _wstring strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag)
+_bool CPicking::Picked_Model(_float3& fWorldPickedPos, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag, _float3* outPoints)
 {
-    _float3 fWorldMousePos, fWorldMouseRay = {};
+    _float3  fWorldMousePos, fWorldMouseRay = {};
    
     Compute_MouseRay(fWorldMousePos, fWorldMouseRay);
 
@@ -34,7 +34,7 @@ _bool CPicking::Picked_Model(_float3& fWorldPickedPos, _wstring strPrototypeTag,
     const _float4x4&  pPickedObjWorldMatrix = pPickedObjTransformCom->Get_WorldMatrix();
 
     // 2. LoungeMap에 피킹 요청 (BoundingBox 충돌 체크)
-    if (pPickedObjModelCom->Picking_Model(fWorldMousePos, fWorldMouseRay, fWorldPickedPos, pPickedObjWorldMatrix))
+    if (pPickedObjModelCom->Picking_Model(fWorldMousePos, fWorldMouseRay, fWorldPickedPos, pPickedObjWorldMatrix, outPoints))
     {
         return true;
     }

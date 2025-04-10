@@ -3,6 +3,9 @@
 
 #include "framework.h"
 #include "Client.h"
+
+#include <ios>
+
 #include "MainApp.h"
 #include "GameInstance.h"
 
@@ -28,6 +31,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 #ifdef _DEBUG
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+    CreateConsole();
 #endif
 
     UNREFERENCED_PARAMETER(hPrevInstance);
@@ -238,4 +242,21 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     }
     return (INT_PTR)FALSE;
+}
+
+void CreateConsole()
+{
+    AllocConsole();
+
+    HANDLE hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
+    HANDLE hConsoleError = GetStdHandle(STD_ERROR_HANDLE);
+
+    std::ios::sync_with_stdio(); // iostream <-> C stdio 동기화
+
+    // 연결
+    FILE* fpOut;
+    FILE* fpErr;
+
+    freopen_s(&fpOut, "CONOUT$", "w", stdout);
+    freopen_s(&fpErr, "CONOUT$", "w", stderr);
 }

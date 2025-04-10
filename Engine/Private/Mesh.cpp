@@ -309,38 +309,39 @@ void CMesh::Compute_BoundingBox()
 }
 
 
-_bool CMesh::Check_BoundingBox_Collision(const _float3& vMouseRayPos, const _float3& vMouseRayDir, const _float4x4& WorldMatrix)
+_bool CMesh::Check_BoundingBox_Collision(const _float3& vWorldMousePos, const _float3& vWorldMouseRay, const _float4x4& WorldMatrix)
 {
 	_float3 vWorldMin = {}, vWorldMax = {};
 	XMStoreFloat3(&vWorldMin, XMVector3TransformCoord(XMLoadFloat3(&m_vBoundingMin), XMLoadFloat4x4(&WorldMatrix)));
 	XMStoreFloat3(&vWorldMax, XMVector3TransformCoord(XMLoadFloat3(&m_vBoundingMax), XMLoadFloat4x4(&WorldMatrix)));
 
-	return Collision_AABB(vMouseRayPos, vMouseRayDir, vWorldMin, vWorldMax);
+	return Collision_AABB(vWorldMousePos, vWorldMouseRay, vWorldMin, vWorldMax);
 }
 
-_bool CMesh::Collision_AABB(const _float3& vRayOrigin, const _float3& vRayDir, const _float3& vWorldMin, const _float3& vWorldMax)
+_bool CMesh::Collision_AABB(const _float3& worldMousePos, const _float3& worldMouseRay, const _float3& worldMin, const _float3& worldMax)
 {
 	_float tMin = 0.0f, tMax = FLT_MAX;
 
-	_float rayOrigin[3] = { vRayOrigin.x, vRayOrigin.y, vRayOrigin.z };
-	_float rayDir[3] = { vRayDir.x, vRayDir.y, vRayDir.z };
-	_float worldMin[3] = { vWorldMin.x, vWorldMin.y, vWorldMin.z };
-	_float worldMax[3] = { vWorldMax.x, vWorldMax.y, vWorldMax.z };
+	_float rayOrigin[3] = { worldMousePos.x, worldMousePos.y, worldMousePos.z };
+	_float rayDir[3] = { worldMouseRay.x, worldMouseRay.y, worldMouseRay.z };
+	_float fWorldMin[3] = { worldMin.x, worldMin.y, worldMin.z };
+	_float fWorldMax[3] = { worldMax.x, worldMax.y, worldMax.z };
 
 	// rayDir는 정규화된 상태
 	for (int i = 0; i < 3; i++)  // X, Y, Z 축에 대해 검사
 	{
 		if (abs(rayDir[i]) < 1e-6f)
 		{
-			if (rayOrigin[i] < worldMin[i] || rayOrigin[i] > worldMax[i])
+			if (rayOrigin[i] < fWorldMin[i] || rayOrigin[i] > fWorldMax[i])
 				return false;
 		}
 		else
 		{
-			_float t1 = (worldMin[i] - rayOrigin[i]) / rayDir[i];
-			_float t2 = (worldMax[i] - rayOrigin[i]) / rayDir[i];
+			_float t1 = (fWorldMin[i] - rayOrigin[i]) / rayDir[i];
+			_float t2 = (fWorldMax[i] - rayOrigin[i]) / rayDir[i];
 
-			if (t1 > t2) swap(t1, t2);
+			if (t1 > t2) 
+				swap(t1, t2);
 
 			tMin = max(tMin, t1);
 			tMax = min(tMax, t2);
@@ -353,33 +354,35 @@ _bool CMesh::Collision_AABB(const _float3& vRayOrigin, const _float3& vRayDir, c
 	return true;	// BoundingBox AABB 충돌 시 true 반환
 }
 
-_bool CMesh::Picking_In_Mesh(const _float3& vMousePos, const _float3& vMouseRay, _float3& vPickedPos, const _float4x4& WorldMatrix) const
+_bool CMesh::Picking_In_Mesh(const _float3& worldMousePos, const _float3& worldMouseRay, _float3& vPickedPos, const _float4x4& WorldMatrix,
+							 _float3* outPoints) const
 {
 	_float3	localMousePos = {}, localMouseRay = {};
 	_matrix		InvWorldMatrix = {};
 
 	InvWorldMatrix = XMMatrixInverse(nullptr, XMLoadFloat4x4(&WorldMatrix));
 
-	XMStoreFloat3(&localMousePos, XMVector3TransformCoord(XMLoadFloat3(&vMousePos), InvWorldMatrix));
-	XMStoreFloat3(&localMouseRay, XMVector3Normalize(XMVector3TransformNormal(XMLoadFloat3(&vMouseRay), InvWorldMatrix)));
+	XMStoreFloat3(&localMousePos, XMVector3TransformCoord(XMLoadFloat3(&worldMousePos), InvWorldMatrix));
+	XMStoreFloat3(&localMouseRay, XMVector3Normalize(XMVector3TransformNormal(XMLoadFloat3(&worldMouseRay), InvWorldMatrix)));
 
 	// 로컬 좌표에서 피킹 실행
-	return Picking_Triangle(vPickedPos, localMousePos, localMouseRay);
+	return Picking_Triangle(vPickedPos, localMousePos, localMouseRay, outPoints);
 }
 
-_bool CMesh::Picking_Triangle(_float3& vPickedPos, const _float3& vRayPos, const _float3& vRayDir) const
+_bool CMesh::Picking_Triangle(_float3& vPickedPos, const _float3& localMousePos, const _float3& localMouseRay,
+	_float3* fOutPoints) const
 {
-	_vector  vOrigin = XMLoadFloat3(&vRayPos);
-	_vector  vDir = XMLoadFloat3(&vRayDir);
+	_vector  vOrigin = XMLoadFloat3(&localMousePos);
+	_vector  vDir = XMLoadFloat3(&localMouseRay);
 
-	_bool bHit = false;
-	_float fMinDist = FLT_MAX;
+	_bool	bHit = false;
+	_float	fMinDist = FLT_MAX;
 
 	for (_uint i = 0; i < m_iNumIndices; i += 3)
 	{
-		_float3 vA = { m_pVertices[m_pIndices[i + 0]].x, m_pVertices[m_pIndices[i + 0]].y, m_pVertices[m_pIndices[i + 0]].z };
-		_float3 vB = { m_pVertices[m_pIndices[i + 1]].x, m_pVertices[m_pIndices[i + 1]].y, m_pVertices[m_pIndices[i + 1]].z };
-		_float3 vC = { m_pVertices[m_pIndices[i + 2]].x, m_pVertices[m_pIndices[i + 2]].y, m_pVertices[m_pIndices[i + 2]].z };
+		_float3 vA = m_pVertices[m_pIndices[i + 0]];
+		_float3 vB = m_pVertices[m_pIndices[i + 1]];
+		_float3 vC = m_pVertices[m_pIndices[i + 2]];
 
 		_vector v0 = XMLoadFloat3(&vA);
 		_vector v1 = XMLoadFloat3(&vB);
@@ -392,12 +395,24 @@ _bool CMesh::Picking_Triangle(_float3& vPickedPos, const _float3& vRayPos, const
 			{
 				fMinDist = fDist;
 				XMStoreFloat3(&vPickedPos, vOrigin + vDir * fDist);
+
+				if (fOutPoints)
+				{
+					ZeroMemory(fOutPoints, sizeof(_float3) * 3);
+
+					fOutPoints[0] = vA;
+					fOutPoints[1] = vB;
+					fOutPoints[2] = vC;
+				}	
+
 				bHit = true;
 			}
 		}
 	}
+
 	return bHit;
 }
+
 
 
 

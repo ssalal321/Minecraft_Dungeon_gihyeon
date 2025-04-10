@@ -6,7 +6,7 @@ CVIBuffer_Cell::CVIBuffer_Cell(ID3D11Device* pDevice, ID3D11DeviceContext* pCont
 }
 
 CVIBuffer_Cell::CVIBuffer_Cell(const CVIBuffer_Cell& Prototype)
-	: CVIBuffer{ Prototype }
+	: CVIBuffer( Prototype )
 {
 }
 
@@ -77,6 +77,22 @@ HRESULT CVIBuffer_Cell::Initialize_Prototype(const _float3* pPoints)
 HRESULT CVIBuffer_Cell::Initialize(void* pArg)
 {
 	return S_OK;
+}
+
+void CVIBuffer_Cell::Set_RenderMode(RENDER_MODE eMode)
+{
+	switch (eMode)
+	{
+	case RENDER_MODE::LINE:
+		m_ePrimitiveTopology = D3D_PRIMITIVE_TOPOLOGY_LINESTRIP;
+		m_iNumIndices = 4;
+		break;
+
+	case RENDER_MODE::FILL:
+		m_ePrimitiveTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+		m_iNumIndices = 3;
+		break;
+	}
 }
 
 CVIBuffer_Cell* CVIBuffer_Cell::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _float3* pPoints)

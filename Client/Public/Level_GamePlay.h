@@ -13,9 +13,7 @@ private:
 
 public:
 	HRESULT		Initialize()						override;
-	void		Priority_Update(_float fTimeDelta)	override;
 	void		Update(_float fTimeDelta)			override;
-	void		Late_Update(_float fTimeDelta)		override;
 	HRESULT		Render()							override;
 
 public:

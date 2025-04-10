@@ -1,14 +1,18 @@
 #include "LoungeMap.h"
+
+#include <iostream>
+
 #include "GameInstance.h"
+#include "Player.h"
 
 CLoungeMap::CLoungeMap(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CGameObject { pDevice, pContext }
+	: CGameObject ( pDevice, pContext )
 {
 
 }
 
 CLoungeMap::CLoungeMap(const CLoungeMap& Prototype)
-	: CGameObject { Prototype }
+	: CGameObject ( Prototype )
 {
 
 }
@@ -44,17 +48,40 @@ HRESULT CLoungeMap::Initialize(void* pArg)
 
 void CLoungeMap::Priority_Update(_float fTimeDelta)
 {
+	if (m_pGameInstance->Key_Down(VK_LBUTTON))
+	{
+		_float3		fWorldPickedPos = {};
+		_float3		fOutPoints[3] = {} /*nullptr*/;
 
+		if (m_pGameInstance->Picked_Model(fWorldPickedPos, TEXT("Prototype_GameObject_LoungeMap"), LEVEL_GAMEPLAY, TEXT("Layer_BackGround"),
+			fOutPoints))
+		{
+			std::cerr << "[피킹 위치] X: " << fWorldPickedPos.x
+				<< " Y: " << fWorldPickedPos.y
+				<< " Z: " << fWorldPickedPos.z << std::endl;
+
+
+			// Navigation에 전달
+			if (m_pNavigationCom != nullptr)
+			{
+				m_pNavigationCom->Make_Cell(fOutPoints);
+			}
+
+			CPlayer* pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("Prototype_GameObject_PlayerHex"),
+				            LEVEL_GAMEPLAY, TEXT("Layer_Player")));
+				        pPlayer->Set_NextPosition({ fWorldPickedPos.x, fWorldPickedPos.y, fWorldPickedPos.z, 1.f });
+				        pPlayer->Change_State(PLAYER_STATE::WALK);
+		}
+	}
 }
 
 void CLoungeMap::Update(_float fTimeDelta)
 {
-
+	m_pNavigationCom->Update(m_pTransformCom->Get_WorldMatrix_Ptr());
 }
 
 void CLoungeMap::Late_Update(_float fTimeDelta)
 {
-
 	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 }
 
@@ -76,6 +103,11 @@ HRESULT CLoungeMap::Render()
 		if (FAILED(m_pModelCom->Render(i)))
 			return E_FAIL;
 	}
+
+#ifdef _DEBUG
+	m_pNavigationCom->Render();
+#endif
+
 	return S_OK;
 }
 
@@ -89,6 +121,11 @@ HRESULT CLoungeMap::Ready_Components()
 	/* Com_Model */
 	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_LoungeMap"),
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
+		return E_FAIL;
+
+	/* Com_Navigation */
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Navigation"),
+		TEXT("Com_Navigation"), reinterpret_cast<CComponent**>(&m_pNavigationCom))))
 		return E_FAIL;
 
 	return S_OK;
@@ -155,4 +192,5 @@ void CLoungeMap::Free()
 
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pModelCom);
+	Safe_Release(m_pNavigationCom);
 }

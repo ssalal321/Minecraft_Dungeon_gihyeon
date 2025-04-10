@@ -39,7 +39,8 @@ public:
 
 public:
 	_bool		Play_Animation(_float fTimeDelta);
-	_bool		Picking_Model(const _float3& vMousePos, const _float3& vMouseRay, _float3& vPickedPos, const _float4x4& WorldMatrix) const;
+	_bool		Picking_Model(const _float3& worldMousePos, const _float3& worldMouseRay, _float3& vOutPickedPos, const _float4x4& WorldMatrix,
+							  _float3* outPoints = nullptr) const;
 
 public:
 	HRESULT		Bind_Material(class CShader* pShader, const _char* pConstantName, _uint iMeshIndex, aiTextureType eMaterialType, _uint iTextureIndex);
@@ -61,6 +62,8 @@ private:
 
 	_uint						m_iNumMaterials = {};
 	vector<class CMaterial*>	m_Materials;
+
+	
 
 	/* 내 모델 전체의 뼈 정보 */
 	/* CBone : 뼈의 이름, 상태, 부모, */

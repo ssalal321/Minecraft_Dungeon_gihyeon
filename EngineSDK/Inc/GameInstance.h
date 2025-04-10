@@ -69,7 +69,8 @@ public:
 #pragma endregion
 
 #pragma region PICKING
-	_bool   Picked_Model(_float3& fWorldPickedPos, _wstring strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag);
+	_bool   Picked_Model(_float3& fWorldPickedPos, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag,
+						 _float3* fOutPoints = nullptr);
 #pragma endregion
 
 #pragma region RENDERER

@@ -9,6 +9,14 @@ CCell::CCell(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     Safe_AddRef(m_pDevice);
 }
 
+void CCell::Set_RenderMode(RENDER_MODE eMode)
+{
+#ifdef _DEBUG
+    if (m_pVIBuffer)
+        m_pVIBuffer->Set_RenderMode(eMode);
+#endif
+}
+
 HRESULT CCell::Initialize(const _float3* pPoints, _int iIndex)
 {
     memcpy(m_vPoints, pPoints, sizeof(_float3) * POINT_END);
@@ -23,6 +31,12 @@ HRESULT CCell::Initialize(const _float3* pPoints, _int iIndex)
 
     for (size_t i = 0; i < LINE_END; i++)
         m_vNormals[i] = _float3(-vLines[i].z, 0.f, vLines[i].x);
+
+    XMStoreFloat4(&m_vPlane,
+        XMPlaneFromPoints(
+            XMVectorSetW(XMLoadFloat3(&m_vPoints[POINT_A]), 1.f),
+            XMVectorSetW(XMLoadFloat3(&m_vPoints[POINT_B]), 1.f),
+            XMVectorSetW(XMLoadFloat3(&m_vPoints[POINT_C]), 1.f)));
 
 #ifdef _DEBUG
     m_pVIBuffer = CVIBuffer_Cell::Create(m_pDevice, m_pContext, m_vPoints);
@@ -41,7 +55,7 @@ HRESULT CCell::Render()
     return m_pVIBuffer->Render();    
 }
 
-_bool CCell::is_In(_fvector vPosition, _int* pNeighborIndex)
+_bool CCell::Is_In(_fvector vPosition, _int* pNeighborIndex)
 {
     for (size_t i = 0; i < LINE_END; i++)
     {
@@ -86,6 +100,14 @@ _bool CCell::Compare_Points(_fvector vSourPoint, _fvector vDestPoint)
 
 
     return _bool();
+}
+
+_float CCell::Compute_Height(_fvector vPosition)
+{
+    /* ax + by + cz + d = 0 */
+    /* y = (-ax - cz - d) / b */
+
+    return (-m_vPlane.x * XMVectorGetX(vPosition) - m_vPlane.z * XMVectorGetZ(vPosition) - m_vPlane.w) / m_vPlane.y;
 }
 
 CCell* CCell::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _float3* pPoints, _int iIndex)

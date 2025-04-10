@@ -1,13 +1,13 @@
 #include "Shader.h"
 
 CShader::CShader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-    : CComponent { pDevice, pContext }
+    : CComponent ( pDevice, pContext )
 {
 
 }
 
 CShader::CShader(const CShader& Prototype)
-    : CComponent{ Prototype },
+    : CComponent( Prototype ),
 	  m_pEffect(Prototype.m_pEffect),
 	  m_iNumPasses(Prototype.m_iNumPasses),
 	  m_InputLayouts(Prototype.m_InputLayouts)

@@ -80,19 +80,16 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 
 	m_pObject_Manager->Priority_Update(fTimeDelta);
 	m_pUI_Manager->Priority_Update(fTimeDelta);
-	m_pLevel_Manager->Priority_Update(fTimeDelta);
 		
 	m_pObject_Manager->Update(fTimeDelta);
 	m_pUI_Manager->Update(fTimeDelta);
-	m_pLevel_Manager->Update(fTimeDelta);
 
 	m_pPipeLine->Update();
 
 	m_pObject_Manager->Late_Update(fTimeDelta);
 	m_pUI_Manager->Late_Update(fTimeDelta);
-	m_pLevel_Manager->Late_Update(fTimeDelta);
 
-	
+	m_pLevel_Manager->Update(fTimeDelta);
 }
 
 HRESULT CGameInstance::Draw()
@@ -253,9 +250,10 @@ _float3 CGameInstance::Get_MousePos() const
 #pragma endregion
 
 #pragma region PICKING
-_bool CGameInstance::Picked_Model(_float3& fWorldPickedPos, _wstring strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag)
+_bool   CGameInstance::Picked_Model(_float3& fWorldPickedPos, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag,
+									_float3* fOutPoints)
 {
-	return m_pPicking->Picked_Model(fWorldPickedPos, strPrototypeTag, iLayerLevelIndex, strLayerTag);
+	return m_pPicking->Picked_Model(fWorldPickedPos, strPrototypeTag, iLayerLevelIndex, strLayerTag, fOutPoints);
 }
 #pragma endregion
 

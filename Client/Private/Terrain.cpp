@@ -2,13 +2,13 @@
 #include "GameInstance.h"
 
 CTerrain::CTerrain(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CGameObject { pDevice, pContext }
+	: CGameObject ( pDevice, pContext )
 {
 
 }
 
 CTerrain::CTerrain(const CTerrain& Prototype)
-	: CGameObject { Prototype }
+	: CGameObject ( Prototype )
 {
 
 }

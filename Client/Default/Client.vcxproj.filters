@@ -177,9 +177,6 @@
     <ClInclude Include="..\Public\ForkLift.h">
       <Filter>02.GameObjects\ForkLift</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Client_Struct.h">
-      <Filter>99.Defines</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\State.h">
       <Filter>96. FSM\State</Filter>
     </ClInclude>
@@ -303,6 +300,9 @@
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCube.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Cell.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

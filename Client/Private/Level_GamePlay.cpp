@@ -9,6 +9,7 @@
 #include "InventoryBase.h"
 #include "InventoryGearSlot.h"
 #include "InventoryItemSlot.h"
+#include "LoungeMap.h"
 #include "Player.h"
 #include "PlayerHP.h"
 
@@ -40,8 +41,9 @@ HRESULT CLevel_GamePlay::Initialize()
     return S_OK;
 }
 
-void CLevel_GamePlay::Priority_Update(_float fTimeDelta)
+void CLevel_GamePlay::Update(_float fTimeDelta)
 {
+
     /*if (m_pGameInstance->Key_Down('I'))
     {
         bShowInventory = !bShowInventory;
@@ -55,31 +57,44 @@ void CLevel_GamePlay::Priority_Update(_float fTimeDelta)
         pPlayerHex->Show_Player_Inventory(bShowInventory);
     }*/
 
-    if (m_pGameInstance->Key_Down(VK_LBUTTON))
-    {
-        _float3 fWorldPickedPos = {};
-       
-        // 2. LoungeMap에 피킹 요청 (BoundingBox 충돌 체크)
-        if (m_pGameInstance->Picked_Model(fWorldPickedPos, TEXT("Prototype_GameObject_LoungeMap"),
-										  LEVEL_GAMEPLAY, TEXT("Layer_BackGround")))
-        {
-            // 3. 피킹 성공 → 플레이어 이동 요청
-            CPlayer* pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("Prototype_GameObject_PlayerHex"),
-                LEVEL_GAMEPLAY, TEXT("Layer_Player")));
-            pPlayer->Set_NextPosition({ fWorldPickedPos.x, fWorldPickedPos.y, fWorldPickedPos.z, 1.f });
-            pPlayer->Change_State(PLAYER_STATE::WALK);
-        }
-    }
-}
+    //if (m_pGameInstance->Key_Down(VK_LBUTTON))
+    //{
+    //    _float3		fWorldPickedPos = {};
+    //    _float3		fOutPoints[3] = {} /*nullptr*/;
 
-void CLevel_GamePlay::Update(_float fTimeDelta)
-{
-    
+    //    if (m_pGameInstance->Picked_Model(fWorldPickedPos, TEXT("Prototype_GameObject_LoungeMap"), LEVEL_GAMEPLAY, TEXT("Layer_BackGround"),
+    //        fOutPoints))
+    //    {
+    //        CLoungeMap* pLoungeMap = dynamic_cast<CLoungeMap*>(m_pGameInstance->Find_GameObject(TEXT("Prototype_GameObject_LoungeMap"),
+                //											   LEVEL_GAMEPLAY, TEXT("Layer_Player")));
+
+    //        // Navigation에 전달
+    //        CNavigation* pNavigation = dynamic_cast<CNavigation*>(pLoungeMap->Find_Component(TEXT("Com_Navigation")));
+
+    //        if (pNavigation != nullptr)
+    //        {
+    //            pNavigation->Make_Cell(fWorldPickedPos, fOutPoints);
+    //        }
+    //    }
+    //}
+
+    //if (m_pGameInstance->Key_Down(VK_LBUTTON))
+    //{
+    //    _float3 fWorldPickedPos = {};
+    //   
+    //    // 2. LoungeMap에 피킹 요청 (BoundingBox 충돌 체크)
+    //    if (m_pGameInstance->Picked_Model(fWorldPickedPos, TEXT("Prototype_GameObject_LoungeMap"),
+                //						  LEVEL_GAMEPLAY, TEXT("Layer_BackGround")))
+    //    {
+
+    //        // 3. 피킹 성공 → 플레이어 이동 요청
+    //        CPlayer* pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("Prototype_GameObject_PlayerHex"),
+    //            LEVEL_GAMEPLAY, TEXT("Layer_Player")));
+    //        pPlayer->Set_NextPosition({ fWorldPickedPos.x, fWorldPickedPos.y, fWorldPickedPos.z, 1.f });
+    //        pPlayer->Change_State(PLAYER_STATE::WALK);
+    //    }
+    //}
    
-}
-
-void CLevel_GamePlay::Late_Update(_float fTimeDelta)
-{
 }
 
 HRESULT CLevel_GamePlay::Render()
