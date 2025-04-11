@@ -1,4 +1,9 @@
 #include "Navigation.h"
+
+#include <iomanip>
+#include <iostream>
+#include <sstream>
+
 #include "Cell.h"
 
 #include "Shader.h"
@@ -94,19 +99,65 @@ void CNavigation::Update(const _float4x4* pWorldMatrix)
 		for (auto& pCell : m_Cells)
 			pCell->Set_RenderMode(m_bLineRender ? RENDER_MODE::LINE : RENDER_MODE::FILL);
 	}
+
 #endif
 }
- 
-void CNavigation::Make_Cell(const _float3* fCellPoints)
+
+std::string CNavigation::Make_Cell_Key(const _float3* fCellPoints) const
 {
-	CCell* pCell = CCell::Create(m_pDevice, m_pContext, fCellPoints, m_Cells.size());
+	std::vector<_float3> verts = { fCellPoints[0], fCellPoints[1], fCellPoints[2] };
+
+	// 정렬해서 일관된 키 보장
+	std::sort(verts.begin(), verts.end(), 
+		[](const _float3& a, const _float3& b) 
+		{
+			if (a.x != b.x) return a.x < b.x;
+			if (a.y != b.y) return a.y < b.y;
+
+			return a.z < b.z;
+		}
+	);
+
+	/* 문자열을 스트림 형식으로 조립할 수 있는 출력용 문자열 스트림 객체 */
+	std::ostringstream oss;
+
+	/* std::fixed : 고정 소수점(fixed-point) 형식으로 출력
+	   std::setprecision(3) : 숫자의 소수점 이하 자릿수 개수를 3자리로 설정 (단, std::fixed와 같이 써야 소수점 자릿수로 인식) */
+	oss << std::fixed << std::setprecision(3);
+
+	for (int i = 0; i < 3; ++i)
+	{
+		oss << ROUND_FLOAT(verts[i].x) << "_"
+			<< ROUND_FLOAT(verts[i].y) << "_"
+			<< ROUND_FLOAT(verts[i].z);
+		if (i < 2) oss << "_";  // 마지막 빼고는 Cell 넘어갈 때마다 _ 넣기
+	}
+
+	return oss.str();
+}
+
+void CNavigation::Make_Cell(const _float3* fCellPoints, const _float4x4* WorldMatrix)
+{
+	// 키 생성
+	std::string triangleKey = Make_Cell_Key(fCellPoints);
+
+	// 이미 존재하는 삼각형이면 셀 생성 생략
+	if (m_TriangleSet.find(triangleKey) != m_TriangleSet.end())
+		return;
+
+	// 중복이 아니라면 키 추가
+	m_TriangleSet.insert(triangleKey);
+
+	// 셀 생성
+	CCell* pCell = CCell::Create(m_pDevice, m_pContext, fCellPoints, m_Cells.size(), WorldMatrix);
 	if (nullptr == pCell)
 		return;
 
 	m_Cells.push_back(pCell);
 
-	if (m_Cells.size() > 1)
-		SetUp_Neighbors();
+	std::cerr << "[셀 개수] : " << m_Cells.size() << std::endl;
+
+	SetUp_Neighbors();
 }
 
 _bool CNavigation::Can_Move(_fvector vWorldPos)
@@ -157,7 +208,7 @@ HRESULT CNavigation::SetUp_Neighbors()
 	return S_OK;
 }
 
-void CNavigation::SetUp_OnNavigation(CTransform* pTransform)
+void CNavigation::SetUp_On_Navigation(CTransform* pTransform)
 {
 	_vector		vWorldPos = pTransform->Get_State(CTransform::STATE_POSITION);
 	_matrix		WorldMatrixInv = XMMatrixInverse(nullptr, XMLoadFloat4x4(m_pWorldMatrix));
@@ -175,7 +226,7 @@ void CNavigation::SetUp_OnNavigation(CTransform* pTransform)
 HRESULT CNavigation::Render()
 {
 	_float4x4 WorldMatrix = *m_pWorldMatrix;
-	WorldMatrix._42 += 0.1f; // 살짝 위로
+	WorldMatrix._42 += 0.05f; // 살짝 위로
 
 	if (FAILED(m_pShader->Bind_Matrix("g_WorldMatrix", &WorldMatrix)))
 		return E_FAIL;

@@ -1,11 +1,11 @@
 #pragma once
-
 #include "Model.h"
 #include "VIBuffer.h"
 
 BEGIN(Engine)
+	class CVIBuffer_Cube;
 
-class ENGINE_DLL CMesh final : public CVIBuffer
+	class ENGINE_DLL CMesh final : public CVIBuffer
 {
 private:
 	CMesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -13,9 +13,8 @@ private:
 	~CMesh() override = default;
 
 public:
-	_uint Get_MaterialIndex() const {
-		return m_iMaterialIndex;
-	}
+	_uint		Get_MaterialIndex() const { return m_iMaterialIndex; }
+	_float3*	Get_MeshVeritces() const { return m_pVertices; }
 
 public:
 	HRESULT Initialize_Prototype(CModel::TYPE eModelType, const vector<class CBone*>& Bones, const aiMesh* pAIMesh, _fmatrix PreTransformMatrix);
@@ -36,13 +35,21 @@ public:
 
 	// 동적 모델 피킹용 (Picking_Triangle 호출)
 	_bool	Picking_In_Mesh(const _float3& localMousePos, const _float3& localMouseRay,
-							_float3& vOutLocalPickedPos, _float& fOutDist, _float3* outPoints = nullptr) const;
-		
+							_float3& vOutLocalPickedPos, _float& fOutDist) const;
+	_bool	Picking_Vertex(const _float3& localMousePos, const _float3& localMouseRay,
+							_float3& vOutPickedVertex, _float& fOutDist, _float fThreshold = 0.5f) const;
+
+	_bool	Ray_Intersects_Sphere(const _float3& localMousePos, const _float3& localMouseRay, const _float3& sphereCenter,
+								 _float sphereRadius, _float& outDistance) const;
+
 private:
 	_char				m_szName[MAX_PATH] = "";
 	_uint				m_iMaterialIndex = {};
 	_uint				m_iNumBones = {};
 	_uint				m_iNumFaces = {};
+
+	/* 피킹에 사용되는 변수들 */
+
 	_float3				m_vBoundingMin = {};
 	_float3				m_vBoundingMax = {};
 	_float3*			m_pVertices = {};

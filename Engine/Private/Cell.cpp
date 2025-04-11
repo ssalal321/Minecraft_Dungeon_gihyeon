@@ -17,9 +17,11 @@ void CCell::Set_RenderMode(RENDER_MODE eMode)
 #endif
 }
 
-HRESULT CCell::Initialize(const _float3* pPoints, _int iIndex)
+HRESULT CCell::Initialize(const _float3* pPoints, _int iIndex, const _float4x4* worldMatrix)
 {
-    memcpy(m_vPoints, pPoints, sizeof(_float3) * POINT_END);
+    XMStoreFloat3(&m_vPoints[0], XMVector3TransformCoord(XMLoadFloat3(&pPoints[0]), XMLoadFloat4x4(worldMatrix)));
+    XMStoreFloat3(&m_vPoints[1], XMVector3TransformCoord(XMLoadFloat3(&pPoints[1]), XMLoadFloat4x4(worldMatrix)));
+    XMStoreFloat3(&m_vPoints[2], XMVector3TransformCoord(XMLoadFloat3(&pPoints[2]), XMLoadFloat4x4(worldMatrix)));
 
     m_iIndex = iIndex;
 
@@ -39,7 +41,7 @@ HRESULT CCell::Initialize(const _float3* pPoints, _int iIndex)
             XMVectorSetW(XMLoadFloat3(&m_vPoints[POINT_C]), 1.f)));
 
 #ifdef _DEBUG
-    m_pVIBuffer = CVIBuffer_Cell::Create(m_pDevice, m_pContext, m_vPoints);
+    m_pVIBuffer = CVIBuffer_Cell::Create(m_pDevice, m_pContext, pPoints);
     if (nullptr == m_pVIBuffer)
         return E_FAIL;
 #endif
@@ -110,11 +112,11 @@ _float CCell::Compute_Height(_fvector vPosition)
     return (-m_vPlane.x * XMVectorGetX(vPosition) - m_vPlane.z * XMVectorGetZ(vPosition) - m_vPlane.w) / m_vPlane.y;
 }
 
-CCell* CCell::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _float3* pPoints, _int iIndex)
+CCell* CCell::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _float3* pPoints, _int iIndex, const _float4x4* worldMatrix)
 {
     CCell* pGameInstance = new CCell(pDevice, pContext);
-
-    if (FAILED(pGameInstance->Initialize(pPoints, iIndex)))
+    
+    if (FAILED(pGameInstance->Initialize(pPoints, iIndex, worldMatrix)))
     {
         MSG_BOX("Failed to Create : CCell");
         Safe_Release(pGameInstance);

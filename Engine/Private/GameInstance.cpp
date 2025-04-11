@@ -250,10 +250,14 @@ _float3 CGameInstance::Get_MousePos() const
 #pragma endregion
 
 #pragma region PICKING
-_bool   CGameInstance::Picked_Model(_float3& fWorldPickedPos, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag,
-									_float3* fOutPoints)
+_bool   CGameInstance::Picked_Model(_float3& fLocalPickedPos, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag)
 {
-	return m_pPicking->Picked_Model(fWorldPickedPos, strPrototypeTag, iLayerLevelIndex, strLayerTag, fOutPoints);
+	return m_pPicking->Picked_Model(fLocalPickedPos, strPrototypeTag, iLayerLevelIndex, strLayerTag);
+}
+
+_bool   CGameInstance::Picked_Vertex(_float3& fLocalPickedVertex, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag)
+{
+	return m_pPicking->Picked_Vertex(fLocalPickedVertex, strPrototypeTag, iLayerLevelIndex, strLayerTag);
 }
 #pragma endregion
 

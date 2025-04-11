@@ -50,27 +50,32 @@ void CLoungeMap::Priority_Update(_float fTimeDelta)
 {
 	if (m_pGameInstance->Key_Down(VK_LBUTTON))
 	{
-		_float3		fWorldPickedPos = {};
-		_float3		fOutPoints[3] = {} /*nullptr*/;
+		_float3		fLocalPickedVertex = {};
 
-		if (m_pGameInstance->Picked_Model(fWorldPickedPos, TEXT("Prototype_GameObject_LoungeMap"), LEVEL_GAMEPLAY, TEXT("Layer_BackGround"),
-			fOutPoints))
+		if (m_pGameInstance->Picked_Vertex(fLocalPickedVertex, TEXT("Prototype_GameObject_LoungeMap"), LEVEL_GAMEPLAY, TEXT("Layer_BackGround")))
 		{
-			std::cerr << "[피킹 위치] X: " << fWorldPickedPos.x
-				<< " Y: " << fWorldPickedPos.y
-				<< " Z: " << fWorldPickedPos.z << std::endl;
+			std::cerr << "[피킹된 정점] X: " << fLocalPickedVertex.x
+							    << " Y: " << fLocalPickedVertex.y
+								<< " Z: " << fLocalPickedVertex.z << std::endl;
 
+			m_fCellPoints[m_iPointNum] = fLocalPickedVertex;
+			++m_iPointNum;
 
 			// Navigation에 전달
-			if (m_pNavigationCom != nullptr)
+			if (m_iPointNum == 3 && m_pNavigationCom)
 			{
-				m_pNavigationCom->Make_Cell(fOutPoints);
+				m_pNavigationCom->Make_Cell(m_fCellPoints, m_pTransformCom->Get_WorldMatrix_Ptr());
 			}
 
-			CPlayer* pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("Prototype_GameObject_PlayerHex"),
+			if (3 == m_iPointNum)
+			{
+				m_iPointNum = 0;
+			}
+
+			/*CPlayer* pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("Prototype_GameObject_PlayerHex"),
 				            LEVEL_GAMEPLAY, TEXT("Layer_Player")));
 				        pPlayer->Set_NextPosition({ fWorldPickedPos.x, fWorldPickedPos.y, fWorldPickedPos.z, 1.f });
-				        pPlayer->Change_State(PLAYER_STATE::WALK);
+				        pPlayer->Change_State(PLAYER_STATE::WALK);*/
 		}
 	}
 }
@@ -94,10 +99,10 @@ HRESULT CLoungeMap::Render()
 
 	for (size_t i = 0; i < iNumMeshes; i++)
 	{
-		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
+		if (FAILED(m_pModelCom->Bind_Material(m_pShader_MeshCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
 			return E_FAIL;	
 
-		if (FAILED(m_pShaderCom->Begin(0)))
+		if (FAILED(m_pShader_MeshCom->Begin(0)))
 			return E_FAIL;
 
 		if (FAILED(m_pModelCom->Render(i)))
@@ -113,9 +118,9 @@ HRESULT CLoungeMap::Render()
 
 HRESULT CLoungeMap::Ready_Components()
 {
-	/* Com_Shader */
+	/* Com_Shader_Mesh */
 	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxMesh"),
-		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
+		TEXT("Com_Shader_Mesh"), reinterpret_cast<CComponent**>(&m_pShader_MeshCom))))
 		return E_FAIL;
 
 	/* Com_Model */
@@ -133,27 +138,27 @@ HRESULT CLoungeMap::Ready_Components()
 
 HRESULT CLoungeMap::Bind_ShaderResources()
 {
-	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
+	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShader_MeshCom, "g_WorldMatrix")))
 		return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Transform_Float4x4(CPipeLine::D3DTS_VIEW))))
+	if (FAILED(m_pShader_MeshCom->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Transform_Float4x4(CPipeLine::D3DTS_VIEW))))
 		return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(CPipeLine::D3DTS_PROJ))))
+	if (FAILED(m_pShader_MeshCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(CPipeLine::D3DTS_PROJ))))
 		return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4))))
+	if (FAILED(m_pShader_MeshCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4))))
 		return E_FAIL;
 	
 	const LIGHT_DESC* pLightDesc = m_pGameInstance->Get_LightDesc(0);
 	if (nullptr == pLightDesc)
 		return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightDiffuse", &pLightDesc->vDiffuse, sizeof(_float4))))
+	if (FAILED(m_pShader_MeshCom->Bind_RawValue("g_vLightDiffuse", &pLightDesc->vDiffuse, sizeof(_float4))))
 		return E_FAIL;
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightAmbient", &pLightDesc->vAmbient, sizeof(_float4))))
+	if (FAILED(m_pShader_MeshCom->Bind_RawValue("g_vLightAmbient", &pLightDesc->vAmbient, sizeof(_float4))))
 		return E_FAIL;
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightSpecular", &pLightDesc->vSpecular, sizeof(_float4))))
+	if (FAILED(m_pShader_MeshCom->Bind_RawValue("g_vLightSpecular", &pLightDesc->vSpecular, sizeof(_float4))))
 		return E_FAIL;
 
 	return S_OK;
@@ -190,7 +195,7 @@ void CLoungeMap::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pShaderCom);
+	Safe_Release(m_pShader_MeshCom);
 	Safe_Release(m_pModelCom);
 	Safe_Release(m_pNavigationCom);
 }

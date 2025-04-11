@@ -143,8 +143,8 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& strLayerTag)
     Desc.fFov = XMConvertToRadians(60.f);
     Desc.fNear = 0.01f;
     Desc.fFar = 500.f;
-    Desc.fMouseSensor = 0.07f;
-    Desc.fSpeedPerSec = 10.f;
+    Desc.fKeySensor = 0.03f;
+    Desc.fSpeedPerSec = 8.f;
     Desc.fRotationPerSec = XMConvertToRadians(180.f);
 
     if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Free"),

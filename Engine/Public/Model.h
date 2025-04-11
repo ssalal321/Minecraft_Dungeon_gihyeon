@@ -3,8 +3,10 @@
 #include "Component.h"
 
 BEGIN(Engine)
+	class CShader;
+	class CVIBuffer_Cube;
 
-class ENGINE_DLL CModel final : public CComponent
+	class ENGINE_DLL CModel final : public CComponent
 { 
 public:
 	enum TYPE { TYPE_NONANIM, TYPE_ANIM, TYPE_END };
@@ -39,13 +41,14 @@ public:
 
 public:
 	_bool		Play_Animation(_float fTimeDelta);
-	_bool		Picking_Model(const _float3& worldMousePos, const _float3& worldMouseRay, _float3& vOutPickedPos, const _float4x4& WorldMatrix,
-							  _float3* outPoints = nullptr) const;
+	_bool		Picking_Model(const _float3& worldMousePos, const _float3& worldMouseRay, _float3& vOutPickedPos, const _float4x4& WorldMatrix) const;
+	_bool		Picking_Vertex(const _float3& worldMousePos, const _float3& worldMouseRay, _float3& vOutPickedVertex,
+	                      const _float4x4& WorldMatrix) const;
 
 public:
 	HRESULT		Bind_Material(class CShader* pShader, const _char* pConstantName, _uint iMeshIndex, aiTextureType eMaterialType, _uint iTextureIndex);
 	HRESULT		Bind_BoneMatrices(class CShader* pShader, const _char* pConstantName, _uint iMeshIndex);
-
+	
 private:
 	/* aiScene : 파일을 읽은 결과 */
 	/* 모델 로드에 필요한 모든 데이터를 다 들고 있다. */
@@ -62,8 +65,6 @@ private:
 
 	_uint						m_iNumMaterials = {};
 	vector<class CMaterial*>	m_Materials;
-
-	
 
 	/* 내 모델 전체의 뼈 정보 */
 	/* CBone : 뼈의 이름, 상태, 부모, */

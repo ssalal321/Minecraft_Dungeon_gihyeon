@@ -4,6 +4,7 @@
 
 #include "Bone.h"
 #include "Shader.h"
+#include "VIBuffer_Cube.h"
 
 CMesh::CMesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CVIBuffer (pDevice, pContext)
@@ -355,7 +356,7 @@ _bool CMesh::Collision_AABB(const _float3& worldMousePos, const _float3& worldMo
 }
 
 _bool CMesh::Picking_In_Mesh(const _float3& localMousePos, const _float3& localMouseRay,
-	_float3& vOutLocalPickedPos, _float& fOutDist, _float3* outPoints) const
+	_float3& vOutLocalPickedPos, _float& fOutDist) const
 {
 	_vector  vOrigin = XMLoadFloat3(&localMousePos);
 	_vector  vDir = XMLoadFloat3(&localMouseRay);
@@ -382,15 +383,6 @@ _bool CMesh::Picking_In_Mesh(const _float3& localMousePos, const _float3& localM
 				XMStoreFloat3(&vOutLocalPickedPos, vOrigin + vDir * fDist);
 				fOutDist = fDist;
 
-				if (outPoints)
-				{
-					ZeroMemory(outPoints, sizeof(_float3) * 3);
-
-					outPoints[0] = vA;
-					outPoints[1] = vB;
-					outPoints[2] = vC;
-				}
-
 				bHit = true;
 			}
 		}
@@ -398,6 +390,67 @@ _bool CMesh::Picking_In_Mesh(const _float3& localMousePos, const _float3& localM
 
 	return bHit;
 }
+
+_bool CMesh::Picking_Vertex(const _float3& localMousePos, const _float3& localMouseRay,
+							_float3& vOutPickedVertex, _float& fOutDist, _float fThresholdRadius) const
+{
+	_vector  vDir		= XMVector3Normalize(XMLoadFloat3(&localMouseRay));
+	_float3  vRay = {};
+	XMStoreFloat3(&vRay, vDir);
+
+	_bool	bHit		= false;
+	_float	fMinDist	= FLT_MAX;
+
+	for (_uint i = 0; i < m_iNumVertices; ++i)
+	{
+		_float		fDist;
+
+		if (Ray_Intersects_Sphere(localMousePos, vRay, m_pVertices[i], fThresholdRadius, fDist))
+		{
+			if (fDist < fMinDist)
+			{
+				fMinDist = fDist;
+				XMStoreFloat3(&vOutPickedVertex, XMLoadFloat3(&m_pVertices[i]));
+				fOutDist = fDist;
+				bHit = true;
+			}
+		}
+	}
+
+	return bHit;
+}
+
+_bool CMesh::Ray_Intersects_Sphere(const _float3& localMousePos, const _float3& localMouseRay, const _float3& sphereCenter,
+									_float sphereRadius, _float& outDistance) const 
+{
+	// 레이 시작점에서 교차 지점까지의 거리
+	_vector  localMouseOrigin = XMLoadFloat3(&localMousePos);
+	_vector  localRayDir = XMVector3Normalize(XMLoadFloat3(&localMouseRay));
+	_vector  center = XMLoadFloat3(&sphereCenter);
+
+	_vector  toCenter = center - localMouseOrigin;
+
+	// 레이 방향으로 중심까지 정사영한 길이 (t)
+	_float  projectionLength = XMVectorGetX(XMVector3Dot(toCenter, localRayDir));
+
+	// sphere가 ray 방향과 반대일 경우
+	if (projectionLength < 0.f)
+		return false;
+
+	_vector  closestPoint	= localMouseOrigin + localRayDir * projectionLength;
+	_vector  diff			= center - closestPoint; // 가장 가까운 점과 중심 사이 거리
+
+	_float	sqDistToCenter = XMVectorGetX(XMVector3LengthSq(diff)); // diff 길이 구하는 공식, LengthSq = (x² + y² + z²) 형태(루트 X)
+	_float	radiusSquared  = sphereRadius * sphereRadius; // 반지름 제곱
+
+	if (sqDistToCenter > radiusSquared)  // 루트보다 제곱이 연산이 덜 걸리므로 이렇게..
+		return false;
+
+	// 교차 확인, 교차 거리 반환
+	outDistance = projectionLength;  // ray 상에서 얼마나 앞에 있나를 판단
+	return true;
+}
+
 
 CMesh* CMesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CModel::TYPE eModelType, const vector<CBone*>& Bones, const aiMesh* pAIMesh, _fmatrix PreTransformMatrix)
 {

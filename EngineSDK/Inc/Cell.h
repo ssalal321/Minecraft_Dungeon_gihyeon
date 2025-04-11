@@ -26,7 +26,7 @@ public:
 	void	Set_RenderMode(RENDER_MODE eMode);
 
 public:
-	HRESULT		Initialize(const _float3* pPoints, _int iIndex);
+	HRESULT		Initialize(const _float3* pPoints, _int iIndex, const _float4x4* worldMatrix = nullptr);
 	HRESULT		Render();
 	
 	_bool		Is_In(_fvector vPosition, _int* pNeighborIndex);
@@ -50,7 +50,7 @@ private:
 #endif
 
 public:
-	static CCell* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _float3* pPoints, _int iIndex);
+	static CCell* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _float3* pPoints, _int iIndex, const _float4x4* worldMatrix = nullptr);
 	void	Free()	override;
 };
 

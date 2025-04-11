@@ -5,6 +5,7 @@
 #include "Animation.h"
 
 #include "Material.h"
+#include "VIBuffer_Cube.h"
 
 CModel::CModel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : CComponent (pDevice, pContext)
@@ -170,26 +171,16 @@ _bool CModel::Play_Animation(_float fTimeDelta)
 //				fMinDist = fDist;
 //				vOutPickedPos = vWorldPickedPos;
 //				bHit = true;
-//
-//				if (outPoints != nullptr)
-//				{
-//					XMStoreFloat3(&outPoints[0], XMLoadFloat3(tempPoints[0]));
-//					XMStoreFloat3(&outPoints[1], XMLoadFloat3(tempPoints[1]));
-//					XMStoreFloat3(&outPoints[2], XMLoadFloat3(tempPoints[2]));
-//				}
 //			}
 //		}
 //	}
 //	return bHit;
 //}
 
-_bool CModel::Picking_Model(const _float3& worldMousePos, const _float3& worldMouseRay, _float3& vOutPickedPos, const _float4x4& WorldMatrix,
-	_float3* outPoints) const
+_bool CModel::Picking_Model(const _float3& worldMousePos, const _float3& worldMouseRay, _float3& vOutPickedPos, const _float4x4& WorldMatrix) const
 {
 	_float		fMinDist = FLT_MAX;
 	_bool		bHit = false;
-
-	_float3		tempPoints[3] = {}; // 값 배열로 변경
 
 	for (auto& pMesh : m_Meshes)
 	{
@@ -211,25 +202,61 @@ _bool CModel::Picking_Model(const _float3& worldMousePos, const _float3& worldMo
 
 		_float		fOutDist = {};
 
-		bMeshHit = pMesh->Picking_In_Mesh(localMousePos, localMouseRay, vLocalPickedPos, fOutDist, tempPoints);
+		bMeshHit = pMesh->Picking_In_Mesh(localMousePos, localMouseRay, vLocalPickedPos, fOutDist);
 
 		if (bMeshHit)
 		{
-			_float3 vWorldPickedPos;
-			XMStoreFloat3(&vWorldPickedPos, XMVector3TransformCoord(XMLoadFloat3(&vLocalPickedPos), XMLoadFloat4x4(&WorldMatrix)));
+			/*_float3 vWorldPickedPos;
+			XMStoreFloat3(&vWorldPickedPos, XMVector3TransformCoord(XMLoadFloat3(&vLocalPickedPos), XMLoadFloat4x4(&WorldMatrix)));*/
 		
 			if (fOutDist < fMinDist)
 			{
 				fMinDist = fOutDist;
-				vOutPickedPos = vWorldPickedPos;
+				vOutPickedPos = vLocalPickedPos;
 				bHit = true;
+			}
+		}
+	}
+	return bHit;
+}
 
-				if (outPoints != nullptr)
-				{
-					outPoints[0] = tempPoints[0];
-					outPoints[1] = tempPoints[1];
-					outPoints[2] = tempPoints[2];
-				}
+_bool CModel::Picking_Vertex(const _float3& worldMousePos, const _float3& worldMouseRay, _float3& vOutPickedVertex, const _float4x4& WorldMatrix) const
+{
+	_float		fMinDist = FLT_MAX;
+	_bool		bHit = false;
+
+	for (auto& pMesh : m_Meshes)
+	{
+		if (false == pMesh->Check_BoundingBox_Collision(worldMousePos, worldMouseRay, WorldMatrix))
+			continue;
+
+		_float3		vLocalPickedVertice = {};
+		_bool		bMeshHit = false;
+
+		// 월드 -> 로컬 좌표로 마우스 정보 변환
+		_matrix		matInvWorld = XMMatrixInverse(nullptr, XMLoadFloat4x4(&WorldMatrix));
+		_vector		vLocalOrigin = XMVector3TransformCoord(XMLoadFloat3(&worldMousePos), matInvWorld);
+		_vector		vLocalDir = XMVector3TransformNormal(XMLoadFloat3(&worldMouseRay), matInvWorld);
+		vLocalDir = XMVector3Normalize(vLocalDir);
+
+		_float3 localMousePos, localMouseRay;
+		XMStoreFloat3(&localMousePos, vLocalOrigin);
+		XMStoreFloat3(&localMouseRay, vLocalDir);
+
+		_float		fOutDist = {};
+
+		bMeshHit = pMesh->Picking_Vertex(localMousePos, localMouseRay, vLocalPickedVertice, fOutDist);
+
+		if (bMeshHit)
+		{
+			/*_float3 vWorldPickedPos;
+			XMStoreFloat3(&vWorldPickedPos, XMVector3TransformCoord(XMLoadFloat3(&vLocalPickedPos), XMLoadFloat4x4(&WorldMatrix)));*/
+
+			if (fOutDist < fMinDist)
+			{
+				fMinDist = fOutDist;
+				vOutPickedVertex = vLocalPickedVertice;
+				bHit = true;
 			}
 		}
 	}
@@ -255,6 +282,7 @@ HRESULT CModel::Bind_BoneMatrices(CShader* pShader, const _char* pConstantName, 
 {
 	return m_Meshes[iMeshIndex]->Bind_BoneMatrices(pShader, pConstantName, m_Bones);
 }
+
 
 HRESULT CModel::Ready_Meshes()
 {

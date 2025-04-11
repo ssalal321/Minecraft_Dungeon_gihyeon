@@ -1,5 +1,7 @@
 #pragma once
 
+#include <unordered_set>
+
 #include "Component.h"
 
 BEGIN(Engine)
@@ -24,10 +26,12 @@ public:
 	}
 
 public:
-	void		Make_Cell(const _float3* fOutPoints = nullptr);
+	std::string Make_Cell_Key(const _float3* fCellPoints) const;
+
+	void		Make_Cell(const _float3* fCellPoints, const _float4x4* WorldMatrix = nullptr);
 	_bool		Can_Move(_fvector vWorldPos);
 	HRESULT		SetUp_Neighbors();
-	void		SetUp_OnNavigation(CTransform* pTransform);
+	void		SetUp_On_Navigation(CTransform* pTransform);
 
 #ifdef _DEBUG
 public:
@@ -42,6 +46,8 @@ private:
 	vector<class CCell*>			m_Cells;
 
 	static const _float4x4*			m_pWorldMatrix;
+
+	std::unordered_set<std::string>		m_TriangleSet = {};
 
 #ifdef _DEBUG
 	class CShader* m_pShader = { nullptr };
