@@ -354,23 +354,8 @@ _bool CMesh::Collision_AABB(const _float3& worldMousePos, const _float3& worldMo
 	return true;	// BoundingBox AABB 충돌 시 true 반환
 }
 
-_bool CMesh::Picking_In_Mesh(const _float3& worldMousePos, const _float3& worldMouseRay, _float3& vPickedPos, const _float4x4& WorldMatrix,
-							 _float3* outPoints) const
-{
-	_float3	localMousePos = {}, localMouseRay = {};
-	_matrix		InvWorldMatrix = {};
-
-	InvWorldMatrix = XMMatrixInverse(nullptr, XMLoadFloat4x4(&WorldMatrix));
-
-	XMStoreFloat3(&localMousePos, XMVector3TransformCoord(XMLoadFloat3(&worldMousePos), InvWorldMatrix));
-	XMStoreFloat3(&localMouseRay, XMVector3Normalize(XMVector3TransformNormal(XMLoadFloat3(&worldMouseRay), InvWorldMatrix)));
-
-	// 로컬 좌표에서 피킹 실행
-	return Picking_Triangle(vPickedPos, localMousePos, localMouseRay, outPoints);
-}
-
-_bool CMesh::Picking_Triangle(_float3& vPickedPos, const _float3& localMousePos, const _float3& localMouseRay,
-	_float3* fOutPoints) const
+_bool CMesh::Picking_In_Mesh(const _float3& localMousePos, const _float3& localMouseRay,
+	_float3& vOutLocalPickedPos, _float& fOutDist, _float3* outPoints) const
 {
 	_vector  vOrigin = XMLoadFloat3(&localMousePos);
 	_vector  vDir = XMLoadFloat3(&localMouseRay);
@@ -394,16 +379,17 @@ _bool CMesh::Picking_Triangle(_float3& vPickedPos, const _float3& localMousePos,
 			if (fDist < fMinDist)
 			{
 				fMinDist = fDist;
-				XMStoreFloat3(&vPickedPos, vOrigin + vDir * fDist);
+				XMStoreFloat3(&vOutLocalPickedPos, vOrigin + vDir * fDist);
+				fOutDist = fDist;
 
-				if (fOutPoints)
+				if (outPoints)
 				{
-					ZeroMemory(fOutPoints, sizeof(_float3) * 3);
+					ZeroMemory(outPoints, sizeof(_float3) * 3);
 
-					fOutPoints[0] = vA;
-					fOutPoints[1] = vB;
-					fOutPoints[2] = vC;
-				}	
+					outPoints[0] = vA;
+					outPoints[1] = vB;
+					outPoints[2] = vC;
+				}
 
 				bHit = true;
 			}
@@ -412,9 +398,6 @@ _bool CMesh::Picking_Triangle(_float3& vPickedPos, const _float3& localMousePos,
 
 	return bHit;
 }
-
-
-
 
 CMesh* CMesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CModel::TYPE eModelType, const vector<CBone*>& Bones, const aiMesh* pAIMesh, _fmatrix PreTransformMatrix)
 {

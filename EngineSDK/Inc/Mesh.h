@@ -35,9 +35,9 @@ public:
 	//_bool	Picking_In_World(const _float3& vMousePos, const _float3& vMouseRay, _float3& vPickedPos) const;
 
 	// 동적 모델 피킹용 (Picking_Triangle 호출)
-	_bool	Picking_In_Mesh(const _float3& worldMousePos, const _float3& worldMouseRay, _float3& vPickedPos, const _float4x4& WorldMatrix,
-							_float3* outPoints = nullptr) const;
-
+	_bool	Picking_In_Mesh(const _float3& localMousePos, const _float3& localMouseRay,
+							_float3& vOutLocalPickedPos, _float& fOutDist, _float3* outPoints = nullptr) const;
+		
 private:
 	_char				m_szName[MAX_PATH] = "";
 	_uint				m_iMaterialIndex = {};
@@ -60,9 +60,6 @@ private:
 	HRESULT		Ready_VertexBuffer_For_NonAnim(const aiMesh* pAIMesh, _fmatrix PreTransformMatrix);
 	HRESULT		Ready_VertexBuffer_For_Anim(const aiMesh* pAIMesh, const vector<class CBone*>& Bones);
 	void		Compute_BoundingBox();
-
-	_bool		Picking_Triangle(_float3& vPickedPos, const _float3& localMousePos, const _float3& localMouseRay,
-								 _float3* fOutPoints = nullptr) const;
 
 public:
 	static	CMesh* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CModel::TYPE eModelType, 

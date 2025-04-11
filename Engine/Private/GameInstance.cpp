@@ -258,7 +258,8 @@ _bool   CGameInstance::Picked_Model(_float3& fWorldPickedPos, const _wstring& st
 #pragma endregion
 
 
-#pragma region RENDERER
+#pragma region 
+
 HRESULT CGameInstance::Add_RenderObject(CRenderer::RENDERGROUP eRenderGroup, CGameObject* pRenderObject)
 {
 	return m_pRenderer->Add_RenderObject(eRenderGroup, pRenderObject);
