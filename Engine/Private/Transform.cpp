@@ -60,9 +60,8 @@ void CTransform::Go_Straight(_float fTimeDelta, CNavigation* pNavigation)
 
 	vPosition += XMVector3Normalize(vLook) * m_fSpeedPerSec * fTimeDelta;
 
-	Set_State(STATE_POSITION, vPosition);
 	if (nullptr == pNavigation ||
-		true == pNavigation->Is_Move(vPosition))
+		true == pNavigation->Can_Move(vPosition))
 		Set_State(STATE_POSITION, vPosition);
 }
 

@@ -1,12 +1,12 @@
 #include "VIBuffer.h"
 
 CVIBuffer::CVIBuffer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CComponent { pDevice, pContext }
+	: CComponent ( pDevice, pContext )
 {
 }
 
 CVIBuffer::CVIBuffer(const CVIBuffer& Prototype)
-	: CComponent{ Prototype }
+	: CComponent( Prototype )
 	, m_pVB { Prototype.m_pVB }
 	, m_pIB{ Prototype.m_pIB }
 	, m_iVertexStride{ Prototype.m_iVertexStride }

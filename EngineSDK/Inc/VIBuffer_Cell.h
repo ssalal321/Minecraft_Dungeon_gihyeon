@@ -15,6 +15,8 @@ public:
 	virtual HRESULT Initialize_Prototype(const _float3* pPoints);
 	HRESULT Initialize(void* pArg) override;
 
+public:
+	void	Set_RenderMode(RENDER_MODE eMode);
 
 public:
 	static CVIBuffer_Cell* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _float3* pPoints);

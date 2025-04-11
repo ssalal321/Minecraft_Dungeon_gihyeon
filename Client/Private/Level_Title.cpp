@@ -17,11 +17,6 @@ HRESULT CLevel_Title::Initialize()
     return S_OK;
 }
 
-void CLevel_Title::Priority_Update(_float fTimeDelta)
-{
-	CLevel::Priority_Update(fTimeDelta);
-}
-
 void CLevel_Title::Update(_float fTimeDelta)
 {
     if (m_pGameInstance->Key_Down(VK_SPACE))
@@ -30,11 +25,6 @@ void CLevel_Title::Update(_float fTimeDelta)
             CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY))))
             return;
     }
-}
-
-void CLevel_Title::Late_Update(_float fTimeDelta)
-{
-	CLevel::Late_Update(fTimeDelta);
 }
 
 HRESULT CLevel_Title::Render()

@@ -80,19 +80,16 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 
 	m_pObject_Manager->Priority_Update(fTimeDelta);
 	m_pUI_Manager->Priority_Update(fTimeDelta);
-	m_pLevel_Manager->Priority_Update(fTimeDelta);
 		
 	m_pObject_Manager->Update(fTimeDelta);
 	m_pUI_Manager->Update(fTimeDelta);
-	m_pLevel_Manager->Update(fTimeDelta);
 
 	m_pPipeLine->Update();
 
 	m_pObject_Manager->Late_Update(fTimeDelta);
 	m_pUI_Manager->Late_Update(fTimeDelta);
-	m_pLevel_Manager->Late_Update(fTimeDelta);
 
-	
+	m_pLevel_Manager->Update(fTimeDelta);
 }
 
 HRESULT CGameInstance::Draw()
@@ -253,14 +250,20 @@ _float3 CGameInstance::Get_MousePos() const
 #pragma endregion
 
 #pragma region PICKING
-void CGameInstance::Compute_MouseRay(_float3& worldMousePos, _float3& worldMouseRay) const
+_bool   CGameInstance::Picked_Model(_float3& fLocalPickedPos, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag)
 {
-	return m_pPicking->Compute_MouseRay(worldMousePos, worldMouseRay);
+	return m_pPicking->Picked_Model(fLocalPickedPos, strPrototypeTag, iLayerLevelIndex, strLayerTag);
+}
+
+_bool   CGameInstance::Picked_Vertex(_float3& fLocalPickedVertex, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag)
+{
+	return m_pPicking->Picked_Vertex(fLocalPickedVertex, strPrototypeTag, iLayerLevelIndex, strLayerTag);
 }
 #pragma endregion
 
 
-#pragma region RENDERER
+#pragma region 
+
 HRESULT CGameInstance::Add_RenderObject(CRenderer::RENDERGROUP eRenderGroup, CGameObject* pRenderObject)
 {
 	return m_pRenderer->Add_RenderObject(eRenderGroup, pRenderObject);

@@ -76,4 +76,6 @@
 
 
 #define VK_MAX 0xff
+
+#define ROUND_FLOAT(x) (roundf((x) * 1000.f) / 1000.f)
 #endif // Engine_Macro_h__

@@ -17,9 +17,7 @@ private:
 public:
 	HRESULT		Initialize();
 	HRESULT		Open_Level(_uint iNextLevelIndex, class CLevel* pNewLevel);
-	void Priority_Update(_float fTimeDelta);
 	void		Update(_float fTimeDelta);
-	void Late_Update(_float fTimeDelta);
 	HRESULT		Render();
 
 private:

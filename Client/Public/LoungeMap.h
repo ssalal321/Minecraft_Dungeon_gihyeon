@@ -4,7 +4,8 @@
 #include "GameObject.h"
 
 BEGIN(Engine)
-class CShader;
+	class CVIBuffer_Cube;
+	class CShader;
 class CModel;
 END
 
@@ -26,9 +27,12 @@ public:
 	HRESULT		Render()							override;
 
 private:	
-	
-	CShader*	m_pShaderCom = { nullptr };
-	CModel*		m_pModelCom = { nullptr };
+	CShader*		m_pShader_MeshCom	 = { nullptr };
+	CModel*			m_pModelCom		 = { nullptr };
+	CNavigation*	m_pNavigationCom = { nullptr };
+
+	_int			m_iPointNum		 = {};
+	_float3			m_fCellPoints[3] = {};
 
 private:
 	HRESULT		Ready_Components();

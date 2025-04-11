@@ -27,16 +27,6 @@ HRESULT CLevel_Loading::Initialize(LEVEL eNextLevelID)
     return S_OK;
 }
 
-void CLevel_Loading::Priority_Update(_float fTimeDelta)
-{
-	CLevel::Priority_Update(fTimeDelta);
-}
-
-void CLevel_Loading::Late_Update(_float fTimeDelta)
-{
-	CLevel::Late_Update(fTimeDelta);
-}
-
 void CLevel_Loading::Update(_float fTimeDelta)
 {
     if (true == m_pLoader->Is_Finished() && m_pGameInstance->Key_Down(VK_SPACE))
