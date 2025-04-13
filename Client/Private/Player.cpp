@@ -58,22 +58,19 @@ void CPlayer::Priority_Update(_float fTimeDelta)
 
 void CPlayer::Update(_float fTimeDelta)
 {
-	//m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&m_NextPosition));
-	//const _float4x4& position = m_pTransformCom->Get_WorldMatrix();
+	if (m_pGameInstance->Get_Key(VK_LBUTTON))
+	{
+		_float3 fWorldPickedPos = {};
 
-	//if (m_pGameInstance->Get_Key(VK_LBUTTON))
-	//{
-	//	_float3 fWorldPickedPos = {};
-
-	//	// 2. LoungeMap에 피킹 요청 (BoundingBox 충돌 체크)
-	//	if (m_pGameInstance->Picked_Model(fWorldPickedPos, TEXT("Prototype_GameObject_LoungeMap"),
-	//		LEVEL_GAMEPLAY, TEXT("Layer_BackGround")))
-	//	{
-	//		Set_NextPosition({ fWorldPickedPos.x, fWorldPickedPos.y, fWorldPickedPos.z, 1.f });
-	//		Change_State(PLAYER_STATE::WALK);
-	//	}
-	//}
-	//m_pNavigationCom->SetUp_On_Navigation(m_pTransformCom);
+		// 2. LoungeMap에 피킹 요청 (BoundingBox 충돌 체크)
+		if (m_pGameInstance->Picked_Model(fWorldPickedPos, TEXT("Prototype_GameObject_LoungeMap"),
+			LEVEL_GAMEPLAY, TEXT("Layer_BackGround")))
+		{
+			Set_NextPosition({ fWorldPickedPos.x, fWorldPickedPos.y, fWorldPickedPos.z, 1.f });
+			Change_State(PLAYER_STATE::WALK);
+		}
+	}
+	m_pNavigationCom->SetUp_On_Navigation(m_pTransformCom);
 
 	m_pPlayerFSM->Update_State(fTimeDelta);
 
