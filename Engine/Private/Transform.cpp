@@ -53,14 +53,14 @@ void CTransform::SetUp_Scale(_float fScaleX, _float fScaleY, _float fScaleZ)
 	Set_State(STATE_LOOK, XMVector3Normalize(Get_State(STATE_LOOK)) * fScaleZ);
 }
 
-void CTransform::Go_Straight(_float fTimeDelta, CNavigation* pNavigation)
+void CTransform::Go_Straight(_float fTimeDelta, CNavigation* pNavigation, _float fSpeedFactor)
 {
 	_vector		vLook = Get_State(STATE::STATE_LOOK);
 	/*vLook = XMVectorSetY(vLook, 0.f);
 	vLook = XMVector3Normalize(vLook);*/
 	_vector		vPosition = Get_State(STATE::STATE_POSITION);
 
-	vPosition += XMVector3Normalize(vLook) * m_fSpeedPerSec * fTimeDelta;
+	vPosition += XMVector3Normalize(vLook) * m_fSpeedPerSec * fTimeDelta * fSpeedFactor;
 
 	if (nullptr == pNavigation || true == pNavigation->Can_Move(vPosition))
 		Set_State(STATE_POSITION, vPosition);

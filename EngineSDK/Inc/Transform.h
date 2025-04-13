@@ -75,7 +75,7 @@ public:
 	void		SetUp_Scale(_float fScaleX = 1.f, _float fScaleY = 1.f, _float fScaleZ = 1.f);
 
 public:
-	void	Go_Straight(_float fTimeDelta, CNavigation* pNavigation = nullptr);
+	void	Go_Straight(_float fTimeDelta, CNavigation* pNavigation = nullptr, _float fSpeedFactor = 1.f);
 	void	Go_Left(_float fTimeDelta);
 	void	Go_Right(_float fTimeDelta);
 	void	Go_Backward(_float fTimeDelta);

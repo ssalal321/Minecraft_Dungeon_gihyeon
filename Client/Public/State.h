@@ -11,11 +11,13 @@ BEGIN(Client)
 class CState abstract : public CBase
 {
 protected:
-    CState(CGameObject* pActor, CGameObject* pPartObject, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc)
+    CState(CGameObject* pActor, CGameObject* pPartObject, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
+			CTransform* pTransformCom, CNavigation* pNavigationCom)
         : m_pGameInstance(CGameInstance::GetInstance()),
-		m_pActor(pActor), m_pPartObject(pPartObject), m_pGameObjectDesc(pGameObjectDesc)
+		m_pActor(pActor), m_pPartObject(pPartObject), m_pGameObjectDesc(pGameObjectDesc),
+		m_pTransformCom(pTransformCom), m_pNavigationCom(pNavigationCom)
     {
-        Safe_AddRef(m_pGameInstance);
+         Safe_AddRef(m_pGameInstance);
     }
 	~CState() override = default;
 
@@ -37,6 +39,7 @@ protected:
     CGameObject*    m_pActor            = { nullptr };
     CGameObject*    m_pPartObject       = { nullptr };
     CTransform*     m_pTransformCom     = { nullptr };
+    CNavigation*    m_pNavigationCom = { nullptr };
     CGameObject::GAMEOBJECT_DESC*    m_pGameObjectDesc   = { nullptr };
 
 public:

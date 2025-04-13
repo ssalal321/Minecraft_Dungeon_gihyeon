@@ -79,7 +79,7 @@ void CNavigation::Update(const _float4x4* pWorldMatrix)
 	{
 		m_bLineRender = !m_bLineRender;
 
-		m_iShaderPass =  m_bLineRender ? 1 : 0;
+		m_iShaderPass =  !m_bLineRender ? 0 : 1;
 	}
 #endif
 }

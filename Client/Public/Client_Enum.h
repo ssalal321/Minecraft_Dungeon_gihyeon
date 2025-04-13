@@ -16,7 +16,7 @@ namespace Client
 	{
 		BOW_ACTION,
 		CLAYMORE_COMBO,
-		DODGEROLL,
+		ROLL,
 		DOWNEDFLOOR,
 		DRINK,
 		EATFAST,

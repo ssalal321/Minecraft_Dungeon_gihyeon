@@ -3,12 +3,12 @@
 #include "State_Player.h"
 
 BEGIN(Client)
-	class CPlayer_Idle final: public CState_Player
+	class CPlayer_Roll final: public CState_Player
 {
 private:
-	CPlayer_Idle(CGameObject* pActor, CGameObject* pPartObject, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
+    CPlayer_Roll(CGameObject* pActor, CGameObject* pPartObject, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
 				 CTransform* pTransformCom, CNavigation* pNavigationCom);
-	~CPlayer_Idle() override = default;
+	~CPlayer_Roll() override = default;
 
 public:
     HRESULT     Init_State()                                override;
@@ -20,7 +20,7 @@ public:
     void        State_Exit()                                override;
 
 private:
-
+    _float      m_fRollingTime = { 0.f };
 
 public:
     static CState_Player*  Create(CGameObject* pActor, CGameObject* pPartObject, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,

@@ -41,22 +41,10 @@ HRESULT CBody_Player::Initialize(void* pArg)
 
 void CBody_Player::Priority_Update(_float fTimeDelta)
 {
-
 }
 
 void CBody_Player::Update(_float fTimeDelta)
 {
-	if (m_pGameInstance->Get_Key(VK_NUMPAD7))
-		m_pModelCom->Set_Animation(6, true);
-
-	if (m_pGameInstance->Get_Key(VK_NUMPAD8))
-		m_pModelCom->Set_Animation(10, true);
-
-	if (m_pGameInstance->Get_Key(VK_NUMPAD9))
-		m_pModelCom->Set_Animation(15, true);
-
-	if (true == m_pModelCom->Play_Animation(fTimeDelta))
-		int a = 10;
 }
 
 void CBody_Player::Late_Update(_float fTimeDelta)
