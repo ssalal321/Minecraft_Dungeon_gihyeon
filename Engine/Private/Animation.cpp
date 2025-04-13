@@ -30,23 +30,26 @@ _bool CAnimation::Update_TransformationMatrices(_float fTimeDelta, const vector<
 {
 	_bool		isFinished = { false };  // 기본적으로는 루프를 돌도록 false로 설정
 
-	/* 현재 재생위치를 계산하자 */
-	m_fCurrentTrackPosition += m_fTickPerSecond * fTimeDelta * speedFactor;
-
-	if (m_fCurrentTrackPosition >= m_fDuration)  // 애니메이션 끝났을 때
-	{
-		if (false == isLoop)	// 루프 X
-			isFinished = true;
-		else                    // 루프 O
-		{
-			m_fCurrentTrackPosition = 0.f;
-		}
-	}
-
 	if (animationChanged)
 	{
 		m_fCurrentTrackPosition = 0.f;
 	}
+	/* 현재 재생위치를 계산하자 */
+	else
+	{
+		m_fCurrentTrackPosition += m_fTickPerSecond * fTimeDelta * speedFactor;
+
+		if (m_fCurrentTrackPosition >= m_fDuration)  // 애니메이션 끝났을 때
+		{
+			if (false == isLoop)	// 루프 X
+				isFinished = true;
+			else                    // 루프 O
+			{
+				m_fCurrentTrackPosition = 0.f;
+			}
+		}
+	}
+
 
 	for (auto& pChannel : m_Channels)
 	{

@@ -2,10 +2,11 @@
 #include "GameInstance.h"
 
 #include "Body_Player.h"
-#include "Player_Idle.h"
 #include "Weapon.h"
+
 #include "FSM.h"
-#include "LoungeMap.h"
+#include "Player_Idle.h"
+#include "Player_Roll.h"
 #include "Player_Walk.h"
 
 
@@ -58,18 +59,6 @@ void CPlayer::Priority_Update(_float fTimeDelta)
 
 void CPlayer::Update(_float fTimeDelta)
 {
-	if (m_pGameInstance->Get_Key(VK_LBUTTON))
-	{
-		_float3 fWorldPickedPos = {};
-
-		// 2. LoungeMap에 피킹 요청 (BoundingBox 충돌 체크)
-		if (m_pGameInstance->Picked_Model(fWorldPickedPos, TEXT("Prototype_GameObject_LoungeMap"),
-			LEVEL_GAMEPLAY, TEXT("Layer_BackGround")))
-		{
-			Set_NextPosition({ fWorldPickedPos.x, fWorldPickedPos.y, fWorldPickedPos.z, 1.f });
-			Change_State(PLAYER_STATE::WALK);
-		}
-	}
 	m_pNavigationCom->SetUp_On_Navigation(m_pTransformCom);
 
 	m_pPlayerFSM->Update_State(fTimeDelta);
@@ -144,8 +133,9 @@ HRESULT CPlayer::Ready_States()
 	m_StatesVec.resize(STATE_END);	// state vector 자리 예약
 
 	CBody_Player* pBodyPlayer = dynamic_cast<CBody_Player*>(Find_PartObject(TEXT("Part_Body")));
-	m_StatesVec[PLAYER_STATE::IDLE] = CPlayer_Idle::Create(this, pBodyPlayer, m_pPlayerInfo);
-	m_StatesVec[PLAYER_STATE::WALK] = CPlayer_Walk::Create(this, pBodyPlayer, m_pPlayerInfo, m_pNavigationCom);
+	m_StatesVec[PLAYER_STATE::IDLE] = CPlayer_Idle::Create(this, pBodyPlayer, m_pPlayerInfo, m_pTransformCom, m_pNavigationCom);
+	m_StatesVec[PLAYER_STATE::WALK] = CPlayer_Walk::Create(this, pBodyPlayer, m_pPlayerInfo, m_pTransformCom, m_pNavigationCom);
+	m_StatesVec[PLAYER_STATE::ROLL] = CPlayer_Roll::Create(this, pBodyPlayer, m_pPlayerInfo, m_pTransformCom, m_pNavigationCom);
 
 	m_pPlayerFSM = FSM::Create();
 

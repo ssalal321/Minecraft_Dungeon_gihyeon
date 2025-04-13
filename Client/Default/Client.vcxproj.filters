@@ -100,6 +100,9 @@
     <Filter Include="02.GameObjects\Player\02. State\Player_Walk">
       <UniqueIdentifier>{cd3059ba-cd8c-4bbf-8fb2-bff2d986a9a8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Player\02. State\Player_Roll">
+      <UniqueIdentifier>{9905ea67-d423-4db9-ade2-018a707a5c88}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -192,6 +195,12 @@
     <ClInclude Include="..\Public\Player_Walk.h">
       <Filter>02.GameObjects\Player\02. State\Player_Walk</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\State_Player.h">
+      <Filter>02.GameObjects\Player\02. State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Player_Roll.h">
+      <Filter>02.GameObjects\Player\02. State\Player_Roll</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -281,6 +290,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Player_Walk.cpp">
       <Filter>02.GameObjects\Player\02. State\Player_Walk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Player.cpp">
+      <Filter>02.GameObjects\Player\02. State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player_Roll.cpp">
+      <Filter>02.GameObjects\Player\02. State\Player_Roll</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
