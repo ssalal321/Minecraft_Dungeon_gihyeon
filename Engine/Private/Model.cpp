@@ -245,7 +245,7 @@ _bool CModel::Picking_Vertex(const _float3& worldMousePos, const _float3& worldM
 
 		_float		fOutDist = {};
 
-		bMeshHit = pMesh->Picking_Vertex(localMousePos, localMouseRay, vLocalPickedVertice, fOutDist);
+		bMeshHit = pMesh->Picking_Vertex(localMousePos, localMouseRay, vLocalPickedVertice, fOutDist, 0.3f);
 
 		if (bMeshHit)
 		{

@@ -4,6 +4,12 @@
 
 /* 플레이어라는 객체를 구성하기위한 파츠들을 모아서 쥐고 있는 객체. */
 
+BEGIN(Engine)
+class	CCollider;
+class	CNavigation;
+END
+
+
 BEGIN(Client)
 class CState;
 
@@ -71,6 +77,7 @@ private:
 	PLAYER_DESC*		m_pPlayerInfo = { nullptr };
 	vector<CState*>     m_StatesVec;
 
+	CNavigation*		m_pNavigationCom = { nullptr };
 	_float4				m_NextPosition = {0.f, 0.f, 0.f, 1.f};
 
 private:

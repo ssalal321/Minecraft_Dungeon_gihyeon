@@ -403,7 +403,7 @@ _bool CMesh::Picking_Vertex(const _float3& localMousePos, const _float3& localMo
 
 	for (_uint i = 0; i < m_iNumVertices; ++i)
 	{
-		_float		fDist;
+		_float		fDist = {};
 
 		if (Ray_Intersects_Sphere(localMousePos, vRay, m_pVertices[i], fThresholdRadius, fDist))
 		{

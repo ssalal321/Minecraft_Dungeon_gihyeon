@@ -17,9 +17,9 @@ HRESULT CVIBuffer_Cell::Initialize_Prototype(const _float3* pPoints)
 	m_iVertexStride = sizeof(VTXPOS);
 	m_iNumVertices = 3;
 	m_iIndexStride = 2;
-	m_iNumIndices = 4;
+	m_iNumIndices = 3;
 	m_eIndexFormat = DXGI_FORMAT_R16_UINT;
-	m_ePrimitiveTopology = D3D_PRIMITIVE_TOPOLOGY_LINESTRIP;
+	m_ePrimitiveTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
 #pragma region VERTEX_BUFFER
 	ZeroMemory(&m_BufferDesc, sizeof m_BufferDesc);
@@ -59,8 +59,6 @@ HRESULT CVIBuffer_Cell::Initialize_Prototype(const _float3* pPoints)
 	pIndices[0] = 0;
 	pIndices[1] = 1;
 	pIndices[2] = 2;
-	pIndices[3] = 0;
-
 	
 	ZeroMemory(&m_InitialDesc, sizeof m_InitialDesc);
 	m_InitialDesc.pSysMem = pIndices;
@@ -77,22 +75,6 @@ HRESULT CVIBuffer_Cell::Initialize_Prototype(const _float3* pPoints)
 HRESULT CVIBuffer_Cell::Initialize(void* pArg)
 {
 	return S_OK;
-}
-
-void CVIBuffer_Cell::Set_RenderMode(RENDER_MODE eMode)
-{
-	switch (eMode)
-	{
-	case RENDER_MODE::LINE:
-		m_ePrimitiveTopology = D3D_PRIMITIVE_TOPOLOGY_LINESTRIP;
-		m_iNumIndices = 4;
-		break;
-
-	case RENDER_MODE::FILL:
-		m_ePrimitiveTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-		m_iNumIndices = 3;
-		break;
-	}
 }
 
 CVIBuffer_Cell* CVIBuffer_Cell::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _float3* pPoints)

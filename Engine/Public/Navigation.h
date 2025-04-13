@@ -5,9 +5,9 @@
 #include "Component.h"
 
 BEGIN(Engine)
-	class CTransform;
+class CTransform;
 
-	class ENGINE_DLL CNavigation final : public CComponent
+class ENGINE_DLL CNavigation final : public CComponent
 {
 private:
 	CNavigation(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -15,7 +15,7 @@ private:
 	~CNavigation() override = default;
 
 public:
-	HRESULT Initialize_Prototype(const _tchar* pNavigationDataFilePath);
+	HRESULT		Initialize_Prototype(const _tchar* pNavigationDataFilePath);
 	HRESULT		Initialize_Prototype()		override;
 	HRESULT		Initialize(void* pArg)		override;
 	void		Update(const _float4x4* pWorldMatrix);
@@ -28,8 +28,14 @@ public:
 public:
 	std::string Make_Cell_Key(const _float3* fCellPoints) const;
 
-	void		Make_Cell(const _float3* fCellPoints, const _float4x4* WorldMatrix = nullptr);
-	_bool		Can_Move(_fvector vWorldPos);
+	HRESULT		Make_Cell(const _float3* fCellPoints);
+	void		Erase_Cell_Pick(const _matrix& WorldMatrixInverse);
+	void		Erase_Cell_Last();
+
+	HRESULT		Read_Cell(const _tchar* pNavigationDataFilePath);
+	void		Resave_Files();
+	void		Sort_Clockwise(const _float3* pInPoints, _float3* pOutSorted);
+	_bool		Can_Move(_fvector vWorldPos/*, _float& fOutY*/);
 	HRESULT		SetUp_Neighbors();
 	void		SetUp_On_Navigation(CTransform* pTransform);
 
@@ -40,12 +46,13 @@ public:
 
 private:
 	_int							m_iPointNum = {};
-	_bool							m_bLineRender = { false };
-
 	_int							m_iCurrentCellIndex = { -1 };
 	vector<class CCell*>			m_Cells;
 
 	static const _float4x4*			m_pWorldMatrix;
+
+	static	_bool					m_bLineRender;
+	static	_uint					m_iShaderPass;  // ¼±¾ð
 
 	std::unordered_set<std::string>		m_TriangleSet = {};
 

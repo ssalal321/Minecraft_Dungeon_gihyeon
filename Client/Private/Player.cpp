@@ -5,6 +5,7 @@
 #include "Player_Idle.h"
 #include "Weapon.h"
 #include "FSM.h"
+#include "LoungeMap.h"
 #include "Player_Walk.h"
 
 
@@ -43,6 +44,8 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 	m_pTransformCom->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(180.f));
 
+	m_pNavigationCom->SetUp_CurrentCellIndex(0);
+
 	return S_OK;
 }
 
@@ -57,6 +60,20 @@ void CPlayer::Update(_float fTimeDelta)
 {
 	//m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&m_NextPosition));
 	//const _float4x4& position = m_pTransformCom->Get_WorldMatrix();
+
+	//if (m_pGameInstance->Get_Key(VK_LBUTTON))
+	//{
+	//	_float3 fWorldPickedPos = {};
+
+	//	// 2. LoungeMap에 피킹 요청 (BoundingBox 충돌 체크)
+	//	if (m_pGameInstance->Picked_Model(fWorldPickedPos, TEXT("Prototype_GameObject_LoungeMap"),
+	//		LEVEL_GAMEPLAY, TEXT("Layer_BackGround")))
+	//	{
+	//		Set_NextPosition({ fWorldPickedPos.x, fWorldPickedPos.y, fWorldPickedPos.z, 1.f });
+	//		Change_State(PLAYER_STATE::WALK);
+	//	}
+	//}
+	//m_pNavigationCom->SetUp_On_Navigation(m_pTransformCom);
 
 	m_pPlayerFSM->Update_State(fTimeDelta);
 
@@ -83,6 +100,10 @@ void CPlayer::Change_State(PLAYER_STATE playerState)
 
 HRESULT CPlayer::Ready_Components()
 {
+	/* Com_Navigation */
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Navigation"),
+		TEXT("Com_Navigation"), reinterpret_cast<CComponent**>(&m_pNavigationCom))))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -127,7 +148,7 @@ HRESULT CPlayer::Ready_States()
 
 	CBody_Player* pBodyPlayer = dynamic_cast<CBody_Player*>(Find_PartObject(TEXT("Part_Body")));
 	m_StatesVec[PLAYER_STATE::IDLE] = CPlayer_Idle::Create(this, pBodyPlayer, m_pPlayerInfo);
-	m_StatesVec[PLAYER_STATE::WALK] = CPlayer_Walk::Create(this, pBodyPlayer, m_pPlayerInfo);
+	m_StatesVec[PLAYER_STATE::WALK] = CPlayer_Walk::Create(this, pBodyPlayer, m_pPlayerInfo, m_pNavigationCom);
 
 	m_pPlayerFSM = FSM::Create();
 
@@ -167,6 +188,7 @@ void CPlayer::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_pNavigationCom);
 	Safe_Delete(m_pPlayerInfo);
 	Safe_Delete(m_pPlayerFSM);
 

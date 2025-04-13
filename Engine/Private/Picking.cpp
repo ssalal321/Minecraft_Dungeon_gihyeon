@@ -22,10 +22,10 @@ HRESULT CPicking::Initialize(HWND hWnd, _uint iWinSizeX, _uint iWinSizeY)
 	return S_OK;
 }
 
-_bool CPicking::Picked_Model(_float3& fLocalPickedPos, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag)
+_bool CPicking::Picked_Model(_float3& fWorldPickedPos, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag)
 {
-    _float3  fWorldMousePos, fWorldMouseRay = {};
-   
+    _float3  fWorldMousePos = {}, fWorldMouseRay = {};
+    _float3  fLocalPickedPos = {};
     Compute_MouseRay(fWorldMousePos, fWorldMouseRay);
 
     CGameObject*  pPickedObject = m_pGameInstance->Find_GameObject(strPrototypeTag, iLayerLevelIndex, strLayerTag);
@@ -36,6 +36,9 @@ _bool CPicking::Picked_Model(_float3& fLocalPickedPos, const _wstring& strProtot
     // 2. LoungeMap에 피킹 요청 (BoundingBox 충돌 체크)
     if (pPickedObjModelCom->Picking_Model(fWorldMousePos, fWorldMouseRay, fLocalPickedPos, pPickedObjWorldMatrix))
     {
+        _vector vWorldPickedPos = XMVector3TransformCoord(XMLoadFloat3(&fLocalPickedPos), XMLoadFloat4x4(&pPickedObjWorldMatrix));
+        XMStoreFloat3(&fWorldPickedPos, vWorldPickedPos);
+
         return true;
     }
 
@@ -44,7 +47,7 @@ _bool CPicking::Picked_Model(_float3& fLocalPickedPos, const _wstring& strProtot
 
 _bool CPicking::Picked_Vertex(_float3& fLocalPickedVertex, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag)
 {
-    _float3  fWorldMousePos, fWorldMouseRay = {};
+    _float3  fWorldMousePos = {}, fWorldMouseRay = {};
 
     Compute_MouseRay(fWorldMousePos, fWorldMouseRay);
 

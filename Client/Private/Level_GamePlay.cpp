@@ -73,24 +73,24 @@ void CLevel_GamePlay::Update(_float fTimeDelta)
 
     //        if (pNavigation != nullptr)
     //        {
-    //            pNavigation->Make_Cell(fWorldPickedPos, fOutPoints);
+    //            pNavigation->Read_Cell(fWorldPickedPos, fOutPoints);
     //        }
     //    }
     //}
 
     //if (m_pGameInstance->Key_Down(VK_LBUTTON))
     //{
-    //    _float3 fWorldPickedPos = {};
+    //    _float3 fLocalPickedPos = {};
     //   
     //    // 2. LoungeMap에 피킹 요청 (BoundingBox 충돌 체크)
-    //    if (m_pGameInstance->Picked_Model(fWorldPickedPos, TEXT("Prototype_GameObject_LoungeMap"),
-                //						  LEVEL_GAMEPLAY, TEXT("Layer_BackGround")))
+    //    if (m_pGameInstance->Picked_Model(fLocalPickedPos, TEXT("Prototype_GameObject_LoungeMap"),
+    //            						  LEVEL_GAMEPLAY, TEXT("Layer_BackGround")))
     //    {
 
     //        // 3. 피킹 성공 → 플레이어 이동 요청
     //        CPlayer* pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("Prototype_GameObject_PlayerHex"),
     //            LEVEL_GAMEPLAY, TEXT("Layer_Player")));
-    //        pPlayer->Set_NextPosition({ fWorldPickedPos.x, fWorldPickedPos.y, fWorldPickedPos.z, 1.f });
+    //        pPlayer->Set_NextPosition({ fLocalPickedPos.x, fLocalPickedPos.y, fLocalPickedPos.z, 1.f });
     //        pPlayer->Change_State(PLAYER_STATE::WALK);
     //    }
     //}

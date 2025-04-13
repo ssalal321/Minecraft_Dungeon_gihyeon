@@ -37,7 +37,7 @@ public:
 	_bool	Picking_In_Mesh(const _float3& localMousePos, const _float3& localMouseRay,
 							_float3& vOutLocalPickedPos, _float& fOutDist) const;
 	_bool	Picking_Vertex(const _float3& localMousePos, const _float3& localMouseRay,
-							_float3& vOutPickedVertex, _float& fOutDist, _float fThreshold = 0.5f) const;
+							_float3& vOutPickedVertex, _float& fOutDist, _float fThreshold = 0.3f) const;
 
 	_bool	Ray_Intersects_Sphere(const _float3& localMousePos, const _float3& localMouseRay, const _float3& sphereCenter,
 								 _float sphereRadius, _float& outDistance) const;

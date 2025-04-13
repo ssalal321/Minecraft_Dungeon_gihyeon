@@ -1,10 +1,13 @@
 #include "Player_Walk.h"
 
+#include <iostream>
+#include <ostream>
+
 #include "Player.h"
 #include "Body_Player.h"
 
-CPlayer_Walk::CPlayer_Walk(CGameObject* pActor, CGameObject* pPartObject, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc)
-	: CState(pActor, pPartObject, pGameObjectDesc)
+CPlayer_Walk::CPlayer_Walk(CGameObject* pActor, CGameObject* pPartObject, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, CNavigation* pNavigationCom)
+	: CState(pActor, pPartObject, pGameObjectDesc), m_pNavigationCom(pNavigationCom)
 {
 }
 
@@ -36,18 +39,19 @@ void CPlayer_Walk::State_Priority_Update(_float fTimeDelta)
 // Player_Walk
 void CPlayer_Walk::State_Update(_float fTimeDelta)
 {
-	_vector vCurPos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+	_vector  vCurPos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
 
-	_vector vNextPos = XMLoadFloat4(&m_pPlayer->Get_NextPosition());
+	_vector  vNextPos = XMLoadFloat4(&m_pPlayer->Get_NextPosition());
+	//XMVectorSetY(vNextPos, 0.f);
 
-	_vector vToTarget = vNextPos - vCurPos;
+	_vector  vToTarget = vNextPos - vCurPos;
+	XMVectorSetY(vToTarget, 0.f);
 
 	_float fDist = XMVectorGetX(XMVector3Length(vToTarget));
 
-
-	if (fDist < 0.05f)
+	if (fDist < 0.1f)
 	{
-		m_pTransformCom->Set_State(CTransform::STATE_POSITION, vNextPos);
+		//m_pTransformCom->Set_State(CTransform::STATE_POSITION, vNextPos);
 
 		m_pPlayer->Change_State(PLAYER_STATE::IDLE);
 
@@ -56,7 +60,9 @@ void CPlayer_Walk::State_Update(_float fTimeDelta)
 
 	m_pTransformCom->LookAt(vNextPos);
 
-	//m_pTransformCom->Go_Straight(fTimeDelta, TODO);
+	m_pTransformCom->Go_Straight(fTimeDelta, m_pNavigationCom);
+
+	std::cerr << "플레이어 위치 Y: " << m_pTransformCom->Get_State(CTransform::STATE_POSITION).m128_f32[1] << std::endl;
 }
 
 void CPlayer_Walk::State_Late_Update(_float fTimeDelta)
@@ -67,9 +73,9 @@ void CPlayer_Walk::State_Exit()
 {
 }
 
-CState* CPlayer_Walk::Create(CGameObject* pActor, CGameObject* pPartObject, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc)
+CState* CPlayer_Walk::Create(CGameObject* pActor, CGameObject* pPartObject, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, CNavigation* pNavigationCom)
 {
-	CState* pGameInstance = new CPlayer_Walk(pActor, pPartObject, pGameObjectDesc);
+	CState* pGameInstance = new CPlayer_Walk(pActor, pPartObject, pGameObjectDesc, pNavigationCom);
 
 	if (FAILED(pGameInstance->Init_State()))
 	{

@@ -9,21 +9,12 @@ CCell::CCell(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     Safe_AddRef(m_pDevice);
 }
 
-void CCell::Set_RenderMode(RENDER_MODE eMode)
+HRESULT CCell::Initialize(const _float3* pPoints, _int iIndex, std::string cellKey)
 {
-#ifdef _DEBUG
-    if (m_pVIBuffer)
-        m_pVIBuffer->Set_RenderMode(eMode);
-#endif
-}
-
-HRESULT CCell::Initialize(const _float3* pPoints, _int iIndex, const _float4x4* worldMatrix)
-{
-    XMStoreFloat3(&m_vPoints[0], XMVector3TransformCoord(XMLoadFloat3(&pPoints[0]), XMLoadFloat4x4(worldMatrix)));
-    XMStoreFloat3(&m_vPoints[1], XMVector3TransformCoord(XMLoadFloat3(&pPoints[1]), XMLoadFloat4x4(worldMatrix)));
-    XMStoreFloat3(&m_vPoints[2], XMVector3TransformCoord(XMLoadFloat3(&pPoints[2]), XMLoadFloat4x4(worldMatrix)));
+    memcpy(m_vPoints, pPoints, sizeof(_float3) * POINT_END);
 
     m_iIndex = iIndex;
+    m_CellKey = cellKey;
 
     _float3 vLines[LINE_END] = {};
 
@@ -34,11 +25,22 @@ HRESULT CCell::Initialize(const _float3* pPoints, _int iIndex, const _float4x4* 
     for (size_t i = 0; i < LINE_END; i++)
         m_vNormals[i] = _float3(-vLines[i].z, 0.f, vLines[i].x);
 
+    /* XMPlaneFromPointNormal() */
+
     XMStoreFloat4(&m_vPlane,
         XMPlaneFromPoints(
             XMVectorSetW(XMLoadFloat3(&m_vPoints[POINT_A]), 1.f),
             XMVectorSetW(XMLoadFloat3(&m_vPoints[POINT_B]), 1.f),
             XMVectorSetW(XMLoadFloat3(&m_vPoints[POINT_C]), 1.f)));
+
+    /* 직선의 방정식 : 직선의 기울기, y절편 */
+    /* 평면의 방정식 : 평면의 기울기(법선), 평면상에 존재하는 점.*/
+    /* 평면을 구한다 : a, b, c, d */
+    /* a, b, c => 노멀라이즈된 법선벡터의 각 성분(x = a, y = b, z = c) */
+    /*ax + by + cz + d = 0*/
+
+    // m_vPlane = (a, b, c, d) -> normal = (a, b, c)
+    XMStoreFloat3(&m_vPlaneNormal, XMVector3Normalize(XMLoadFloat4(&m_vPlane)));
 
 #ifdef _DEBUG
     m_pVIBuffer = CVIBuffer_Cell::Create(m_pDevice, m_pContext, pPoints);
@@ -112,11 +114,32 @@ _float CCell::Compute_Height(_fvector vPosition)
     return (-m_vPlane.x * XMVectorGetX(vPosition) - m_vPlane.z * XMVectorGetZ(vPosition) - m_vPlane.w) / m_vPlane.y;
 }
 
-CCell* CCell::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _float3* pPoints, _int iIndex, const _float4x4* worldMatrix)
+_bool CCell::Is_Picked(_fvector& localMousePos, _fvector& localMouseRay, _float& outDist)
+{
+    _vector  vOrigin    = localMousePos;
+    _vector  vDir       = localMouseRay;
+
+    _vector  v0 = XMLoadFloat3(&m_vPoints[POINT_A]);
+    _vector  v1 = XMLoadFloat3(&m_vPoints[POINT_B]);
+    _vector  v2 = XMLoadFloat3(&m_vPoints[POINT_C]);
+
+    _bool	 bHit = false;
+    _float   fDist = {};
+
+    if (TriangleTests::Intersects(vOrigin, vDir, v0, v1, v2, fDist))
+    {
+        outDist = fDist;
+        bHit = true;
+    }
+
+    return bHit;
+}
+
+CCell* CCell::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _float3* pPoints, _int iIndex, std::string cellKey)
 {
     CCell* pGameInstance = new CCell(pDevice, pContext);
     
-    if (FAILED(pGameInstance->Initialize(pPoints, iIndex, worldMatrix)))
+    if (FAILED(pGameInstance->Initialize(pPoints, iIndex, cellKey)))
     {
         MSG_BOX("Failed to Create : CCell");
         Safe_Release(pGameInstance);
