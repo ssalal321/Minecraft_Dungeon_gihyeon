@@ -67,7 +67,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return FALSE;
 
     if (FAILED(pGameInstance->Add_Timer(TEXT("Timer_60"))))
-        return FALSE;      
+        return FALSE;
+
+    if (FAILED(pGameInstance->Add_Timer(TEXT("DEBUG_FPS"))))
+        return FALSE;
 
     _float      fTimeAcc = { 0.f };
 
@@ -94,11 +97,20 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         if (fTimeAcc >= 1.f / 60.f /* 1초에 60번만 트루리턴 */)
         {
             pGameInstance->Compute_TimeDelta(TEXT("Timer_60"));
+            pGameInstance->Compute_TimeDelta(TEXT("DEBUG_FPS"));
 
             pMainApp->Update(pGameInstance->Get_TimeDelta(TEXT("Timer_60")));
             pMainApp->Render();
 
             fTimeAcc = 0.f;
+
+            pGameInstance->Compute_TimeDelta(TEXT("DEBUG_FPS"));
+
+            //Test
+            _wstring title = std::to_wstring(1.f / pGameInstance->Get_TimeDelta(TEXT("DEBUG_FPS")));
+            if (g_hWnd)
+                SetWindowText(g_hWnd, title.c_str());
+
         }
         
     }
