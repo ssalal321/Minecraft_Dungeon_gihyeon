@@ -34,6 +34,10 @@ private:
 	_int			m_iPointNum		 = {};
 	_float3			m_fCellPoints[3] = {};
 
+	static  _bool	m_bLineRender;
+	static	_uint	m_iShaderPass;  // ¼±¾ð
+	static	_bool	m_bClickActive;;
+
 private:
 	HRESULT		Ready_Components();
 	HRESULT		Bind_ShaderResources();

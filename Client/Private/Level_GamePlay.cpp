@@ -73,7 +73,7 @@ void CLevel_GamePlay::Update(_float fTimeDelta)
 
     //        if (pNavigation != nullptr)
     //        {
-    //            pNavigation->Make_Cell(fWorldPickedPos, fOutPoints);
+    //            pNavigation->Read_Cell(fWorldPickedPos, fOutPoints);
     //        }
     //    }
     //}

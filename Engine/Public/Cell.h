@@ -15,24 +15,26 @@ private:
 	~CCell() override = default;
 
 public:
-	_vector Get_Point(POINT ePoint) {
-		return XMLoadFloat3(&m_vPoints[ePoint]);
-	}
+	_vector		Get_Point(POINT ePoint) { return XMLoadFloat3(&m_vPoints[ePoint]); }
+
+	const _float3*	Get_Points() { return	m_vPoints; }
+
+	std::string		Get_CellKey() { return m_CellKey; }
 
 	void	SetUp_Neighbor(LINE eLine, CCell* pNeighbor) {
 		m_iNeighborCellIndices[eLine] = pNeighbor->m_iIndex;
 	}
 
-	void	Set_RenderMode(RENDER_MODE eMode);
-
 public:
-	HRESULT		Initialize(const _float3* pPoints, _int iIndex, const _float4x4* worldMatrix = nullptr);
+	HRESULT		Initialize(const _float3* pPoints, _int iIndex, std::string cellKey);
 	HRESULT		Render();
 	
 	_bool		Is_In(_fvector vPosition, _int* pNeighborIndex);
 	_bool		Compare_Points(_fvector vSourPoint, _fvector vDestPoint);
 
 	_float		Compute_Height(_fvector vPosition);
+
+	_bool		Is_Picked(_fvector& localMousePos, _fvector& localMouseRay, _float& outDist);
 
 private:
 	ID3D11Device*				m_pDevice = { nullptr };
@@ -45,12 +47,14 @@ private:
 
 	_float4						m_vPlane = {};
 
+	std::string					m_CellKey = {};
+
 #ifdef _DEBUG
 	class CVIBuffer_Cell* m_pVIBuffer = { nullptr };
 #endif
 
 public:
-	static CCell* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _float3* pPoints, _int iIndex, const _float4x4* worldMatrix = nullptr);
+	static CCell* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _float3* pPoints, _int iIndex, std::string cellKey);
 	void	Free()	override;
 };
 

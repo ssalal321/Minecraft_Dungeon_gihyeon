@@ -230,7 +230,7 @@ HRESULT CLoader::Loading_For_GamePlay()
 	/* For.Prototype_Component_Model_LoungeMap */
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(270.f));
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_LoungeMap"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Map/Lounge/LoungeMap.fbx", PreTransformMatrix))))
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Map/Lounge/Lounge_NoGrass.fbx", PreTransformMatrix))))
 		return E_FAIL;
 
 	///* For.Prototype_Component_Shader_VtxCube */
@@ -238,17 +238,17 @@ HRESULT CLoader::Loading_For_GamePlay()
 	//	CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxCube.hlsl"), VTXCUBE::Elements, VTXCUBE::iNumElements))))
 	//	return E_FAIL;
 
-	//lstrcpy(m_szLoadingText, TEXT("네비게이션 로딩 중"));
-	///* For.Prototype_Component_Navigation */
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Navigation"),
-	//	CNavigation::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Navigation.dat")))))
-	//	return E_FAIL;
-
 	lstrcpy(m_szLoadingText, TEXT("네비게이션 로딩 중"));
 	/* For.Prototype_Component_Navigation */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Navigation"),
-		CNavigation::Create(m_pDevice, m_pContext))))
+		CNavigation::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Lounge_Navigation.dat")))))
 		return E_FAIL;
+
+	//lstrcpy(m_szLoadingText, TEXT("네비게이션 로딩 중"));
+	///* For.Prototype_Component_Navigation */
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Navigation"),
+	//	CNavigation::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
 
 	/* For.Prototype_Component_Shader_VtxNorTex */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxNorTex"),

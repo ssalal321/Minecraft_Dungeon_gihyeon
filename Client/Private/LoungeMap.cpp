@@ -5,16 +5,20 @@
 #include "GameInstance.h"
 #include "Player.h"
 
+#ifdef _DEBUG
+_uint CLoungeMap::m_iShaderPass = 0;
+_bool CLoungeMap::m_bLineRender = false;
+_bool CLoungeMap::m_bClickActive = false;
+#endif
+
 CLoungeMap::CLoungeMap(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject ( pDevice, pContext )
 {
-
 }
 
 CLoungeMap::CLoungeMap(const CLoungeMap& Prototype)
 	: CGameObject ( Prototype )
 {
-
 }
 
 HRESULT CLoungeMap::Initialize_Prototype()
@@ -41,22 +45,39 @@ HRESULT CLoungeMap::Initialize(void* pArg)
 		return E_FAIL;
 
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
-		XMVectorSet(0.f, -54.95f, 0.f, 1.f));	
+		XMVectorSet(0.f, -54.95f, 0.f, 1.f));	// -54.95f
 
 	return S_OK;
 }
 
 void CLoungeMap::Priority_Update(_float fTimeDelta)
 {
-	if (m_pGameInstance->Key_Down(VK_LBUTTON))
+	
+}
+
+void CLoungeMap::Update(_float fTimeDelta)
+{
+	#ifdef _DEBUG
+
+	if (m_pGameInstance->Key_Down(VK_F1))
+		m_bClickActive = !m_bClickActive;
+
+	if (m_pGameInstance->Key_Down(VK_LBUTTON) && m_bClickActive)
 	{
 		_float3		fLocalPickedVertex = {};
 
 		if (m_pGameInstance->Picked_Vertex(fLocalPickedVertex, TEXT("Prototype_GameObject_LoungeMap"), LEVEL_GAMEPLAY, TEXT("Layer_BackGround")))
 		{
-			std::cerr << "[피킹된 정점] X: " << fLocalPickedVertex.x
-							    << " Y: " << fLocalPickedVertex.y
-								<< " Z: " << fLocalPickedVertex.z << std::endl;
+			
+			_vector vWorldPickedVertex = {};
+			vWorldPickedVertex = XMVector3TransformCoord(XMLoadFloat3(&fLocalPickedVertex), XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
+			_float3  fWorldPickedVertex;
+			XMStoreFloat3(&fWorldPickedVertex, vWorldPickedVertex);
+
+			std::cerr << "[피킹된 정점] X: " << fWorldPickedVertex.x
+								 << " Y: " << fWorldPickedVertex.y
+								 << " Z: " << fWorldPickedVertex.z << std::endl;
+			
 
 			m_fCellPoints[m_iPointNum] = fLocalPickedVertex;
 			++m_iPointNum;
@@ -64,7 +85,7 @@ void CLoungeMap::Priority_Update(_float fTimeDelta)
 			// Navigation에 전달
 			if (m_iPointNum == 3 && m_pNavigationCom)
 			{
-				m_pNavigationCom->Make_Cell(m_fCellPoints, m_pTransformCom->Get_WorldMatrix_Ptr());
+				m_pNavigationCom->Make_Cell(m_fCellPoints);
 			}
 
 			if (3 == m_iPointNum)
@@ -73,21 +94,41 @@ void CLoungeMap::Priority_Update(_float fTimeDelta)
 			}
 
 			/*CPlayer* pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("Prototype_GameObject_PlayerHex"),
-				            LEVEL_GAMEPLAY, TEXT("Layer_Player")));
-				        pPlayer->Set_NextPosition({ fWorldPickedPos.x, fWorldPickedPos.y, fWorldPickedPos.z, 1.f });
-				        pPlayer->Change_State(PLAYER_STATE::WALK);*/
+							LEVEL_GAMEPLAY, TEXT("Layer_Player")));
+						pPlayer->Set_NextPosition({ fWorldPickedPos.x, fWorldPickedPos.y, fWorldPickedPos.z, 1.f });
+						pPlayer->Change_State(PLAYER_STATE::WALK);*/
 		}
 	}
-}
 
-void CLoungeMap::Update(_float fTimeDelta)
-{
+	if (m_pGameInstance->Key_Down(VK_RBUTTON) && m_bClickActive)
+	{
+		m_pNavigationCom->Erase_Cell_Pick(m_pTransformCom->Get_WorldMatrix_Inverse());
+	}
+
+	if (m_pGameInstance->Key_Down(VK_BACK) && m_bClickActive)
+	{
+		m_pNavigationCom->Erase_Cell_Last();
+	}
+	#endif
+
 	m_pNavigationCom->Update(m_pTransformCom->Get_WorldMatrix_Ptr());
 }
 
 void CLoungeMap::Late_Update(_float fTimeDelta)
 {
+
+#ifdef _DEBUG
+	if (m_pGameInstance->Key_Down('1') & 0x0001)
+	{
+		m_bLineRender = !m_bLineRender;
+
+		m_iShaderPass = m_bLineRender ? 1 : 0;
+	}
+
+#endif
+
 	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
+
 }
 
 HRESULT CLoungeMap::Render()
@@ -102,7 +143,7 @@ HRESULT CLoungeMap::Render()
 		if (FAILED(m_pModelCom->Bind_Material(m_pShader_MeshCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
 			return E_FAIL;	
 
-		if (FAILED(m_pShader_MeshCom->Begin(0)))
+		if (FAILED(m_pShader_MeshCom->Begin(m_iShaderPass)))
 			return E_FAIL;
 
 		if (FAILED(m_pModelCom->Render(i)))

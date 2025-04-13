@@ -24,7 +24,7 @@ HRESULT CPicking::Initialize(HWND hWnd, _uint iWinSizeX, _uint iWinSizeY)
 
 _bool CPicking::Picked_Model(_float3& fLocalPickedPos, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag)
 {
-    _float3  fWorldMousePos, fWorldMouseRay = {};
+    _float3  fWorldMousePos = {}, fWorldMouseRay = {};
    
     Compute_MouseRay(fWorldMousePos, fWorldMouseRay);
 
@@ -44,7 +44,7 @@ _bool CPicking::Picked_Model(_float3& fLocalPickedPos, const _wstring& strProtot
 
 _bool CPicking::Picked_Vertex(_float3& fLocalPickedVertex, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag)
 {
-    _float3  fWorldMousePos, fWorldMouseRay = {};
+    _float3  fWorldMousePos = {}, fWorldMouseRay = {};
 
     Compute_MouseRay(fWorldMousePos, fWorldMouseRay);
 

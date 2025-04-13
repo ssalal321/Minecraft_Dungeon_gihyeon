@@ -247,6 +247,11 @@ _float3 CGameInstance::Get_MousePos() const
 {
 	return m_pInput_Manager->Get_MousePos();
 }
+
+void CGameInstance::Compute_MouseRay(_float3& worldMousePos, _float3& worldMouseRay)
+{
+	return m_pPicking->Compute_MouseRay(worldMousePos, worldMouseRay);
+}
 #pragma endregion
 
 #pragma region PICKING
