@@ -305,7 +305,6 @@ void CNavigation::Resave_Files()
 	CloseHandle(hFile);
 }
 
-
 void CNavigation::Sort_Clockwise(const _float3* pInPoints, _float3* pOutSorted)
 {
 	_float3 p0 = pInPoints[0];
@@ -333,31 +332,59 @@ void CNavigation::Sort_Clockwise(const _float3* pInPoints, _float3* pOutSorted)
 	pOutSorted[2] = p2;
 }
 
-
 _bool CNavigation::Can_Move(_fvector vWorldPos)
 {
-	_matrix		WorldMatrixInv = XMMatrixInverse(nullptr, XMLoadFloat4x4(m_pWorldMatrix));
+	_matrix WorldMatrixInv = XMMatrixInverse(nullptr, XMLoadFloat4x4(m_pWorldMatrix));
+	_vector vLocalPos = XMVector3TransformCoord(vWorldPos, WorldMatrixInv);
 
-	_vector		vPosition = XMVector3TransformCoord(vWorldPos, WorldMatrixInv);
+	_int iCellIndex = m_iCurrentCellIndex;
+	_int iNextNeighbor = -1;
 
-	_int		iNeighborIndex = { -1 };
-
-	if (true == m_Cells[m_iCurrentCellIndex]->Is_In(vPosition, &iNeighborIndex))
+	for (int depth = 0; depth < 8; ++depth)
 	{
-		return true;
-	}
-	else
-	{
-		/*나간방향에 이웃이 있다면. */
-		if (-1 != iNeighborIndex)
+		CCell* pCurrent = m_Cells[iCellIndex];
+
+		if (pCurrent->Is_In(vLocalPos, &iNextNeighbor))
 		{
-			m_iCurrentCellIndex = iNeighborIndex;
-			return true;
+			_vector vNormal = XMLoadFloat3(&pCurrent->Get_PlaneNormal());
+
+			// 평면이 걷기에 적당한지 확인
+			if (XMVectorGetY(vNormal) < 0.5f)
+			{	// 현재 평면이 벽면임
+
+				if (iNextNeighbor != -1)
+				{
+					// 벽면과 인접한 셀 중 이동 가능한 평면 있는지 확인
+					CCell* pNext = m_Cells[iNextNeighbor];
+					_vector vNextNormal = XMLoadFloat3(&pNext->Get_PlaneNormal());
+
+					if (XMVectorGetY(vNextNormal) >= 0.4f)
+					{
+						m_iCurrentCellIndex = iNextNeighbor;
+						return true;
+					}
+				}
+
+				break; // 벽면이거나 더 갈 수 없음
+			}
+			else
+			{
+				m_iCurrentCellIndex = iCellIndex;
+				return true;
+			}
 		}
 		else
-			return false;
+		{
+			if (iNextNeighbor == -1)
+				break;
+
+			iCellIndex = iNextNeighbor;
+		}
 	}
+
+	return false;
 }
+
 
 HRESULT CNavigation::SetUp_Neighbors()
 {

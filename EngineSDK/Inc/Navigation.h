@@ -15,7 +15,7 @@ private:
 	~CNavigation() override = default;
 
 public:
-	HRESULT Initialize_Prototype(const _tchar* pNavigationDataFilePath);
+	HRESULT		Initialize_Prototype(const _tchar* pNavigationDataFilePath);
 	HRESULT		Initialize_Prototype()		override;
 	HRESULT		Initialize(void* pArg)		override;
 	void		Update(const _float4x4* pWorldMatrix);
@@ -35,7 +35,7 @@ public:
 	HRESULT		Read_Cell(const _tchar* pNavigationDataFilePath);
 	void		Resave_Files();
 	void		Sort_Clockwise(const _float3* pInPoints, _float3* pOutSorted);
-	_bool		Can_Move(_fvector vWorldPos);
+	_bool		Can_Move(_fvector vWorldPos/*, _float& fOutY*/);
 	HRESULT		SetUp_Neighbors();
 	void		SetUp_On_Navigation(CTransform* pTransform);
 

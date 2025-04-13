@@ -17,7 +17,9 @@ private:
 public:
 	_vector		Get_Point(POINT ePoint) { return XMLoadFloat3(&m_vPoints[ePoint]); }
 
-	const _float3*	Get_Points() { return	m_vPoints; }
+	const _float3* Get_Points() { return	m_vPoints; }
+
+	const _float3& Get_PlaneNormal() { return m_vPlaneNormal; }
 
 	std::string		Get_CellKey() { return m_CellKey; }
 
@@ -28,7 +30,7 @@ public:
 public:
 	HRESULT		Initialize(const _float3* pPoints, _int iIndex, std::string cellKey);
 	HRESULT		Render();
-	
+
 	_bool		Is_In(_fvector vPosition, _int* pNeighborIndex);
 	_bool		Compare_Points(_fvector vSourPoint, _fvector vDestPoint);
 
@@ -37,14 +39,15 @@ public:
 	_bool		Is_Picked(_fvector& localMousePos, _fvector& localMouseRay, _float& outDist);
 
 private:
-	ID3D11Device*				m_pDevice = { nullptr };
-	ID3D11DeviceContext*		m_pContext = { nullptr };
+	ID3D11Device* m_pDevice = { nullptr };
+	ID3D11DeviceContext* m_pContext = { nullptr };
 
 	_float3						m_vPoints[POINT_END] = {};
 	_float3						m_vNormals[LINE_END] = {};
 	_int						m_iIndex = {};
 	_int						m_iNeighborCellIndices[LINE_END] = { -1, -1, -1 };
 
+	_float3						m_vPlaneNormal { 0.f, 1.f, 0.f };
 	_float4						m_vPlane = {};
 
 	std::string					m_CellKey = {};

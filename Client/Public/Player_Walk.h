@@ -8,7 +8,7 @@ BEGIN(Client)
 class CPlayer_Walk final: public CState
 {
 private:
-    CPlayer_Walk(CGameObject* pActor, CGameObject* pPartObject, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc);
+    CPlayer_Walk(CGameObject* pActor, CGameObject* pPartObject, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, CNavigation* pNavigationCom);
 	~CPlayer_Walk() override = default;
 
 public:
@@ -21,13 +21,15 @@ public:
     void   State_Exit()             override;
 
 private:
-    CPlayer*          m_pPlayer = { nullptr };
+    CPlayer*                m_pPlayer = { nullptr };
     class CBody_Player*     m_pBodyPlayer = { nullptr };
     CModel*                 m_pBodyPlayerModelCom = { nullptr };
     CPlayer::PLAYER_DESC*   m_pPlayerDesc = { nullptr };
 
+    CNavigation*            m_pNavigationCom = { nullptr };
+
 public:
-    static CState*  Create(CGameObject* pActor, CGameObject* pPartObject, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc);
+    static CState*  Create(CGameObject* pActor, CGameObject* pPartObject, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, CNavigation* pNavigationCom);
     void   Free()    override;
 };
 

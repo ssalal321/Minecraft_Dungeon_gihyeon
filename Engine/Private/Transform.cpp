@@ -56,14 +56,36 @@ void CTransform::SetUp_Scale(_float fScaleX, _float fScaleY, _float fScaleZ)
 void CTransform::Go_Straight(_float fTimeDelta, CNavigation* pNavigation)
 {
 	_vector		vLook = Get_State(STATE::STATE_LOOK);
+	/*vLook = XMVectorSetY(vLook, 0.f);
+	vLook = XMVector3Normalize(vLook);*/
 	_vector		vPosition = Get_State(STATE::STATE_POSITION);
 
 	vPosition += XMVector3Normalize(vLook) * m_fSpeedPerSec * fTimeDelta;
 
-	if (nullptr == pNavigation ||
-		true == pNavigation->Can_Move(vPosition))
+	if (nullptr == pNavigation || true == pNavigation->Can_Move(vPosition))
 		Set_State(STATE_POSITION, vPosition);
 }
+
+//void CTransform::Go_Straight(_float fTimeDelta, CNavigation* pNavigation)
+//{
+//	_vector vLook = Get_State(STATE_LOOK);
+//	_vector vPosition = Get_State(STATE_POSITION);
+//
+//	vPosition += XMVector3Normalize(vLook) * m_fSpeedPerSec * fTimeDelta;
+//
+//	if (pNavigation)
+//	{
+//		_float fY = 0.f;
+//
+//		if (pNavigation->Can_Move(vPosition, fY))
+//		{
+//			vPosition = XMVectorSetY(vPosition, fY); // 계단 평면에 y값 정확히 붙이기
+//		}
+//	}
+//
+//	Set_State(STATE_POSITION, vPosition);
+//}
+
 
 void CTransform::Go_Left(_float fTimeDelta)
 {
@@ -135,6 +157,7 @@ void CTransform::LookAt(_fvector vAt)
 	_vector		vPosition = Get_State(STATE_POSITION);
 
 	_vector		vLook = vAt - vPosition;
+	vLook = XMVectorSetY(vLook, 0.f);
 
 	_vector		vRight = XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLook);
 

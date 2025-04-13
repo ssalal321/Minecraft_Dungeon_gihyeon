@@ -39,6 +39,9 @@ HRESULT CCell::Initialize(const _float3* pPoints, _int iIndex, std::string cellK
     /* a, b, c => 노멀라이즈된 법선벡터의 각 성분(x = a, y = b, z = c) */
     /*ax + by + cz + d = 0*/
 
+    // m_vPlane = (a, b, c, d) -> normal = (a, b, c)
+    XMStoreFloat3(&m_vPlaneNormal, XMVector3Normalize(XMLoadFloat4(&m_vPlane)));
+
 #ifdef _DEBUG
     m_pVIBuffer = CVIBuffer_Cell::Create(m_pDevice, m_pContext, pPoints);
     if (nullptr == m_pVIBuffer)
