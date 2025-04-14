@@ -8,7 +8,7 @@ BEGIN(Client)
 class CState_Player abstract: public CState
 {
 protected:
-    CState_Player(CGameObject* pActor, CGameObject* pPartObject, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
+    CState_Player(CGameObject* pActor, CModel* pPlayerModelCom, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
 				  CTransform* pTransformCom, CNavigation* pNavigationCom);
 	~CState_Player() override = default;
 
@@ -23,8 +23,6 @@ public:
 
 protected:
     CPlayer*                m_pPlayer = { nullptr };
-    class CBody_Player*     m_pBodyPlayer = { nullptr };
-    CModel*                 m_pBodyPlayerModelCom = { nullptr };
     CPlayer::PLAYER_DESC*   m_pPlayerDesc = { nullptr };
 
     static  _bool			m_bAnimationFinished;

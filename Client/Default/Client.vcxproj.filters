@@ -103,6 +103,18 @@
     <Filter Include="02.GameObjects\Player\02. State\Player_Roll">
       <UniqueIdentifier>{9905ea67-d423-4db9-ade2-018a707a5c88}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster\Zombie">
+      <UniqueIdentifier>{a9c53524-8cf9-4a55-b3f2-e74ce3da8b24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Zombie\00. Body_Zombie">
+      <UniqueIdentifier>{f1c38f59-c0be-4535-b1f8-b2bf76de9d77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Zombie\01. State">
+      <UniqueIdentifier>{2e037a48-045f-4e3a-b4a4-f170ea2c96be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Zombie\01. State\Zombie_Idle">
+      <UniqueIdentifier>{6ef0e423-d2e3-47c1-86aa-5a2a2d3be815}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -201,6 +213,18 @@
     <ClInclude Include="..\Public\Player_Roll.h">
       <Filter>02.GameObjects\Player\02. State\Player_Roll</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Body_Zombie.h">
+      <Filter>02.GameObjects\Monster\Zombie\00. Body_Zombie</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Zombie.h">
+      <Filter>02.GameObjects\Monster\Zombie</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Zombie_Idle.h">
+      <Filter>02.GameObjects\Monster\Zombie\01. State\Zombie_Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Monster.h">
+      <Filter>02.GameObjects\Monster\Zombie\01. State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -296,6 +320,18 @@
     </ClCompile>
     <ClCompile Include="..\Private\Player_Roll.cpp">
       <Filter>02.GameObjects\Player\02. State\Player_Roll</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Body_Zombie.cpp">
+      <Filter>02.GameObjects\Monster\Zombie\00. Body_Zombie</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Zombie.cpp">
+      <Filter>02.GameObjects\Monster\Zombie</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Zombie_Idle.cpp">
+      <Filter>02.GameObjects\Monster\Zombie\01. State\Zombie_Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Monster.cpp">
+      <Filter>02.GameObjects\Monster\Zombie\01. State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

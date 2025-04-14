@@ -12,7 +12,7 @@ namespace Client
 		LEVEL_END
 	};
 
-	enum PLAYER_STATE
+	enum class PLAYER_STATE
 	{
 		BOW_ACTION,
 		CLAYMORE_COMBO,
@@ -54,6 +54,19 @@ namespace Client
 		WALK_HAMMER,
 		WALK_KATANA,
 		WHIP_COMBO,
+		STATE_END
+	};
+
+	enum class ZOMBIE_STATE
+	{
+		ATTACK,
+		HIT_FROM_FRONT,
+		HIT_FROM_LEFT,
+		HIT_FROM_RIGHT,
+		IDLE,
+		NOVELTY_SLEEP,
+		STUN,
+		WALK,
 		STATE_END
 	};
 }

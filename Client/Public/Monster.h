@@ -1,7 +1,6 @@
 #pragma once
-
 #include "Client_Defines.h"
-#include "GameObject.h"
+#include "ContainerObject.h"
 
 BEGIN(Engine)
 class CShader;
@@ -9,38 +8,70 @@ class CModel;
 END
 
 BEGIN(Client)
+	class CState;
 
-class CMonster final : public CGameObject
+class CMonster abstract : public CContainerObject
 {
-private:
+public:
+	struct MONSTER_DESC : public GAMEOBJECT_DESC
+	{
+		_int     iCurrentHP;
+		_int     iMaxHP;
+		_int     iAttackPoint;
+		_float   fEffectiveRange;
+		_bool    bStunned;
+
+		MONSTER_DESC(const _tchar* GameObjectTag, _int currentHP, _int maxHP, _int attackPoint,
+			_float effectiveRange, _bool stunned = false,
+			_float rotationPerSec = 0.f, _float speedPerSec = 0.f)
+			: GAMEOBJECT_DESC(GameObjectTag, rotationPerSec, speedPerSec), iCurrentHP(currentHP), iMaxHP(maxHP), iAttackPoint(attackPoint),
+			fEffectiveRange(effectiveRange), bStunned(stunned) {
+		}
+
+		~MONSTER_DESC() override = default;
+	};
+
+protected:
 	CMonster(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CMonster(const CMonster& Prototype);
-	virtual ~CMonster() = default;
+	~CMonster() override = default;
 
 public:
-	virtual  HRESULT	Initialize_Prototype()				override;
-	virtual  HRESULT	Initialize(void* pArg)				override;
-	virtual  void		Priority_Update(_float fTimeDelta)	override;
-	virtual  void		Update(_float fTimeDelta)			override;
-	virtual  void		Late_Update(_float fTimeDelta)		override;
-	virtual  HRESULT	Render()							override;
-
-private:	
-	
-	CShader*	m_pShaderCom	= { nullptr };
-	CModel*		m_pModelCom		= { nullptr };
-
-	_uint		m_iPassIndex	= {};
-
-
-private:
-	HRESULT Ready_Components();
-	HRESULT Bind_ShaderResources();
+	HRESULT		Initialize_Prototype()				override;
+	HRESULT		Initialize(void* pArg = nullptr)	override;
+	void		Priority_Update(_float fTimeDelta)	override;
+	void		Update(_float fTimeDelta)			override;
+	void		Late_Update(_float fTimeDelta)		override;
+	HRESULT		Render()							override;
 
 public:
-	static CMonster* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual CGameObject* Clone(void* pArg) override;
-	virtual void Free() override;
+	vector<CState*>   Get_StateVec() { return m_StatesVec; }
+
+	const _float4& Get_NextPosition() const { return m_NextPosition; }
+
+	void	Set_NextPosition(const _float4& nextPosition)
+	{
+		m_NextPosition = nextPosition;
+	}
+
+	void		Change_State(PLAYER_STATE playerState);
+
+protected:
+	_uint				m_iState = { static_cast<_uint>(ZOMBIE_STATE::STATE_END) };
+	class FSM*			m_pMonsterFSM = { nullptr };
+	//MONSTER_DESC*		m_pMonsterInfo = { nullptr };
+	vector<CState*>     m_StatesVec;
+
+	CNavigation*		m_pNavigationCom = { nullptr };
+	_float4				m_NextPosition = { 0.f, 0.f, 0.f, 1.f };
+
+protected:
+	HRESULT				Ready_Components();
+	virtual  HRESULT	Ready_PartObjects() = 0;
+	virtual  HRESULT	Ready_States()		= 0;
+
+public:
+	virtual void	Free() override;
 };
 
 END

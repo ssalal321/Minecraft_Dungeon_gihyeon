@@ -11,6 +11,7 @@
 #include "InventoryItemSlot.h"
 #include "LoungeMap.h"
 #include "Player.h"
+#include "Zombie.h"
 #include "PlayerHP.h"
 
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -43,7 +44,6 @@ HRESULT CLevel_GamePlay::Initialize()
 
 void CLevel_GamePlay::Update(_float fTimeDelta)
 {
-
     /*if (m_pGameInstance->Key_Down('I'))
     {
         bShowInventory = !bShowInventory;
@@ -56,45 +56,6 @@ void CLevel_GamePlay::Update(_float fTimeDelta)
         CPlayer* pPlayerHex = dynamic_cast<CPlayer*>(pPlayer);
         pPlayerHex->Show_Player_Inventory(bShowInventory);
     }*/
-
-    //if (m_pGameInstance->Key_Down(VK_LBUTTON))
-    //{
-    //    _float3		fWorldPickedPos = {};
-    //    _float3		fOutPoints[3] = {} /*nullptr*/;
-
-    //    if (m_pGameInstance->Picked_Model(fWorldPickedPos, TEXT("Prototype_GameObject_LoungeMap"), LEVEL_GAMEPLAY, TEXT("Layer_BackGround"),
-    //        fOutPoints))
-    //    {
-    //        CLoungeMap* pLoungeMap = dynamic_cast<CLoungeMap*>(m_pGameInstance->Find_GameObject(TEXT("Prototype_GameObject_LoungeMap"),
-                //											   LEVEL_GAMEPLAY, TEXT("Layer_Player")));
-
-    //        // Navigation에 전달
-    //        CNavigation* pNavigation = dynamic_cast<CNavigation*>(pLoungeMap->Find_Component(TEXT("Com_Navigation")));
-
-    //        if (pNavigation != nullptr)
-    //        {
-    //            pNavigation->Read_Cell(fWorldPickedPos, fOutPoints);
-    //        }
-    //    }
-    //}
-
-    //if (m_pGameInstance->Key_Down(VK_LBUTTON))
-    //{
-    //    _float3 fLocalPickedPos = {};
-    //   
-    //    // 2. LoungeMap에 피킹 요청 (BoundingBox 충돌 체크)
-    //    if (m_pGameInstance->Picked_Model(fLocalPickedPos, TEXT("Prototype_GameObject_LoungeMap"),
-    //            						  LEVEL_GAMEPLAY, TEXT("Layer_BackGround")))
-    //    {
-
-    //        // 3. 피킹 성공 → 플레이어 이동 요청
-    //        CPlayer* pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("Prototype_GameObject_PlayerHex"),
-    //            LEVEL_GAMEPLAY, TEXT("Layer_Player")));
-    //        pPlayer->Set_NextPosition({ fLocalPickedPos.x, fLocalPickedPos.y, fLocalPickedPos.z, 1.f });
-    //        pPlayer->Change_State(PLAYER_STATE::WALK);
-    //    }
-    //}
-   
 }
 
 HRESULT CLevel_GamePlay::Render()
@@ -172,6 +133,10 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& strLayerTag)
             LEVEL_GAMEPLAY, strLayerTag)))
             return E_FAIL;
     }*/
+
+    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Zombie"),
+        LEVEL_GAMEPLAY, strLayerTag)))
+        return E_FAIL;
 
     return S_OK;
 }

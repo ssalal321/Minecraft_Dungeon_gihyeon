@@ -52,7 +52,7 @@ private:
 
 public:
 	HRESULT		Initialize_Prototype()				override;
-	HRESULT		Initialize(void* pArg)				override;
+	HRESULT		Initialize(void* pArg = nullptr)	override;
 	void		Priority_Update(_float fTimeDelta)	override;
 	void		Update(_float fTimeDelta)			override;
 	void		Late_Update(_float fTimeDelta)		override;
@@ -72,7 +72,7 @@ public:
 	
 
 private:
-	_uint				m_iState = { STATE_END };
+	_uint				m_iState = { static_cast<_uint>(PLAYER_STATE::STATE_END) };
 	class FSM*			m_pPlayerFSM = { nullptr };
 	PLAYER_DESC*		m_pPlayerInfo = { nullptr };
 	vector<CState*>     m_StatesVec;

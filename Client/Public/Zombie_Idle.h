@@ -1,14 +1,16 @@
 #pragma once
 #include "Client_Defines.h"
-#include "State_Player.h"
+#include "State_Monster.h"
 
 BEGIN(Client)
-	class CPlayer_Idle final: public CState_Player
+	class CZombie;
+
+	class CZombie_Idle final: public CState_Monster
 {
 private:
-	CPlayer_Idle(CGameObject* pActor, CModel* pPlayerModelCom, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
+	CZombie_Idle(CGameObject* pActor, CModel* pZombieModelCom, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
 				 CTransform* pTransformCom, CNavigation* pNavigationCom);
-	~CPlayer_Idle() override = default;
+	~CZombie_Idle() override = default;
 
 public:
     HRESULT     Init_State()                                override;
@@ -20,11 +22,11 @@ public:
     void        State_Exit()                                override;
 
 private:
-
+    CZombie*    m_pZombie = { nullptr };
 
 public:
-    static CState_Player*  Create(CGameObject* pActor, CModel* pPlayerModelCom, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-								  CTransform* pTransformCom, CNavigation* pNavigationCom);
+    static CState_Monster*  Create(CGameObject* pActor, CModel* pZombieModelCom, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
+								   CTransform* pTransformCom, CNavigation* pNavigationCom);
     void   Free()    override;
 };
 
