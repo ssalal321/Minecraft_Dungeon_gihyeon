@@ -24,6 +24,7 @@ void CState_Monster::State_Enter()
 
 void CState_Monster::State_Priority_Update(_float fTimeDelta)
 {
+	// 체력 0이면 죽엇
 }
 
 void CState_Monster::State_Update(_float fTimeDelta)
@@ -39,20 +40,6 @@ void CState_Monster::State_Late_Update(_float fTimeDelta)
 void CState_Monster::State_Exit()
 {
 }
-
-//CState* CState_Player::Create(CGameObject* pActor, CGameObject* pPartObject, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-//							  CTransform* pTransformCom, CNavigation* pNavigationCom)
-//{
-//	CState* pGameInstance = new CState_Player(pActor, pPartObject, pGameObjectDesc, pTransformCom, pNavigationCom);
-//
-//	if (FAILED(pGameInstance->Init_State()))
-//	{
-//		MSG_BOX("Failed to Create : CState_Player");
-//		Safe_Release(pGameInstance);
-//	}
-//
-//	return pGameInstance;
-//}
 
 void CState_Monster::Free()
 {

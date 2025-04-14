@@ -103,7 +103,7 @@ HRESULT CPlayer::Ready_PartObjects()
 	BodyDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	BodyDesc.pState = &m_iState;
 
-	if (FAILED(__super::Add_PartObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Body_Player"), TEXT("Part_Body"), &BodyDesc)))
+	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Body_Player"), TEXT("Part_Body"), &BodyDesc)))
 		return E_FAIL;
 
 

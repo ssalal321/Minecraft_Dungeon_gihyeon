@@ -16,18 +16,19 @@ HRESULT CPlayer_Idle::Init_State()
 
 void CPlayer_Idle::State_Enter()
 {
+	m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::IDLE_GLAIVE), true);
 }
 
 void CPlayer_Idle::State_Priority_Update(_float fTimeDelta)
 {
 	__super::State_Priority_Update(fTimeDelta);
+	
 }
 
 void CPlayer_Idle::State_Update(_float fTimeDelta)
 {
 	__super::State_Update(fTimeDelta);
-
-	m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::IDLE_GLAIVE), true);
+	
 }
 
 void CPlayer_Idle::State_Late_Update(_float fTimeDelta)

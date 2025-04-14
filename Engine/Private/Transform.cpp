@@ -66,26 +66,6 @@ void CTransform::Go_Straight(_float fTimeDelta, CNavigation* pNavigation, _float
 		Set_State(STATE_POSITION, vPosition);
 }
 
-//void CTransform::Go_Straight(_float fTimeDelta, CNavigation* pNavigation)
-//{
-//	_vector vLook = Get_State(STATE_LOOK);
-//	_vector vPosition = Get_State(STATE_POSITION);
-//
-//	vPosition += XMVector3Normalize(vLook) * m_fSpeedPerSec * fTimeDelta;
-//
-//	if (pNavigation)
-//	{
-//		_float fY = 0.f;
-//
-//		if (pNavigation->Can_Move(vPosition, fY))
-//		{
-//			vPosition = XMVectorSetY(vPosition, fY); // 계단 평면에 y값 정확히 붙이기
-//		}
-//	}
-//
-//	Set_State(STATE_POSITION, vPosition);
-//}
-
 
 void CTransform::Go_Left(_float fTimeDelta)
 {
@@ -157,7 +137,7 @@ void CTransform::LookAt(_fvector vAt)
 	_vector		vPosition = Get_State(STATE_POSITION);
 
 	_vector		vLook = vAt - vPosition;
-	vLook = XMVectorSetY(vLook, 0.f);
+	vLook = XMVectorSetY(vLook, 0.f);	// 직진만 할 수 있도록
 
 	_vector		vRight = XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLook);
 
