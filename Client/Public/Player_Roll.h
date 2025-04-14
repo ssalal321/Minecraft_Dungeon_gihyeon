@@ -6,7 +6,7 @@ BEGIN(Client)
 	class CPlayer_Roll final: public CState_Player
 {
 private:
-    CPlayer_Roll(CGameObject* pActor, CGameObject* pPartObject, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
+    CPlayer_Roll(CGameObject* pActor, CModel* pPlayerModelCom, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
 				 CTransform* pTransformCom, CNavigation* pNavigationCom);
 	~CPlayer_Roll() override = default;
 
@@ -23,7 +23,7 @@ private:
     _float      m_fRollingTime = { 0.f };
 
 public:
-    static CState_Player*  Create(CGameObject* pActor, CGameObject* pPartObject, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
+    static CState_Player*  Create(CGameObject* pActor, CModel* pPlayerModelCom, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
 								  CTransform* pTransformCom, CNavigation* pNavigationCom);
     void   Free()    override;
 };

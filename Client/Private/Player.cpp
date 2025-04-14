@@ -80,7 +80,7 @@ HRESULT CPlayer::Render()
 
 void CPlayer::Change_State(PLAYER_STATE playerState)
 {
-	m_iState = playerState;
+	m_iState = static_cast<_uint>(playerState);
 	m_pPlayerFSM->Change_State(m_StatesVec[m_iState]);
 }
 
@@ -130,16 +130,18 @@ HRESULT CPlayer::Ready_PartObjects()
 
 HRESULT CPlayer::Ready_States()
 {
-	m_StatesVec.resize(STATE_END);	// state vector 자리 예약
+	m_StatesVec.resize(static_cast<_uint>(PLAYER_STATE::STATE_END));	// state vector 자리 예약
 
 	CBody_Player* pBodyPlayer = dynamic_cast<CBody_Player*>(Find_PartObject(TEXT("Part_Body")));
-	m_StatesVec[PLAYER_STATE::IDLE] = CPlayer_Idle::Create(this, pBodyPlayer, m_pPlayerInfo, m_pTransformCom, m_pNavigationCom);
-	m_StatesVec[PLAYER_STATE::WALK] = CPlayer_Walk::Create(this, pBodyPlayer, m_pPlayerInfo, m_pTransformCom, m_pNavigationCom);
-	m_StatesVec[PLAYER_STATE::ROLL] = CPlayer_Roll::Create(this, pBodyPlayer, m_pPlayerInfo, m_pTransformCom, m_pNavigationCom);
+	CModel* pPlayerModel = dynamic_cast<CModel*>(pBodyPlayer->Find_Component(TEXT("Com_Model")));
+
+	m_StatesVec[static_cast<_uint>(PLAYER_STATE::IDLE)] = CPlayer_Idle::Create(this, pPlayerModel, m_pPlayerInfo, m_pTransformCom, m_pNavigationCom);
+	m_StatesVec[static_cast<_uint>(PLAYER_STATE::WALK)] = CPlayer_Walk::Create(this, pPlayerModel, m_pPlayerInfo, m_pTransformCom, m_pNavigationCom);
+	m_StatesVec[static_cast<_uint>(PLAYER_STATE::ROLL)] = CPlayer_Roll::Create(this, pPlayerModel, m_pPlayerInfo, m_pTransformCom, m_pNavigationCom);
 
 	m_pPlayerFSM = FSM::Create();
 
-	m_pPlayerFSM->Init_State(m_StatesVec[PLAYER_STATE::IDLE]);
+	m_pPlayerFSM->Init_State(m_StatesVec[static_cast<_uint>(PLAYER_STATE::IDLE)]);
 
 	return S_OK;
 }
@@ -156,7 +158,6 @@ CPlayer* CPlayer::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 	return pGameInstance;
 }
-
 
 CGameObject* CPlayer::Clone(void* pArg)
 {

@@ -6,7 +6,7 @@ BEGIN(Client)
 	class CPlayer_Walk final: public CState_Player
 {
 private:
-    CPlayer_Walk(CGameObject* pActor, CGameObject* pPartObject, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
+    CPlayer_Walk(CGameObject* pActor, CModel* pPlayerModelCom, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
 				 CTransform* pTransformCom, CNavigation* pNavigationCom);
 	~CPlayer_Walk() override = default;
 
@@ -23,7 +23,7 @@ private:
 
 
 public:
-    static CState_Player*  Create(CGameObject* pActor, CGameObject* pPartObject, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
+    static CState_Player*  Create(CGameObject* pActor, CModel* pPlayerModelCom, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
 								  CTransform* pTransformCom, CNavigation* pNavigationCom);
     void   Free()    override;
 };

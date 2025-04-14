@@ -1,9 +1,9 @@
 #include "Player_Idle.h"
 #include "Body_Player.h"
 
-CPlayer_Idle::CPlayer_Idle(CGameObject* pActor, CGameObject* pPartObject, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
+CPlayer_Idle::CPlayer_Idle(CGameObject* pActor, CModel* pPlayerModelCom, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
 						   CTransform* pTransformCom, CNavigation* pNavigationCom)
-	: CState_Player(pActor, pPartObject, pGameObjectDesc, pTransformCom, pNavigationCom)
+	: CState_Player(pActor, pPlayerModelCom, pGameObjectDesc, pTransformCom, pNavigationCom)
 {
 }
 
@@ -27,7 +27,7 @@ void CPlayer_Idle::State_Update(_float fTimeDelta)
 {
 	__super::State_Update(fTimeDelta);
 
-	m_pBodyPlayerModelCom->Set_Animation(PLAYER_STATE::IDLE_GLAIVE, true);
+	m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::IDLE_GLAIVE), true);
 }
 
 void CPlayer_Idle::State_Late_Update(_float fTimeDelta)
@@ -39,10 +39,10 @@ void CPlayer_Idle::State_Exit()
 {
 }
 
-CState_Player* CPlayer_Idle::Create(CGameObject* pActor, CGameObject* pPartObject, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
+CState_Player* CPlayer_Idle::Create(CGameObject* pActor, CModel* pPlayerModelCom, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
 							 CTransform* pTransformCom, CNavigation* pNavigationCom)
 {
-	CState_Player* pGameInstance = new CPlayer_Idle(pActor, pPartObject, pGameObjectDesc, pTransformCom, pNavigationCom);
+	CState_Player* pGameInstance = new CPlayer_Idle(pActor, pPlayerModelCom, pGameObjectDesc, pTransformCom, pNavigationCom);
 
 	if (FAILED(pGameInstance->Init_State()))
 	{

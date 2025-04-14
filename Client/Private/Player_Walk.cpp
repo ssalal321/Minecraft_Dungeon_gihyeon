@@ -1,9 +1,9 @@
 #include "Player_Walk.h"
 #include "Body_Player.h"
 
-CPlayer_Walk::CPlayer_Walk(CGameObject* pActor, CGameObject* pPartObject, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
+CPlayer_Walk::CPlayer_Walk(CGameObject* pActor, CModel* pPlayerModelCom, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
 							CTransform* pTransformCom, CNavigation* pNavigationCom)
-	: CState_Player(pActor, pPartObject, pGameObjectDesc, pTransformCom, pNavigationCom)
+	: CState_Player(pActor, pPlayerModelCom, pGameObjectDesc, pTransformCom, pNavigationCom)
 {
 }
 
@@ -16,7 +16,7 @@ HRESULT CPlayer_Walk::Init_State()
 
 void CPlayer_Walk::State_Enter()
 {
-	m_pBodyPlayerModelCom->Set_Animation(PLAYER_STATE::WALK_GLAIVE, true, 1.6f);
+	m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::WALK_GLAIVE), true, 1.6f);
 }
 
 void CPlayer_Walk::State_Priority_Update(_float fTimeDelta)
@@ -41,8 +41,6 @@ void CPlayer_Walk::State_Update(_float fTimeDelta)
 
 	if (fDist < 0.1f)
 	{
-		//m_pTransformCom->Set_State(CTransform::STATE_POSITION, vNextPos);
-
 		m_pPlayer->Change_State(PLAYER_STATE::IDLE);
 
 		return;
@@ -62,10 +60,10 @@ void CPlayer_Walk::State_Exit()
 {
 }
 
-CState_Player* CPlayer_Walk::Create(CGameObject* pActor, CGameObject* pPartObject, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
+CState_Player* CPlayer_Walk::Create(CGameObject* pActor, CModel* pPlayerModelCom, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
 									CTransform* pTransformCom, CNavigation* pNavigationCom)
 {
-	CState_Player* pGameInstance = new CPlayer_Walk(pActor, pPartObject, pGameObjectDesc, pTransformCom, pNavigationCom);
+	CState_Player* pGameInstance = new CPlayer_Walk(pActor, pPlayerModelCom, pGameObjectDesc, pTransformCom, pNavigationCom);
 
 	if (FAILED(pGameInstance->Init_State()))
 	{

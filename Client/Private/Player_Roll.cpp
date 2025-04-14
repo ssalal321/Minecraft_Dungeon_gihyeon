@@ -1,9 +1,9 @@
 #include "Player_Roll.h"
 #include "Body_Player.h"
 
-CPlayer_Roll::CPlayer_Roll(CGameObject* pActor, CGameObject* pPartObject, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
+CPlayer_Roll::CPlayer_Roll(CGameObject* pActor, CModel* pPlayerModelCom, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
 							CTransform* pTransformCom, CNavigation* pNavigationCom)
-	: CState_Player(pActor, pPartObject, pGameObjectDesc, pTransformCom, pNavigationCom)
+	: CState_Player(pActor, pPlayerModelCom, pGameObjectDesc, pTransformCom, pNavigationCom)
 {
 }
 
@@ -18,7 +18,7 @@ void CPlayer_Roll::State_Enter()
 {
 	m_fRollingTime = 0.f;
 
-	m_pBodyPlayerModelCom->Set_Animation(PLAYER_STATE::ROLL, false);
+	m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::ROLL), false);
 }
 
 void CPlayer_Roll::State_Priority_Update(_float fTimeDelta)
@@ -53,10 +53,10 @@ void CPlayer_Roll::State_Exit()
 {
 }
 
-CState_Player* CPlayer_Roll::Create(CGameObject* pActor, CGameObject* pPartObject, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
+CState_Player* CPlayer_Roll::Create(CGameObject* pActor, CModel* pPlayerModelCom, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
 									CTransform* pTransformCom, CNavigation* pNavigationCom)
 {
-	CState_Player* pGameInstance = new CPlayer_Roll(pActor, pPartObject, pGameObjectDesc, pTransformCom, pNavigationCom);
+	CState_Player* pGameInstance = new CPlayer_Roll(pActor, pPlayerModelCom, pGameObjectDesc, pTransformCom, pNavigationCom);
 
 	if (FAILED(pGameInstance->Init_State()))
 	{

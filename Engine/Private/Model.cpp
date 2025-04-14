@@ -56,7 +56,7 @@ HRESULT CModel::Initialize_Prototype(TYPE eModelType, const _char* pModelFilePat
 {
 	/* 어떤 설정? */
 	/* 데이터를 읽을 때 설정값에 따라서 데이터를 조작하여 로드해준다. */
-	_uint			iFlag = /*aiProcess_PreTransformVertices | */aiProcess_ConvertToLeftHanded | aiProcessPreset_TargetRealtime_Fast;	
+	_uint	iFlag = /*aiProcess_PreTransformVertices | */aiProcess_ConvertToLeftHanded | aiProcessPreset_TargetRealtime_Fast;	
 
 	if (TYPE_NONANIM == eModelType)
 		iFlag |= aiProcess_PreTransformVertices;
