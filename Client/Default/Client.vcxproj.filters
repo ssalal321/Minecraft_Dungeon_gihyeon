@@ -112,8 +112,23 @@
     <Filter Include="02.GameObjects\Monster\Zombie\01. State">
       <UniqueIdentifier>{2e037a48-045f-4e3a-b4a4-f170ea2c96be}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster\Zombie\01. State\Zombie_Attack">
+      <UniqueIdentifier>{2cd89c5d-710a-4e64-a216-36114b69581a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Zombie\01. State\Zombie_GetHit">
+      <UniqueIdentifier>{3fa056bc-39bd-49bf-a1ca-de90e3123438}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Zombie\01. State\Zombie_Stun">
+      <UniqueIdentifier>{da8c0f8c-285a-4e75-892c-0ceb54e4d5e3}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02.GameObjects\Monster\Zombie\01. State\Zombie_Idle">
       <UniqueIdentifier>{6ef0e423-d2e3-47c1-86aa-5a2a2d3be815}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Zombie\01. State\Zombie_Walk">
+      <UniqueIdentifier>{8e7041c5-aa30-467a-b7d9-ad11d45d370e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Zombie\01. State\Zombie_Sleep">
+      <UniqueIdentifier>{c404b55d-3e06-430d-8643-66871d11ff98}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -222,7 +237,25 @@
     <ClInclude Include="..\Public\Zombie_Idle.h">
       <Filter>02.GameObjects\Monster\Zombie\01. State\Zombie_Idle</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Zombie_Walk.h">
+      <Filter>02.GameObjects\Monster\Zombie\01. State\Zombie_Walk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Zombie_Attack.h">
+      <Filter>02.GameObjects\Monster\Zombie\01. State\Zombie_Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Zombie_GetHit.h">
+      <Filter>02.GameObjects\Monster\Zombie\01. State\Zombie_GetHit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Zombie_Stun.h">
+      <Filter>02.GameObjects\Monster\Zombie\01. State\Zombie_Stun</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Zombie_Sleep.h">
+      <Filter>02.GameObjects\Monster\Zombie\01. State\Zombie_Sleep</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\State_Monster.h">
+      <Filter>02.GameObjects\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Zombie.h">
       <Filter>02.GameObjects\Monster\Zombie\01. State</Filter>
     </ClInclude>
   </ItemGroup>
@@ -330,7 +363,25 @@
     <ClCompile Include="..\Private\Zombie_Idle.cpp">
       <Filter>02.GameObjects\Monster\Zombie\01. State\Zombie_Idle</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Zombie_Walk.cpp">
+      <Filter>02.GameObjects\Monster\Zombie\01. State\Zombie_Walk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Zombie_Attack.cpp">
+      <Filter>02.GameObjects\Monster\Zombie\01. State\Zombie_Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Zombie_GetHit.cpp">
+      <Filter>02.GameObjects\Monster\Zombie\01. State\Zombie_GetHit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Zombie_Stun.cpp">
+      <Filter>02.GameObjects\Monster\Zombie\01. State\Zombie_Stun</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Zombie_Sleep.cpp">
+      <Filter>02.GameObjects\Monster\Zombie\01. State\Zombie_Sleep</Filter>
+    </ClCompile>
     <ClCompile Include="..\Private\State_Monster.cpp">
+      <Filter>02.GameObjects\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Zombie.cpp">
       <Filter>02.GameObjects\Monster\Zombie\01. State</Filter>
     </ClCompile>
   </ItemGroup>

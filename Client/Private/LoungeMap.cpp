@@ -160,7 +160,7 @@ HRESULT CLoungeMap::Render()
 HRESULT CLoungeMap::Ready_Components()
 {
 	/* Com_Shader_Mesh */
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxMesh"),
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxMesh"),
 		TEXT("Com_Shader_Mesh"), reinterpret_cast<CComponent**>(&m_pShader_MeshCom))))
 		return E_FAIL;
 

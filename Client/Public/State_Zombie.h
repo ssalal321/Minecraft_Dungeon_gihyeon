@@ -1,16 +1,16 @@
 #pragma once
 #include "Client_Defines.h"
-#include "State.h"
-#include "Monster.h"
+#include "State_Monster.h"
 
 BEGIN(Client)
+	class CZombie;
 
-class CState_Monster abstract: public CState
+	class CState_Zombie abstract: public CState_Monster
 {
 protected:
-    CState_Monster(CGameObject* pActor, CModel* pMonsterModelCom, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
+    CState_Zombie(CGameObject* pActor, CModel* pMonsterModelCom, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
 				   CTransform* pTransformCom, CNavigation* pNavigationCom);
-	~CState_Monster() override = default;
+	~CState_Zombie() override = default;
 
 public:
     HRESULT   Init_State()                              override;
@@ -22,9 +22,7 @@ public:
     void      State_Exit()                              override;
 
 protected:
-    CMonster::MONSTER_DESC*     m_pMonsterDesc = { nullptr };
-
-    static  _bool			m_bAnimationFinished;
+    CZombie*    m_pZombie = { nullptr };
 
 public:
     void   Free()    override;

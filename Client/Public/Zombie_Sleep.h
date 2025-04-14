@@ -3,13 +3,12 @@
 #include "State_Zombie.h"
 
 BEGIN(Client)
-
-class CZombie_Idle final: public CState_Zombie
+class CZombie_Sleep final: public CState_Zombie
 {
 private:
-	CZombie_Idle(CGameObject* pActor, CModel* pZombieModelCom, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
+    CZombie_Sleep(CGameObject* pActor, CModel* pZombieModelCom, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
 				 CTransform* pTransformCom, CNavigation* pNavigationCom);
-	~CZombie_Idle() override = default;
+	~CZombie_Sleep() override = default;
 
 public:
     HRESULT     Init_State()                                override;
@@ -21,7 +20,7 @@ public:
     void        State_Exit()                                override;
 
 private:
-    _float      m_fLoopTime = { 0.f };
+   
 
 public:
     static CState_Monster*  Create(CGameObject* pActor, CModel* pZombieModelCom, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,

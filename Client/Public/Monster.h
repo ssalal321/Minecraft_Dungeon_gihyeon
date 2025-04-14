@@ -19,16 +19,19 @@ public:
 		_int     iMaxHP;
 		_int     iAttackPoint;
 		_float   fEffectiveRange;
+		_float	 fDetectRange;
 		_bool    bStunned;
 
 		MONSTER_DESC(const _tchar* GameObjectTag, _int currentHP, _int maxHP, _int attackPoint,
-			_float effectiveRange, _bool stunned = false,
+			_float effectiveRange, _float detectRange, _bool stunned = false,
 			_float rotationPerSec = 0.f, _float speedPerSec = 0.f)
 			: GAMEOBJECT_DESC(GameObjectTag, rotationPerSec, speedPerSec), iCurrentHP(currentHP), iMaxHP(maxHP), iAttackPoint(attackPoint),
-			fEffectiveRange(effectiveRange), bStunned(stunned) {
+			fEffectiveRange(effectiveRange), fDetectRange(detectRange), bStunned(stunned) {
 		}
 
 		~MONSTER_DESC() override = default;
+
+		const _float&	Get_DetectRange() const { return fDetectRange; }
 	};
 
 protected:
@@ -54,12 +57,16 @@ public:
 		m_NextPosition = nextPosition;
 	}
 
-	void		Change_State(PLAYER_STATE playerState);
+	void		Change_State(ZOMBIE_STATE monsterState);
+
+	_float4		Get_Player_Position(const _wstring& strPlayerPrototypeTag, _uint iPlayerLayerLevelIndex) const;
+	_vector		Vec_To_Player(const _wstring& strPlayerPrototypeTag, _uint iPlayerLayerLevelIndex) const;
+	_bool		Player_In_Range(const _wstring& strPrototypeTag, _uint iLayerLevelIndex) const;
 
 protected:
 	_uint				m_iState = { static_cast<_uint>(ZOMBIE_STATE::STATE_END) };
 	class FSM*			m_pMonsterFSM = { nullptr };
-	//MONSTER_DESC*		m_pMonsterInfo = { nullptr };
+	MONSTER_DESC*		m_pMonsterInfo = { nullptr };
 	vector<CState*>     m_StatesVec;
 
 	CNavigation*		m_pNavigationCom = { nullptr };
@@ -71,7 +78,7 @@ protected:
 	virtual  HRESULT	Ready_States()		= 0;
 
 public:
-	virtual void	Free() override;
+	void	Free()	override;
 };
 
 END

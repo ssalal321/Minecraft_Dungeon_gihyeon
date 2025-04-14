@@ -17,6 +17,7 @@ public:
 	{
 		const _uint* pState = { nullptr };
 	}BODY_ZOMBIE_DESC;
+
 private:
 	CBody_Zombie(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CBody_Zombie(const CBody_Zombie& Prototype);

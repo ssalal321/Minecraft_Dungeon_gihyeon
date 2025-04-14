@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 
 #include "FSM.h"
+#include "Player.h"
 
 CMonster::CMonster(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CContainerObject ( pDevice, pContext )
@@ -63,9 +64,9 @@ HRESULT CMonster::Render()
 	return S_OK;
 }
 
-void CMonster::Change_State(PLAYER_STATE playerState)
+void CMonster::Change_State(ZOMBIE_STATE monsterState)
 {
-	m_iState = static_cast<_uint>(playerState);
+	m_iState = static_cast<_uint>(monsterState);
 	m_pMonsterFSM->Change_State(m_StatesVec[m_iState]);
 }
 
@@ -79,12 +80,46 @@ HRESULT CMonster::Ready_Components()
 	return S_OK;
 }
 
+_float4 CMonster::Get_Player_Position(const _wstring& strPlayerPrototypeTag, _uint iPlayerLayerLevelIndex) const
+{
+	CPlayer*	  pPlayer				= dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(strPlayerPrototypeTag, iPlayerLayerLevelIndex, TEXT("Layer_Player")));
+	CTransform*   pPlayerTransformCom	= dynamic_cast<CTransform*>(pPlayer->Find_Component(TEXT("Com_Transform")));
+	_vector		  vPlayerPosition		= pPlayerTransformCom->Get_State(CTransform::STATE_POSITION);
+
+	_float4  playerPos = {0.f, 0.f, 0.f, 0.f};
+	XMStoreFloat4(&playerPos, vPlayerPosition);
+
+	return	 playerPos;
+}
+
+_vector CMonster::Vec_To_Player(const _wstring& strPlayerPrototypeTag, _uint iPlayerLayerLevelIndex) const
+{
+	CPlayer*	 pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(strPlayerPrototypeTag, iPlayerLayerLevelIndex, TEXT("Layer_Player")));
+	CTransform*  pPlayerTransformCom = dynamic_cast<CTransform*>(pPlayer->Find_Component(TEXT("Com_Transform")));
+
+	_vector		vPlayerPos  = pPlayerTransformCom->Get_State(CTransform::STATE_POSITION);
+	_vector		vMonsterPos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+
+	_vector		dirToPlayer = vPlayerPos - vMonsterPos;
+	//dirToPlayer.y = 0.f;
+
+	return	 dirToPlayer;
+}
+
+
+_bool CMonster::Player_In_Range(const _wstring& strPrototypeTag, _uint iLayerLevelIndex) const
+{
+	_vector	 vecToPlayer = Vec_To_Player(strPrototypeTag, iLayerLevelIndex);
+
+	return	XMVectorGetX(XMVector3Length(vecToPlayer)) < m_pMonsterInfo->Get_DetectRange();
+}
+
 void CMonster::Free()
 {
 	__super::Free();
 
 	Safe_Release(m_pNavigationCom);
-	
+	Safe_Delete(m_pMonsterInfo);
 	Safe_Delete(m_pMonsterFSM);
 
 	for (auto& stateVec : m_StatesVec)

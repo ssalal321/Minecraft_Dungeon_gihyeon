@@ -16,7 +16,7 @@ class CState;
 class CZombie final : public CMonster
 {
 public:
-	struct ZOMBIE_DESC : public GAMEOBJECT_DESC
+	/*struct ZOMBIE_DESC : public GAMEOBJECT_DESC
 	{
 		_int     iCurrentHP;
 		_int     iMaxHP;
@@ -32,7 +32,7 @@ public:
 		}
 
 		~ZOMBIE_DESC() override = default;
-	};
+	};*/
 
 private:
 	CZombie(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -50,14 +50,12 @@ public:
 private:
 	_uint				m_iState = { static_cast<_uint>(ZOMBIE_STATE::STATE_END) };
 	
-	ZOMBIE_DESC*		m_pZombieInfo = { nullptr };
-
 	_float4				m_NextPosition = {0.f, 0.f, 0.f, 1.f};
 
 private:
 	//HRESULT	Ready_Components();
-	HRESULT		Ready_PartObjects();
-	HRESULT		Ready_States();
+	HRESULT		Ready_PartObjects()  override;
+	HRESULT		Ready_States()		 override;
 
 public:
 	static CZombie* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
