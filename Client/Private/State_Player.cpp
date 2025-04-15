@@ -29,7 +29,10 @@ void CState_Player::State_Enter()
 
 void CState_Player::State_Priority_Update(_float fTimeDelta)
 {
-	if (m_pGameInstance->Get_Key(VK_LBUTTON))
+	if (m_pGameInstance->Key_Down(VK_F1))
+		m_bClickLock = !m_bClickLock;
+
+	if (m_pGameInstance->Get_Key(VK_LBUTTON) && !m_bClickLock)
 	{
 		_float3 fWorldPickedPos = {};
 

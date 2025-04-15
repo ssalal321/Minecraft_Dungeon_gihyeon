@@ -1,6 +1,9 @@
 #include "State_Monster.h"
 
-_bool CState_Monster::m_bAnimationFinished = false;
+#include <iostream>
+#include <ostream>
+
+//_bool CState_Monster::m_bAnimationFinished = false;
 
 CState_Monster::CState_Monster(CGameObject* pActor, CModel* pMonsterModelCom, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
 							 CTransform* pTransformCom, CNavigation* pNavigationCom)
@@ -30,6 +33,11 @@ void CState_Monster::State_Priority_Update(_float fTimeDelta)
 void CState_Monster::State_Update(_float fTimeDelta)
 {
 	m_bAnimationFinished = m_pActorModelCom->Play_Animation(fTimeDelta);
+
+	if (m_bAnimationFinished)
+	{
+		std::cerr << "몬스터 애니메이션 루프 돌았다" << std::endl;
+	}
 }
 
 void CState_Monster::State_Late_Update(_float fTimeDelta)

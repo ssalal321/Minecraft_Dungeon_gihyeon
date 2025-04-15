@@ -118,9 +118,9 @@ _float CMonster::Length_To_Player(const _wstring& strPlayerPrototypeTag, _uint i
 
 _bool CMonster::Player_In_DetectRange(const _wstring& strPrototypeTag, _uint iLayerLevelIndex) const
 {
-	_vector	 vecToPlayer = Vec_To_Player(strPrototypeTag, iLayerLevelIndex);
+	_float	 vecToPlayer = Length_To_Player(strPrototypeTag, iLayerLevelIndex);
 
-	return	XMVectorGetX(XMVector3Length(vecToPlayer)) < m_pMonsterInfo->Get_DetectRange();
+	return	vecToPlayer < m_pMonsterInfo->Get_DetectRange();
 }
 
 void CMonster::Free()

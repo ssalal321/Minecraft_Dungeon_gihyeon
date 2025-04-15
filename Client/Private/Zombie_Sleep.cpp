@@ -30,12 +30,16 @@ void CZombie_Sleep::State_Update(_float fTimeDelta)
 {
 	__super::State_Update(fTimeDelta);
 
+	if (Change_State_To_Attack())
+		return;
+
+	if (Change_State_To_Walk())
+		return;
+
 	if (m_bAnimationFinished)
 	{
 		m_pZombie->Change_State(ZOMBIE_STATE::IDLE);
-		return;
 	}
-
 }
 
 void CZombie_Sleep::State_Late_Update(_float fTimeDelta)

@@ -24,6 +24,12 @@ public:
 protected:
     CZombie*    m_pZombie = { nullptr };
 
+protected:
+    _bool     Change_State_To_Attack();
+    _bool     Change_State_To_Walk();
+    _bool     Change_State_To_Idle();
+
+
 public:
     void   Free()    override;
 };

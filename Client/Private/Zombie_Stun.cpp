@@ -30,6 +30,18 @@ void CZombie_Stun::State_Update(_float fTimeDelta)
 {
 	__super::State_Update(fTimeDelta);
 
+	if (m_bAnimationFinished)
+	{
+		if (Change_State_To_Idle())
+			return;
+
+		if (Change_State_To_Attack())
+			return;
+
+		if (Change_State_To_Walk())
+			return;
+	}
+
 }
 
 void CZombie_Stun::State_Late_Update(_float fTimeDelta)

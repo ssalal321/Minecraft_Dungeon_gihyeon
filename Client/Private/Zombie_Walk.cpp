@@ -32,12 +32,11 @@ void CZombie_Walk::State_Update(_float fTimeDelta)
 {
 	__super::State_Update(fTimeDelta);
 
-	_bool	playerInRange = m_pZombie->Player_In_DetectRange(TEXT("Prototype_GameObject_PlayerHex"), LEVEL_GAMEPLAY);
-	if (!playerInRange)
-	{
-		m_pZombie->Change_State(ZOMBIE_STATE::IDLE);
+	if (Change_State_To_Idle())
 		return;
-	}
+
+	if (Change_State_To_Attack())
+		return;
 
 	_float4  playerPos = m_pZombie->Get_Player_Position(TEXT("Prototype_GameObject_PlayerHex"), LEVEL_GAMEPLAY);
 

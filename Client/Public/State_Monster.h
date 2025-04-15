@@ -24,7 +24,7 @@ public:
 protected:
     CMonster::MONSTER_DESC*     m_pMonsterDesc = { nullptr };
 
-    static  _bool			m_bAnimationFinished;
+    /*static  */_bool			m_bAnimationFinished = false;
 
 public:
     void   Free()    override;
