@@ -26,6 +26,7 @@ protected:
     CPlayer::PLAYER_DESC*   m_pPlayerDesc = { nullptr };
 
     static  _bool			m_bAnimationFinished;
+    _bool                   m_bClickLock = { false };
 
 public:
     /*static CState*  Create(CGameObject* pActor, CGameObject* pPartObject, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,

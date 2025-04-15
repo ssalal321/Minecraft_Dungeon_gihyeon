@@ -45,7 +45,7 @@ void CBody_Zombie::Priority_Update(_float fTimeDelta)
 
 void CBody_Zombie::Update(_float fTimeDelta)
 {
-	m_pModelCom->Play_Animation(fTimeDelta);
+	//m_pModelCom->Play_Animation(fTimeDelta);
 }
 
 void CBody_Zombie::Late_Update(_float fTimeDelta)

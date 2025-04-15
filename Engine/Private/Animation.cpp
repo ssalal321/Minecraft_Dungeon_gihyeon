@@ -1,4 +1,5 @@
 #include "Animation.h"
+
 #include "Channel.h"
 
 CAnimation::CAnimation()
@@ -39,6 +40,9 @@ _bool CAnimation::Update_TransformationMatrices(_float fTimeDelta, const vector<
 	{
 		m_fCurrentTrackPosition += m_fTickPerSecond * fTimeDelta * speedFactor;
 
+		/*std::cerr << "[m_fCurrentTrackPosition] : " << m_fCurrentTrackPosition <<
+			"\n[m_fDuration] : " << m_fDuration << std::endl;*/
+
 		if (m_fCurrentTrackPosition >= m_fDuration)  // 애니메이션 끝났을 때
 		{
 			if (false == isLoop)	// 루프 X
@@ -46,6 +50,7 @@ _bool CAnimation::Update_TransformationMatrices(_float fTimeDelta, const vector<
 			else                    // 루프 O
 			{
 				m_fCurrentTrackPosition = 0.f;
+				isFinished = true;  // 루프 O지만 어쨌든 한 타임 끝났으니까 true 반환
 			}
 		}
 	}

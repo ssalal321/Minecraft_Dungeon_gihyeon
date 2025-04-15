@@ -1,4 +1,8 @@
 #include "Zombie_Attack.h"
+
+#include <iostream>
+#include <ostream>
+
 #include "Zombie.h"
 
 CZombie_Attack::CZombie_Attack(CGameObject* pActor, CModel* pZombieModelCom, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
@@ -30,17 +34,20 @@ void CZombie_Attack::State_Update(_float fTimeDelta)
 {
 	__super::State_Update(fTimeDelta);
 
+	std::cerr << "몬스터 공격 중. 루프 안 끝남" << std::endl;
+	if (m_bAnimationFinished)
+	{
+		std::cerr << "몬스터 공격 루프 끝남" << std::endl;
+		if (Change_State_To_Idle())
+			return;
+
+		if (Change_State_To_Walk())
+			return;
+	}
+
 	_float4  playerPos = m_pZombie->Get_Player_Position(TEXT("Prototype_GameObject_PlayerHex"), LEVEL_GAMEPLAY);
 
 	m_pTransformCom->LookAt(XMLoadFloat4(&playerPos));
-
-	/*_float lengthToPlayer = m_pZombie->Length_To_Player(TEXT("Prototype_GameObject_PlayerHex"), LEVEL_GAMEPLAY);
-
-	if (lengthToPlayer > m_pMonsterDesc->fAttackableRange)
-	{
-		m_pZombie->Change_State(ZOMBIE_STATE::WALK);
-		return;
-	}*/
 }
 
 void CZombie_Attack::State_Late_Update(_float fTimeDelta)

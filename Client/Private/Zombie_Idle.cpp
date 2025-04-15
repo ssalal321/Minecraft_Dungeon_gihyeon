@@ -36,6 +36,12 @@ void CZombie_Idle::State_Update(_float fTimeDelta)
 {
 	__super::State_Update(fTimeDelta);
 
+	if (Change_State_To_Attack())
+		return;
+
+	if (Change_State_To_Walk())
+		return;
+
 	m_fLoopTime += fTimeDelta;
 
 	if (m_fLoopTime >= 3.5f)
