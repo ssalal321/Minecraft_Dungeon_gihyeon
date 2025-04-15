@@ -21,14 +21,14 @@ public:
 		_int     iCurrentHP;
 		_int     iMaxHP;
 		_int     iAttackPoint;
-		_float   fEffectiveRange;
+		_float   fAttackableRange;
 		_bool    bStunned;
 
 		ZOMBIE_DESC(const _tchar* GameObjectTag, _int currentHP, _int maxHP, _int attackPoint,
 			_float effectiveRange, _bool stunned = false,
 			_float rotationPerSec = 0.f, _float speedPerSec = 0.f)
 			: GAMEOBJECT_DESC(GameObjectTag, rotationPerSec, speedPerSec), iCurrentHP(currentHP), iMaxHP(maxHP), iAttackPoint(attackPoint),
-			fEffectiveRange(effectiveRange), bStunned(stunned) {
+			fAttackableRange(effectiveRange), bStunned(stunned) {
 		}
 
 		~ZOMBIE_DESC() override = default;

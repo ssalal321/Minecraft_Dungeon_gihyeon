@@ -106,8 +106,17 @@ _vector CMonster::Vec_To_Player(const _wstring& strPlayerPrototypeTag, _uint iPl
 	return	 dirToPlayer;
 }
 
+_float CMonster::Length_To_Player(const _wstring& strPlayerPrototypeTag, _uint iPlayerLayerLevelIndex) const
+{
+	_float   lengthToPlayer = {};
+	_vector  vecToPlayer = Vec_To_Player(TEXT("Prototype_GameObject_PlayerHex"), LEVEL_GAMEPLAY);
+	XMStoreFloat(&lengthToPlayer, XMVector3Length(vecToPlayer));
 
-_bool CMonster::Player_In_Range(const _wstring& strPrototypeTag, _uint iLayerLevelIndex) const
+	return lengthToPlayer;
+}
+
+
+_bool CMonster::Player_In_DetectRange(const _wstring& strPrototypeTag, _uint iLayerLevelIndex) const
 {
 	_vector	 vecToPlayer = Vec_To_Player(strPrototypeTag, iLayerLevelIndex);
 

@@ -18,20 +18,21 @@ public:
 		_int     iCurrentHP;
 		_int     iMaxHP;
 		_int     iAttackPoint;
-		_float   fEffectiveRange;
-		_float	 fDetectRange;
+		_float   fAttackableRange;
+		_float	 fDetectableRange;
 		_bool    bStunned;
 
 		MONSTER_DESC(const _tchar* GameObjectTag, _int currentHP, _int maxHP, _int attackPoint,
-			_float effectiveRange, _float detectRange, _bool stunned = false,
+			_float attackableRange, _float detectRange, _bool stunned = false,
 			_float rotationPerSec = 0.f, _float speedPerSec = 0.f)
 			: GAMEOBJECT_DESC(GameObjectTag, rotationPerSec, speedPerSec), iCurrentHP(currentHP), iMaxHP(maxHP), iAttackPoint(attackPoint),
-			fEffectiveRange(effectiveRange), fDetectRange(detectRange), bStunned(stunned) {
+			fAttackableRange(attackableRange), fDetectableRange(detectRange), bStunned(stunned) {
 		}
 
 		~MONSTER_DESC() override = default;
 
-		const _float&	Get_DetectRange() const { return fDetectRange; }
+		const _float&	Get_AttackRange() const { return fAttackableRange; }
+		const _float&	Get_DetectRange() const { return fDetectableRange; }
 	};
 
 protected:
@@ -61,7 +62,8 @@ public:
 
 	_float4		Get_Player_Position(const _wstring& strPlayerPrototypeTag, _uint iPlayerLayerLevelIndex) const;
 	_vector		Vec_To_Player(const _wstring& strPlayerPrototypeTag, _uint iPlayerLayerLevelIndex) const;
-	_bool		Player_In_Range(const _wstring& strPrototypeTag, _uint iLayerLevelIndex) const;
+	_float		Length_To_Player(const _wstring& strPlayerPrototypeTag, _uint iPlayerLayerLevelIndex) const;
+	_bool		Player_In_DetectRange(const _wstring& strPrototypeTag, _uint iLayerLevelIndex) const;
 
 protected:
 	_uint				m_iState = { static_cast<_uint>(ZOMBIE_STATE::STATE_END) };

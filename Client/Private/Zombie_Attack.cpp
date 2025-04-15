@@ -30,6 +30,17 @@ void CZombie_Attack::State_Update(_float fTimeDelta)
 {
 	__super::State_Update(fTimeDelta);
 
+	_float4  playerPos = m_pZombie->Get_Player_Position(TEXT("Prototype_GameObject_PlayerHex"), LEVEL_GAMEPLAY);
+
+	m_pTransformCom->LookAt(XMLoadFloat4(&playerPos));
+
+	/*_float lengthToPlayer = m_pZombie->Length_To_Player(TEXT("Prototype_GameObject_PlayerHex"), LEVEL_GAMEPLAY);
+
+	if (lengthToPlayer > m_pMonsterDesc->fAttackableRange)
+	{
+		m_pZombie->Change_State(ZOMBIE_STATE::WALK);
+		return;
+	}*/
 }
 
 void CZombie_Attack::State_Late_Update(_float fTimeDelta)
