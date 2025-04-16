@@ -25,9 +25,6 @@
     <Filter Include="97.ShaderFiles">
       <UniqueIdentifier>{0ec719f1-ae5d-4711-9dcb-96a12621ee33}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Terrain">
-      <UniqueIdentifier>{86458f00-d330-413e-aa5c-1ad58db19e28}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\Camera">
       <UniqueIdentifier>{7f6a5c1d-3c88-4637-ac65-c368fe98b7d9}</UniqueIdentifier>
     </Filter>
@@ -159,9 +156,6 @@
     <ClInclude Include="..\Public\Level_GamePlay.h">
       <Filter>01.Levels\02. GamePlay</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Terrain.h">
-      <Filter>02.GameObjects\Terrain</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Camera_Free.h">
       <Filter>02.GameObjects\Camera\Free</Filter>
     </ClInclude>
@@ -287,9 +281,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\Level_GamePlay.cpp">
       <Filter>01.Levels\02. GamePlay</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Terrain.cpp">
-      <Filter>02.GameObjects\Terrain</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Camera_Free.cpp">
       <Filter>02.GameObjects\Camera\Free</Filter>

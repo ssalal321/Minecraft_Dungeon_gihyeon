@@ -4,7 +4,8 @@
 #include "PartObject.h"
 
 BEGIN(Engine)
-class CShader;
+	class CCollider;
+	class CShader;
 class CModel;
 END
 
@@ -21,7 +22,7 @@ public:
 private:
 	CWeapon(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CWeapon(const CWeapon& Prototype);
-	virtual ~CWeapon() = default;
+	~CWeapon() override = default;
 
 public:
 	HRESULT		Initialize_Prototype()				override;
@@ -32,21 +33,22 @@ public:
 	HRESULT		Render()							override;
 
 private:	
-	
 	CShader*			m_pShaderCom = { nullptr };
 	CModel*				m_pModelCom = { nullptr };
+	CCollider*			m_pColliderCom = { nullptr };
 
 private:
 	const _float4x4*	m_pSocketMatrix = { nullptr };
-	const _uint* m_pTargetState = { nullptr };
+	const _uint*		m_pTargetState = { nullptr };
+
 private:
-	HRESULT Ready_Components();
-	HRESULT Bind_ShaderResources();
+	HRESULT		Ready_Components();
+	HRESULT		Bind_ShaderResources();
 
 public:
 	static CWeapon* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual CGameObject* Clone(void* pArg) override;
-	virtual void Free() override;
+	CGameObject* Clone(void* pArg)	override;
+	void	Free()					override;
 };
 
 END

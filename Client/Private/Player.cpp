@@ -45,8 +45,6 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 	m_pTransformCom->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(180.f));
 
-	m_pNavigationCom->SetUp_CurrentCellIndex(0);
-
 	return S_OK;
 }
 
@@ -58,9 +56,7 @@ void CPlayer::Priority_Update(_float fTimeDelta)
 }
 
 void CPlayer::Update(_float fTimeDelta)
-{
-	m_pNavigationCom->SetUp_On_Navigation(m_pTransformCom);
-
+{	
 	m_pPlayerFSM->Update_State(fTimeDelta);
 
 	__super::Update(fTimeDelta);
@@ -86,11 +82,6 @@ void CPlayer::Change_State(PLAYER_STATE playerState)
 
 HRESULT CPlayer::Ready_Components()
 {
-	/* Com_Navigation */
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Navigation"),
-		TEXT("Com_Navigation"), reinterpret_cast<CComponent**>(&m_pNavigationCom))))
-		return E_FAIL;
-
 	return S_OK;
 }
 
@@ -132,12 +123,12 @@ HRESULT CPlayer::Ready_States()
 {
 	m_StatesVec.resize(static_cast<_uint>(PLAYER_STATE::STATE_END));	// state vector 자리 예약
 
-	CBody_Player* pBodyPlayer = dynamic_cast<CBody_Player*>(Find_PartObject(TEXT("Part_Body")));
-	CModel* pPlayerModel = dynamic_cast<CModel*>(pBodyPlayer->Find_Component(TEXT("Com_Model")));
-
-	m_StatesVec[static_cast<_uint>(PLAYER_STATE::IDLE)] = CPlayer_Idle::Create(this, pPlayerModel, m_pPlayerInfo, m_pTransformCom, m_pNavigationCom);
-	m_StatesVec[static_cast<_uint>(PLAYER_STATE::WALK)] = CPlayer_Walk::Create(this, pPlayerModel, m_pPlayerInfo, m_pTransformCom, m_pNavigationCom);
-	m_StatesVec[static_cast<_uint>(PLAYER_STATE::ROLL)] = CPlayer_Roll::Create(this, pPlayerModel, m_pPlayerInfo, m_pTransformCom, m_pNavigationCom);
+	CModel* pPlayerModelCom  = dynamic_cast<CModel*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Model")));
+	CNavigation* pNavigationCom = dynamic_cast<CNavigation*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Navigation_LoungeMap")));
+	
+	m_StatesVec[static_cast<_uint>(PLAYER_STATE::IDLE)] = CPlayer_Idle::Create(this, pPlayerModelCom, m_pPlayerInfo, m_pTransformCom, pNavigationCom);
+	m_StatesVec[static_cast<_uint>(PLAYER_STATE::WALK)] = CPlayer_Walk::Create(this, pPlayerModelCom, m_pPlayerInfo, m_pTransformCom, pNavigationCom);
+	m_StatesVec[static_cast<_uint>(PLAYER_STATE::ROLL)] = CPlayer_Roll::Create(this, pPlayerModelCom, m_pPlayerInfo, m_pTransformCom, pNavigationCom);
 
 	m_pPlayerFSM = FSM::Create();
 
@@ -145,6 +136,7 @@ HRESULT CPlayer::Ready_States()
 
 	return S_OK;
 }
+
 
 CPlayer* CPlayer::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
@@ -176,7 +168,6 @@ void CPlayer::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pNavigationCom);
 	Safe_Delete(m_pPlayerInfo);
 	Safe_Delete(m_pPlayerFSM);
 

@@ -51,7 +51,7 @@ HRESULT CLevel_Title::Ready_Layer_BackGround(const _wstring& strLayerTag)
     Desc.fSizeX                 = g_iWinSizeX;
     Desc.fSizeY                 = g_iWinSizeY;
     Desc.fPlayTime              = 3.f;
-    Desc.strTextureComTag       = TEXT("Prototype_Component_Texture_TitleImage");*/
+    Desc.strTexPrototypeTag       = TEXT("Prototype_Component_Texture_TitleImage");*/
 
     CUI_Image::UIIMAGE_DESC  TitleDesc
 	(TEXT("GameObject_TitleImage"), CUI_Image::UNCLICKABLE, 

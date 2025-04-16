@@ -3,8 +3,8 @@
 #include "ContainerObject.h"
 
 BEGIN(Engine)
-class CShader;
-class CModel;
+class	CShader;
+class	CModel;
 END
 
 BEGIN(Client)
@@ -72,6 +72,7 @@ protected:
 	vector<CState*>     m_StatesVec;
 
 	CNavigation*		m_pNavigationCom = { nullptr };
+
 	_float4				m_NextPosition = { 0.f, 0.f, 0.f, 1.f };
 
 protected:

@@ -84,18 +84,18 @@ HRESULT CPlayerHP::Render()
 HRESULT CPlayerHP::Ready_PlayerHP_Components()
 {
 	/* Com_Texture - filled_heart ÅØ½ºÃ³ */
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, m_pDesc->strTextureComTag,
-		TEXT("Com_Texture_PlayerHP"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+	if (nullptr == Add_Component(LEVEL_STATIC, m_pDesc->strTexPrototypeTag,
+		TEXT("Com_Texture_PlayerHP"), reinterpret_cast<CComponent**>(&m_pTextureCom)))
 		return E_FAIL;
 
 	/* Com_Shader */
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex_HPbar"),
-		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
+	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex_HPbar"),
+		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom)))
 		return E_FAIL;
 
 	/* Com_VIBuffer */
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
-		TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
+	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
+		TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom)))
 		return E_FAIL;
 
 	return S_OK;

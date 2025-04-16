@@ -4,12 +4,6 @@
 
 /* 플레이어라는 객체를 구성하기위한 파츠들을 모아서 쥐고 있는 객체. */
 
-BEGIN(Engine)
-class	CCollider;
-class	CNavigation;
-END
-
-
 BEGIN(Client)
 class CState;
 
@@ -53,7 +47,6 @@ private:
 	_float4				m_NextPosition = {0.f, 0.f, 0.f, 1.f};
 
 private:
-	//HRESULT	Ready_Components();
 	HRESULT		Ready_PartObjects()  override;
 	HRESULT		Ready_States()		 override;
 

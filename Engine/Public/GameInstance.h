@@ -58,6 +58,7 @@ public:
 	HRESULT		Add_GameObject(_uint iPrototypeLevelIndex, _wstring strPrototypeTag,
 							   _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg = nullptr);
 	CGameObject* Find_GameObject(_wstring strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag);
+	CComponent*  Get_Component(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strComponentTag, _uint iIndex = 0);
 #pragma endregion
 
 #pragma region INPUT_MANAGER
@@ -93,10 +94,13 @@ public:
 #pragma endregion
 
 #pragma region UI_MANAGER
-	CUIObject*	Add_UIObject(_uint iPrototypeLevelIndex, _uint iLayerLevelIndex, const _wstring& strPrototypeTag, CUI_Manager::UI_LIFETIME eUILifeTime, void* pArg = nullptr);
+	CUIObject*	Add_UIObject(_uint iPrototypeLevelIndex, _uint iLayerLevelIndex, const _wstring& strPrototypeTag, CUI_Manager::UI_LIFETIME eUILifeTime, void* pArg = nullptr) const;
 	CUIObject*  Find_UIGameObject(_wstring strGameObjectTag, CUI_Manager::UI_LIFETIME eUILifeTime) const;
 #pragma endregion
 
+#pragma region COLLISION_MANAGER
+	HRESULT		Add_ColliderCom(CComponent* pColliderCom) const;
+#pragma endregion UI_MANAGER
 
 private:
 	class	CGraphic_Device*		m_pGraphic_Device		= { nullptr };
@@ -109,7 +113,8 @@ private:
 	class	CRenderer*				m_pRenderer				= { nullptr };
 	class	CPipeLine*				m_pPipeLine				= { nullptr };
 	class	CLight_Manager*			m_pLight_Manager		= { nullptr };
-	class   CUI_Manager*			m_pUI_Manager			= { nullptr };
+	class	CUI_Manager*			m_pUI_Manager			= { nullptr };
+	class	CCollision_Manager*		m_pCollision_Manager	= { nullptr };
 	class	CPicking*				m_pPicking				= { nullptr };
 	
 public:

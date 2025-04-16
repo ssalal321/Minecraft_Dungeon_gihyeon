@@ -3,8 +3,9 @@
 #include "GameObject.h"
 
 BEGIN(Engine)
+	class CPartObject;
 
-class ENGINE_DLL CContainerObject abstract : public CGameObject
+	class ENGINE_DLL CContainerObject abstract : public CGameObject
 {
 protected:
 	CContainerObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

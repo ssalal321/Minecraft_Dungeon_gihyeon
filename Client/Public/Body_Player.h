@@ -4,8 +4,11 @@
 #include "PartObject.h"
 
 BEGIN(Engine)
-class CShader;
-class CModel;
+class  CShader;
+class  CModel;
+
+class  CCollider;
+class  CNavigation;
 END
 
 BEGIN(Client)
@@ -17,6 +20,7 @@ public:
 	{
 		const _uint* pState = { nullptr };
 	}BODY_PLAYER_DESC;
+
 private:
 	CBody_Player(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CBody_Player(const CBody_Player& Prototype);
@@ -33,16 +37,19 @@ public:
 private:	
 	CShader*			m_pShaderCom = { nullptr };
 	CModel*				m_pModelCom = { nullptr };
+	CCollider*			m_pColliderCom = { nullptr };
+	CNavigation*		m_pNavigationCom = { nullptr };
 
 	_uint				m_iPassIndex = {};
 
 private:
 	const _uint*		m_pTargetState = { nullptr };
 
-
 private:
 	HRESULT		Ready_Components();
 	HRESULT		Bind_ShaderResources();
+
+	//void		Intersect_With_Monsters();
 
 public:
 	static	CBody_Player*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

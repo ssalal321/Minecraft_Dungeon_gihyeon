@@ -12,8 +12,8 @@
 // static º¯¼ö ÃÊ±âÈ­ Áß
 const _float4x4* CNavigation::m_pWorldMatrix = { nullptr };
 #ifdef _DEBUG
-_uint CNavigation::m_iShaderPass = 0;
-_bool CNavigation::m_bLineRender = false;
+_uint CNavigation::m_iShaderPass = 1;
+_bool CNavigation::m_bLineRender = true;
 #endif
 
 CNavigation::CNavigation(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -79,7 +79,7 @@ void CNavigation::Update(const _float4x4* pWorldMatrix)
 	{
 		m_bLineRender = !m_bLineRender;
 
-		m_iShaderPass =  !m_bLineRender ? 0 : 1;
+		m_iShaderPass =  m_bLineRender ? 1 : 0;
 	}
 #endif
 }
@@ -427,23 +427,47 @@ void CNavigation::SetUp_On_Navigation(CTransform* pTransform)
 HRESULT CNavigation::Render()
 {
 	_float4x4 WorldMatrix = *m_pWorldMatrix;
-	WorldMatrix._42 += 0.005f; // »ìÂ¦ À§·Î
 
-	if (FAILED(m_pShader->Bind_Matrix("g_WorldMatrix", &WorldMatrix)))
-		return E_FAIL;
+	/*if (FAILED(m_pShader->Bind_Matrix("g_WorldMatrix", &WorldMatrix)))
+		return E_FAIL;*/
 	if (FAILED(m_pShader->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Transform_Float4x4(CPipeLine::D3DTS_VIEW))))
 		return E_FAIL;
 	if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(CPipeLine::D3DTS_PROJ))))
 		return E_FAIL;
 
-	_float4 vColor = _float4(1.f, 0.f, 0.f, 1.f); // ºÓÀº»ö
-	if (FAILED(m_pShader->Bind_RawValue("g_vColor", &vColor, sizeof(_float4))))
-		return E_FAIL;
 
-	m_pShader->Begin(m_iShaderPass);
+	_float4				vColor = {};
 
-	for (auto& pCell : m_Cells)
-		pCell->Render();
+	if (-1 == m_iCurrentCellIndex)
+	{
+		if (FAILED(m_pShader->Bind_Matrix("g_WorldMatrix", &WorldMatrix)))
+			return E_FAIL;
+
+		vColor = _float4(1.f, 0.f, 0.f, 1.f);
+
+		if (FAILED(m_pShader->Bind_RawValue("g_vColor", &vColor, sizeof(_float4))))
+			return E_FAIL;
+
+		m_pShader->Begin(m_iShaderPass);
+
+		for (auto& pCell : m_Cells)
+			pCell->Render();
+	}
+	else
+	{
+		WorldMatrix._42 += 0.1f; // »ìÂ¦ À§·Î
+
+		if (FAILED(m_pShader->Bind_Matrix("g_WorldMatrix", &WorldMatrix)))
+			return E_FAIL;
+
+		vColor = _float4(0.f, 0.f, 1.f, 1.f);
+		if (FAILED(m_pShader->Bind_RawValue("g_vColor", &vColor, sizeof(_float4))))
+			return E_FAIL;
+
+		m_pShader->Begin(m_iShaderPass);
+
+		m_Cells[m_iCurrentCellIndex]->Render();
+	}
 
 	return S_OK;
 }

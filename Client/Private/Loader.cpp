@@ -9,7 +9,6 @@
 #include "InventoryGearSlot.h"
 #include "InventoryItemSlot.h"
 #include "InventoryStoreSlot.h"
-#include "Terrain.h"
 #include "LoungeMap.h"
 #include "Sky.h"
 #include "Weapon.h"
@@ -172,6 +171,23 @@ HRESULT CLoader::Loading_For_Static()
 		return E_FAIL;
 
 
+	lstrcpy(m_szLoadingText, TEXT("콜라이더 로딩 중"));
+	/* For.Prototype_Component_Collider_AABB */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
+		CCollider::Create(m_pDevice, m_pContext, COLLIDER::TYPE_AABB))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Collider_OBB */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Collider_OBB"),
+		CCollider::Create(m_pDevice, m_pContext, COLLIDER::TYPE_OBB))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Collider_Sphere */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
+		CCollider::Create(m_pDevice, m_pContext, COLLIDER::TYPE_SPHERE))))
+		return E_FAIL;
+
+
 	lstrcpy(m_szLoadingText, TEXT("오브젝트 로딩 중"));
 	/* For.Prototype_GameObject_UIImage */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_UIImage"),
@@ -280,7 +296,7 @@ HRESULT CLoader::Loading_For_GamePlay()
 
 	lstrcpy(m_szLoadingText, TEXT("네비게이션 로딩 중"));
 	/* For.Prototype_Component_Navigation */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Navigation"),
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Navigation_LoungeMap"),
 		CNavigation::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Lounge_Navigation.dat")))))
 		return E_FAIL;
 

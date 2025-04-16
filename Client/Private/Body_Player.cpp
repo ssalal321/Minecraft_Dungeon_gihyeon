@@ -1,5 +1,6 @@
 #include "Body_Player.h"
 #include "GameInstance.h"
+#include "Monster.h"
 
 #include "Player.h"
 
@@ -34,8 +35,8 @@ HRESULT CBody_Player::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	//m_pModelCom->Set_InitAnimIndex(4, true);
-	
+	m_pNavigationCom->SetUp_CurrentCellIndex(0);
+
 	return S_OK;
 }
 
@@ -45,6 +46,7 @@ void CBody_Player::Priority_Update(_float fTimeDelta)
 
 void CBody_Player::Update(_float fTimeDelta)
 {
+	m_pNavigationCom->SetUp_On_Navigation(m_pTransformCom);
 }
 
 void CBody_Player::Late_Update(_float fTimeDelta)
@@ -75,20 +77,46 @@ HRESULT CBody_Player::Render()
 		if (FAILED(m_pModelCom->Render(i)))
 			return E_FAIL;
 	}
+
+#ifdef _DEBUG	
+	m_pNavigationCom->Render();
+#endif
+
 	return S_OK;
 }
 
 HRESULT CBody_Player::Ready_Components()
 {
 	/* Com_Shader */
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxAnimMesh"),
-		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
+	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxAnimMesh"),
+		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom)))
 		return E_FAIL;
 
 	/* Com_Model */
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Model_PlayerHex"),
-		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
+	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Model_PlayerHex"),
+		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom)))
 		return E_FAIL;
+
+	/* Com_Navigation */
+	if (nullptr == Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Navigation_LoungeMap"),
+		TEXT("Com_Navigation_LoungeMap"), reinterpret_cast<CComponent**>(&m_pNavigationCom)))
+		return E_FAIL;
+
+	/* Com_Collider */
+	CBounding_Sphere::BOUNDING_SPHERE_DESC		ColliderDesc{};
+	ColliderDesc.fRadius = 0.5f;
+	ColliderDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
+	ColliderDesc.pGameObject = static_cast<CGameObject*>(this);
+	ColliderDesc.vCenter = _float3(0.f, ColliderDesc.fRadius, 0.f);
+
+	//m_pGameInstance->Add_ColliderCom(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"), )
+	CComponent* pColliderCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
+		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &ColliderDesc);
+
+	if (nullptr == pColliderCom)
+		return E_FAIL;
+
+	m_pGameInstance->Add_ColliderCom(pColliderCom);
 
 	return S_OK;
 }
@@ -139,6 +167,21 @@ HRESULT CBody_Player::Bind_ShaderResources()
 	return S_OK;
 }
 
+//void CBody_Player::Intersect_With_Monsters()
+//{
+//	CMonster* pMonster = dynamic_cast<CMonster*>(m_pGameInstance->Find_GameObject(TEXT("Prototype_GameObject_Body_Zombie"), LEVEL_GAMEPLAY, TEXT("Layer_Monster")));
+//
+//	CCollider* pTargetCollider = dynamic_cast<CCollider*>(pMonster->Find_Component(TEXT("Com_Collider_Sphere")));
+//	if (nullptr == pTargetCollider)
+//		return;
+//
+//	if (true == m_pColliderCom->Intersect(pTargetCollider))
+//	{
+//		// 충돌 시 처리해줄 것
+//		return;
+//	}
+//}
+
 CBody_Player* CBody_Player::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	CBody_Player* pGameInstance = new CBody_Player(pDevice, pContext);
@@ -170,6 +213,8 @@ void CBody_Player::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_pColliderCom);
+	Safe_Release(m_pNavigationCom);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pModelCom);
 }

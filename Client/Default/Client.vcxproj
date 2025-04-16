@@ -179,7 +179,6 @@
     <ClInclude Include="..\Public\State_Monster.h" />
     <ClInclude Include="..\Public\State_Player.h" />
     <ClInclude Include="..\Public\State_Zombie.h" />
-    <ClInclude Include="..\Public\Terrain.h" />
     <ClInclude Include="..\Public\UI_Image.h" />
     <ClInclude Include="..\Public\Weapon.h" />
     <ClInclude Include="..\Public\Zombie.h" />
@@ -221,7 +220,6 @@
     <ClCompile Include="..\Private\State_Monster.cpp" />
     <ClCompile Include="..\Private\State_Player.cpp" />
     <ClCompile Include="..\Private\State_Zombie.cpp" />
-    <ClCompile Include="..\Private\Terrain.cpp" />
     <ClCompile Include="..\Private\UI_Image.cpp" />
     <ClCompile Include="..\Private\Weapon.cpp" />
     <ClCompile Include="..\Private\Zombie.cpp" />

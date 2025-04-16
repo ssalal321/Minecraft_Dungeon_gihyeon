@@ -79,14 +79,19 @@ CComponent* CGameObject::Find_Component(const _wstring& strComponentTag)
 	return iter->second;
 }
 
-HRESULT CGameObject::Add_Component(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, const _wstring& strComponentTag, CComponent** ppOut, void* pArg)
+_bool CGameObject::Get_Hit(CCollider* pOther)
+{
+	return false;
+}
+
+CComponent* CGameObject::Add_Component(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, const _wstring& strComponentTag, CComponent** ppOut, void* pArg)
 {
 	if (nullptr != Find_Component(strComponentTag))
-		return E_FAIL;
+		return nullptr;
 
 	CComponent*		pComponent = dynamic_cast<CComponent*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTOTYPE_COMPONENT, iPrototypeLevelIndex, strPrototypeTag, pArg));
 	if (nullptr == pComponent)
-		return E_FAIL;
+		return nullptr;
 
 	m_Components.emplace(strComponentTag, pComponent);
 
@@ -94,7 +99,7 @@ HRESULT CGameObject::Add_Component(_uint iPrototypeLevelIndex, const _wstring& s
 
 	Safe_AddRef(pComponent);
 
-	return S_OK;
+	return pComponent;
 }
 
 void CGameObject::Free()
