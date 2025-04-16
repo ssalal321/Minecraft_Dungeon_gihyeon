@@ -15,7 +15,7 @@ class CForkLift final : public CGameObject
 private:
 	CForkLift(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CForkLift(const CForkLift& Prototype);
-	virtual ~CForkLift() = default;
+	~CForkLift() override = default;
 
 public:
 	HRESULT		Initialize_Prototype()				override;
@@ -31,13 +31,13 @@ private:
 	CModel*				m_pModelCom = { nullptr };
 
 private:
-	HRESULT Ready_Components();
-	HRESULT Bind_ShaderResources();
+	HRESULT		Ready_Components();
+	HRESULT		Bind_ShaderResources();
 
 public:
 	static CForkLift* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual CGameObject* Clone(void* pArg) override;
-	virtual void Free() override;
+	CGameObject* Clone(void* pArg)	override;
+	void Free()						override;
 };
 
 END

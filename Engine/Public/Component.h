@@ -9,7 +9,7 @@ class ENGINE_DLL CComponent abstract : public CBase
 protected:
 	CComponent(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CComponent(const CComponent& Prototype);
-	virtual ~CComponent() = default;
+	~CComponent() override = default;
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -20,6 +20,7 @@ protected:
 	ID3D11DeviceContext*		m_pContext = { nullptr };
 	class CGameInstance*		m_pGameInstance = { nullptr };
 
+	_bool						m_isCloned = { false };
 
 public:
 	virtual CComponent* Clone(void* pArg) = 0;

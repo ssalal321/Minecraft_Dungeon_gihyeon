@@ -5,6 +5,7 @@
 
 namespace Engine
 {
+	class CComponent;
 	class CGameObject;
 }
 
@@ -16,15 +17,17 @@ private:
 	~CObject_Manager() override = default;
 
 public:
-	HRESULT		Initialize(_uint iNumLevels);
-	HRESULT		Add_GameObject(_uint iPrototypeLevelIndex, const _wstring strPrototypeTag, 
+	HRESULT			Add_GameObject(_uint iPrototypeLevelIndex, const _wstring strPrototypeTag, 
 							   _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg);
+	CComponent*		Get_Component(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strComponentTag, _uint iIndex);
+	CGameObject*	Find_GameObject(const _wstring strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag);
+
+	HRESULT		Initialize(_uint iNumLevels);
 	void		Priority_Update(_float fTimeDelta);
 	void		Update(_float fTimeDelta);
 	void		Late_Update(_float fTimeDelta);
 	void		Clear(_uint iLevelIndex);
 
-	CGameObject*	Find_GameObject(const _wstring strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag);
 
 private:
 	class CGameInstance*	m_pGameInstance = { nullptr };

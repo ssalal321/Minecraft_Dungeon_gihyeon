@@ -6,10 +6,14 @@
 #include "VIBuffer_Cube.h"
 #include "Navigation.h"
 #include "Transform.h"
-//#include "Collider.h"
+#include "Collider.h"
 #include "Texture.h"
 #include "Shader.h"
 #include "Model.h"
+
+#include "Bounding_AABB.h"
+#include "Bounding_OBB.h"
+#include "Bounding_Sphere.h"
 
 /* GameObject, Component들의 원형 객체들을 보관하기 위한 클래스이다 */
 /* 원형 객체들을 보관 시, 레벨별로 구분하여 보관한다. */

@@ -34,8 +34,6 @@ HRESULT CBody_Zombie::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	//m_pModelCom->Set_InitAnimIndex(4, true);
-	
 	return S_OK;
 }
 
@@ -45,7 +43,6 @@ void CBody_Zombie::Priority_Update(_float fTimeDelta)
 
 void CBody_Zombie::Update(_float fTimeDelta)
 {
-	//m_pModelCom->Play_Animation(fTimeDelta);
 }
 
 void CBody_Zombie::Late_Update(_float fTimeDelta)
@@ -76,29 +73,76 @@ HRESULT CBody_Zombie::Render()
 		if (FAILED(m_pModelCom->Render(i)))
 			return E_FAIL;
 	}
+
 	return S_OK;
 }
 
 HRESULT CBody_Zombie::Ready_Components()
 {
 	/* Com_Shader */
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxAnimMesh"),
-		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
+	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxAnimMesh"),
+		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom)))
 		return E_FAIL;
 
 	/* Com_Model */
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Zombie"),
-		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
+	if (nullptr == Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Zombie"),
+		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom)))
 		return E_FAIL;
+
+
+	/* Com_Collider */
+	CBounding_AABB::BOUNDING_AABB_DESC		AABBCollDesc{};
+
+	AABBCollDesc.vCenter = _float3(0.f, AABBCollDesc.vExtents.y, 0.f);
+	AABBCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
+	AABBCollDesc.pGameObject = static_cast<CGameObject*>(this);
+	AABBCollDesc.vExtents = _float3(0.35f, 0.6f, 0.35f);
+
+	CComponent* pColliderCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
+		TEXT("Com_Collider_AABB"), reinterpret_cast<CComponent**>(&m_pColliderCom[COLL_AABB]), &AABBCollDesc);
+
+	if (nullptr == pColliderCom)
+		return E_FAIL;
+
+	m_pGameInstance->Add_ColliderCom(pColliderCom);
+
+	/* Com_Collider */
+	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereCollDesc{};
+	SphereCollDesc.vCenter = _float3(0.f, SphereCollDesc.fRadius, 0.f);
+	SphereCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
+	SphereCollDesc.pGameObject = static_cast<CGameObject*>(this);
+	SphereCollDesc.fRadius = 0.5f;
+
+	pColliderCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
+		TEXT("Com_Collider_Sphere"), reinterpret_cast<CComponent**>(&m_pColliderCom[COLL_SPHERE]), &SphereCollDesc);
+
+	if (nullptr == pColliderCom)
+		return E_FAIL;
+
+	m_pGameInstance->Add_ColliderCom(pColliderCom);
+
+	/* Com_Collider */
+	CBounding_OBB::BOUNDING_OBB_DESC		OBBCollDesc{};
+
+	OBBCollDesc.vCenter = _float3(0.f, OBBCollDesc.vExtents.y, 0.f);
+	OBBCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
+	OBBCollDesc.pGameObject = static_cast<CGameObject*>(this);
+	OBBCollDesc.vExtents = _float3(0.5f, 0.5f, 0.5f);
+	OBBCollDesc.vRotation = _float3(0.f, XMConvertToRadians(45.0f), 0.f);
+	
+	pColliderCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_OBB"),
+		TEXT("Com_Collider_OBB"), reinterpret_cast<CComponent**>(&m_pColliderCom[COLL_OBB]), &OBBCollDesc);
+
+	if (nullptr == pColliderCom)
+		return E_FAIL;
+
+	m_pGameInstance->Add_ColliderCom(pColliderCom);
 
 	return S_OK;
 }
 
 HRESULT CBody_Zombie::Bind_ShaderResources()
 {
-	/*if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
-		return E_FAIL;*/
-
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix)))
 		return E_FAIL;	
 
@@ -172,6 +216,10 @@ void CBody_Zombie::Free()
 {
 	__super::Free();
 
+	for (size_t i = 0; i < COLL_END; i++)
+	{
+		Safe_Release(m_pColliderCom[i]);
+	}
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pModelCom);
 }

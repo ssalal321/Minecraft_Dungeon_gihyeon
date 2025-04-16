@@ -87,20 +87,38 @@ HRESULT CWeapon::Render()
 		if (FAILED(m_pModelCom->Render(i)))
 			return E_FAIL;
 	}
+
 	return S_OK;
 }
 
 HRESULT CWeapon::Ready_Components()
 {
 	/* Com_Shader */
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxMesh"),
-		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
+	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxMesh"),
+		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom)))
 		return E_FAIL;
 
 	/* Com_Model */
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_GlaiveSteel"),
-		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
+	if (nullptr == Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_GlaiveSteel"),
+		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom)))
 		return E_FAIL;
+
+	/* Com_Collider */
+	CBounding_OBB::BOUNDING_OBB_DESC		OBBCollDesc{};
+
+	OBBCollDesc.vCenter = _float3(0.f, OBBCollDesc.vExtents.y, 0.f);
+	OBBCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
+	OBBCollDesc.pGameObject = static_cast<CGameObject*>(this);
+	OBBCollDesc.vRotation = _float3(0.f, 0.f, 0.f);
+	OBBCollDesc.vExtents = _float3(0.75f, 0.9f, 1.5f);
+
+	CComponent* pColliderCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_OBB"),
+		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &OBBCollDesc);
+
+	if (nullptr == pColliderCom)
+		return E_FAIL;
+
+	m_pGameInstance->Add_ColliderCom(pColliderCom);
 
 	return S_OK;
 }
@@ -164,6 +182,7 @@ void CWeapon::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pModelCom);
 }

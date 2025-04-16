@@ -1,5 +1,6 @@
 #include "GameInstance.h"
 
+#include "Collision_Manager.h"
 #include "Input_Device.h"
 #include "Graphic_Device.h"
 #include "Timer_Manager.h"
@@ -68,6 +69,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	if (nullptr == m_pUI_Manager)
 		return E_FAIL;
 
+	m_pCollision_Manager = CCollision_Manager::Create(EngineDesc.iNumLevels);
+	if (nullptr == m_pCollision_Manager)
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -87,6 +92,7 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 	m_pPipeLine->Update();
 
 	m_pObject_Manager->Late_Update(fTimeDelta);
+	m_pCollision_Manager->Update();
 	m_pUI_Manager->Late_Update(fTimeDelta);
 
 	m_pLevel_Manager->Update(fTimeDelta);
@@ -95,6 +101,10 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 HRESULT CGameInstance::Draw()
 {
 	m_pRenderer->Draw();
+
+#ifdef _DEBUG
+	m_pCollision_Manager->Render();
+#endif
 
 	m_pUI_Manager->Render_UI();
 
@@ -219,6 +229,11 @@ CGameObject* CGameInstance::Find_GameObject(_wstring strPrototypeTag, _uint iLay
 {
 	return m_pObject_Manager->Find_GameObject(strPrototypeTag, iLayerLevelIndex, strLayerTag);
 }
+
+CComponent* CGameInstance::Get_Component(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strComponentTag, _uint iIndex)
+{
+	return m_pObject_Manager->Get_Component(iLevelIndex, strLayerTag, strComponentTag, iIndex);
+}
 #pragma endregion
 
 
@@ -267,7 +282,7 @@ _bool   CGameInstance::Picked_Vertex(_float3& fLocalPickedVertex, const _wstring
 #pragma endregion
 
 
-#pragma region 
+#pragma region RENDERER
 
 HRESULT CGameInstance::Add_RenderObject(CRenderer::RENDERGROUP eRenderGroup, CGameObject* pRenderObject)
 {
@@ -320,7 +335,7 @@ HRESULT CGameInstance::Add_Light(const LIGHT_DESC& LightDesc)
 
 
 #pragma region UI_MANAGER
-CUIObject* CGameInstance::Add_UIObject(_uint iPrototypeLevelIndex, _uint iLayerLevelIndex, const _wstring& strPrototypeTag, CUI_Manager::UI_LIFETIME eUILifeTime, void* pArg)
+CUIObject* CGameInstance::Add_UIObject(_uint iPrototypeLevelIndex, _uint iLayerLevelIndex, const _wstring& strPrototypeTag, CUI_Manager::UI_LIFETIME eUILifeTime, void* pArg) const
 {
 	return m_pUI_Manager->Add_UIObject(iPrototypeLevelIndex, iLayerLevelIndex, strPrototypeTag, eUILifeTime, pArg);
 }
@@ -328,6 +343,14 @@ CUIObject* CGameInstance::Add_UIObject(_uint iPrototypeLevelIndex, _uint iLayerL
 CUIObject* CGameInstance::Find_UIGameObject(_wstring strGameObjectTag, CUI_Manager::UI_LIFETIME eUILifeTime) const
 {
 	return m_pUI_Manager->Find_UIGameObject(strGameObjectTag, eUILifeTime);
+}
+#pragma endregion
+
+
+#pragma region COLLISION_MANAGER
+HRESULT CGameInstance::Add_ColliderCom(CComponent* pColliderCom) const
+{
+	return m_pCollision_Manager->Add_ColliderCom(pColliderCom);
 }
 #pragma endregion
 
@@ -345,6 +368,7 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pLight_Manager);
 	Safe_Release(m_pUI_Manager);
+	Safe_Release(m_pCollision_Manager);
 
 	Safe_Release(m_pGraphic_Device);
 

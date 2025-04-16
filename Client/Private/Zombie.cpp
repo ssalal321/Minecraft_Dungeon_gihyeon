@@ -30,7 +30,7 @@ HRESULT CZombie::Initialize_Prototype()
 
 HRESULT CZombie::Initialize(void* pArg)
 {
-	m_pMonsterInfo = new MONSTER_DESC(TEXT("GameObject_Zombie"), 10, 10, 2, 1.f, 10.f, false, 90.f, 1.f);
+	m_pMonsterInfo = new MONSTER_DESC(TEXT("GameObject_Zombie"), 10, 10, 2, 1.f, 10.f, false, 90.f, 1.5f);
 
 	if (FAILED(__super::Initialize(m_pMonsterInfo)))
 		return E_FAIL;
@@ -54,8 +54,6 @@ void CZombie::Priority_Update(_float fTimeDelta)
 
 void CZombie::Update(_float fTimeDelta)
 {
-	m_pNavigationCom->SetUp_On_Navigation(m_pTransformCom);
-
 	__super::Update(fTimeDelta);
 }
 
@@ -155,10 +153,6 @@ CGameObject* CZombie::Clone(void* pArg)
 void CZombie::Free()
 {
 	__super::Free();
-
-	//Safe_Release(m_pNavigationCom);
-	
-	//Safe_Delete(m_pZombieFSM);
 
 	for (auto& stateVec : m_StatesVec)
 	{

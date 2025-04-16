@@ -12,18 +12,18 @@ public:
 	{
 		UI_STATE	eUIState;
 		_float		fX, fY, fZ, fSizeX, fSizeY;
-		_wstring	strTextureComTag;
+		_wstring	strTexPrototypeTag;
 
 		tagUIObjectDesc(const _tchar* GameObjectTag, UI_STATE uiState,
-			_float x, _float y, _float z, _float sizeX, _float sizeY, const wstring& textureTag, _float rotationPerSec = 0.f, _float speedPerSec = 0.f)
+			_float x, _float y, _float z, _float sizeX, _float sizeY, const wstring& texPrototypeTag, _float rotationPerSec = 0.f, _float speedPerSec = 0.f)
 			: GAMEOBJECT_DESC(GameObjectTag, rotationPerSec, speedPerSec),
-			eUIState(uiState), fX(x), fY(y), fZ(z), fSizeX(sizeX), fSizeY(sizeY), strTextureComTag(textureTag) {
+			eUIState(uiState), fX(x), fY(y), fZ(z), fSizeX(sizeX), fSizeY(sizeY), strTexPrototypeTag(texPrototypeTag) {
 }
 
 //tagUIObjectDesc(const tagUIObjectDesc& other)
 //	: GAMEOBJECT_DESC(other), eUIState(other.eUIState),
 //	  fX(other.fX), fY(other.fY), fZ(other.fZ), fSizeX(other.fSizeX), fSizeY(other.fSizeY),
-//	  strTextureComTag(other.strTextureComTag) {
+//	  strTexPrototypeTag(other.strTexPrototypeTag) {
 //}
 
 ~tagUIObjectDesc() override = default;

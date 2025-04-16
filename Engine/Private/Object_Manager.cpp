@@ -10,18 +10,6 @@ CObject_Manager::CObject_Manager()
     Safe_AddRef(m_pGameInstance);
 }
 
-HRESULT CObject_Manager::Initialize(_uint iNumLevels)
-{
-	if (nullptr != m_pLayers)
-		return E_FAIL;
-
-	m_iNumLevels = iNumLevels;
-
-	m_pLayers = new map<const _wstring, CLayer*>[iNumLevels];
-
-	return S_OK;
-}
-
 HRESULT CObject_Manager::Add_GameObject(_uint iPrototypeLevelIndex, _wstring strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg)
 {
 	if (nullptr == m_pLayers || 
@@ -33,6 +21,27 @@ HRESULT CObject_Manager::Add_GameObject(_uint iPrototypeLevelIndex, _wstring str
 		return E_FAIL;
 
 	return Add_To_Layer(pGameObject, iLayerLevelIndex, strLayerTag, strPrototypeTag);
+}
+
+CComponent* CObject_Manager::Get_Component(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strComponentTag, _uint iIndex)
+{
+	CLayer* pLayer = Find_Layer(iLevelIndex, strLayerTag);
+	if (nullptr == pLayer)
+		return nullptr;
+
+	return pLayer->Get_Component(strComponentTag, iIndex);
+}
+
+HRESULT CObject_Manager::Initialize(_uint iNumLevels)
+{
+	if (nullptr != m_pLayers)
+		return E_FAIL;
+
+	m_iNumLevels = iNumLevels;
+
+	m_pLayers = new map<const _wstring, CLayer*>[iNumLevels];
+
+	return S_OK;
 }
 
 void CObject_Manager::Priority_Update(_float fTimeDelta)

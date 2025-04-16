@@ -4,12 +4,6 @@
 
 /* 플레이어라는 객체를 구성하기위한 파츠들을 모아서 쥐고 있는 객체. */
 
-BEGIN(Engine)
-class	CCollider;
-class	CNavigation;
-END
-
-
 BEGIN(Client)
 class CState;
 
@@ -72,18 +66,18 @@ public:
 	
 
 private:
-	_uint				m_iState = { static_cast<_uint>(PLAYER_STATE::STATE_END) };
-	class FSM*			m_pPlayerFSM = { nullptr };
+	_uint				m_iState	  = { static_cast<_uint>(PLAYER_STATE::STATE_END) };
+	class FSM*			m_pPlayerFSM  = { nullptr };
 	PLAYER_DESC*		m_pPlayerInfo = { nullptr };
 	vector<CState*>     m_StatesVec;
 
-	CNavigation*		m_pNavigationCom = { nullptr };
 	_float4				m_NextPosition = {0.f, 0.f, 0.f, 1.f};
 
 private:
 	HRESULT		Ready_Components();
 	HRESULT		Ready_PartObjects();
 	HRESULT		Ready_States();
+
 
 public:
 	static CPlayer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
