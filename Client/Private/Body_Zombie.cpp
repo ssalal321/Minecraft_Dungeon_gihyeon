@@ -104,7 +104,7 @@ HRESULT CBody_Zombie::Ready_Components()
 	if (nullptr == pColliderCom)
 		return E_FAIL;
 
-	m_pGameInstance->Add_ColliderCom(pColliderCom);
+	m_pGameInstance->Add_ColliderCom(pColliderCom, TEXT("Monster"));
 
 	/* Com_Collider */
 	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereCollDesc{};
@@ -119,7 +119,7 @@ HRESULT CBody_Zombie::Ready_Components()
 	if (nullptr == pColliderCom)
 		return E_FAIL;
 
-	m_pGameInstance->Add_ColliderCom(pColliderCom);
+	m_pGameInstance->Add_ColliderCom(pColliderCom, TEXT("Monster"));
 
 	/* Com_Collider */
 	CBounding_OBB::BOUNDING_OBB_DESC		OBBCollDesc{};
@@ -136,7 +136,7 @@ HRESULT CBody_Zombie::Ready_Components()
 	if (nullptr == pColliderCom)
 		return E_FAIL;
 
-	m_pGameInstance->Add_ColliderCom(pColliderCom);
+	m_pGameInstance->Add_ColliderCom(pColliderCom, TEXT("Monster"));
 
 	return S_OK;
 }

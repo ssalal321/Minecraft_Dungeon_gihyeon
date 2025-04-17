@@ -4,7 +4,6 @@
 #include "Camera_Free.h"
 #include "Body_Player.h"
 #include "Body_Zombie.h"
-#include "ForkLift.h"
 #include "InventoryBase.h"
 #include "InventoryGearSlot.h"
 #include "InventoryItemSlot.h"

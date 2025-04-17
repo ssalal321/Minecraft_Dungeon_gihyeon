@@ -71,6 +71,8 @@ private:
 	PLAYER_DESC*		m_pPlayerInfo = { nullptr };
 	vector<CState*>     m_StatesVec;
 
+	CNavigation*		m_pNavigationCom = { nullptr };
+
 	_float4				m_NextPosition = {0.f, 0.f, 0.f, 1.f};
 
 private:

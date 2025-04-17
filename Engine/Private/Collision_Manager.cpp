@@ -1,7 +1,8 @@
 #include "Collision_Manager.h"
 #include "GameInstance.h"
 
-CCollision_Manager::CCollision_Manager() : m_pGameInstance{ CGameInstance::GetInstance() }
+CCollision_Manager::CCollision_Manager()
+	: m_pGameInstance{ CGameInstance::GetInstance() }
 {
 	Safe_AddRef(m_pGameInstance);
 }
@@ -9,70 +10,103 @@ CCollision_Manager::CCollision_Manager() : m_pGameInstance{ CGameInstance::GetIn
 HRESULT CCollision_Manager::Initialize(_uint iNumLevels)
 {
 	m_iNumLevels = iNumLevels;
-
 	return S_OK;
 }
 
-HRESULT CCollision_Manager::Add_ColliderCom(CComponent* pColliderCom/*, _wstring OwnerSortTag*/)
+HRESULT CCollision_Manager::Add_ColliderCom(CComponent* pCollider, const std::wstring& ownerTypeTag)
 {
-	if (nullptr == pColliderCom)
+	CCollider* pColliderCom = dynamic_cast<CCollider*>(pCollider);
+
+	if (!pCollider)
 		return E_FAIL;
 
-	CCollider* CollCom = dynamic_cast<CCollider*>(pColliderCom);
-	m_pColliders.push_back(CollCom);
+	pColliderCom->Set_OwnerTag(ownerTypeTag);
 
+	m_ColliderGroups[ownerTypeTag].emplace_back(pColliderCom);
 	return S_OK;
 }
-
 
 void CCollision_Manager::Update()
 {
-	// 1. 각 콜라이더 업데이트 (Transform 적용)
-	for (auto& pCollider : m_pColliders)
-		pCollider->Update();
-
-	// 2. 충돌 검사 (중복 검사 X, 자기 자신 검사 X)
-	const size_t iNumColliders = m_pColliders.size();
-
-	for (size_t i = 0; i < iNumColliders; ++i)
+	// m_ColliderGroups의 Collider 각각 update 호출
+	for (auto& group : m_ColliderGroups)
 	{
-		for (size_t j = i + 1; j < iNumColliders; ++j) // j = i + 1부터 시작
+		for (auto* collider : group.second)
 		{
-			if (m_pColliders[i] == nullptr || m_pColliders[j] == nullptr)
+			if (collider)
+				collider->Update();  // CombinedWorldMatrix
+		}
+	}
+
+	// 그룹 간 충돌 검사
+	for (auto ownerTypeA_iter = m_ColliderGroups.begin(); ownerTypeA_iter != m_ColliderGroups.end(); ++ownerTypeA_iter)
+	{
+		// ownerA_iter : 그룹 A
+		vector<CCollider*>& collidersInGroupA = ownerTypeA_iter->second;	// 그룹 A의 콜라이더들
+
+		for (auto ownerTypeB_iter = m_ColliderGroups.begin(); ownerTypeB_iter != m_ColliderGroups.end(); ++ownerTypeB_iter)
+		{
+			if (ownerTypeA_iter == ownerTypeB_iter)	// (그룹 A == 그룹 B) : 같은 타입 내 충돌 연산 X
 				continue;
 
-			if (m_pColliders[i]->Intersect(m_pColliders[j]))
+			// ownerB_iter : 그룹 B
+			vector<CCollider*>& collidersInGroupB = ownerTypeB_iter->second;	// 그룹 B의 콜라이더들
+
+			for (auto* colliderA : collidersInGroupA)
 			{
-				m_pColliders[i]->Is_Hit(m_pColliders[j]); // 타겟 넘겨주는 것도 좋음
-				m_pColliders[j]->Is_Hit(m_pColliders[i]);
+				if (!colliderA) continue;					// nullptr 검사
+				for (auto* colliderB : collidersInGroupB)
+				{
+					if (!colliderB) continue;				// nullptr 검사
+					if (colliderA->Intersect(colliderB))
+					{
+						colliderA->Is_Hit(colliderB);
+						colliderB->Is_Hit(colliderA);
+					}
+				}
 			}
 		}
 	}
 }
 
 
+#ifdef _DEBUG
 HRESULT CCollision_Manager::Render()
 {
-	for (auto& Collider : m_pColliders)
-		Collider->Render();
+	for (const auto& pair : m_ColliderGroups)
+	{
+		const std::wstring& ownerType = pair.first;
+		const std::vector<CCollider*>& colliderGroup = pair.second;
 
+		for (auto* pCollider : colliderGroup)
+		{
+			if (pCollider)
+				pCollider->Render();
+		}
+	}
 	return S_OK;
 }
+#endif
 
 
-void CCollision_Manager::Clear(_uint iCurrentLevelIndex)
+void CCollision_Manager::Clear(_uint currentLevelIndex)
 {
-	if (iCurrentLevelIndex >= m_iNumLevels)
+	if (currentLevelIndex >= m_iNumLevels)
 		return;
 
-	// 컨테이너 클리어
-	for (auto& Collider : m_pColliders)
+	for (auto& pair : m_ColliderGroups)
 	{
-		Safe_Release(Collider);
+		std::vector<CCollider*>& colliderGroup = pair.second;
+
+		for (auto* pCollider : colliderGroup)
+		{
+			Safe_Release(pCollider);
+		}
 	}
 
-	m_pColliders.clear();
+	m_ColliderGroups.clear();
 }
+
 
 CCollision_Manager* CCollision_Manager::Create(_uint iNumLevels)
 {
@@ -80,10 +114,9 @@ CCollision_Manager* CCollision_Manager::Create(_uint iNumLevels)
 
 	if (FAILED(pInstance->Initialize(iNumLevels)))
 	{
-		MSG_BOX("Failed to Created : CCollision_Manager");
+		MSG_BOX("Failed to Create : CCollision_Manager");
 		Safe_Release(pInstance);
 	}
-
 	return pInstance;
 }
 
@@ -91,7 +124,5 @@ void CCollision_Manager::Free()
 {
 	__super::Free();
 
-	// 저장한 Collision 해제
-	
 	Safe_Release(m_pGameInstance);
 }

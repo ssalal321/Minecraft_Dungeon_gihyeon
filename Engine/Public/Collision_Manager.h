@@ -14,7 +14,7 @@ private:
 public:
     HRESULT     Initialize(_uint iNumLevels);
 
-	HRESULT		Add_ColliderCom(CComponent* pColliderCom/*, _wstring OwnerSortTag*/);
+	HRESULT		Add_ColliderCom(CComponent* pColliderCom, const std::wstring& OwnerTypeTag);
 
     void        Update();
 
@@ -26,7 +26,7 @@ public:
 
 private:
 	class CGameInstance*	    m_pGameInstance = { nullptr };
-	vector<CCollider*>			m_pColliders;
+	unordered_map<_wstring, vector<CCollider*>>	m_ColliderGroups;
 
 private:
     _uint   m_iNumLevels = {};

@@ -99,7 +99,7 @@ public:
 #pragma endregion
 
 #pragma region COLLISION_MANAGER
-	HRESULT		Add_ColliderCom(CComponent* pColliderCom) const;
+	HRESULT		Add_ColliderCom(CComponent* pColliderCom, const std::wstring& ownerTypeTag) const;
 #pragma endregion UI_MANAGER
 
 private:
