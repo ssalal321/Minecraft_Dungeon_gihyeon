@@ -310,38 +310,34 @@ void CMesh::Compute_BoundingBox()
 }
 
 
-_bool CMesh::Check_BoundingBox_Collision(const _float3& vWorldMousePos, const _float3& vWorldMouseRay, const _float4x4& WorldMatrix)
-{
-	_float3 vWorldMin = {}, vWorldMax = {};
-	XMStoreFloat3(&vWorldMin, XMVector3TransformCoord(XMLoadFloat3(&m_vBoundingMin), XMLoadFloat4x4(&WorldMatrix)));
-	XMStoreFloat3(&vWorldMax, XMVector3TransformCoord(XMLoadFloat3(&m_vBoundingMax), XMLoadFloat4x4(&WorldMatrix)));
-
-	return Collision_AABB(vWorldMousePos, vWorldMouseRay, vWorldMin, vWorldMax);
-}
-
-_bool CMesh::Collision_AABB(const _float3& worldMousePos, const _float3& worldMouseRay, const _float3& worldMin, const _float3& worldMax)
+_bool CMesh::Check_BoundingBox_AABB(const _float3& localMousePos, const _float3& localMouseRay)
 {
 	_float tMin = 0.0f, tMax = FLT_MAX;
 
-	_float rayOrigin[3] = { worldMousePos.x, worldMousePos.y, worldMousePos.z };
-	_float rayDir[3] = { worldMouseRay.x, worldMouseRay.y, worldMouseRay.z };
-	_float fWorldMin[3] = { worldMin.x, worldMin.y, worldMin.z };
-	_float fWorldMax[3] = { worldMax.x, worldMax.y, worldMax.z };
+	/*if ( -56.f > m_vBoundingMin.x || m_vBoundingMax.x > 59.f ||
+		  11.f > m_vBoundingMin.y || m_vBoundingMax.y > 89.f ||
+		 -74.f > m_vBoundingMin.z || m_vBoundingMax.z > 75.f )
+		return false;*/
+
+	_float rayOrigin[3] = { localMousePos.x, localMousePos.y, localMousePos.z };
+	_float rayDir[3] = { localMouseRay.x, localMouseRay.y, localMouseRay.z };
+	_float fLocalMin[3] = { m_vBoundingMin.x, m_vBoundingMin.y, m_vBoundingMin.z };
+	_float fLocalMax[3] = { m_vBoundingMax.x, m_vBoundingMax.y, m_vBoundingMax.z };
 
 	// rayDir는 정규화된 상태
 	for (int i = 0; i < 3; i++)  // X, Y, Z 축에 대해 검사
 	{
 		if (abs(rayDir[i]) < 1e-6f)
 		{
-			if (rayOrigin[i] < fWorldMin[i] || rayOrigin[i] > fWorldMax[i])
+			if (rayOrigin[i] < fLocalMin[i] || rayOrigin[i] > fLocalMax[i])
 				return false;
 		}
 		else
 		{
-			_float t1 = (fWorldMin[i] - rayOrigin[i]) / rayDir[i];
-			_float t2 = (fWorldMax[i] - rayOrigin[i]) / rayDir[i];
+			_float t1 = (fLocalMin[i] - rayOrigin[i]) / rayDir[i];
+			_float t2 = (fLocalMax[i] - rayOrigin[i]) / rayDir[i];
 
-			if (t1 > t2) 
+			if (t1 > t2)
 				swap(t1, t2);
 
 			tMin = max(tMin, t1);
@@ -352,11 +348,12 @@ _bool CMesh::Collision_AABB(const _float3& worldMousePos, const _float3& worldMo
 		}
 	}
 
-	return true;	// BoundingBox AABB 충돌 시 true 반환
+	return true;
 }
 
+
 _bool CMesh::Picking_In_Mesh(const _float3& localMousePos, const _float3& localMouseRay,
-	_float3& vOutLocalPickedPos, _float& fOutDist) const
+							_float3& vOutLocalPickedPos, _float& fOutDist) const
 {
 	_vector  vOrigin = XMLoadFloat3(&localMousePos);
 	_vector  vDir = XMLoadFloat3(&localMouseRay);
@@ -364,17 +361,33 @@ _bool CMesh::Picking_In_Mesh(const _float3& localMousePos, const _float3& localM
 	_bool	bHit = false;
 	_float	fMinDist = FLT_MAX;
 
+	_float fDist = {};
 	for (_uint i = 0; i < m_iNumIndices; i += 3)
 	{
 		_float3 vA = m_pVertices[m_pIndices[i + 0]];
 		_float3 vB = m_pVertices[m_pIndices[i + 1]];
 		_float3 vC = m_pVertices[m_pIndices[i + 2]];
 
+		/*_float minX = min(vA.x, min(vB.x, vC.x));
+		_float maxX = max(vA.x, max(vB.x, vC.x));*/
+		if (vA.x < -40.f || vA.x > 40.f)
+			continue;
+
+		/*_float minZ = min(vA.z, min(vB.z, vC.z));
+		_float maxZ = max(vA.z, max(vB.z, vC.z));*/
+		if (vA.z < -50.f || vA.z > 55.f)
+			continue;
+
+		/*_float centerY = (vA.y + vB.y + vC.y) * 0.3333f;*/
+		if (vA.y < 45.f || vA.y > 65.f)
+			continue;	
+
+
 		_vector v0 = XMLoadFloat3(&vA);
 		_vector v1 = XMLoadFloat3(&vB);
 		_vector v2 = XMLoadFloat3(&vC);
 
-		_float fDist;
+		//_float fDist;
 		if (TriangleTests::Intersects(vOrigin, vDir, v0, v1, v2, fDist))
 		{
 			if (fDist < fMinDist)

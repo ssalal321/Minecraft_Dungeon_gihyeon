@@ -263,16 +263,16 @@ _float3 CGameInstance::Get_MousePos() const
 	return m_pInput_Manager->Get_MousePos();
 }
 
-void CGameInstance::Compute_MouseRay(_float3& worldMousePos, _float3& worldMouseRay)
+void CGameInstance::Compute_MouseRay(_float4& worldMousePos, _float3& worldMouseRay)
 {
 	return m_pPicking->Compute_MouseRay(worldMousePos, worldMouseRay);
 }
 #pragma endregion
 
 #pragma region PICKING
-_bool   CGameInstance::Picked_Model(_float3& fLocalPickedPos, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag)
+_bool   CGameInstance::Picked_Model(_float4& fWorldPickedPos, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag)
 {
-	return m_pPicking->Picked_Model(fLocalPickedPos, strPrototypeTag, iLayerLevelIndex, strLayerTag);
+	return m_pPicking->Picked_Model(fWorldPickedPos, strPrototypeTag, iLayerLevelIndex, strLayerTag);
 }
 
 _bool   CGameInstance::Picked_Vertex(_float3& fLocalPickedVertex, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag)

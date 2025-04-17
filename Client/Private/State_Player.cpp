@@ -34,13 +34,13 @@ void CState_Player::State_Priority_Update(_float fTimeDelta)
 
 	if (m_pGameInstance->Get_Key(VK_LBUTTON) && !m_bClickLock)
 	{
-		_float3 fWorldPickedPos = {};
+		_float4 fWorldPickedPos = { 0.f, 0.f, 0.f, 1.f };
 
 		// 2. LoungeMap에 피킹 요청 (BoundingBox 충돌 체크)
 		if (m_pGameInstance->Picked_Model(fWorldPickedPos, TEXT("Prototype_GameObject_LoungeMap"),
 											LEVEL_GAMEPLAY, TEXT("Layer_BackGround")))
 		{
-			m_pPlayer->Set_NextPosition({ fWorldPickedPos.x, fWorldPickedPos.y, fWorldPickedPos.z, 1.f });
+			m_pPlayer->Set_NextPosition(fWorldPickedPos);
 			m_pPlayer->Change_State(PLAYER_STATE::WALK);
 		}
 	}
