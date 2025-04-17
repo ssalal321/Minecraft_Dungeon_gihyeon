@@ -41,8 +41,8 @@ public:
 
 public:
 	_bool		Play_Animation(_float fTimeDelta);
-	_bool		Picking_Model(const _float3& worldMousePos, const _float3& worldMouseRay, _float3& vOutPickedPos, const _float4x4& WorldMatrix) const;
-	_bool		Picking_Vertex(const _float3& worldMousePos, const _float3& worldMouseRay, _float3& vOutPickedVertex,
+	_bool		Picking_Model(const _float4& worldMousePos, const _float3& worldMouseRay, _float3& localPickedPos, const _float4x4& WorldMatrix) const;
+	_bool		Picking_Vertex(const _float4& worldMousePos, const _float3& worldMouseRay, _float3& vOutPickedVertex,
 	                      const _float4x4& WorldMatrix) const;
 
 public:

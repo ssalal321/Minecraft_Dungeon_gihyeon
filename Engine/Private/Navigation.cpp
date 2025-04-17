@@ -166,11 +166,12 @@ HRESULT CNavigation::Make_Cell(const _float3* fCellPoints)
 
 void CNavigation::Erase_Cell_Pick(const _matrix& WorldMatrixInverse)
 {
-	_float3  fWorldMousePos = {}, fWorldMouseRay = {};
+	_float4  fWorldMousePos = {};
+	_float3	 fWorldMouseRay = {};
 	m_pGameInstance->Compute_MouseRay(fWorldMousePos, fWorldMouseRay);
 
 	// 월드 -> 로컬 좌표로 마우스 정보 변환
-	_vector		vLocalMousePos = XMVector3TransformCoord(XMLoadFloat3(&fWorldMousePos), WorldMatrixInverse);
+	_vector		vLocalMousePos = XMVector3TransformCoord(XMLoadFloat4(&fWorldMousePos), WorldMatrixInverse);
 	_vector		vLocalMouseRay = XMVector3TransformNormal(XMLoadFloat3(&fWorldMouseRay), WorldMatrixInverse);
 	vLocalMouseRay = XMVector3Normalize(vLocalMouseRay);
 

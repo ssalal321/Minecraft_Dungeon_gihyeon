@@ -24,11 +24,11 @@ public:
 	HRESULT Bind_BoneMatrices(class CShader* pShader, const _char* pConstantName, const vector<class CBone*>& Bones);
 
 	// Local 상태의 min, max를 월드 상태로 변환, Collision_AABB 호출해 충돌 여부 반환
-	_bool	Check_BoundingBox_Collision(const _float3& vWorldMousePos, const _float3& vWorldMouseRay,
+	_bool	Check_BoundingBox_Collision(const _float3& localMousePos, const _float3& vlocalMouseRay,
 										const _float4x4& WorldMatrix);
 
 	// ray와 BoundingBox간 min max Time 연산 후 충돌 여부 반환
-	_bool	Collision_AABB(const _float3& worldMousePos, const _float3& worldMouseRay, const _float3& worldMin, const _float3& worldMax);
+	_bool	Collision_AABB(const _float3& localMousePos, const _float3& localMouseRay, const _float3& localMin, const _float3& localMax);
 
 	//// 정적 모델 피킹용 (Picking_Triangle 호출)
 	//_bool	Picking_In_World(const _float3& vMousePos, const _float3& vMouseRay, _float3& vPickedPos) const;
@@ -36,6 +36,7 @@ public:
 	// 동적 모델 피킹용 (Picking_Triangle 호출)
 	_bool	Picking_In_Mesh(const _float3& localMousePos, const _float3& localMouseRay,
 							_float3& vOutLocalPickedPos, _float& fOutDist) const;
+
 	_bool	Picking_Vertex(const _float3& localMousePos, const _float3& localMouseRay,
 							_float3& vOutPickedVertex, _float& fOutDist, _float fThreshold = 0.3f) const;
 

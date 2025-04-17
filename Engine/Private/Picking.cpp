@@ -22,10 +22,12 @@ HRESULT CPicking::Initialize(HWND hWnd, _uint iWinSizeX, _uint iWinSizeY)
 	return S_OK;
 }
 
-_bool CPicking::Picked_Model(_float3& fWorldPickedPos, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag)
+_bool CPicking::Picked_Model(_float4& worldPickedPos, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag)
 {
-    _float3  fWorldMousePos = {}, fWorldMouseRay = {};
+    _float4  fWorldMousePos = {};
+    _float3  fWorldMouseRay = {};
     _float3  fLocalPickedPos = {};
+
     Compute_MouseRay(fWorldMousePos, fWorldMouseRay);
 
     CGameObject*  pPickedObject = m_pGameInstance->Find_GameObject(strPrototypeTag, iLayerLevelIndex, strLayerTag);
@@ -36,8 +38,9 @@ _bool CPicking::Picked_Model(_float3& fWorldPickedPos, const _wstring& strProtot
     // 2. LoungeMap에 피킹 요청 (BoundingBox 충돌 체크)
     if (pPickedObjModelCom->Picking_Model(fWorldMousePos, fWorldMouseRay, fLocalPickedPos, pPickedObjWorldMatrix))
     {
-        _vector vWorldPickedPos = XMVector3TransformCoord(XMLoadFloat3(&fLocalPickedPos), XMLoadFloat4x4(&pPickedObjWorldMatrix));
-        XMStoreFloat3(&fWorldPickedPos, vWorldPickedPos);
+        _float4  localPickedPos = { fLocalPickedPos.x, fLocalPickedPos.y, fLocalPickedPos.z, 1.f };
+        _vector  vWorldPickedPos = XMVector4Transform(XMLoadFloat4(&localPickedPos), XMLoadFloat4x4(&pPickedObjWorldMatrix));
+        XMStoreFloat4(&worldPickedPos, vWorldPickedPos);
 
         return true;
     }
@@ -47,7 +50,8 @@ _bool CPicking::Picked_Model(_float3& fWorldPickedPos, const _wstring& strProtot
 
 _bool CPicking::Picked_Vertex(_float3& fLocalPickedVertex, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag)
 {
-    _float3  fWorldMousePos = {}, fWorldMouseRay = {};
+    _float4  fWorldMousePos = {};
+	_float3  fWorldMouseRay = {};
 
     Compute_MouseRay(fWorldMousePos, fWorldMouseRay);
 
@@ -65,7 +69,7 @@ _bool CPicking::Picked_Vertex(_float3& fLocalPickedVertex, const _wstring& strPr
     return false;
 }
 
-void CPicking::Compute_MouseRay(_float3& worldMousePos, _float3& worldMouseRay)
+void CPicking::Compute_MouseRay(_float4& worldMousePos, _float3& worldMouseRay)
 {
     POINT ptMouse = {};
     GetCursorPos(&ptMouse);
@@ -88,7 +92,7 @@ void CPicking::Compute_MouseRay(_float3& worldMousePos, _float3& worldMouseRay)
     _vector  vCamPosition   = XMLoadFloat4(m_pGameInstance->Get_CamPosition());
 
     // 마우스 포지션과 정규화된 레이 반환
-    XMStoreFloat3(&worldMousePos, vCamPosition);
+    XMStoreFloat4(&worldMousePos, vCamPosition);
 	XMStoreFloat3(&worldMouseRay, XMVector3Normalize(vWorldPosition - vCamPosition));
 }
 
