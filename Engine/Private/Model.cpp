@@ -138,7 +138,7 @@ _bool CModel::Picking_Model(const _float4& worldMousePos, const _float3& worldMo
 
 	for (auto& pMesh : m_Meshes)
 	{
-		if (false == pMesh->Check_BoundingBox_Collision(localMousePos, localMouseRay, WorldMatrix))
+		if (false == pMesh->Check_BoundingBox_AABB(localMousePos, localMouseRay))
 			continue;
 
 		_float3		localPickedPosition = {};
@@ -146,12 +146,11 @@ _bool CModel::Picking_Model(const _float4& worldMousePos, const _float3& worldMo
 		_float		fOutDist = {};
 
 		bMeshHit = pMesh->Picking_In_Mesh(localMousePos, localMouseRay, localPickedPosition, fOutDist);
-
+		
 		if (bMeshHit)
 		{
-			/*_float3 vWorldPickedPos;
-			XMStoreFloat3(&vWorldPickedPos, XMVector3TransformCoord(XMLoadFloat3(&localPickedPos), XMLoadFloat4x4(&WorldMatrix)));*/
-		
+			//pMesh->Check_BoundingBox_AABB(localMousePos, localMouseRay);
+			
 			if (fOutDist < fMinDist)
 			{
 				fMinDist = fOutDist;
@@ -160,6 +159,7 @@ _bool CModel::Picking_Model(const _float4& worldMousePos, const _float3& worldMo
 			}
 		}
 	}
+
 	return bHit;
 }
 
@@ -180,7 +180,7 @@ _bool CModel::Picking_Vertex(const _float4& worldMousePos, const _float3& worldM
 
 	for (auto& pMesh : m_Meshes)
 	{
-		if (false == pMesh->Check_BoundingBox_Collision(localMousePos, localMouseRay, WorldMatrix))
+		if (false == pMesh->Check_BoundingBox_AABB(localMousePos, localMouseRay))
 			continue;
 
 		_float3		vLocalPickedVertice = {};

@@ -14,7 +14,6 @@ private:
 
 public:
 	_uint		Get_MaterialIndex() const { return m_iMaterialIndex; }
-	_float3*	Get_MeshVeritces() const { return m_pVertices; }
 
 public:
 	HRESULT Initialize_Prototype(CModel::TYPE eModelType, const vector<class CBone*>& Bones, const aiMesh* pAIMesh, _fmatrix PreTransformMatrix);
@@ -24,11 +23,7 @@ public:
 	HRESULT Bind_BoneMatrices(class CShader* pShader, const _char* pConstantName, const vector<class CBone*>& Bones);
 
 	// Local 상태의 min, max를 월드 상태로 변환, Collision_AABB 호출해 충돌 여부 반환
-	_bool	Check_BoundingBox_Collision(const _float3& localMousePos, const _float3& vlocalMouseRay,
-										const _float4x4& WorldMatrix);
-
-	// ray와 BoundingBox간 min max Time 연산 후 충돌 여부 반환
-	_bool	Collision_AABB(const _float3& localMousePos, const _float3& localMouseRay, const _float3& localMin, const _float3& localMax);
+	_bool	Check_BoundingBox_AABB(const _float3& localMousePos, const _float3& localMouseRay);
 
 	//// 정적 모델 피킹용 (Picking_Triangle 호출)
 	//_bool	Picking_In_World(const _float3& vMousePos, const _float3& vMouseRay, _float3& vPickedPos) const;
