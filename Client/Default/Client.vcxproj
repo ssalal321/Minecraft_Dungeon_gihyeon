@@ -156,7 +156,6 @@
     <ClInclude Include="..\public\Camera_Free.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\Client_Enum.h" />
-    <ClInclude Include="..\Public\ForkLift.h" />
     <ClInclude Include="..\Public\FSM.h" />
     <ClInclude Include="..\Public\LoungeMap.h" />
     <ClInclude Include="..\Public\InventoryBase.h" />
@@ -197,7 +196,6 @@
     <ClCompile Include="..\Private\Body_Player.cpp" />
     <ClCompile Include="..\Private\Body_Zombie.cpp" />
     <ClCompile Include="..\private\Camera_Free.cpp" />
-    <ClCompile Include="..\Private\ForkLift.cpp" />
     <ClCompile Include="..\Private\FSM.cpp" />
     <ClCompile Include="..\Private\LoungeMap.cpp" />
     <ClCompile Include="..\Private\InventoryBase.cpp" />

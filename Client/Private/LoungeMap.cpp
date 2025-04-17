@@ -47,6 +47,8 @@ HRESULT CLoungeMap::Initialize(void* pArg)
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
 		XMVectorSet(0.f, -54.95f, 0.f, 1.f));	// -54.95f
 
+	m_pNavigationCom->Update(m_pTransformCom->Get_WorldMatrix_Ptr());
+
 	return S_OK;
 }
 
@@ -57,7 +59,7 @@ void CLoungeMap::Priority_Update(_float fTimeDelta)
 
 void CLoungeMap::Update(_float fTimeDelta)
 {
-	#ifdef _DEBUG
+#ifdef _DEBUG
 
 	//if (m_pGameInstance->Key_Down(VK_F1))
 	//	m_bClickActive = !m_bClickActive;
@@ -109,10 +111,9 @@ void CLoungeMap::Update(_float fTimeDelta)
 	//{
 	//	m_pNavigationCom->Erase_Cell_Last();
 	//}
-	#endif
-
-	m_pNavigationCom->Update(m_pTransformCom->Get_WorldMatrix_Ptr());
+#endif
 }
+	
 
 void CLoungeMap::Late_Update(_float fTimeDelta)
 {

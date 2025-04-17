@@ -73,9 +73,6 @@
     <Filter Include="02.GameObjects\LoungeMap">
       <UniqueIdentifier>{a35214a7-3599-46bc-96d0-e0ce666aaa40}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\ForkLift">
-      <UniqueIdentifier>{97f07e9d-00c1-47e2-ad7d-79a41a661f9f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\Player\00. Body_Player">
       <UniqueIdentifier>{5373e998-8490-442b-bc63-474356c4fb92}</UniqueIdentifier>
     </Filter>
@@ -197,9 +194,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\Sky.h">
       <Filter>02.GameObjects\Sky</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\ForkLift.h">
-      <Filter>02.GameObjects\ForkLift</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State.h">
       <Filter>96. FSM\State</Filter>
@@ -323,9 +317,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\Sky.cpp">
       <Filter>02.GameObjects\Sky</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\ForkLift.cpp">
-      <Filter>02.GameObjects\ForkLift</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State.cpp">
       <Filter>96. FSM\State</Filter>

@@ -14,6 +14,9 @@ private:
 
 public:
 	void	Set_IsCollision(_bool bIsCollision) { m_isCollision = bIsCollision; }
+	void	Set_OwnerTag(const _wstring& strOwnerTag) { m_strOwnerTag = strOwnerTag; }
+
+	const _wstring&		Get_OwnerTag() { return m_strOwnerTag; }
 
 public:
 	virtual HRESULT Initialize_Prototype(COLLIDER eColliderType);
@@ -32,6 +35,7 @@ private:
 	COLLIDER			m_eColliderType = { COLLIDER::TYPE_END };
 	class CBounding*	m_pBounding		= { nullptr };
 	_bool				m_isCollision	= { false };
+	_wstring			m_strOwnerTag	= {};
 
 	CGameObject*		m_pOwnerGameObject	= { nullptr };
 	_float4x4*			m_CombinedWorldMatrix = { nullptr };

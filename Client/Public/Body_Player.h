@@ -38,7 +38,6 @@ private:
 	CShader*			m_pShaderCom = { nullptr };
 	CModel*				m_pModelCom = { nullptr };
 	CCollider*			m_pColliderCom = { nullptr };
-	CNavigation*		m_pNavigationCom = { nullptr };
 
 	_uint				m_iPassIndex = {};
 

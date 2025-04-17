@@ -12,6 +12,14 @@ namespace Client
 		LEVEL_END
 	};
 
+	enum class COLLIDER_OWNER
+	{
+		PLAYER,
+		MONSTER,
+		BULLET,
+		TYPE_END
+	};
+
 	enum class PLAYER_STATE
 	{
 		BOW_ACTION,				CLAYMORE_COMBO,
