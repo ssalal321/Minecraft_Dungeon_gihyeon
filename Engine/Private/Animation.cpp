@@ -40,7 +40,8 @@ _bool CAnimation::Update_TransformationMatrices(_float fTimeDelta, const vector<
 	{
 		m_fCurrentTrackPosition += m_fTickPerSecond * fTimeDelta * speedFactor;
 
-		/*std::cerr << "[m_fCurrentTrackPosition] : " << m_fCurrentTrackPosition <<
+		/*std::
+		<< "[m_fCurrentTrackPosition] : " << m_fCurrentTrackPosition <<
 			"\n[m_fDuration] : " << m_fDuration << std::endl;*/
 
 		if (m_fCurrentTrackPosition >= m_fDuration)  // 애니메이션 끝났을 때

@@ -34,6 +34,9 @@ public:
 	void		Late_Update(_float fTimeDelta)		override;
 	HRESULT		Render()							override;
 
+public:
+	void		Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState) override;
+
 private:	
 	CShader*			m_pShaderCom = { nullptr };
 	CModel*				m_pModelCom = { nullptr };
@@ -47,8 +50,6 @@ private:
 private:
 	HRESULT		Ready_Components();
 	HRESULT		Bind_ShaderResources();
-
-	//void		Intersect_With_Monsters();
 
 public:
 	static	CBody_Player*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

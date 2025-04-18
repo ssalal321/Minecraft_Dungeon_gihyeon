@@ -82,10 +82,34 @@ _bool CCollider::Intersect(CCollider* pTargetCollider)
 	return m_isCollision;
 }
 
-void CCollider::Is_Hit(CCollider* pOther)
+void CCollider::Collided_With(CCollider* pOther)
 {
-	m_pOwnerGameObject->Get_Hit(pOther);
+	m_currCollisions.insert(pOther);
 }
+
+void CCollider::Process_Collisions()
+{
+	// Enter or Stay
+	for (auto* pOther : m_currCollisions)
+	{
+		if (m_prevCollisions.find(pOther) != m_prevCollisions.end())
+			m_pOwnerGameObject->Collided_With(pOther, STAY);
+		else
+			m_pOwnerGameObject->Collided_With(pOther, ENTER);
+	}
+
+	// Exit
+	for (auto* pOther : m_prevCollisions)
+	{
+		if (m_currCollisions.find(pOther) == m_currCollisions.end())
+			m_pOwnerGameObject->Collided_With(pOther, EXIT);
+	}
+
+	// Prepare for next frame
+	m_prevCollisions = std::move(m_currCollisions);
+	m_currCollisions.clear();
+}
+
 
 void CCollider::Update()
 {

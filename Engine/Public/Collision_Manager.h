@@ -14,7 +14,7 @@ private:
 public:
     HRESULT     Initialize(_uint iNumLevels);
 
-	HRESULT		Add_ColliderCom(CComponent* pColliderCom, const std::wstring& OwnerTypeTag);
+	HRESULT		Add_ColliderCom(CComponent* pColliderCom, const _wstring& PartObject_Tag, const _wstring& ContainerGroup_Tag);
 
     void        Update();
 

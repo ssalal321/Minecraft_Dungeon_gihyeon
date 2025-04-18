@@ -13,7 +13,7 @@ HRESULT CBounding_AABB::Initialize(const BOUNDING_DESC* pArg)
 
 	m_pLocalDesc = new BoundingBox(pDesc->vCenter, pDesc->vExtents);
 	m_pDesc = new BoundingBox(*m_pLocalDesc);
-
+	
 	return S_OK;
 }
 

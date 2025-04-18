@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Transform.h"
+#include "Collider.h"
 
 BEGIN(Engine)
-class CCollider;
 
 class ENGINE_DLL CGameObject abstract : public CBase
 {
@@ -38,7 +38,7 @@ public:
 
 public:
 	class CComponent*	Find_Component(const _wstring& strComponentTag);
-	_bool	Get_Hit(CCollider* pOther);
+	virtual  void		Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState);
 
 protected:
 	ID3D11Device*			m_pDevice = { nullptr };

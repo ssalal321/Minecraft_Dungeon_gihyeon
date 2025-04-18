@@ -79,10 +79,11 @@ CComponent* CGameObject::Find_Component(const _wstring& strComponentTag)
 	return iter->second;
 }
 
-_bool CGameObject::Get_Hit(CCollider* pOther)
+
+void CGameObject::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)
 {
-	return false;
 }
+
 
 CComponent* CGameObject::Add_Component(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, const _wstring& strComponentTag, CComponent** ppOut, void* pArg)
 {

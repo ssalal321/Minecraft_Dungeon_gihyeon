@@ -1,9 +1,10 @@
 #include "Player_Roll.h"
 #include "Body_Player.h"
 
-CPlayer_Roll::CPlayer_Roll(CGameObject* pActor, CModel* pPlayerModelCom, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
+CPlayer_Roll::CPlayer_Roll(CGameObject* pActor, CModel* pPlayerModelCom, CCollider* pColliderCom,
+							CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
 							CTransform* pTransformCom, CNavigation* pNavigationCom)
-	: CState_Player(pActor, pPlayerModelCom, pGameObjectDesc, pTransformCom, pNavigationCom)
+	: CState_Player(pActor, pPlayerModelCom, pColliderCom, pGameObjectDesc, pTransformCom, pNavigationCom)
 {
 }
 
@@ -53,10 +54,26 @@ void CPlayer_Roll::State_Exit()
 {
 }
 
-CState_Player* CPlayer_Roll::Create(CGameObject* pActor, CModel* pPlayerModelCom, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
+void CPlayer_Roll::Collision_Enter(CCollider* pOther)
+{
+	__super::Collision_Enter(pOther);
+}
+
+void CPlayer_Roll::Collision_Stay(CCollider* pOther)
+{
+	__super::Collision_Stay(pOther);
+}
+
+void CPlayer_Roll::Collision_Exit(CCollider* pOther)
+{
+	__super::Collision_Exit(pOther);
+}
+
+CState_Player* CPlayer_Roll::Create(CGameObject* pActor, CModel* pPlayerModelCom, CCollider* pColliderCom,
+									CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
 									CTransform* pTransformCom, CNavigation* pNavigationCom)
 {
-	CState_Player* pGameInstance = new CPlayer_Roll(pActor, pPlayerModelCom, pGameObjectDesc, pTransformCom, pNavigationCom);
+	CState_Player* pGameInstance = new CPlayer_Roll(pActor, pPlayerModelCom, pColliderCom, pGameObjectDesc, pTransformCom, pNavigationCom);
 
 	if (FAILED(pGameInstance->Init_State()))
 	{
