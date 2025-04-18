@@ -63,7 +63,8 @@ public:
 	}
 
 	void	Change_State(PLAYER_STATE playerState);
-	
+
+	void	Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState) override;
 
 private:
 	_uint				m_iState	  = { static_cast<_uint>(PLAYER_STATE::STATE_END) };

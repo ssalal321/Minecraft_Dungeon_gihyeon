@@ -1,12 +1,16 @@
 #include "State_Player.h"
+
+#include <iostream>
+
 #include "Player.h"
 #include "Body_Player.h"
 
 _bool CState_Player::m_bAnimationFinished = false;
 
-CState_Player::CState_Player(CGameObject* pActor, CModel* pPlayerModelCom, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-							 CTransform* pTransformCom, CNavigation* pNavigationCom)
-	: CState(pActor, pPlayerModelCom, pGameObjectDesc, pTransformCom, pNavigationCom)
+CState_Player::CState_Player(CGameObject* pActor, CModel* pPlayerModelCom, CCollider* pColliderCom,
+							CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
+							CTransform* pTransformCom, CNavigation* pNavigationCom)
+	: CState(pActor, pPlayerModelCom, pColliderCom, pGameObjectDesc, pTransformCom, pNavigationCom)
 {
 }
 
@@ -58,26 +62,33 @@ void CState_Player::State_Update(_float fTimeDelta)
 
 void CState_Player::State_Late_Update(_float fTimeDelta)
 {
-	
 }
 
 void CState_Player::State_Exit()
 {
 }
 
-//CState* CState_Player::Create(CGameObject* pActor, CGameObject* pPartObject, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-//							  CTransform* pTransformCom, CNavigation* pNavigationCom)
-//{
-//	CState* pGameInstance = new CState_Player(pActor, pPartObject, pGameObjectDesc, pTransformCom, pNavigationCom);
-//
-//	if (FAILED(pGameInstance->Init_State()))
-//	{
-//		MSG_BOX("Failed to Create : CState_Player");
-//		Safe_Release(pGameInstance);
-//	}
-//
-//	return pGameInstance;
-//}
+void CState_Player::Collision_Enter(CCollider* pOther)
+{
+	_wstring other = pOther->Get_OwnerTag();
+
+	std::wcerr << "[플레이어와 " << other << " 충돌 Enter]" << std::endl;
+}
+
+void CState_Player::Collision_Stay(CCollider* pOther)
+{
+	_wstring other = pOther->Get_OwnerTag();
+
+	std::wcerr << "[플레이어와 " << other << " 충돌 Stay]" << std::endl;
+}
+
+void CState_Player::Collision_Exit(CCollider* pOther)
+{
+	_wstring other = pOther->Get_OwnerTag();
+
+	std::wcerr << "[플레이어와 " << other << " 충돌 Exit]" << std::endl;
+}
+
 
 void CState_Player::Free()
 {

@@ -6,16 +6,13 @@
 BEGIN(Engine)
 	class CCollider;
 	class CShader;
-class CModel;
+	class CModel;
 END
 
 BEGIN(Client)
 
 class CBody_Zombie final : public CPartObject
 {
-private:
-	enum COLL { COLL_AABB, COLL_OBB, COLL_SPHERE, COLL_END };
-
 public:
 	typedef struct tagBodyZombieDesc : public CPartObject::PARTOBJECT_DESC
 	{
@@ -39,7 +36,7 @@ private:
 	CShader*			m_pShaderCom = { nullptr };
 	CModel*				m_pModelCom = { nullptr };
 
-	CCollider*			m_pColliderCom[COLL_END] = { nullptr };
+	CCollider*			m_pColliderCom = { nullptr };
 
 	_uint				m_iPassIndex = {};
 

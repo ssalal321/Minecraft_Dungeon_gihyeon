@@ -30,7 +30,7 @@ HRESULT CZombie::Initialize_Prototype()
 
 HRESULT CZombie::Initialize(void* pArg)
 {
-	m_pMonsterInfo = new MONSTER_DESC(TEXT("GameObject_Zombie"), 10, 10, 2, 2.5f, 10.f, false, 90.f, 1.5f);
+	m_pMonsterInfo = new MONSTER_DESC(TEXT("GameObject_Zombie"), 10, 10, 2, 1.8f, 10.f, false, 90.f, 1.5f);
 
 	if (FAILED(__super::Initialize(m_pMonsterInfo)))
 		return E_FAIL;
@@ -106,15 +106,15 @@ HRESULT CZombie::Ready_States()
 {
 	m_StatesVec.resize(static_cast<_uint>(PLAYER_STATE::STATE_END) - 2);	// state vector 자리 예약
 
-	CBody_Zombie*	pBodyZombie = dynamic_cast<CBody_Zombie*>(Find_PartObject(TEXT("Part_Body")));
-	CModel*			pZombieModel = dynamic_cast<CModel*>(pBodyZombie->Find_Component(TEXT("Com_Model")));
+	CModel* pZombieModel = dynamic_cast<CModel*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Model")));
+	CCollider* pCollider = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_OBB")));
 
-	m_StatesVec[static_cast<_uint>(ZOMBIE_STATE::IDLE)]			 = CZombie_Idle::Create(this, pZombieModel, m_pMonsterInfo, m_pTransformCom, m_pNavigationCom);
-	m_StatesVec[static_cast<_uint>(ZOMBIE_STATE::WALK)]			 = CZombie_Walk::Create(this, pZombieModel, m_pMonsterInfo, m_pTransformCom, m_pNavigationCom);
-	m_StatesVec[static_cast<_uint>(ZOMBIE_STATE::ATTACK)]		 = CZombie_Attack::Create(this, pZombieModel, m_pMonsterInfo, m_pTransformCom, m_pNavigationCom);
-	m_StatesVec[static_cast<_uint>(ZOMBIE_STATE::GET_HIT_FRONT)] = CZombie_GetHit::Create(this, pZombieModel, m_pMonsterInfo, m_pTransformCom, m_pNavigationCom);  // Get_Hit_Left/Right도 포함
-	m_StatesVec[static_cast<_uint>(ZOMBIE_STATE::STUN)]			 = CZombie_Stun::Create(this, pZombieModel, m_pMonsterInfo, m_pTransformCom, m_pNavigationCom);
-	m_StatesVec[static_cast<_uint>(ZOMBIE_STATE::NOVELTY_SLEEP)] = CZombie_Sleep::Create(this, pZombieModel, m_pMonsterInfo, m_pTransformCom, m_pNavigationCom);
+	m_StatesVec[static_cast<_uint>(ZOMBIE_STATE::IDLE)]			 = CZombie_Idle::Create(this, pZombieModel, pCollider, m_pMonsterInfo, m_pTransformCom, m_pNavigationCom);
+	m_StatesVec[static_cast<_uint>(ZOMBIE_STATE::WALK)]			 = CZombie_Walk::Create(this, pZombieModel, pCollider, m_pMonsterInfo, m_pTransformCom, m_pNavigationCom);
+	m_StatesVec[static_cast<_uint>(ZOMBIE_STATE::ATTACK)]		 = CZombie_Attack::Create(this, pZombieModel, pCollider, m_pMonsterInfo, m_pTransformCom, m_pNavigationCom);
+	m_StatesVec[static_cast<_uint>(ZOMBIE_STATE::GET_HIT_FRONT)] = CZombie_GetHit::Create(this, pZombieModel, pCollider, m_pMonsterInfo, m_pTransformCom, m_pNavigationCom);  // Get_Hit_Left/Right도 포함
+	m_StatesVec[static_cast<_uint>(ZOMBIE_STATE::STUN)]			 = CZombie_Stun::Create(this, pZombieModel, pCollider, m_pMonsterInfo, m_pTransformCom, m_pNavigationCom);
+	m_StatesVec[static_cast<_uint>(ZOMBIE_STATE::NOVELTY_SLEEP)] = CZombie_Sleep::Create(this, pZombieModel, pCollider, m_pMonsterInfo, m_pTransformCom, m_pNavigationCom);
 
 	m_pMonsterFSM = FSM::Create();
 

@@ -49,9 +49,9 @@ public:
 	HRESULT		Render()							override;
 
 public:
-	vector<CState*>   Get_StateVec() { return m_StatesVec; }
+	vector<CState*>		Get_StateVec() { return m_StatesVec; }
 
-	const _float4& Get_NextPosition() const { return m_NextPosition; }
+	const _float4&		Get_NextPosition() const { return m_NextPosition; }
 
 	void	Set_NextPosition(const _float4& nextPosition)
 	{
@@ -59,6 +59,7 @@ public:
 	}
 
 	void		Change_State(ZOMBIE_STATE monsterState);
+	void		Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)	override;
 
 	_float4		Get_Player_Position(const _wstring& strPlayerPrototypeTag, _uint iPlayerLayerLevelIndex) const;
 	_vector		Vec_To_Player(const _wstring& strPlayerPrototypeTag, _uint iPlayerLayerLevelIndex) const;

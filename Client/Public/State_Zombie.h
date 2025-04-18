@@ -8,8 +8,9 @@ BEGIN(Client)
 	class CState_Zombie abstract: public CState_Monster
 {
 protected:
-    CState_Zombie(CGameObject* pActor, CModel* pMonsterModelCom, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-				   CTransform* pTransformCom, CNavigation* pNavigationCom);
+    CState_Zombie(CGameObject* pActor, CModel* pMonsterModelCom, CCollider* pColliderCom,
+                    CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
+                    CTransform* pTransformCom, CNavigation* pNavigationCom);
 	~CState_Zombie() override = default;
 
 public:
@@ -20,6 +21,10 @@ public:
     void      State_Update(_float fTimeDelta)           override;
     void      State_Late_Update(_float fTimeDelta)      override;
     void      State_Exit()                              override;
+
+    void      Collision_Enter(CCollider* pOther)      override;
+    void      Collision_Stay(CCollider* pOther)       override;
+    void      Collision_Exit(CCollider* pOther)       override;
 
 protected:
     CZombie*    m_pZombie = { nullptr };

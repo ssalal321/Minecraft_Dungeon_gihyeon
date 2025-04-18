@@ -1,9 +1,10 @@
 #include "Zombie_Stun.h"
 #include "Zombie.h"
 
-CZombie_Stun::CZombie_Stun(CGameObject* pActor, CModel* pZombieModelCom, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-	CTransform* pTransformCom, CNavigation* pNavigationCom)
-	: CState_Zombie(pActor, pZombieModelCom, pGameObjectDesc, pTransformCom, pNavigationCom)
+CZombie_Stun::CZombie_Stun(CGameObject* pActor, CModel* pZombieModelCom, CCollider* pColliderCom,
+							CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
+							CTransform* pTransformCom, CNavigation* pNavigationCom)
+	: CState_Zombie(pActor, pZombieModelCom, pColliderCom, pGameObjectDesc, pTransformCom, pNavigationCom)
 {
 }
 
@@ -53,10 +54,26 @@ void CZombie_Stun::State_Exit()
 {
 }
 
-CState_Monster* CZombie_Stun::Create(CGameObject* pActor, CModel* pZombieModelCom, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-							 CTransform* pTransformCom, CNavigation* pNavigationCom)
+void CZombie_Stun::Collision_Enter(CCollider* pOther)
 {
-	CZombie_Stun* pGameInstance = new CZombie_Stun(pActor, pZombieModelCom, pGameObjectDesc, pTransformCom, pNavigationCom);
+	
+}
+
+void CZombie_Stun::Collision_Stay(CCollider* pOther)
+{
+	
+}
+
+void CZombie_Stun::Collision_Exit(CCollider* pOther)
+{
+	
+}
+
+CState_Monster* CZombie_Stun::Create(CGameObject* pActor, CModel* pZombieModelCom, CCollider* pColliderCom,
+									CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
+									CTransform* pTransformCom, CNavigation* pNavigationCom)
+{
+	CZombie_Stun* pGameInstance = new CZombie_Stun(pActor, pZombieModelCom, pColliderCom, pGameObjectDesc, pTransformCom, pNavigationCom);
 
 	if (FAILED(pGameInstance->Init_State()))
 	{

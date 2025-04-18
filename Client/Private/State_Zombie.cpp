@@ -2,9 +2,10 @@
 
 #include "Zombie.h"
 
-CState_Zombie::CState_Zombie(CGameObject* pActor, CModel* pMonsterModelCom, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-                             CTransform* pTransformCom, CNavigation* pNavigationCom)
-	: CState_Monster(pActor, pMonsterModelCom, pGameObjectDesc, pTransformCom, pNavigationCom)
+CState_Zombie::CState_Zombie(CGameObject* pActor, CModel* pMonsterModelCom, CCollider* pColliderCom,
+							CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
+							CTransform* pTransformCom, CNavigation* pNavigationCom)
+	: CState_Monster(pActor, pMonsterModelCom, pColliderCom, pGameObjectDesc, pTransformCom, pNavigationCom)
 {
 }
 
@@ -29,8 +30,6 @@ void CState_Zombie::State_Priority_Update(_float fTimeDelta)
 void CState_Zombie::State_Update(_float fTimeDelta)
 {
 	__super::State_Update(fTimeDelta);
-	
-	// 체력 0이면 죽기
 
 	// 공격 받았을 때 스턴 걸리기
 }
@@ -42,6 +41,21 @@ void CState_Zombie::State_Late_Update(_float fTimeDelta)
 
 void CState_Zombie::State_Exit()
 {
+}
+
+void CState_Zombie::Collision_Enter(CCollider* pOther)
+{
+
+}
+
+void CState_Zombie::Collision_Stay(CCollider* pOther)
+{
+
+}
+
+void CState_Zombie::Collision_Exit(CCollider* pOther)
+{
+
 }
 
 _bool CState_Zombie::Change_State_To_Attack()

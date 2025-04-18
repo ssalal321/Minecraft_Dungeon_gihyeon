@@ -106,19 +106,19 @@ HRESULT CWeapon::Ready_Components()
 	/* Com_Collider */
 	CBounding_OBB::BOUNDING_OBB_DESC		OBBCollDesc{};
 
-	OBBCollDesc.vCenter = _float3(0.f, OBBCollDesc.vExtents.y, 0.f);
+	OBBCollDesc.vExtents = _float3(0.2f, 1.f, 0.2f);
+	OBBCollDesc.vCenter = _float3(0.f, OBBCollDesc.vExtents.y - 0.2f, 0.f);
+	OBBCollDesc.vRotation = _float3(0.f, /*XMConvertToRadians(0.f)*/ 0.f, 0.f);
+	OBBCollDesc.pGameObject = this;
 	OBBCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
-	OBBCollDesc.pGameObject = static_cast<CGameObject*>(this);
-	OBBCollDesc.vRotation = _float3(0.f, 0.f, 0.f);
-	OBBCollDesc.vExtents = _float3(0.75f, 0.9f, 1.5f);
 
 	CComponent* pColliderCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_OBB"),
-		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &OBBCollDesc);
+		TEXT("Com_Collider_OBB"), reinterpret_cast<CComponent**>(&m_pColliderCom), &OBBCollDesc);
 
 	if (nullptr == pColliderCom)
 		return E_FAIL;
 
-	m_pGameInstance->Add_ColliderCom(pColliderCom, TEXT("Player_Weapon"));
+	m_pGameInstance->Add_ColliderCom(pColliderCom, TEXT("Glaive"), TEXT("Player"));
 
 	return S_OK;
 }

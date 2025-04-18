@@ -6,8 +6,9 @@ BEGIN(Client)
 class CZombie_Sleep final: public CState_Zombie
 {
 private:
-    CZombie_Sleep(CGameObject* pActor, CModel* pZombieModelCom, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-				 CTransform* pTransformCom, CNavigation* pNavigationCom);
+    CZombie_Sleep(CGameObject* pActor, CModel* pZombieModelCom, CCollider* pColliderCom,
+                    CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
+                    CTransform* pTransformCom, CNavigation* pNavigationCom);
 	~CZombie_Sleep() override = default;
 
 public:
@@ -19,12 +20,17 @@ public:
     void        State_Late_Update(_float fTimeDelta)        override;
     void        State_Exit()                                override;
 
+    void        Collision_Enter(CCollider* pOther)        override;
+    void        Collision_Stay(CCollider* pOther)         override;
+    void        Collision_Exit(CCollider* pOther)         override;
+
 private:
    
 
 public:
-    static CState_Monster*  Create(CGameObject* pActor, CModel* pZombieModelCom, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-								   CTransform* pTransformCom, CNavigation* pNavigationCom);
+    static CState_Monster*  Create(CGameObject* pActor, CModel* pZombieModelCom, CCollider* pColliderCom,
+                                    CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
+                                    CTransform* pTransformCom, CNavigation* pNavigationCom);
     void   Free()    override;
 };
 

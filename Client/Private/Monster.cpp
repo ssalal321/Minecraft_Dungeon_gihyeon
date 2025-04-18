@@ -70,6 +70,24 @@ void CMonster::Change_State(ZOMBIE_STATE monsterState)
 	m_pMonsterFSM->Change_State(m_StatesVec[m_iState]);
 }
 
+void CMonster::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)
+{
+	switch (eCollisionState)
+	{
+	case CCollider::ENTER:
+		m_pMonsterFSM->Collision_Enter(pOther);
+		break;
+
+	case CCollider::STAY:
+		m_pMonsterFSM->Collision_Stay(pOther);
+		break;
+
+	case CCollider::EXIT:
+		m_pMonsterFSM->Collision_Exit(pOther);
+		break;
+	}
+}
+
 HRESULT CMonster::Ready_Components()
 {
 	/* Com_Navigation */

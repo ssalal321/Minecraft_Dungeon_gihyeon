@@ -348,9 +348,9 @@ CUIObject* CGameInstance::Find_UIGameObject(_wstring strGameObjectTag, CUI_Manag
 
 
 #pragma region COLLISION_MANAGER
-HRESULT CGameInstance::Add_ColliderCom(CComponent* pColliderCom, const std::wstring& ownerTypeTag) const
+HRESULT CGameInstance::Add_ColliderCom(CComponent* pColliderCom, const _wstring& PartObject_Tag, const _wstring& ContainerGroup_Tag) const
 {
-	return m_pCollision_Manager->Add_ColliderCom(pColliderCom, ownerTypeTag);
+	return m_pCollision_Manager->Add_ColliderCom(pColliderCom, PartObject_Tag, ContainerGroup_Tag);
 }
 #pragma endregion
 

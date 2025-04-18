@@ -3,9 +3,10 @@
 #include "Player.h"
 #include "Zombie.h"
 
-CZombie_Walk::CZombie_Walk(CGameObject* pActor, CModel* pZombieModelCom, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-	CTransform* pTransformCom, CNavigation* pNavigationCom)
-	: CState_Zombie(pActor, pZombieModelCom, pGameObjectDesc, pTransformCom, pNavigationCom)
+CZombie_Walk::CZombie_Walk(CGameObject* pActor, CModel* pZombieModelCom, CCollider* pColliderCom,
+							CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
+							CTransform* pTransformCom, CNavigation* pNavigationCom)
+	: CState_Zombie(pActor, pZombieModelCom, pColliderCom, pGameObjectDesc, pTransformCom, pNavigationCom)
 {
 }
 
@@ -54,10 +55,26 @@ void CZombie_Walk::State_Exit()
 {
 }
 
-CState_Monster* CZombie_Walk::Create(CGameObject* pActor, CModel* pZombieModelCom, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-							 CTransform* pTransformCom, CNavigation* pNavigationCom)
+void CZombie_Walk::Collision_Enter(CCollider* pOther)
 {
-	CZombie_Walk* pGameInstance = new CZombie_Walk(pActor, pZombieModelCom, pGameObjectDesc, pTransformCom, pNavigationCom);
+	
+}
+
+void CZombie_Walk::Collision_Stay(CCollider* pOther)
+{
+
+}
+
+void CZombie_Walk::Collision_Exit(CCollider* pOther)
+{
+
+}
+
+CState_Monster* CZombie_Walk::Create(CGameObject* pActor, CModel* pZombieModelCom, CCollider* pColliderCom,
+									CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
+									CTransform* pTransformCom, CNavigation* pNavigationCom)
+{
+	CZombie_Walk* pGameInstance = new CZombie_Walk(pActor, pZombieModelCom, pColliderCom, pGameObjectDesc, pTransformCom, pNavigationCom);
 
 	if (FAILED(pGameInstance->Init_State()))
 	{

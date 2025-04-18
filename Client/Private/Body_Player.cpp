@@ -79,6 +79,12 @@ HRESULT CBody_Player::Render()
 	return S_OK;
 }
 
+void CBody_Player::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)
+{
+	CPlayer* pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("Prototype_GameObject_PlayerHex"), LEVEL_GAMEPLAY, TEXT("Layer_Player")));
+	pPlayer->Collided_With(pOther, eCollisionState);
+}
+
 HRESULT CBody_Player::Ready_Components()
 {
 	/* Com_Shader */
@@ -92,20 +98,21 @@ HRESULT CBody_Player::Ready_Components()
 		return E_FAIL;
 
 
-	/* Com_Collider */
-	CBounding_Sphere::BOUNDING_SPHERE_DESC		ColliderDesc{};
-	ColliderDesc.fRadius = 0.5f;
-	ColliderDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
-	ColliderDesc.pGameObject = static_cast<CGameObject*>(this);
-	ColliderDesc.vCenter = _float3(0.f, ColliderDesc.fRadius, 0.f);
+	CBounding_OBB::BOUNDING_OBB_DESC		OBBCollDesc{};
 
-	CComponent* pColliderCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
-		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &ColliderDesc);
+	OBBCollDesc.vExtents = _float3(0.6f, 1.f, 0.6f);
+	OBBCollDesc.vCenter = _float3(0.f, OBBCollDesc.vExtents.y, 0.f);
+	OBBCollDesc.vRotation = _float3(0.f, /*XMConvertToRadians(0.f)*/ 0.f, 0.f);
+	OBBCollDesc.pGameObject = this;
+	OBBCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
+
+	CComponent* pColliderCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_OBB"),
+		TEXT("Com_Collider_OBB"), reinterpret_cast<CComponent**>(&m_pColliderCom), &OBBCollDesc);
 
 	if (nullptr == pColliderCom)
 		return E_FAIL;
 
-	m_pGameInstance->Add_ColliderCom(pColliderCom, TEXT("Player"));
+	m_pGameInstance->Add_ColliderCom(pColliderCom, TEXT("PlayerHex"), TEXT("Player"));
 
 	return S_OK;
 }
