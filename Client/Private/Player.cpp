@@ -126,6 +126,8 @@ HRESULT CPlayer::Ready_PartObjects()
 	BodyDesc.pGameObjectTag = TEXT("GameObject_Body_Player");
 	BodyDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	BodyDesc.pState = &m_iState;
+	BodyDesc.pContainerObject = this;
+	BodyDesc.pContainerObjAttacking = &m_bAttacking;
 
 	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Body_Player"), TEXT("Part_Body"), &BodyDesc)))
 		return E_FAIL;
@@ -142,6 +144,8 @@ HRESULT CPlayer::Ready_PartObjects()
 	WeaponDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	WeaponDesc.pState = &m_iState;
 	WeaponDesc.pSocketMatrix = pBody->Get_CombinedTransformationMatrix("J_R_Weapon");
+	WeaponDesc.pContainerObject = this;
+	WeaponDesc.pContainerObjAttacking = &m_bAttacking;
 
 	if (FAILED(__super::Add_PartObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Weapon"), TEXT("Part_Weapon"), &WeaponDesc)))
 		return E_FAIL;

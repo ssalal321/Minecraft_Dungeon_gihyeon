@@ -46,7 +46,6 @@ HRESULT CCollider::Initialize_Prototype(COLLIDER eColliderType)
 		return E_FAIL;
 #endif
 
-
 	return S_OK;
 }
 
@@ -67,19 +66,26 @@ HRESULT CCollider::Initialize(void* pArg)
 		break;
 	}
 
-	m_CombinedWorldMatrix	= pDesc->CombinedWorldMatrix;
-	m_pOwnerGameObject		= pDesc->pGameObject;
+	m_CombinedWorldMatrix	 = pDesc->CombinedWorldMatrix;
+	m_pOwnerGameObject		 = pDesc->pGameObject;
+	m_bContainerObjAttacking = pDesc->pContainerObjAttacking;
 
 	return S_OK;
 }
 
 _bool CCollider::Intersect(CCollider* pTargetCollider)
 {
-	m_isCollision = m_pBounding->Intersect(pTargetCollider->m_eColliderType, pTargetCollider->m_pBounding);
+	if ((false == *m_bContainerObjAttacking && false == pTargetCollider->Get_OtherAttacking()) || m_bColliderOff)
+	{
+		m_bIsCollision = false;
+		return false;
+	}
+		
+	m_bIsCollision = m_pBounding->Intersect(pTargetCollider->m_eColliderType, pTargetCollider->m_pBounding);
 
-	pTargetCollider->Set_IsCollision(m_isCollision);
+	pTargetCollider->Set_IsCollision(m_bIsCollision);
 
-	return m_isCollision;
+	return m_bIsCollision;
 }
 
 void CCollider::Collided_With(CCollider* pOther)
@@ -113,6 +119,9 @@ void CCollider::Process_Collisions()
 
 void CCollider::Update()
 {
+	if (m_bColliderOff)
+		return;
+
 	_matrix  mCombinedWorldMatrix = XMLoadFloat4x4(m_CombinedWorldMatrix);
 	m_pBounding->Update(mCombinedWorldMatrix);
 }
@@ -120,6 +129,9 @@ void CCollider::Update()
 #ifdef _DEBUG
 HRESULT CCollider::Render()
 {
+	if (m_bColliderOff)
+		return S_OK;
+
 	m_pEffect->SetWorld(XMMatrixIdentity());
 	m_pEffect->SetView(m_pGameInstance->Get_Transform_Matrix(CPipeLine::D3DTS_VIEW));
 	m_pEffect->SetProjection(m_pGameInstance->Get_Transform_Matrix(CPipeLine::D3DTS_PROJ));
@@ -128,7 +140,7 @@ HRESULT CCollider::Render()
 	m_pEffect->Apply(m_pContext);
 
 
-	m_pBounding->Render(m_pBatch, true == m_isCollision ? XMVectorSet(1.f, 0.f, 0.f, 1.f) : XMVectorSet(0.f, 1.f, 0.f, 1.f));
+	m_pBounding->Render(m_pBatch, true == m_bIsCollision ? XMVectorSet(1.f, 0.f, 0.f, 1.f) : XMVectorSet(0.f, 1.f, 0.f, 1.f));
 
 	return S_OK;
 }

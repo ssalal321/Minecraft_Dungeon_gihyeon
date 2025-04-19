@@ -14,6 +14,8 @@ public:
 		_float4x4*		CombinedWorldMatrix;
 		CGameObject*	pGameObject;
 
+		_bool*	pContainerObjAttacking = { nullptr };
+
 	}BOUNDING_DESC;
 
 protected:
