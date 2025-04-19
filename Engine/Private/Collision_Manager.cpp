@@ -52,11 +52,12 @@ void CCollision_Manager::Update()
 
             for (auto* colliderA : collidersInGroupA)
             {
-                if (!colliderA) continue;
+                if (!colliderA) continue;   // null 검사
+                // collider 켜져있나?
 
                 for (auto* colliderB : collidersInGroupB)
                 {
-                    if (!colliderB) continue;
+                    if (!colliderB) continue;  // null 검사
 
                     if (colliderA->Intersect(colliderB))
                     {
@@ -79,7 +80,6 @@ void CCollision_Manager::Update()
         }
     }
 }
-
 
 
 #ifdef _DEBUG

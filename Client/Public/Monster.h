@@ -49,7 +49,10 @@ public:
 	HRESULT		Render()							override;
 
 public:
-	vector<CState*>		Get_StateVec() { return m_StatesVec; }
+
+	void		Set_Attacking(_bool bAttacking) { m_bAttacking = bAttacking; }
+
+	_bool		Get_Attacking() const { return m_bAttacking; }
 
 	const _float4&		Get_NextPosition() const { return m_NextPosition; }
 
@@ -75,6 +78,7 @@ protected:
 	CNavigation*		m_pNavigationCom = { nullptr };
 
 	_float4				m_NextPosition = { 0.f, 0.f, 0.f, 1.f };
+	_bool				m_bAttacking = { false };
 
 protected:
 	HRESULT				Ready_Components();

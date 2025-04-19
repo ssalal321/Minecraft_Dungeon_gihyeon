@@ -17,6 +17,8 @@ HRESULT CPlayer_Roll::Init_State()
 
 void CPlayer_Roll::State_Enter()
 {
+	m_pColliderCom->Set_Collider_Off(true);
+
 	m_fRollingTime = 0.f;
 
 	m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::ROLL), false);
@@ -41,7 +43,9 @@ void CPlayer_Roll::State_Update(_float fTimeDelta)
 
 	// 0.7초 동안만 이동
 	if (m_fRollingTime <= 0.7f)
+	{
 		m_pTransformCom->Go_Straight(fTimeDelta, m_pNavigationCom);
+	}
 }
 
 
@@ -52,6 +56,7 @@ void CPlayer_Roll::State_Late_Update(_float fTimeDelta)
 
 void CPlayer_Roll::State_Exit()
 {
+	m_pColliderCom->Set_Collider_Off(false);
 }
 
 void CPlayer_Roll::Collision_Enter(CCollider* pOther)

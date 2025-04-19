@@ -43,6 +43,7 @@ void CZombie_Attack::State_Update(_float fTimeDelta)
     // 0.5초 지났을 때 공격 콜라이더 활성화 (1회만)
     if (!m_bHitbox_Activated && m_fAnimTimer > 0.5f)
     {
+        m_pZombie->Set_Attacking(true);
         pBoundingOBB->Edit_Bounding_Extent({ 0.f, 0.f, 0.4f });
         pBoundingOBB->Edit_Bounding_Center({ 0.f, 0.f, 0.4f });
         m_bHitbox_Activated = true;
@@ -54,6 +55,7 @@ void CZombie_Attack::State_Update(_float fTimeDelta)
         pBoundingOBB->Edit_Bounding_Extent({ 0.f, 0.f, -0.4f });
         pBoundingOBB->Edit_Bounding_Center({ 0.f, 0.f, -0.4f });
         m_bHitbox_Activated = false; // 다시 사용할 수 있게
+        m_pZombie->Set_Attacking(false);
     }
 
     // 애니메이션 끝나면 상태 전환

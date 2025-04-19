@@ -76,6 +76,8 @@ HRESULT CZombie::Ready_PartObjects()
 	BodyDesc.pGameObjectTag = TEXT("GameObject_Body_Zombie");
 	BodyDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	BodyDesc.pState = &m_iState;
+	BodyDesc.pContainerObject = this;
+	BodyDesc.pContainerObjAttacking = &m_bAttacking;
 
 	if (FAILED(__super::Add_PartObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Body_Zombie"), TEXT("Part_Body"), &BodyDesc)))
 		return E_FAIL;
