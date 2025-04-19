@@ -3,13 +3,14 @@
 #include "Component.h"
 
 BEGIN(Engine)
-	class CShader;
-	class CVIBuffer_Cube;
+class CShader;
+class CVIBuffer_Cube;
 
-	class ENGINE_DLL CModel final : public CComponent
+class ENGINE_DLL CModel final : public CComponent
 { 
 public:
 	enum TYPE { TYPE_NONANIM, TYPE_ANIM, TYPE_END };
+
 private:
 	CModel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CModel(const CModel& Prototype);

@@ -86,6 +86,11 @@ HRESULT CModel::Initialize_Prototype(TYPE eModelType, const _char* pModelFilePat
 
 HRESULT CModel::Initialize(void* pArg)
 {
+	for (auto& Mesh : m_Meshes)
+	{
+		Mesh->Initialize(pArg);
+	}
+
     return S_OK;
 }
 
@@ -121,12 +126,12 @@ _bool CModel::Play_Animation(_float fTimeDelta)
 	return isFinished;
 }
 
-_bool CModel::Picking_Model(const _float4& worldMousePos, const _float3& worldMouseRay, _float3& localPickedPos, const _float4x4& WorldMatrix) const
+_bool CModel::Picking_Model(const _float4& worldMousePos, const _float3& worldMouseRay,
+	_float3& localPickedPos, const _float4x4& WorldMatrix) const
 {
 	_float		fMinDist = FLT_MAX;
 	_bool		bHit = false;
 
-	// 월드 -> 로컬 좌표로 마우스 정보 변환
 	_matrix		matInvWorld = XMMatrixInverse(nullptr, XMLoadFloat4x4(&WorldMatrix));
 	_vector		vLocalOrigin = XMVector3TransformCoord(XMLoadFloat4(&worldMousePos), matInvWorld);
 	_vector		vLocalDir = XMVector3TransformNormal(XMLoadFloat3(&worldMouseRay), matInvWorld);
@@ -146,11 +151,11 @@ _bool CModel::Picking_Model(const _float4& worldMousePos, const _float3& worldMo
 		_float		fOutDist = {};
 
 		bMeshHit = pMesh->Picking_In_Mesh(localMousePos, localMouseRay, localPickedPosition, fOutDist);
-		
+
 		if (bMeshHit)
 		{
 			//pMesh->Check_BoundingBox_AABB(localMousePos, localMouseRay);
-			
+
 			if (fOutDist < fMinDist)
 			{
 				fMinDist = fOutDist;
@@ -162,6 +167,7 @@ _bool CModel::Picking_Model(const _float4& worldMousePos, const _float3& worldMo
 
 	return bHit;
 }
+
 
 _bool CModel::Picking_Vertex(const _float4& worldMousePos, const _float3& worldMouseRay, _float3& vOutPickedVertex, const _float4x4& WorldMatrix) const
 {
@@ -294,7 +300,8 @@ HRESULT CModel::Ready_Animations()
 	return S_OK;
 }
 
-CModel* CModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, TYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix)
+CModel* CModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, TYPE eType,
+					   const _char* pModelFilePath, _fmatrix PreTransformMatrix)
 {
 	CModel* pGameInstance = new CModel(pDevice, pContext);
 

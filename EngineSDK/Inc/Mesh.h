@@ -3,10 +3,17 @@
 #include "VIBuffer.h"
 
 BEGIN(Engine)
-	class CVIBuffer_Cube;
+class CVIBuffer_Cube;
 
-	class ENGINE_DLL CMesh final : public CVIBuffer
+class ENGINE_DLL CMesh final : public CVIBuffer
 {
+public:
+	typedef struct tagMesh
+	{
+		_bool bPickable = { false };
+
+	}MESH_DESC;
+
 private:
 	CMesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CMesh(const CMesh& Prototype);
@@ -58,6 +65,8 @@ private:
 
 	_float4x4			m_BoneMatrices[g_iMaxNumBones] = {};
 	vector<_float4x4>	m_OffsetMatrices;
+
+	_bool				m_bPickable = { false };
 
 private:
 	HRESULT		Ready_VertexBuffer_For_NonAnim(const aiMesh* pAIMesh, _fmatrix PreTransformMatrix);

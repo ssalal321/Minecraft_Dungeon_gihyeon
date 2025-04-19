@@ -1,4 +1,5 @@
 #include "Weapon.h"
+#include "Mesh.h"
 #include "GameInstance.h"
 
 CWeapon::CWeapon(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -99,8 +100,11 @@ HRESULT CWeapon::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Model */
+	CMesh::MESH_DESC	pMeshDesc = {};
+	pMeshDesc.bPickable = true;
+
 	if (nullptr == Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_GlaiveSteel"),
-		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom)))
+		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom), &pMeshDesc))
 		return E_FAIL;
 
 	/* Com_Collider */

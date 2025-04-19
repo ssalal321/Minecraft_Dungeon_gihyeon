@@ -40,6 +40,8 @@ void CState_Player::State_Priority_Update(_float fTimeDelta)
 	{
 		_float4 fWorldPickedPos = { 0.f, 0.f, 0.f, 1.f };
 
+
+
 		// 2. LoungeMap에 피킹 요청 (BoundingBox 충돌 체크)
 		if (m_pGameInstance->Picked_Model(fWorldPickedPos, TEXT("Prototype_GameObject_LoungeMap"),
 											LEVEL_GAMEPLAY, TEXT("Layer_BackGround")))

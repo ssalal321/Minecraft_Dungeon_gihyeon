@@ -1,6 +1,7 @@
 #include "Body_Player.h"
 #include "GameInstance.h"
 #include "Monster.h"
+#include "Mesh.h"
 
 #include "Player.h"
 
@@ -93,6 +94,9 @@ HRESULT CBody_Player::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Model */
+	/*CMesh::MESH_DESC pMeshDesc = {};
+	pMeshDesc.bPickable = true;*/
+
 	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Model_PlayerHex"),
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom)))
 		return E_FAIL;

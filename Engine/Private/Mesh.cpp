@@ -75,6 +75,12 @@ HRESULT CMesh::Initialize_Prototype(CModel::TYPE eModelType, const vector<class 
 
 HRESULT CMesh::Initialize(void* pArg)
 {
+	if (nullptr == pArg)
+		return S_OK;
+
+	MESH_DESC* pDesc = static_cast<MESH_DESC*>(pArg);
+	m_bPickable = pDesc->bPickable;
+
 	return S_OK;
 }
 
@@ -312,6 +318,9 @@ void CMesh::Compute_BoundingBox()
 
 _bool CMesh::Check_BoundingBox_AABB(const _float3& localMousePos, const _float3& localMouseRay)
 {
+	if (false == m_bPickable)
+		return false;
+
 	_float tMin = 0.0f, tMax = FLT_MAX;
 
 	/*if ( -56.f > m_vBoundingMin.x || m_vBoundingMax.x > 59.f ||
