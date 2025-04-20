@@ -52,6 +52,16 @@ const _float4x4* CModel::Get_CombinedTransformationMatrix(const _char* pBoneName
 	return (*iter)->Get_CombinedTransformationMatrix_Ptr();
 }
 
+_float CModel::Get_AnimCurrentTrackPosition() const
+{
+	return m_Animations[m_iCurrentAnimIndex]->Get_CurrentTrackPosition();
+}
+
+void CModel::Set_AnimCurrentTrackPosition(_float fAnimCurTrackPos)
+{
+	m_Animations[m_iCurrentAnimIndex]->Set_CurrentTrackPosition(fAnimCurTrackPos);
+}
+
 HRESULT CModel::Initialize_Prototype(TYPE eModelType, const _char* pModelFilePath, _fmatrix PreTransformMatrix)
 {
 	/* 어떤 설정? */

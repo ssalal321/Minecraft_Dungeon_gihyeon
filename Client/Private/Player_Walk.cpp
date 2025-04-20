@@ -35,11 +35,12 @@ void CPlayer_Walk::State_Update(_float fTimeDelta)
 	if (Change_State_To_Attack())
 		return;
 
-	Change_State_To_Walk();
-
 	Chase_Monster();
 
+	Change_State_To_Walk();	
+
 	Walk_Through_Destination(fTimeDelta);
+
 }
 
 void CPlayer_Walk::State_Late_Update(_float fTimeDelta)

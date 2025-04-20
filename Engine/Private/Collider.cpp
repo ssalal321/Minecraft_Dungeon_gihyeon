@@ -86,7 +86,6 @@ _bool CCollider::Intersect(CCollider* pTargetCollider)
 
 	pTargetCollider->Set_IsCollision(m_bIsCollision);
 
-
 	return m_bIsCollision;
 }
 

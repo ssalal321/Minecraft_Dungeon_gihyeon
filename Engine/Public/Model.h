@@ -21,6 +21,8 @@ public:
 
 	const _float4x4*	Get_CombinedTransformationMatrix(const _char* pBoneName) const;
 
+	_float	Get_AnimCurrentTrackPosition() const;
+
 	void	Set_InitAnimIndex(_uint iInitAnimIndex, _bool isLoop = true)
 	{
 		m_iCurrentAnimIndex = iInitAnimIndex;
@@ -34,6 +36,18 @@ public:
 		m_isLoop = isLoop;
 		m_fSpeedFactor = speedFactor;
 	}
+
+	void	Link_AnimationCombo(_uint iCurAnimIndex, _float fAnimCurTrackPos, _bool isLoop = true, _float speedFactor = 1.f)
+	{
+		m_iCurrentAnimIndex = iCurAnimIndex;
+		m_iNextAnimIndex = iCurAnimIndex;
+		m_isLoop = isLoop;
+		m_fSpeedFactor = speedFactor;
+
+		Set_AnimCurrentTrackPosition(fAnimCurTrackPos);
+	}
+
+	void	Set_AnimCurrentTrackPosition(_float fAnimCurTrackPos);
 
 public:
 	virtual HRESULT Initialize_Prototype(TYPE eModelType, const _char* pModelFilePath, _fmatrix PreTransformMatrix);
