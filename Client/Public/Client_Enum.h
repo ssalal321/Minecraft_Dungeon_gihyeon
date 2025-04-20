@@ -49,4 +49,15 @@ namespace Client
 		WALK,
 		STATE_END
 	};
+
+	enum class SKELETON_STATE
+	{
+		BOW_ACTION,
+		GET_HIT_FRONT,
+		IDLE,
+		HEAD_SPIN,  // Novelty
+		STUN,
+		WALK,
+		STATE_END
+	};
 }

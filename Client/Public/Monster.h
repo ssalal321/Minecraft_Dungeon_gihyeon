@@ -49,16 +49,18 @@ public:
 	HRESULT		Render()							override;
 
 public:
+	_bool	Get_Attacking() const { return m_bAttacking; }
+
+	const _float4& Get_NextPosition() const { return m_NextPosition; }
+
 	void	Set_Attacking(_bool bAttacking) { m_bAttacking = bAttacking; }
+
 	void	Set_NextPosition(const _float4& nextPosition)
 	{
 		m_NextPosition = nextPosition;
 	}
+
 	void	Set_Hovered(_bool bPicked) { m_bHovered = bPicked; }
-
-	_bool	Get_Attacking() const { return m_bAttacking; }
-
-	const _float4&	Get_NextPosition() const { return m_NextPosition; }
 
 	void		Change_State(ZOMBIE_STATE monsterState);
 	void		Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)	override;
@@ -79,6 +81,7 @@ protected:
 
 	_float4				m_NextPosition = { 0.f, 0.f, 0.f, 1.f };
 	_bool				m_bAttacking = { false };
+	_bool				m_bHoveringColl = { false };
 	_bool				m_bHovered = { false };
 
 

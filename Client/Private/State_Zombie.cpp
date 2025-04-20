@@ -45,23 +45,26 @@ void CState_Zombie::State_Exit()
 
 void CState_Zombie::Collision_Enter(CCollider* pOther)
 {
-	_wstring other = pOther->Get_OwnerTag();
+	if (Change_State_To_GetHit(pOther))
+		return;
 
-	std::wcerr << "[좀비와 " << other << " 충돌 Enter]" << std::endl;
+	/*_wstring other = pOther->Get_OwnerTag();
+
+	std::wcerr << "[좀비와 " << other << " 충돌 Enter]" << std::endl;*/
 }
 
 void CState_Zombie::Collision_Stay(CCollider* pOther)
 {
-	_wstring other = pOther->Get_OwnerTag();
+	/*_wstring other = pOther->Get_OwnerTag();
 
-	std::wcerr << "[좀비와 " << other << " 충돌 Stay]" << std::endl;
+	std::wcerr << "[좀비와 " << other << " 충돌 Stay]" << std::endl;*/
 }
 
 void CState_Zombie::Collision_Exit(CCollider* pOther)
 {
-	_wstring other = pOther->Get_OwnerTag();
+	/*_wstring other = pOther->Get_OwnerTag();
 
-	std::wcerr << "[좀비와 " << other << " 충돌 Exit]" << std::endl;
+	std::wcerr << "[좀비와 " << other << " 충돌 Exit]" << std::endl;*/
 }
 
 _bool CState_Zombie::Change_State_To_Attack()
@@ -101,6 +104,18 @@ _bool CState_Zombie::Change_State_To_Idle()
 	if (!playerInRange)
 	{
 		m_pZombie->Change_State(ZOMBIE_STATE::IDLE);
+		return true;
+	}
+
+	return false;
+}
+
+_bool CState_Zombie::Change_State_To_GetHit(CCollider* pOther)
+{
+	if (TEXT("PlayerWeapon_OBB") == pOther->Get_OwnerTag() && pOther->Get_OtherAttacking())
+	{
+		m_pZombie->Change_State(ZOMBIE_STATE::GET_HIT_FRONT);
+
 		return true;
 	}
 

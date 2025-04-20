@@ -98,6 +98,7 @@ void CPlayer_Glaive_Combo::State_Exit()
 void CPlayer_Glaive_Combo::Collision_Enter(CCollider* pOther)
 {
 	__super::Collision_Enter(pOther);
+
 }
 
 void CPlayer_Glaive_Combo::Collision_Stay(CCollider* pOther)

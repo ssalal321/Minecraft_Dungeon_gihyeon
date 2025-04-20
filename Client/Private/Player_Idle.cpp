@@ -34,9 +34,6 @@ void CPlayer_Idle::State_Update(_float fTimeDelta)
 
 	if (Change_State_To_Walk())
 		return;
-
-	/*if (Change_State_To_Attack())
-		return;*/
 }
 
 void CPlayer_Idle::State_Late_Update(_float fTimeDelta)
@@ -51,6 +48,8 @@ void CPlayer_Idle::State_Exit()
 void CPlayer_Idle::Collision_Enter(CCollider* pOther)
 {
 	__super::Collision_Enter(pOther);
+
+	//if (pOther->Get_OwnerTag())
 }
 
 void CPlayer_Idle::Collision_Stay(CCollider* pOther)
