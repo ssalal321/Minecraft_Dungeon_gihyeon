@@ -5,6 +5,11 @@
 #include "Player.h"
 #include "Body_Player.h"
 
+_float	CState_Player::m_fCombo_ElapsedTime = 0.f;
+_bool   CState_Player::m_bCombo1_Finished = { false };
+_bool   CState_Player::m_bCombo2_Finished = { false };
+_bool   CState_Player::m_bCombo3_Finished = { false };
+_bool   CState_Player::m_bComboInitiating = { false };
 
 CState_Player::CState_Player(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEPLAYER_DESC* pDesc)
 	: CState(pActor, pGameObjectDesc), m_pStatePlayerDesc(pDesc)
@@ -44,6 +49,8 @@ void CState_Player::State_Priority_Update(_float fTimeDelta)
 void CState_Player::State_Update(_float fTimeDelta)
 {
 	m_bAnimationFinished = m_pActorModelCom->Play_Animation(fTimeDelta);
+
+	Check_Combo_Timeout(fTimeDelta);
 }
 
 void CState_Player::State_Late_Update(_float fTimeDelta)
@@ -91,6 +98,7 @@ _bool CState_Player::Change_State_To_Walk()
 			LEVEL_GAMEPLAY, TEXT("Layer_BackGround")))
 		{
 			m_pPlayer->Set_NextPosition(fWorldPickedPos);
+			m_pPlayer->Set_Chasing(false, nullptr);
 			m_pPlayer->Change_State(PLAYER_STATE::WALK);
 
 			return true;
@@ -127,8 +135,8 @@ _bool CState_Player::Change_State_To_Attack()
 		_float fDistanceSq = XMVectorGetX(XMVector3LengthSq(vVecToMonster));
 		if (fDistanceSq < 16.f) // 4.f * 4.f
 		{
-			m_pPlayer->Set_Chasing(false, nullptr);
 			m_pPlayer->Change_State(PLAYER_STATE::GLAIVE_COMBO);
+			m_pPlayer->Set_Chasing(false, nullptr);
 
 			return true;
 		}
@@ -137,6 +145,34 @@ _bool CState_Player::Change_State_To_Attack()
 	return false;
 
 }
+
+void CState_Player::Check_Combo_Timeout(_float fTimeDelta)
+{
+	if (m_bComboInitiating && !m_bCombo3_Finished)
+	{
+		m_fCombo_ElapsedTime += fTimeDelta;
+
+		if (m_fCombo_ElapsedTime > 3.f)
+		{
+			Reset_Combo();
+		}
+	}
+}
+
+void CState_Player::Reset_Combo()
+{
+	m_bComboInitiating	= false;
+	m_fCombo_ElapsedTime = 0.f;
+
+	m_bCombo1_Finished = false;
+	m_bCombo2_Finished = false;
+	m_bCombo3_Finished = false;
+
+	m_fPrevAnimTrackPosition = 0.f;
+
+	std::wcerr << "[콤보 초기화 딩딩딩딩딩~]" << std::endl;
+}
+
 
 void CState_Player::Free()
 {

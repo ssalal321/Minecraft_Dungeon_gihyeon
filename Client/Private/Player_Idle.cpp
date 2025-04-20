@@ -29,11 +29,14 @@ void CPlayer_Idle::State_Update(_float fTimeDelta)
 {
 	__super::State_Update(fTimeDelta);
 
+	if (Change_State_To_Roll())
+		return;
+
 	if (Change_State_To_Walk())
 		return;
 
-	if (Change_State_To_Roll())
-		return;
+	/*if (Change_State_To_Attack())
+		return;*/
 }
 
 void CPlayer_Idle::State_Late_Update(_float fTimeDelta)

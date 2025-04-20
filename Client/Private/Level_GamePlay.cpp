@@ -80,7 +80,7 @@ void CLevel_GamePlay::Update(_float fTimeDelta)
     {
         pPrevMonster->Set_Hovered(false);
 
-        std::wcerr << "[휘바 끝XXXXXXXXXXX]" << std::endl;
+        //std::wcerr << "[휘바 끝XXXXXXXXXXX]" << std::endl;
     }
 
     // 3. 현재 Hovered 상태 설정 및 클릭 처리
@@ -141,7 +141,7 @@ void CLevel_GamePlay::Handle_Monster_Click(CMonster* pMonster)
 
     m_pPlayer->Set_Chasing(true, pMonsterTransform);
 
-    m_pPlayer->Change_State(PLAYER_STATE::WALK_GLAIVE);  // 무기 바꾸면 여기 상태도 수정해야 함
+    //m_pPlayer->Change_State(PLAYER_STATE::WALK);  // 무기 바꾸면 여기 상태도 수정해야 함
 }
 
 

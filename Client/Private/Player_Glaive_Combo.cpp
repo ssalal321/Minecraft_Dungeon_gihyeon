@@ -20,6 +20,8 @@ void CPlayer_Glaive_Combo::State_Enter()
 {
 	m_pPlayer->Set_Attacking(true);
 
+	m_pTransformCom->LookAt(m_pPlayer->Get_MonsterTransformCom()->Get_State(CTransform::STATE_POSITION));
+
 	if (!m_bCombo1_Finished)  // 처음 들어올 때
 	{
 		m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::GLAIVE_COMBO), false, 1.3f);
@@ -41,12 +43,16 @@ void CPlayer_Glaive_Combo::State_Priority_Update(_float fTimeDelta)
 void CPlayer_Glaive_Combo::State_Update(_float fTimeDelta)
 {
 	__super::State_Update(fTimeDelta);
+
 	_float fAnimCurTrackPos = m_pActorModelCom->Get_AnimCurrentTrackPosition();
 
 	if (!m_bCombo1_Finished && GLAIVE_COMBO1 <= fAnimCurTrackPos)  // GLAIVE_COMBO1까지만
 	{
 		m_fPrevAnimTrackPosition = GLAIVE_COMBO1;
 		m_bCombo1_Finished = true;
+
+		m_bComboInitiating = true;
+		m_fCombo_ElapsedTime = 0.f;
 
 		m_pPlayer->Change_State(PLAYER_STATE::IDLE);
 		return;
@@ -56,6 +62,9 @@ void CPlayer_Glaive_Combo::State_Update(_float fTimeDelta)
 	{
 		m_fPrevAnimTrackPosition = GLAIVE_COMBO2;
 		m_bCombo2_Finished = true;
+
+		m_bComboInitiating = true;
+		m_fCombo_ElapsedTime = 0.f;
 
 		m_pPlayer->Change_State(PLAYER_STATE::IDLE);
 		return;
@@ -78,14 +87,11 @@ void CPlayer_Glaive_Combo::State_Late_Update(_float fTimeDelta)
 void CPlayer_Glaive_Combo::State_Exit()
 {
 	m_pPlayer->Set_Attacking(false);
+	m_pPlayer->Set_Chasing(false, nullptr);
 
 	if (m_bCombo3_Finished)
 	{
-		m_fPrevAnimTrackPosition = 0.f;
-
-		m_bCombo1_Finished = { false };
-		m_bCombo2_Finished = { false };
-		m_bCombo3_Finished = { false };
+		Reset_Combo();
 	}
 }
 

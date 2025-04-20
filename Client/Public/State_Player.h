@@ -42,9 +42,13 @@ protected:
 
     _bool			        m_bAnimationFinished = { false };
     _bool                   m_bClickLock = { false };
-    _bool                   m_bCombo1_Finished = { false };
-    _bool                   m_bCombo2_Finished = { false };
-    _bool                   m_bCombo3_Finished = { false };
+
+    static _bool            m_bCombo1_Finished;
+    static _bool            m_bCombo2_Finished;
+    static _bool            m_bCombo3_Finished;
+    static _bool            m_bComboInitiating;
+    static _float           m_fCombo_ElapsedTime;
+
     _float                  m_fPrevAnimTrackPosition = {};
 
 protected:
@@ -52,6 +56,8 @@ protected:
     _bool   Change_State_To_Walk();
     _bool   Change_State_To_Roll();
     _bool   Change_State_To_Attack();
+    void    Check_Combo_Timeout(_float fTimeDelta);
+    void    Reset_Combo();
 
 public:
     void   Free()    override;

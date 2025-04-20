@@ -19,7 +19,7 @@ void CPlayer_Roll::State_Enter()
 
 	m_fRollingTime = 0.f;
 
-	m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::ROLL), false, 1.5f);
+	m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::ROLL), false, 1.4f);
 }
 
 void CPlayer_Roll::State_Priority_Update(_float fTimeDelta)
@@ -42,7 +42,7 @@ void CPlayer_Roll::State_Update(_float fTimeDelta)
 
 	m_fRollingTime += fTimeDelta;
 
-	m_pTransformCom->Go_Straight(fTimeDelta, m_pNavigationCom, 3.f);
+	m_pTransformCom->Go_Straight(fTimeDelta, m_pNavigationCom, 3.5f);
 }
 
 
