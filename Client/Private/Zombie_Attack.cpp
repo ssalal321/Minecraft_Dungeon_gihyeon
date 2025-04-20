@@ -2,10 +2,8 @@
 
 #include "Zombie.h"
 
-CZombie_Attack::CZombie_Attack(CGameObject* pActor, CModel* pZombieModelCom, CCollider* pColliderCom,
-								CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-								CTransform* pTransformCom, CNavigation* pNavigationCom)
-	: CState_Zombie(pActor, pZombieModelCom, pColliderCom, pGameObjectDesc, pTransformCom, pNavigationCom)
+CZombie_Attack::CZombie_Attack(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
+	: CState_Zombie(pActor, pGameObjectDesc, pDesc)
 {
 }
 
@@ -14,6 +12,8 @@ HRESULT CZombie_Attack::Init_State()
 	__super::Init_State();
 
 	m_pZombie = dynamic_cast<CZombie*>(m_pActor);
+	if (nullptr == m_pZombie)
+        return E_FAIL;
 
 	return S_OK;
 }
@@ -38,7 +38,7 @@ void CZombie_Attack::State_Update(_float fTimeDelta)
 
     m_fAnimTimer += fTimeDelta;
 
-    CBounding_OBB* pBoundingOBB = dynamic_cast<CBounding_OBB*>(m_pColliderCom->Get_Bounding());
+    CBounding_OBB* pBoundingOBB = dynamic_cast<CBounding_OBB*>(m_pColliderOBBCom->Get_Bounding());
 
     // 0.5초 지났을 때 공격 콜라이더 활성화 (1회만)
     if (!m_bHitbox_Activated && m_fAnimTimer > 0.5f)
@@ -87,24 +87,22 @@ void CZombie_Attack::State_Exit()
 
 void CZombie_Attack::Collision_Enter(CCollider* pOther)
 {
-	
+    __super::Collision_Enter(pOther);
 }
 
 void CZombie_Attack::Collision_Stay(CCollider* pOther)
 {
-
+    __super::Collision_Stay(pOther);
 }
 
 void CZombie_Attack::Collision_Exit(CCollider* pOther)
 {
-
+    __super::Collision_Exit(pOther);
 }
 
-CState_Monster* CZombie_Attack::Create(CGameObject* pActor, CModel* pZombieModelCom, CCollider* pColliderCom,
-										CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-										CTransform* pTransformCom, CNavigation* pNavigationCom)
+CState_Monster* CZombie_Attack::Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
 {
-	CZombie_Attack* pGameInstance = new CZombie_Attack(pActor, pZombieModelCom, pColliderCom, pGameObjectDesc, pTransformCom, pNavigationCom);
+	CZombie_Attack* pGameInstance = new CZombie_Attack(pActor, pGameObjectDesc, pDesc);
 
 	if (FAILED(pGameInstance->Init_State()))
 	{

@@ -6,9 +6,7 @@ BEGIN(Client)
 	class CPlayer_Idle final: public CState_Player
 {
 private:
-	CPlayer_Idle(CGameObject* pActor, CModel* pPlayerModelCom, CCollider* pColliderCom,
-                CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-                CTransform* pTransformCom, CNavigation* pNavigationCom);
+	CPlayer_Idle(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEPLAYER_DESC* pDesc);
 	~CPlayer_Idle() override = default;
 
 public:
@@ -28,9 +26,7 @@ private:
 
 
 public:
-    static CState_Player*  Create(CGameObject* pActor, CModel* pPlayerModelCom, CCollider* pColliderCom,
-                                    CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-                                    CTransform* pTransformCom, CNavigation* pNavigationCom);
+    static CState_Player*  Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEPLAYER_DESC* pDesc);
     void   Free()    override;
 };
 

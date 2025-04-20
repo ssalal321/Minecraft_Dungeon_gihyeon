@@ -1,10 +1,8 @@
 #include "Zombie_Sleep.h"
 #include "Zombie.h"
 
-CZombie_Sleep::CZombie_Sleep(CGameObject* pActor, CModel* pZombieModelCom, CCollider* pColliderCom,
-							CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-							CTransform* pTransformCom, CNavigation* pNavigationCom)
-	: CState_Zombie(pActor, pZombieModelCom, pColliderCom, pGameObjectDesc, pTransformCom, pNavigationCom)
+CZombie_Sleep::CZombie_Sleep(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
+	: CState_Zombie(pActor, pGameObjectDesc, pDesc)
 {
 }
 
@@ -13,6 +11,8 @@ HRESULT CZombie_Sleep::Init_State()
 	__super::Init_State();
 
 	m_pZombie = dynamic_cast<CZombie*>(m_pActor);
+	if (nullptr == m_pZombie)
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -52,26 +52,24 @@ void CZombie_Sleep::State_Exit()
 {
 }
 
-void CZombie_Sleep::Collision_Enter(CCollider* _other)
+void CZombie_Sleep::Collision_Enter(CCollider* pOther)
 {
-	
+	__super::Collision_Enter(pOther);
 }
 
 void CZombie_Sleep::Collision_Stay(CCollider* pOther)
 {
-	
+	__super::Collision_Stay(pOther);
 }
 
 void CZombie_Sleep::Collision_Exit(CCollider* pOther)
 {
-	
+	__super::Collision_Exit(pOther);
 }
 
-CState_Monster* CZombie_Sleep::Create(CGameObject* pActor, CModel* pZombieModelCom, CCollider* pColliderCom,
-										CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-										CTransform* pTransformCom, CNavigation* pNavigationCom)
+CState_Monster* CZombie_Sleep::Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
 {
-	CZombie_Sleep* pGameInstance = new CZombie_Sleep(pActor, pZombieModelCom, pColliderCom, pGameObjectDesc, pTransformCom, pNavigationCom);
+	CZombie_Sleep* pGameInstance = new CZombie_Sleep(pActor, pGameObjectDesc, pDesc);
 
 	if (FAILED(pGameInstance->Init_State()))
 	{

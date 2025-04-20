@@ -7,10 +7,19 @@ BEGIN(Client)
 
 class CState_Monster abstract: public CState
 {
+public:
+    typedef struct tagStateMonster
+    {
+        CModel*         pActorModelCom      = { nullptr };
+        CCollider*      pColliderOBBCom     = { nullptr };
+        CCollider*      pColliderSphereCom  = { nullptr };
+        CTransform*     pTransformCom       = { nullptr };
+        CNavigation*    pNavigationCom      = { nullptr };
+
+    }STATEMONSTER_DESC;
+
 protected:
-    CState_Monster(CGameObject* pActor, CModel* pMonsterModelCom, CCollider* pColliderCom,
-					CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-					CTransform* pTransformCom, CNavigation* pNavigationCom);
+    CState_Monster(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
 	~CState_Monster() override = default;
 
 public:
@@ -28,6 +37,10 @@ public:
 
 protected:
     CMonster::MONSTER_DESC*     m_pMonsterDesc = { nullptr };
+    STATEMONSTER_DESC*          m_pStateMonsterDesc = { nullptr };
+    CCollider*                  m_pColliderOBBCom = { nullptr };
+
+    CCollider*  m_pColliderSphereCom = { nullptr };
 
     _bool	m_bAnimationFinished = { false };
 

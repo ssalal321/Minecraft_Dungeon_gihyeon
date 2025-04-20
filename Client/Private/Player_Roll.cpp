@@ -1,10 +1,8 @@
 #include "Player_Roll.h"
 #include "Body_Player.h"
 
-CPlayer_Roll::CPlayer_Roll(CGameObject* pActor, CModel* pPlayerModelCom, CCollider* pColliderCom,
-							CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-							CTransform* pTransformCom, CNavigation* pNavigationCom)
-	: CState_Player(pActor, pPlayerModelCom, pColliderCom, pGameObjectDesc, pTransformCom, pNavigationCom)
+CPlayer_Roll::CPlayer_Roll(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEPLAYER_DESC* pDesc)
+	: CState_Player(pActor, pGameObjectDesc, pDesc)
 {
 }
 
@@ -17,7 +15,7 @@ HRESULT CPlayer_Roll::Init_State()
 
 void CPlayer_Roll::State_Enter()
 {
-	m_pColliderCom->Set_Collider_Off(true);
+	m_pColliderOBBCom->Set_Collider_Off(true);
 
 	m_fRollingTime = 0.f;
 
@@ -56,7 +54,7 @@ void CPlayer_Roll::State_Late_Update(_float fTimeDelta)
 
 void CPlayer_Roll::State_Exit()
 {
-	m_pColliderCom->Set_Collider_Off(false);
+	m_pColliderOBBCom->Set_Collider_Off(false);
 }
 
 void CPlayer_Roll::Collision_Enter(CCollider* pOther)
@@ -74,11 +72,9 @@ void CPlayer_Roll::Collision_Exit(CCollider* pOther)
 	__super::Collision_Exit(pOther);
 }
 
-CState_Player* CPlayer_Roll::Create(CGameObject* pActor, CModel* pPlayerModelCom, CCollider* pColliderCom,
-									CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-									CTransform* pTransformCom, CNavigation* pNavigationCom)
+CState_Player* CPlayer_Roll::Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEPLAYER_DESC* pDesc)
 {
-	CState_Player* pGameInstance = new CPlayer_Roll(pActor, pPlayerModelCom, pColliderCom, pGameObjectDesc, pTransformCom, pNavigationCom);
+	CPlayer_Roll* pGameInstance = new CPlayer_Roll(pActor, pGameObjectDesc, pDesc);
 
 	if (FAILED(pGameInstance->Init_State()))
 	{

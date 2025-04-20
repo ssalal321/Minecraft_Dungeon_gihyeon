@@ -32,11 +32,15 @@ public:
 	void		Late_Update(_float fTimeDelta)		override;
 	HRESULT		Render()							override;
 
+public:
+	void		Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState) override;
+
 private:	
 	CShader*			m_pShaderCom = { nullptr };
 	CModel*				m_pModelCom = { nullptr };
 
-	CCollider*			m_pColliderCom = { nullptr };
+	CCollider*			m_pColliderOBBCom = { nullptr };
+	CCollider*			m_pColliderSphereCom = { nullptr };
 
 	_uint				m_iPassIndex = {};
 

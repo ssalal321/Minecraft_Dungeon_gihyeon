@@ -8,9 +8,7 @@ BEGIN(Client)
 	class CState_Zombie abstract: public CState_Monster
 {
 protected:
-    CState_Zombie(CGameObject* pActor, CModel* pMonsterModelCom, CCollider* pColliderCom,
-                    CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-                    CTransform* pTransformCom, CNavigation* pNavigationCom);
+    CState_Zombie(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
 	~CState_Zombie() override = default;
 
 public:

@@ -5,12 +5,9 @@
 #include "Player.h"
 #include "Body_Player.h"
 
-_bool CState_Player::m_bAnimationFinished = false;
 
-CState_Player::CState_Player(CGameObject* pActor, CModel* pPlayerModelCom, CCollider* pColliderCom,
-							CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-							CTransform* pTransformCom, CNavigation* pNavigationCom)
-	: CState(pActor, pPlayerModelCom, pColliderCom, pGameObjectDesc, pTransformCom, pNavigationCom)
+CState_Player::CState_Player(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEPLAYER_DESC* pDesc)
+	: CState(pActor, pGameObjectDesc), m_pStatePlayerDesc(pDesc)
 {
 }
 
@@ -20,9 +17,14 @@ HRESULT CState_Player::Init_State()
 
 	m_pPlayerDesc = dynamic_cast<CPlayer::PLAYER_DESC*>(m_pGameObjectDesc);
 
-	if (nullptr == m_pPlayer || nullptr == m_pPlayerDesc ||
-		nullptr == m_pTransformCom || nullptr == m_pNavigationCom)
-		return E_FAIL;	
+	m_pActorModelCom = m_pStatePlayerDesc->pActorModelCom;
+	m_pColliderOBBCom	 = m_pStatePlayerDesc->pColliderOBBCom;
+	m_pTransformCom  = m_pStatePlayerDesc->pTransformCom;
+	m_pNavigationCom = m_pStatePlayerDesc->pNavigationCom;
+
+	if (nullptr == m_pPlayer || nullptr == m_pPlayerDesc || nullptr == m_pActorModelCom ||
+		nullptr == m_pTransformCom || nullptr == m_pNavigationCom || nullptr == m_pColliderOBBCom)
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -72,23 +74,23 @@ void CState_Player::State_Exit()
 
 void CState_Player::Collision_Enter(CCollider* pOther)
 {
-	_wstring other = pOther->Get_OwnerTag();
+	/*_wstring other = pOther->Get_OwnerTag();
 
-	std::wcerr << "[플레이어와 " << other << " 충돌 Enter]" << std::endl;
+	std::wcerr << "[플레이어와 " << other << " 충돌 Enter]" << std::endl;*/
 }
 
 void CState_Player::Collision_Stay(CCollider* pOther)
 {
-	_wstring other = pOther->Get_OwnerTag();
+	/*_wstring other = pOther->Get_OwnerTag();
 
-	std::wcerr << "[플레이어와 " << other << " 충돌 Stay]" << std::endl;
+	std::wcerr << "[플레이어와 " << other << " 충돌 Stay]" << std::endl;*/
 }
 
 void CState_Player::Collision_Exit(CCollider* pOther)
 {
-	_wstring other = pOther->Get_OwnerTag();
+	/*_wstring other = pOther->Get_OwnerTag();
 
-	std::wcerr << "[플레이어와 " << other << " 충돌 Exit]" << std::endl;
+	std::wcerr << "[플레이어와 " << other << " 충돌 Exit]" << std::endl;*/
 }
 
 

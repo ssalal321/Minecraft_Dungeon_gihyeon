@@ -4,10 +4,8 @@
 
 #include "Zombie.h"
 
-CZombie_Idle::CZombie_Idle(CGameObject* pActor, CModel* pZombieModelCom, CCollider* pColliderCom,
-	CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-	CTransform* pTransformCom, CNavigation* pNavigationCom)
-	: CState_Zombie(pActor, pZombieModelCom, pColliderCom, pGameObjectDesc, pTransformCom, pNavigationCom)
+CZombie_Idle::CZombie_Idle(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
+	: CState_Zombie(pActor, pGameObjectDesc, pDesc)
 {
 }
 
@@ -16,6 +14,8 @@ HRESULT CZombie_Idle::Init_State()
 	__super::Init_State();
 
 	m_pZombie = dynamic_cast<CZombie*>(m_pActor);
+	if (nullptr == m_pZombie)
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -75,24 +75,22 @@ void CZombie_Idle::State_Exit()
 
 void CZombie_Idle::Collision_Enter(CCollider* pOther)
 {
-	
+	__super::Collision_Enter(pOther);
 }
 
 void CZombie_Idle::Collision_Stay(CCollider* pOther)
 {
-	
+	__super::Collision_Stay(pOther);
 }
 
 void CZombie_Idle::Collision_Exit(CCollider* pOther)
 {
-	
+	__super::Collision_Exit(pOther);
 }
 
-CState_Monster* CZombie_Idle::Create(CGameObject* pActor, CModel* pZombieModelCom, CCollider* pColliderCom,
-									 CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, 
-									 CTransform* pTransformCom, CNavigation* pNavigationCom)
+CState_Monster* CZombie_Idle::Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
 {
-	CZombie_Idle* pGameInstance = new CZombie_Idle(pActor, pZombieModelCom, pColliderCom, pGameObjectDesc, pTransformCom, pNavigationCom);
+	CZombie_Idle* pGameInstance = new CZombie_Idle(pActor, pGameObjectDesc, pDesc);
 
 	if (FAILED(pGameInstance->Init_State()))
 	{

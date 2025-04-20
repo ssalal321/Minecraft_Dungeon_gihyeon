@@ -7,9 +7,7 @@ BEGIN(Client)
 class CZombie_GetHit final: public CState_Zombie
 {
 private:
-    CZombie_GetHit(CGameObject* pActor, CModel* pZombieModelCom, CCollider* pColliderCom,
-                    CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-                    CTransform* pTransformCom, CNavigation* pNavigationCom);
+    CZombie_GetHit(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
 	~CZombie_GetHit() override = default;
 
 public:
@@ -29,9 +27,7 @@ private:
 
 
 public:
-    static CState_Monster*  Create(CGameObject* pActor, CModel* pZombieModelCom, CCollider* pColliderCom,
-                                    CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-                                    CTransform* pTransformCom, CNavigation* pNavigationCom);
+    static CState_Monster*  Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
     void   Free()    override;
 };
 

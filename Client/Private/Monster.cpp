@@ -4,6 +4,8 @@
 #include "FSM.h"
 #include "Player.h"
 
+_bool CMonster::m_bHovered = { false };
+
 CMonster::CMonster(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CContainerObject ( pDevice, pContext )
 {

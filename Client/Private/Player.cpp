@@ -162,10 +162,16 @@ HRESULT CPlayer::Ready_States()
 
 	CModel* pPlayerModel  = dynamic_cast<CModel*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Model")));
 	CCollider* pCollider = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_OBB")));
-	
-	m_StatesVec[static_cast<_uint>(PLAYER_STATE::IDLE)] = CPlayer_Idle::Create(this, pPlayerModel, pCollider, m_pPlayerInfo, m_pTransformCom, m_pNavigationCom);
-	m_StatesVec[static_cast<_uint>(PLAYER_STATE::WALK)] = CPlayer_Walk::Create(this, pPlayerModel, pCollider, m_pPlayerInfo, m_pTransformCom, m_pNavigationCom);
-	m_StatesVec[static_cast<_uint>(PLAYER_STATE::ROLL)] = CPlayer_Roll::Create(this, pPlayerModel, pCollider, m_pPlayerInfo, m_pTransformCom, m_pNavigationCom);
+
+	CState_Player::STATEPLAYER_DESC		pStatePlayerDesc = {};
+	pStatePlayerDesc.pColliderOBBCom	= pCollider;
+	pStatePlayerDesc.pActorModelCom		= pPlayerModel;
+	pStatePlayerDesc.pNavigationCom		= m_pNavigationCom;
+	pStatePlayerDesc.pTransformCom		= m_pTransformCom;
+
+	m_StatesVec[static_cast<_uint>(PLAYER_STATE::IDLE)] = CPlayer_Idle::Create(this, m_pPlayerInfo, &pStatePlayerDesc);
+	m_StatesVec[static_cast<_uint>(PLAYER_STATE::WALK)] = CPlayer_Walk::Create(this, m_pPlayerInfo, &pStatePlayerDesc);
+	m_StatesVec[static_cast<_uint>(PLAYER_STATE::ROLL)] = CPlayer_Roll::Create(this, m_pPlayerInfo, &pStatePlayerDesc);
 
 	m_pPlayerFSM = FSM::Create();
 

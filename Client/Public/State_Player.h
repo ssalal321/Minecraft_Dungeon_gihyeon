@@ -7,10 +7,18 @@ BEGIN(Client)
 
 class CState_Player abstract: public CState
 {
+public:
+    typedef struct tagStatePlayer
+    {
+        CModel*         pActorModelCom = { nullptr };
+        CCollider*      pColliderOBBCom = { nullptr };
+        CTransform*     pTransformCom = { nullptr };
+        CNavigation*    pNavigationCom = { nullptr };
+
+    }STATEPLAYER_DESC;
+
 protected:
-    CState_Player(CGameObject* pActor, CModel* pPlayerModelCom, CCollider* pColliderCom,
-                CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-                CTransform* pTransformCom, CNavigation* pNavigationCom);
+    CState_Player(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEPLAYER_DESC* pDesc);
 	~CState_Player() override = default;
 
 public:
@@ -29,8 +37,10 @@ public:
 protected:
     CPlayer*                m_pPlayer = { nullptr };
     CPlayer::PLAYER_DESC*   m_pPlayerDesc = { nullptr };
+    STATEPLAYER_DESC*       m_pStatePlayerDesc = { nullptr };
+    CCollider*              m_pColliderOBBCom = { nullptr };
 
-    static  _bool			m_bAnimationFinished;
+    _bool			        m_bAnimationFinished = { false };
     _bool                   m_bClickLock = { false };
 
 public:

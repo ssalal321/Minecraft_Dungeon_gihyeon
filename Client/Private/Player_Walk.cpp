@@ -1,10 +1,8 @@
 #include "Player_Walk.h"
 #include "Body_Player.h"
 
-CPlayer_Walk::CPlayer_Walk(CGameObject* pActor, CModel* pPlayerModelCom, CCollider* pColliderCom,
-							CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-							CTransform* pTransformCom, CNavigation* pNavigationCom)
-	: CState_Player(pActor, pPlayerModelCom, pColliderCom, pGameObjectDesc, pTransformCom, pNavigationCom)
+CPlayer_Walk::CPlayer_Walk(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEPLAYER_DESC* pDesc)
+	: CState_Player(pActor, pGameObjectDesc, pDesc)
 {
 }
 
@@ -76,11 +74,9 @@ void CPlayer_Walk::Collision_Exit(CCollider* pOther)
 	__super::Collision_Exit(pOther);
 }
 
-CState_Player* CPlayer_Walk::Create(CGameObject* pActor, CModel* pPlayerModelCom, CCollider* pColliderCom,
-									CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-									CTransform* pTransformCom, CNavigation* pNavigationCom)
+CState_Player* CPlayer_Walk::Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEPLAYER_DESC* pDesc)
 {
-	CState_Player* pGameInstance = new CPlayer_Walk(pActor, pPlayerModelCom, pColliderCom, pGameObjectDesc, pTransformCom, pNavigationCom);
+	CPlayer_Walk* pGameInstance = new CPlayer_Walk(pActor, pGameObjectDesc, pDesc);
 
 	if (FAILED(pGameInstance->Init_State()))
 	{
