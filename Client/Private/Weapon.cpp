@@ -123,7 +123,7 @@ HRESULT CWeapon::Ready_Components()
 	if (nullptr == pColliderCom)
 		return E_FAIL;
 
-	m_pGameInstance->Add_ColliderCom(pColliderCom, TEXT("Glaive"), TEXT("Player"));
+	m_pGameInstance->Add_ColliderCom(pColliderCom, TEXT("PlayerWeapon_OBB"), TEXT("Player"));
 
 	return S_OK;
 }

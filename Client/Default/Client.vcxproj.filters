@@ -130,6 +130,9 @@
     <Filter Include="02.GameObjects\Player\02. State\Player_Attack\Player_Glaive_Combo">
       <UniqueIdentifier>{bc024a76-42c2-4c9a-9ecd-4c55df8757f5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Player\02. State\Player_GetHit">
+      <UniqueIdentifier>{ec2f2eb7-86f5-4d82-b48b-db550ed92c84}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -255,6 +258,9 @@
     <ClInclude Include="..\Public\Player_Glaive_Combo.h">
       <Filter>02.GameObjects\Player\02. State\Player_Attack\Player_Glaive_Combo</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Player_GetHit.h">
+      <Filter>02.GameObjects\Player\02. State\Player_GetHit</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -377,6 +383,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Player_Glaive_Combo.cpp">
       <Filter>02.GameObjects\Player\02. State\Player_Attack\Player_Glaive_Combo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player_GetHit.cpp">
+      <Filter>02.GameObjects\Player\02. State\Player_GetHit</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

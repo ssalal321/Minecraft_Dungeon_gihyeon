@@ -19,7 +19,7 @@ void CPlayer_Roll::State_Enter()
 
 	m_fRollingTime = 0.f;
 
-	m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::ROLL), false, 1.4f);
+	m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::ROLL), false, 1.3f);
 }
 
 void CPlayer_Roll::State_Priority_Update(_float fTimeDelta)
@@ -36,8 +36,8 @@ void CPlayer_Roll::State_Update(_float fTimeDelta)
 		if (Change_State_To_Walk())
 			return;
 
-		m_pPlayer->Change_State(PLAYER_STATE::IDLE);
-		return;
+		if (Change_State_To_Idle())
+			return;
 	}
 
 	m_fRollingTime += fTimeDelta;

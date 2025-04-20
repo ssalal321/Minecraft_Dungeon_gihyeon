@@ -63,6 +63,9 @@ void CState_Player::State_Exit()
 
 void CState_Player::Collision_Enter(CCollider* pOther)
 {
+	if (Change_State_To_GetHitFront(pOther))
+		return;
+
 	/*_wstring other = pOther->Get_OwnerTag();
 
 	std::wcerr << "[플레이어와 " << other << " 충돌 Enter]" << std::endl;*/
@@ -84,6 +87,7 @@ void CState_Player::Collision_Exit(CCollider* pOther)
 
 _bool CState_Player::Change_State_To_Idle()
 {
+	m_pPlayer->Change_State(PLAYER_STATE::IDLE);
 	return true;
 }
 
@@ -144,6 +148,18 @@ _bool CState_Player::Change_State_To_Attack()
 
 	return false;
 
+}
+
+_bool CState_Player::Change_State_To_GetHitFront(CCollider* pOther)
+{
+	if (TEXT("MonsterBody_OBB") == pOther->Get_OwnerTag() && pOther->Get_OtherAttacking())
+	{
+		m_pPlayer->Change_State(PLAYER_STATE::GET_HIT_FRONT);
+
+		return true;
+	}
+
+	return false;
 }
 
 void CState_Player::Check_Combo_Timeout(_float fTimeDelta)

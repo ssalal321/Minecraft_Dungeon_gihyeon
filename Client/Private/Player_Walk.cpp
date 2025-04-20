@@ -81,9 +81,8 @@ void CPlayer_Walk::Walk_Through_Destination(_float fTimeDelta)
 
 	if (fDist < 0.1f)
 	{
-		m_pPlayer->Change_State(PLAYER_STATE::IDLE);
-
-		return;
+		if (Change_State_To_Idle())
+			return;
 	}
 
 	m_pTransformCom->LookAt(vNextPos);
