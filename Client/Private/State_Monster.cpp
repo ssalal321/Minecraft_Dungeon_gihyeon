@@ -3,6 +3,8 @@
 #include <iostream>
 #include <ostream>
 
+#include "Player.h"
+
 //_bool CState_Monster::m_bAnimationFinished = false;
 
 CState_Monster::CState_Monster(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
@@ -38,13 +40,6 @@ void CState_Monster::State_Priority_Update(_float fTimeDelta)
 
 void CState_Monster::State_Update(_float fTimeDelta)
 {
-	_float4  fWorldMousePos = {};
-	_float3  fWorldMouseRay = {};
-
-	m_pGameInstance->Compute_MouseRay(fWorldMousePos, fWorldMouseRay);
-
-
-
 	m_bAnimationFinished = m_pActorModelCom->Play_Animation(fTimeDelta);
 }
 

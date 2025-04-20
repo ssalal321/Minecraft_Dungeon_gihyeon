@@ -35,28 +35,10 @@ void CState_Player::State_Enter()
 
 void CState_Player::State_Priority_Update(_float fTimeDelta)
 {
+#ifdef _DEBUG
 	if (m_pGameInstance->Key_Down(VK_F1))
 		m_bClickLock = !m_bClickLock;
-
-	if (m_pGameInstance->Get_Key(VK_LBUTTON) && !m_bClickLock)
-	{
-		_float4 fWorldPickedPos = { 0.f, 0.f, 0.f, 1.f };
-
-
-
-		// 2. LoungeMap에 피킹 요청 (BoundingBox 충돌 체크)
-		if (m_pGameInstance->Picked_Model(fWorldPickedPos, TEXT("Prototype_GameObject_LoungeMap"),
-											LEVEL_GAMEPLAY, TEXT("Layer_BackGround")))
-		{
-			m_pPlayer->Set_NextPosition(fWorldPickedPos);
-			m_pPlayer->Change_State(PLAYER_STATE::WALK);
-		}
-	}
-
-	if (m_pGameInstance->Key_Down(VK_SPACE))
-	{
-		m_pPlayer->Change_State(PLAYER_STATE::ROLL);
-	}	
+#endif
 }
 
 void CState_Player::State_Update(_float fTimeDelta)
@@ -93,6 +75,68 @@ void CState_Player::Collision_Exit(CCollider* pOther)
 	std::wcerr << "[플레이어와 " << other << " 충돌 Exit]" << std::endl;*/
 }
 
+_bool CState_Player::Change_State_To_Idle()
+{
+	return true;
+}
+
+_bool CState_Player::Change_State_To_Walk()
+{
+	if (m_pGameInstance->Get_Key(VK_LBUTTON) && !m_bClickLock)
+	{
+		_float4 fWorldPickedPos = { 0.f, 0.f, 0.f, 1.f };
+
+		// 2. LoungeMap에 피킹 요청 (BoundingBox 충돌 체크)
+		if (m_pGameInstance->Picked_Model(fWorldPickedPos, TEXT("Prototype_GameObject_LoungeMap"),
+			LEVEL_GAMEPLAY, TEXT("Layer_BackGround")))
+		{
+			m_pPlayer->Set_NextPosition(fWorldPickedPos);
+			m_pPlayer->Change_State(PLAYER_STATE::WALK);
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
+_bool CState_Player::Change_State_To_Roll()
+{
+	if (m_pGameInstance->Key_Down(VK_SPACE))
+	{
+		m_pPlayer->Change_State(PLAYER_STATE::ROLL);
+
+		return true;
+	}
+
+	return false;
+}
+
+_bool CState_Player::Change_State_To_Attack()
+{
+	if (m_pPlayer->Get_Chasing())
+	{
+		CTransform* pMonsterTransformCom = m_pPlayer->Get_MonsterTransformCom();
+		_float4 pMonsterPos = {};
+		XMStoreFloat4(&pMonsterPos, pMonsterTransformCom->Get_State(CTransform::STATE_POSITION));
+
+		_vector  vPlayerPos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+		_vector  vMonsterPos = pMonsterTransformCom->Get_State(CTransform::STATE_POSITION);
+		_vector  vVecToMonster = vMonsterPos - vPlayerPos;
+
+		_float fDistanceSq = XMVectorGetX(XMVector3LengthSq(vVecToMonster));
+		if (fDistanceSq < 9.f) // 3.f * 3.f
+		{
+			m_pPlayer->Set_Chasing(false, nullptr);
+			m_pPlayer->Change_State(PLAYER_STATE::GLAIVE_COMBO);
+
+			return true;
+		}
+	}
+
+	return false;
+
+}
 
 void CState_Player::Free()
 {

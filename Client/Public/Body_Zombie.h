@@ -40,7 +40,6 @@ private:
 	CModel*				m_pModelCom = { nullptr };
 
 	CCollider*			m_pColliderOBBCom = { nullptr };
-	CCollider*			m_pColliderSphereCom = { nullptr };
 
 	_uint				m_iPassIndex = {};
 

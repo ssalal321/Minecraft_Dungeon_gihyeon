@@ -19,12 +19,12 @@ void CPlayer_Roll::State_Enter()
 
 	m_fRollingTime = 0.f;
 
-	m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::ROLL), false);
+	m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::ROLL), false, 1.5f);
 }
 
 void CPlayer_Roll::State_Priority_Update(_float fTimeDelta)
 {
-	//__super::State_Priority_Update(fTimeDelta);
+	__super::State_Priority_Update(fTimeDelta);
 }
 
 void CPlayer_Roll::State_Update(_float fTimeDelta)
@@ -33,17 +33,16 @@ void CPlayer_Roll::State_Update(_float fTimeDelta)
 
 	if (m_bAnimationFinished)
 	{
+		if (Change_State_To_Walk())
+			return;
+
 		m_pPlayer->Change_State(PLAYER_STATE::IDLE);
 		return;
 	}
 
 	m_fRollingTime += fTimeDelta;
 
-	// 0.7초 동안만 이동
-	if (m_fRollingTime <= 0.7f)
-	{
-		m_pTransformCom->Go_Straight(fTimeDelta, m_pNavigationCom);
-	}
+	m_pTransformCom->Go_Straight(fTimeDelta, m_pNavigationCom, 3.f);
 }
 
 

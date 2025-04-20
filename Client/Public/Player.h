@@ -58,8 +58,15 @@ public:
 	{
 		m_NextPosition = nextPosition;
 	}
+	void	Set_Chasing(_bool bChasing, CTransform* pMonsterTransformCom)
+	{
+		m_bChasing = bChasing;
+		m_pMonsterTransformCom = pMonsterTransformCom;
+	}
 
 	const _float4&	Get_NextPosition() const { return m_NextPosition; }
+	_bool			Get_Chasing() const { return m_bChasing; }
+	CTransform*		Get_MonsterTransformCom() const { return m_pMonsterTransformCom; }
 
 public:
 	void	Change_State(PLAYER_STATE playerState);
@@ -76,6 +83,8 @@ private:
 
 	_float4				m_NextPosition	= {0.f, 0.f, 0.f, 1.f};
 	_bool				m_bAttacking	= { false };
+	_bool				m_bChasing		= { false };
+	CTransform*			m_pMonsterTransformCom = { nullptr };
 
 private:
 	HRESULT		Ready_Components();

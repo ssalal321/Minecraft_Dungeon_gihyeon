@@ -54,7 +54,7 @@ public:
 	{
 		m_NextPosition = nextPosition;
 	}
-	void	Set_Hovered(_bool bHovered) { m_bHovered = bHovered; }
+	void	Set_Hovered(_bool bPicked) { m_bHovered = bPicked; }
 
 	_bool	Get_Attacking() const { return m_bAttacking; }
 
@@ -75,10 +75,11 @@ protected:
 	vector<CState*>     m_StatesVec;
 
 	CNavigation*		m_pNavigationCom = { nullptr };
+	CCollider*			m_pColliderSphereCom = { nullptr };
 
 	_float4				m_NextPosition = { 0.f, 0.f, 0.f, 1.f };
 	_bool				m_bAttacking = { false };
-	static _bool		m_bHovered;
+	_bool				m_bHovered = { false };
 
 
 protected:

@@ -43,6 +43,12 @@ protected:
     _bool			        m_bAnimationFinished = { false };
     _bool                   m_bClickLock = { false };
 
+protected:
+    _bool   Change_State_To_Idle();
+    _bool   Change_State_To_Walk();
+    _bool   Change_State_To_Roll();
+    _bool   Change_State_To_Attack();
+
 public:
     void   Free()    override;
 };

@@ -22,9 +22,11 @@ void CBounding_Sphere::Update(_fmatrix WorldMatrix)
 	m_pLocalDesc->Transform(*m_pDesc, WorldMatrix);
 }
 
-_bool CBounding_Sphere::Intersect(COLLIDER eColliderType, CBounding* pTargetBounding)
+_bool CBounding_Sphere::Intersect(COLLIDER eColliderType, CBounding* pTargetBounding, void* pArg)
 {
-	void* pTargetDesc = pTargetBounding->Get_Desc();
+	void* pTargetDesc = nullptr;
+	if (pTargetBounding)
+		pTargetDesc = pTargetBounding->Get_Desc();
 
 	_bool		isColl = { false };
 
@@ -38,6 +40,15 @@ _bool CBounding_Sphere::Intersect(COLLIDER eColliderType, CBounding* pTargetBoun
 		break;
 	case COLLIDER::TYPE_SPHERE:
 		isColl = m_pDesc->Intersects(*static_cast<BoundingSphere*>(pTargetDesc));
+		break;
+
+	case COLLIDER::TYPE_RAY:
+		{
+			RayDesc*	pRayDesc = static_cast<RayDesc*>(pArg);
+			_fvector	vMousePos = XMLoadFloat3(&pRayDesc->MousePos);
+			_fvector	vMouseRay = XMLoadFloat3(&pRayDesc->MouseRay);
+			isColl = m_pDesc->Intersects(vMousePos, vMouseRay, *pRayDesc->fDist);
+		}
 		break;
 	}
 

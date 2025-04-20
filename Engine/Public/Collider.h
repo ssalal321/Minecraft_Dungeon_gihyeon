@@ -24,9 +24,11 @@ public:
 	void	Set_Collider_Off(_bool ColliderOff) { m_bColliderOff = ColliderOff; }
 
 	const _wstring&	Get_OwnerTag() { return m_strOwnerTag; }
+	COLLIDER	Get_ColliderType() const { return m_eColliderType; }
 	CBounding*	Get_Bounding() const { return m_pBounding; }
 	_bool		Get_Collider_Off() const { return m_bColliderOff; }
 	_bool		Get_OtherAttacking() const { return *m_bContainerObjAttacking; }
+	CGameObject* Get_OwnerObject() const { return m_pOwnerGameObject; }
 
 public:
 	virtual HRESULT Initialize_Prototype(COLLIDER eColliderType);

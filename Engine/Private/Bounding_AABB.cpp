@@ -28,7 +28,7 @@ void CBounding_AABB::Update(_fmatrix WorldMatrix)
 	m_pLocalDesc->Transform(*m_pDesc, TransformMatrix);
 }
 
-_bool CBounding_AABB::Intersect(COLLIDER eColliderType, CBounding* pTargetBounding)
+_bool CBounding_AABB::Intersect(COLLIDER eColliderType, CBounding* pTargetBounding, void* pRayArg)
 {
 	void* pTargetDesc = pTargetBounding->Get_Desc();
 

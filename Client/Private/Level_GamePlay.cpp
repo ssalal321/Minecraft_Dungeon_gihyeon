@@ -1,5 +1,8 @@
 #include "Level_GamePlay.h"
 
+#include <iostream>
+#include <ostream>
+#include <PartObject.h>
 #include <UI_Image.h>
 
 #include "GameInstance.h"
@@ -56,7 +59,91 @@ void CLevel_GamePlay::Update(_float fTimeDelta)
         CPlayer* pPlayerHex = dynamic_cast<CPlayer*>(pPlayer);
         pPlayerHex->Show_Player_Inventory(bShowInventory);
     }*/
+
+#ifdef _DEBUG
+    if (m_pGameInstance->Key_Down(VK_F1))  // 아예 전체 전역변수로 만들어야겠다
+        m_bClickLock = !m_bClickLock;
+#endif
+
+    _float4     fWorldMousePos = {};
+    _float3     fWorldMouseRay = {};
+    m_pGameInstance->Compute_MouseRay(fWorldMousePos, fWorldMouseRay);
+
+    // 1. 현재 가장 가까운 Monster collider 찾기
+    CCollider* pClosestCollider = Get_Closest_Collider(fWorldMousePos, fWorldMouseRay);
+    CMonster* pPrevMonster = m_pPickedMonster;
+    CMonster* pCurrMonster = pClosestCollider ?
+							dynamic_cast<CMonster*>(pClosestCollider->Get_OwnerObject()) : nullptr;
+
+    // 2. 이전 Hovered 상태 해제
+    if (pPrevMonster && pPrevMonster != pCurrMonster)
+    {
+        pPrevMonster->Set_Hovered(false);
+
+        std::wcerr << "[휘바 끝XXXXXXXXXXX]" << std::endl;
+    }
+
+    // 3. 현재 Hovered 상태 설정 및 클릭 처리
+    if (pCurrMonster)
+    {
+        pCurrMonster->Set_Hovered(true);
+        m_pPickedMonster = pCurrMonster;
+
+        std::wcerr << "[휘바휘바]" << std::endl;
+
+        if (m_pGameInstance->Get_Key(VK_LBUTTON) && !m_bClickLock)
+        {
+            Handle_Monster_Click(pCurrMonster);
+        }
+    }
 }
+
+CCollider* CLevel_GamePlay::Get_Closest_Collider(const _float4& mousePos, const _float3& mouseRay)
+{
+    unordered_map<_wstring, vector<CCollider*>> colliders = *m_pGameInstance->Get_Colliders();
+    auto it = colliders.find(TEXT("Monster"));
+    if (it == colliders.end()) return nullptr;
+
+    CCollider* pClosest = nullptr;
+    _float minDist = FLT_MAX;
+
+    for (auto& pCollider : it->second)
+    {
+        if (pCollider->Get_ColliderType() != COLLIDER::TYPE_SPHERE)
+            continue;
+
+        _float fDist = 0.f;
+        CBounding_Sphere::RayDesc rayDesc = {};
+        rayDesc.MousePos = { mousePos.x, mousePos.y, mousePos.z };
+        rayDesc.MouseRay = mouseRay;
+        rayDesc.fDist = &fDist;
+
+        if (pCollider->Get_Bounding()->Intersect(COLLIDER::TYPE_RAY, nullptr, &rayDesc))
+        {
+            if (fDist < minDist)
+            {
+                minDist = fDist;
+                pClosest = pCollider;
+            }
+        }
+    }
+
+    return pClosest;
+}
+
+
+void CLevel_GamePlay::Handle_Monster_Click(CMonster* pMonster)
+{
+    if (!pMonster) return;
+	
+    CTransform* pMonsterTransform = dynamic_cast<CTransform*>(pMonster->Find_Component(TEXT("Com_Transform")));
+    if (!pMonsterTransform) return;
+
+    m_pPlayer->Set_Chasing(true, pMonsterTransform);
+
+    m_pPlayer->Change_State(PLAYER_STATE::WALK_GLAIVE);  // 무기 바꾸면 여기 상태도 수정해야 함
+}
+
 
 HRESULT CLevel_GamePlay::Render()
 {
@@ -120,6 +207,11 @@ HRESULT CLevel_GamePlay::Ready_Layer_Player(const _wstring& strLayerTag)
 {
     if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerHex"),
         LEVEL_GAMEPLAY, strLayerTag)))
+        return E_FAIL;
+
+    m_pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(
+        TEXT("Prototype_GameObject_PlayerHex"), LEVEL_GAMEPLAY, TEXT("Layer_Player")));
+    if (nullptr == m_pPlayer)
         return E_FAIL;
 
     return S_OK;

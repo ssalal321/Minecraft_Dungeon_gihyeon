@@ -148,23 +148,6 @@ HRESULT CBody_Zombie::Ready_Components()
 
 	m_pGameInstance->Add_ColliderCom(pColliderOBBCom, TEXT("Zombie_OBB"), TEXT("Monster"));
 
-	/* Com_Collider */
-	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereCollDesc{};
-
-	SphereCollDesc.fRadius = 1.5f;
-	SphereCollDesc.vCenter = _float3(0.f, SphereCollDesc.fRadius, 0.f);
-	SphereCollDesc.pGameObject = this;
-	SphereCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
-	SphereCollDesc.pContainerObjAttacking = m_pContainerObjAttacking;
-
-	CComponent* pColliderSphereCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
-		TEXT("Com_Collider_Sphere"), reinterpret_cast<CComponent**>(&m_pColliderSphereCom), &SphereCollDesc);
-
-	if (nullptr == pColliderSphereCom)
-		return E_FAIL;
-
-	m_pGameInstance->Add_ColliderCom(pColliderSphereCom, TEXT("Zombie_Sphere"), TEXT("Monster"));
-
 	return S_OK;
 }
 
@@ -244,7 +227,6 @@ void CBody_Zombie::Free()
 	__super::Free();
 
 	Safe_Release(m_pColliderOBBCom);
-	Safe_Release(m_pColliderSphereCom);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pModelCom);
 }

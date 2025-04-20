@@ -5,6 +5,7 @@
 #include "Weapon.h"
 
 #include "FSM.h"
+#include "Player_Glaive_Combo.h"
 #include "Player_Idle.h"
 #include "Player_Roll.h"
 #include "Player_Walk.h"
@@ -172,6 +173,7 @@ HRESULT CPlayer::Ready_States()
 	m_StatesVec[static_cast<_uint>(PLAYER_STATE::IDLE)] = CPlayer_Idle::Create(this, m_pPlayerInfo, &pStatePlayerDesc);
 	m_StatesVec[static_cast<_uint>(PLAYER_STATE::WALK)] = CPlayer_Walk::Create(this, m_pPlayerInfo, &pStatePlayerDesc);
 	m_StatesVec[static_cast<_uint>(PLAYER_STATE::ROLL)] = CPlayer_Roll::Create(this, m_pPlayerInfo, &pStatePlayerDesc);
+	m_StatesVec[static_cast<_uint>(PLAYER_STATE::GLAIVE_COMBO)] = CPlayer_Glaive_Combo::Create(this, m_pPlayerInfo, &pStatePlayerDesc);
 
 	m_pPlayerFSM = FSM::Create();
 
