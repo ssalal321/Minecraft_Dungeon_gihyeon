@@ -1,10 +1,8 @@
 #include "Player_Idle.h"
 #include "Body_Player.h"
 
-CPlayer_Idle::CPlayer_Idle(CGameObject* pActor, CModel* pPlayerModelCom, CCollider* pColliderCom,
-							CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-							CTransform* pTransformCom, CNavigation* pNavigationCom)
-	: CState_Player(pActor, pPlayerModelCom, pColliderCom, pGameObjectDesc, pTransformCom, pNavigationCom)
+CPlayer_Idle::CPlayer_Idle(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEPLAYER_DESC* pDesc)
+	: CState_Player(pActor, pGameObjectDesc, pDesc)
 {
 }
 
@@ -17,6 +15,7 @@ HRESULT CPlayer_Idle::Init_State()
 
 void CPlayer_Idle::State_Enter()
 {
+	// ¹Ù²ã¾ßµÅ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::IDLE_GLAIVE), true);
 }
 
@@ -29,7 +28,12 @@ void CPlayer_Idle::State_Priority_Update(_float fTimeDelta)
 void CPlayer_Idle::State_Update(_float fTimeDelta)
 {
 	__super::State_Update(fTimeDelta);
-	
+
+	if (Change_State_To_Walk())
+		return;
+
+	if (Change_State_To_Roll())
+		return;
 }
 
 void CPlayer_Idle::State_Late_Update(_float fTimeDelta)
@@ -56,11 +60,9 @@ void CPlayer_Idle::Collision_Exit(CCollider* pOther)
 	__super::Collision_Exit(pOther);
 }
 
-CState_Player* CPlayer_Idle::Create(CGameObject* pActor, CModel* pPlayerModelCom, CCollider* pColliderCom,
-									CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-									CTransform* pTransformCom, CNavigation* pNavigationCom)
+CState_Player* CPlayer_Idle::Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEPLAYER_DESC* pDesc)
 {
-	CState_Player* pGameInstance = new CPlayer_Idle(pActor, pPlayerModelCom, pColliderCom, pGameObjectDesc, pTransformCom, pNavigationCom);
+	CPlayer_Idle* pGameInstance = new CPlayer_Idle(pActor, pGameObjectDesc, pDesc);
 
 	if (FAILED(pGameInstance->Init_State()))
 	{

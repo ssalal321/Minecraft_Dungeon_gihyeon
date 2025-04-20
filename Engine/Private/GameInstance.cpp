@@ -234,6 +234,11 @@ CComponent* CGameInstance::Get_Component(_uint iLevelIndex, const _wstring& strL
 {
 	return m_pObject_Manager->Get_Component(iLevelIndex, strLayerTag, strComponentTag, iIndex);
 }
+
+unordered_map<_wstring, CGameObject*>* CGameInstance::Get_LayerObjects(_uint iLayerLevelIndex, const _wstring& strLayerTag)
+{
+	return m_pObject_Manager->Get_LayerObjects(iLayerLevelIndex, strLayerTag);
+}
 #pragma endregion
 
 
@@ -351,6 +356,11 @@ CUIObject* CGameInstance::Find_UIGameObject(_wstring strGameObjectTag, CUI_Manag
 HRESULT CGameInstance::Add_ColliderCom(CComponent* pColliderCom, const _wstring& PartObject_Tag, const _wstring& ContainerGroup_Tag) const
 {
 	return m_pCollision_Manager->Add_ColliderCom(pColliderCom, PartObject_Tag, ContainerGroup_Tag);
+}
+
+unordered_map<_wstring, vector<CCollider*>>* CGameInstance::Get_Colliders()
+{
+	return m_pCollision_Manager->Get_Colliders();
 }
 #pragma endregion
 

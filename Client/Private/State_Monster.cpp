@@ -3,12 +3,12 @@
 #include <iostream>
 #include <ostream>
 
+#include "Player.h"
+
 //_bool CState_Monster::m_bAnimationFinished = false;
 
-CState_Monster::CState_Monster(CGameObject* pActor, CModel* pMonsterModelCom, CCollider* pColliderCom,
-								CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-								CTransform* pTransformCom, CNavigation* pNavigationCom)
-	: CState(pActor, pMonsterModelCom, pColliderCom, pGameObjectDesc, pTransformCom, pNavigationCom)
+CState_Monster::CState_Monster(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
+	: CState(pActor, pGameObjectDesc), m_pStateMonsterDesc(pDesc)
 {
 }
 
@@ -16,8 +16,15 @@ HRESULT CState_Monster::Init_State()
 {
 	m_pMonsterDesc = dynamic_cast<CMonster::MONSTER_DESC*>(m_pGameObjectDesc);
 
-	if (nullptr == m_pMonsterDesc)
-		return E_FAIL;	
+	m_pActorModelCom	 = m_pStateMonsterDesc->pActorModelCom;
+	m_pColliderOBBCom	 = m_pStateMonsterDesc->pColliderOBBCom;
+	m_pColliderSphereCom = m_pStateMonsterDesc->pColliderSphereCom;
+	m_pTransformCom		 = m_pStateMonsterDesc->pTransformCom;
+	m_pNavigationCom	 = m_pStateMonsterDesc->pNavigationCom;
+
+	if (nullptr == m_pMonsterDesc || nullptr == m_pActorModelCom || nullptr == m_pTransformCom ||
+		nullptr == m_pNavigationCom || nullptr == m_pColliderOBBCom || nullptr == m_pColliderSphereCom)
+		return E_FAIL;
 
 	return S_OK;
 }

@@ -4,6 +4,7 @@
 #include "FSM.h"
 #include "Player.h"
 
+
 CMonster::CMonster(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CContainerObject ( pDevice, pContext )
 {
@@ -57,10 +58,14 @@ void CMonster::Late_Update(_float fTimeDelta)
 	m_pMonsterFSM->Late_Update_State(fTimeDelta);
 
 	__super::Late_Update(fTimeDelta);
+
+	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
+
 }
 
 HRESULT CMonster::Render()
 {
+
 	return S_OK;
 }
 
@@ -94,6 +99,23 @@ HRESULT CMonster::Ready_Components()
 	if (nullptr == Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Navigation_LoungeMap"),
 		TEXT("Com_Navigation_LoungeMap"), reinterpret_cast<CComponent**>(&m_pNavigationCom)))
 		return E_FAIL;
+
+	/* Com_Collider */
+	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereCollDesc{};
+
+	SphereCollDesc.fRadius = 1.5f;
+	SphereCollDesc.vCenter = _float3(0.f, SphereCollDesc.fRadius, 0.f);
+	SphereCollDesc.pGameObject = this;
+	SphereCollDesc.CombinedWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
+	SphereCollDesc.pContainerObjAttacking = &m_bAttacking;
+
+	CComponent* pColliderSphereCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
+		TEXT("Com_Collider_Sphere"), reinterpret_cast<CComponent**>(&m_pColliderSphereCom), &SphereCollDesc);
+
+	if (nullptr == pColliderSphereCom)
+		return E_FAIL;
+
+	m_pGameInstance->Add_ColliderCom(pColliderSphereCom, TEXT("Zombie_Sphere"), TEXT("Monster"));
 
 	return S_OK;
 }
@@ -145,6 +167,7 @@ void CMonster::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_pColliderSphereCom);
 	Safe_Release(m_pNavigationCom);
 	Safe_Delete(m_pMonsterInfo);
 	Safe_Delete(m_pMonsterFSM);

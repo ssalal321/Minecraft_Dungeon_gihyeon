@@ -75,15 +75,17 @@ HRESULT CCollider::Initialize(void* pArg)
 
 _bool CCollider::Intersect(CCollider* pTargetCollider)
 {
-	if ((false == *m_bContainerObjAttacking && false == pTargetCollider->Get_OtherAttacking()) || m_bColliderOff)
+	if ((false == *m_bContainerObjAttacking && false == pTargetCollider->Get_OtherAttacking() || m_bColliderOff))
 	{
 		m_bIsCollision = false;
+		pTargetCollider->Set_IsCollision(false);
 		return false;
 	}
 		
 	m_bIsCollision = m_pBounding->Intersect(pTargetCollider->m_eColliderType, pTargetCollider->m_pBounding);
 
 	pTargetCollider->Set_IsCollision(m_bIsCollision);
+
 
 	return m_bIsCollision;
 }
@@ -100,6 +102,7 @@ void CCollider::Process_Collisions()
 	{
 		if (m_prevCollisions.find(pOther) != m_prevCollisions.end())
 			m_pOwnerGameObject->Collided_With(pOther, STAY);
+
 		else
 			m_pOwnerGameObject->Collided_With(pOther, ENTER);
 	}

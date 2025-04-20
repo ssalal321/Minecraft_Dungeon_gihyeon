@@ -7,9 +7,7 @@ BEGIN(Client)
 class CZombie_Attack final: public CState_Zombie
 {
 private:
-    CZombie_Attack(CGameObject* pActor, CModel* pZombieModelCom, CCollider* pColliderCom,
-                    CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-                    CTransform* pTransformCom, CNavigation* pNavigationCom);
+    CZombie_Attack(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
 	~CZombie_Attack() override = default;
 
 public:
@@ -30,9 +28,7 @@ private:
     _bool       m_bHitbox_Activated = false;
 
 public:
-    static CState_Monster*  Create(CGameObject* pActor, CModel* pZombieModelCom, CCollider* pColliderCom,
-                                    CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-                                    CTransform* pTransformCom, CNavigation* pNavigationCom);
+    static CState_Monster*  Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
     void   Free()    override;
 };
 

@@ -6,9 +6,7 @@ BEGIN(Client)
 class CZombie_Sleep final: public CState_Zombie
 {
 private:
-    CZombie_Sleep(CGameObject* pActor, CModel* pZombieModelCom, CCollider* pColliderCom,
-                    CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-                    CTransform* pTransformCom, CNavigation* pNavigationCom);
+    CZombie_Sleep(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
 	~CZombie_Sleep() override = default;
 
 public:
@@ -28,9 +26,7 @@ private:
    
 
 public:
-    static CState_Monster*  Create(CGameObject* pActor, CModel* pZombieModelCom, CCollider* pColliderCom,
-                                    CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-                                    CTransform* pTransformCom, CNavigation* pNavigationCom);
+    static CState_Monster*  Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
     void   Free()    override;
 };
 

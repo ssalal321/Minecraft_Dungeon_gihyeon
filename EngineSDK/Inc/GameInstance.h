@@ -59,6 +59,7 @@ public:
 							   _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg = nullptr);
 	CGameObject* Find_GameObject(_wstring strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag);
 	CComponent*  Get_Component(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strComponentTag, _uint iIndex = 0);
+	unordered_map<_wstring, CGameObject*>* Get_LayerObjects(_uint iLayerLevelIndex, const _wstring& strLayerTag);
 #pragma endregion
 
 #pragma region INPUT_MANAGER
@@ -100,6 +101,7 @@ public:
 
 #pragma region COLLISION_MANAGER
 	HRESULT		Add_ColliderCom(CComponent* pColliderCom, const _wstring& PartObject_Tag, const _wstring& ContainerGroup_Tag) const;
+	unordered_map<_wstring, vector<CCollider*>>* Get_Colliders();
 #pragma endregion UI_MANAGER
 
 private:

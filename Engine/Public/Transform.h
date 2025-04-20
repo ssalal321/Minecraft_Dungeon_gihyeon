@@ -53,7 +53,7 @@ public:
 		return m_WorldMatrix;
 	}
 
-	const _float4x4* Get_WorldMatrix_Ptr() const
+	_float4x4* Get_WorldMatrix_Ptr()
 	{
 		return &m_WorldMatrix;
 	}

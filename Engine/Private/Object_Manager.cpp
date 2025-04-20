@@ -130,6 +130,17 @@ HRESULT CObject_Manager::Add_To_Layer(CGameObject* pGameObject, _uint iLayerLeve
 	return S_OK;
 }
 
+unordered_map<_wstring, CGameObject*>* CObject_Manager::Get_LayerObjects(_uint iLayerLevelIndex, const _wstring& strLayerTag)
+{
+	CLayer* pLayer = Find_Layer(iLayerLevelIndex, strLayerTag);
+
+	if (nullptr == pLayer)
+		return nullptr;
+
+	return pLayer->Get_LayerObjects();
+}
+
+
 CObject_Manager* CObject_Manager::Create(_uint iNumLevels)
 {
 	CObject_Manager* pInstance = new CObject_Manager();

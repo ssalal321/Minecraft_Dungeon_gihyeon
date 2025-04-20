@@ -15,6 +15,7 @@ private:
 public:
 	HRESULT			Add_GameObject(_wstring strLayerTag, CGameObject* pGameObject);
 	CComponent*		Get_Component(const _wstring& strComponentTag, _uint iIndex);
+	unordered_map<_wstring, CGameObject*>*	Get_LayerObjects() { return &m_GameObjects; }
 
 	void			Priority_Update(_float fTimeDelta);
 	void			Update(_float fTimeDelta);

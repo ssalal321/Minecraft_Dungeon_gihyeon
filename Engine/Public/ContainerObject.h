@@ -22,6 +22,7 @@ public:
 
 protected:
 	map<const _wstring, class CPartObject*>		m_PartObjects;
+	_bool*		m_pAttacking = { nullptr };
 
 protected:
 	CPartObject*	Find_PartObject(const _wstring& strPartObjectTag);

@@ -1,5 +1,6 @@
 #include "Body_Zombie.h"
 #include "GameInstance.h"
+#include "Mesh.h"
 
 #include "Zombie.h"
 
@@ -77,6 +78,11 @@ HRESULT CBody_Zombie::Render()
 	return S_OK;
 }
 
+void CBody_Zombie::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)
+{
+	dynamic_cast<CZombie*>(m_pContainerObject)->Collided_With(pOther, eCollisionState);
+}
+
 HRESULT CBody_Zombie::Ready_Components()
 {
 	/* Com_Shader */
@@ -85,8 +91,11 @@ HRESULT CBody_Zombie::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Model */
+	CMesh::MESH_DESC	pMeshDesc = {};
+	pMeshDesc.bPickable = true;
+
 	if (nullptr == Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Zombie"),
-		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom)))
+		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom), &pMeshDesc))
 		return E_FAIL;
 
 
@@ -99,7 +108,7 @@ HRESULT CBody_Zombie::Ready_Components()
 	//AABBCollDesc.vExtents = _float3(0.35f, 0.6f, 0.35f);
 
 	//CComponent* pColliderCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
-	//	TEXT("Com_Collider_AABB"), reinterpret_cast<CComponent**>(&m_pColliderCom[COLL_AABB]), &AABBCollDesc);
+	//	TEXT("Com_Collider_AABB"), reinterpret_cast<CComponent**>(&m_pColliderOBB[COLL_AABB]), &AABBCollDesc);
 
 	//if (nullptr == pColliderCom)
 	//	return E_FAIL;
@@ -131,13 +140,13 @@ HRESULT CBody_Zombie::Ready_Components()
 	OBBCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
 	OBBCollDesc.pContainerObjAttacking = m_pContainerObjAttacking;
 	
-	CComponent* pColliderCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_OBB"),
-		TEXT("Com_Collider_OBB"), reinterpret_cast<CComponent**>(&m_pColliderCom), &OBBCollDesc);
+	CComponent* pColliderOBBCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_OBB"),
+		TEXT("Com_Collider_OBB"), reinterpret_cast<CComponent**>(&m_pColliderOBBCom), &OBBCollDesc);
 
-	if (nullptr == pColliderCom)
+	if (nullptr == pColliderOBBCom)
 		return E_FAIL;
 
-	m_pGameInstance->Add_ColliderCom(pColliderCom, TEXT("Zombie"), TEXT("Monster"));
+	m_pGameInstance->Add_ColliderCom(pColliderOBBCom, TEXT("Zombie_OBB"), TEXT("Monster"));
 
 	return S_OK;
 }
@@ -217,7 +226,7 @@ void CBody_Zombie::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pColliderCom);
+	Safe_Release(m_pColliderOBBCom);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pModelCom);
 }

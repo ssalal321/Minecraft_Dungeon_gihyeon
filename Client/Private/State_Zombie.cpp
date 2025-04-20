@@ -1,11 +1,11 @@
 #include "State_Zombie.h"
 
+#include <iostream>
+
 #include "Zombie.h"
 
-CState_Zombie::CState_Zombie(CGameObject* pActor, CModel* pMonsterModelCom, CCollider* pColliderCom,
-							CGameObject::GAMEOBJECT_DESC* pGameObjectDesc,
-							CTransform* pTransformCom, CNavigation* pNavigationCom)
-	: CState_Monster(pActor, pMonsterModelCom, pColliderCom, pGameObjectDesc, pTransformCom, pNavigationCom)
+CState_Zombie::CState_Zombie(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
+	: CState_Monster(pActor, pGameObjectDesc, pDesc)
 {
 }
 
@@ -45,17 +45,23 @@ void CState_Zombie::State_Exit()
 
 void CState_Zombie::Collision_Enter(CCollider* pOther)
 {
+	_wstring other = pOther->Get_OwnerTag();
 
+	std::wcerr << "[좀비와 " << other << " 충돌 Enter]" << std::endl;
 }
 
 void CState_Zombie::Collision_Stay(CCollider* pOther)
 {
+	_wstring other = pOther->Get_OwnerTag();
 
+	std::wcerr << "[좀비와 " << other << " 충돌 Stay]" << std::endl;
 }
 
 void CState_Zombie::Collision_Exit(CCollider* pOther)
 {
+	_wstring other = pOther->Get_OwnerTag();
 
+	std::wcerr << "[좀비와 " << other << " 충돌 Exit]" << std::endl;
 }
 
 _bool CState_Zombie::Change_State_To_Attack()

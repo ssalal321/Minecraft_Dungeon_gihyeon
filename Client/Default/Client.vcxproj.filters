@@ -124,6 +124,12 @@
     <Filter Include="02.GameObjects\Monster\Zombie\01. State\Zombie_Sleep">
       <UniqueIdentifier>{c404b55d-3e06-430d-8643-66871d11ff98}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Player\02. State\Player_Attack">
+      <UniqueIdentifier>{09cc7a4b-418f-46c1-972f-dd7dc99dca77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Player\02. State\Player_Attack\Player_Glaive_Combo">
+      <UniqueIdentifier>{bc024a76-42c2-4c9a-9ecd-4c55df8757f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -246,6 +252,9 @@
     <ClInclude Include="..\Public\State_Zombie.h">
       <Filter>02.GameObjects\Monster\Zombie\01. State</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Player_Glaive_Combo.h">
+      <Filter>02.GameObjects\Player\02. State\Player_Attack\Player_Glaive_Combo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -365,6 +374,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\State_Zombie.cpp">
       <Filter>02.GameObjects\Monster\Zombie\01. State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player_Glaive_Combo.cpp">
+      <Filter>02.GameObjects\Player\02. State\Player_Attack\Player_Glaive_Combo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -4,6 +4,7 @@
 
 #include "GameInstance.h"
 #include "Player.h"
+#include "Mesh.h"
 
 #ifdef _DEBUG
 _uint CLoungeMap::m_iShaderPass = 0;
@@ -166,8 +167,11 @@ HRESULT CLoungeMap::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Model */
+	CMesh::MESH_DESC	pMeshDesc = {};
+	pMeshDesc.bPickable = true;
+
 	if (nullptr == Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_LoungeMap"),
-		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom)))
+		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom), &pMeshDesc))
 		return E_FAIL;
 
 	/* Com_Navigation */

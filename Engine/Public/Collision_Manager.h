@@ -12,10 +12,11 @@ private:
 	~CCollision_Manager() override = default;
 
 public:
-    HRESULT     Initialize(_uint iNumLevels);
-
 	HRESULT		Add_ColliderCom(CComponent* pColliderCom, const _wstring& PartObject_Tag, const _wstring& ContainerGroup_Tag);
+	unordered_map<_wstring, vector<CCollider*>>* Get_Colliders() { return &m_ColliderGroups; }
 
+public:
+    HRESULT     Initialize(_uint iNumLevels);
     void        Update();
 
 #ifdef _DEBUG

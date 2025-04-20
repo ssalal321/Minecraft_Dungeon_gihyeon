@@ -3,11 +3,11 @@
 #include "State_Player.h"
 
 BEGIN(Client)
-	class CPlayer_Roll final: public CState_Player
+	class CPlayer_Glaive_Combo final: public CState_Player
 {
 private:
-    CPlayer_Roll(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEPLAYER_DESC* pDesc);
-	~CPlayer_Roll() override = default;
+    CPlayer_Glaive_Combo(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEPLAYER_DESC* pDesc);
+	~CPlayer_Glaive_Combo() override = default;
 
 public:
     HRESULT     Init_State()                                override;
@@ -23,7 +23,7 @@ public:
     void        Collision_Exit(CCollider* pOther)           override;
 
 private:
-    _float      m_fRollingTime = { 0.f };
+
 
 public:
     static CState_Player*  Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEPLAYER_DESC* pDesc);
