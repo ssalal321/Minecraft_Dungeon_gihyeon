@@ -42,6 +42,10 @@ protected:
 
     _bool			        m_bAnimationFinished = { false };
     _bool                   m_bClickLock = { false };
+    _bool                   m_bCombo1_Finished = { false };
+    _bool                   m_bCombo2_Finished = { false };
+    _bool                   m_bCombo3_Finished = { false };
+    _float                  m_fPrevAnimTrackPosition = {};
 
 protected:
     _bool   Change_State_To_Idle();

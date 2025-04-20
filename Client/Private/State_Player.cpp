@@ -17,10 +17,10 @@ HRESULT CState_Player::Init_State()
 
 	m_pPlayerDesc = dynamic_cast<CPlayer::PLAYER_DESC*>(m_pGameObjectDesc);
 
-	m_pActorModelCom = m_pStatePlayerDesc->pActorModelCom;
-	m_pColliderOBBCom	 = m_pStatePlayerDesc->pColliderOBBCom;
-	m_pTransformCom  = m_pStatePlayerDesc->pTransformCom;
-	m_pNavigationCom = m_pStatePlayerDesc->pNavigationCom;
+	m_pActorModelCom	= m_pStatePlayerDesc->pActorModelCom;
+	m_pColliderOBBCom	= m_pStatePlayerDesc->pColliderOBBCom;
+	m_pTransformCom		= m_pStatePlayerDesc->pTransformCom;
+	m_pNavigationCom	= m_pStatePlayerDesc->pNavigationCom;
 
 	if (nullptr == m_pPlayer || nullptr == m_pPlayerDesc || nullptr == m_pActorModelCom ||
 		nullptr == m_pTransformCom || nullptr == m_pNavigationCom || nullptr == m_pColliderOBBCom)
@@ -125,7 +125,7 @@ _bool CState_Player::Change_State_To_Attack()
 		_vector  vVecToMonster = vMonsterPos - vPlayerPos;
 
 		_float fDistanceSq = XMVectorGetX(XMVector3LengthSq(vVecToMonster));
-		if (fDistanceSq < 9.f) // 3.f * 3.f
+		if (fDistanceSq < 16.f) // 4.f * 4.f
 		{
 			m_pPlayer->Set_Chasing(false, nullptr);
 			m_pPlayer->Change_State(PLAYER_STATE::GLAIVE_COMBO);

@@ -53,20 +53,23 @@ public:
 	HRESULT		Render()							override;
 
 public:
+	const _float4&	Get_NextPosition() const { return m_NextPosition; }
+	_bool			Get_Chasing() const { return m_bChasing; }
+	CTransform*		Get_MonsterTransformCom() const { return m_pMonsterTransformCom; }
+
+
 	void	Set_Attacking(_bool bAttacking) { m_bAttacking = bAttacking; }
+
 	void	Set_NextPosition(const _float4& nextPosition)
 	{
 		m_NextPosition = nextPosition;
 	}
+
 	void	Set_Chasing(_bool bChasing, CTransform* pMonsterTransformCom)
 	{
 		m_bChasing = bChasing;
 		m_pMonsterTransformCom = pMonsterTransformCom;
 	}
-
-	const _float4&	Get_NextPosition() const { return m_NextPosition; }
-	_bool			Get_Chasing() const { return m_bChasing; }
-	CTransform*		Get_MonsterTransformCom() const { return m_pMonsterTransformCom; }
 
 public:
 	void	Change_State(PLAYER_STATE playerState);

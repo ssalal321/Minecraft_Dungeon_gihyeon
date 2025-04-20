@@ -1,6 +1,9 @@
 #include "Player_Glaive_Combo.h"
 #include "Body_Player.h"
 
+#define GLAIVE_COMBO1  22.f
+#define GLAIVE_COMBO2  40.f
+
 CPlayer_Glaive_Combo::CPlayer_Glaive_Combo(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEPLAYER_DESC* pDesc)
 	: CState_Player(pActor, pGameObjectDesc, pDesc)
 {
@@ -15,7 +18,18 @@ HRESULT CPlayer_Glaive_Combo::Init_State()
 
 void CPlayer_Glaive_Combo::State_Enter()
 {
-	m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::GLAIVE_COMBO), false);
+	m_pPlayer->Set_Attacking(true);
+
+	if (!m_bCombo1_Finished)  // 처음 들어올 때
+	{
+		m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::GLAIVE_COMBO), false, 1.3f);
+		return;
+	}
+
+	if (m_bCombo1_Finished)  // 두 번째, 세 번째
+	{
+		m_pActorModelCom->Link_AnimationCombo(static_cast<_uint>(PLAYER_STATE::GLAIVE_COMBO), m_fPrevAnimTrackPosition, false, 1.3f);
+	}
 }
 
 void CPlayer_Glaive_Combo::State_Priority_Update(_float fTimeDelta)
@@ -27,12 +41,30 @@ void CPlayer_Glaive_Combo::State_Priority_Update(_float fTimeDelta)
 void CPlayer_Glaive_Combo::State_Update(_float fTimeDelta)
 {
 	__super::State_Update(fTimeDelta);
+	_float fAnimCurTrackPos = m_pActorModelCom->Get_AnimCurrentTrackPosition();
 
-	// 22
-	// 40
-
-	if (m_bAnimationFinished)
+	if (!m_bCombo1_Finished && GLAIVE_COMBO1 <= fAnimCurTrackPos)  // GLAIVE_COMBO1까지만
 	{
+		m_fPrevAnimTrackPosition = GLAIVE_COMBO1;
+		m_bCombo1_Finished = true;
+
+		m_pPlayer->Change_State(PLAYER_STATE::IDLE);
+		return;
+	}
+
+	if (!m_bCombo2_Finished && GLAIVE_COMBO2 <= fAnimCurTrackPos)  // GLAIVE_COMBO2까지만
+	{
+		m_fPrevAnimTrackPosition = GLAIVE_COMBO2;
+		m_bCombo2_Finished = true;
+
+		m_pPlayer->Change_State(PLAYER_STATE::IDLE);
+		return;
+	}
+
+	if (!m_bCombo3_Finished && m_bAnimationFinished)  // GLAIVE_COMBO3 끝나면
+	{
+		m_bCombo3_Finished = true;
+
 		m_pPlayer->Change_State(PLAYER_STATE::IDLE);
 		return;
 	}
@@ -45,6 +77,16 @@ void CPlayer_Glaive_Combo::State_Late_Update(_float fTimeDelta)
 
 void CPlayer_Glaive_Combo::State_Exit()
 {
+	m_pPlayer->Set_Attacking(false);
+
+	if (m_bCombo3_Finished)
+	{
+		m_fPrevAnimTrackPosition = 0.f;
+
+		m_bCombo1_Finished = { false };
+		m_bCombo2_Finished = { false };
+		m_bCombo3_Finished = { false };
+	}
 }
 
 void CPlayer_Glaive_Combo::Collision_Enter(CCollider* pOther)
