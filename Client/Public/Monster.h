@@ -62,7 +62,7 @@ public:
 
 	void	Set_Hovered(_bool bPicked) { m_bHovered = bPicked; }
 
-	void		Change_State(ZOMBIE_STATE monsterState);
+	void		Change_State(const MonsterState& state);
 	void		Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)	override;
 
 	_float4		Get_Player_Position(const _wstring& strPlayerPrototypeTag, _uint iPlayerLayerLevelIndex) const;

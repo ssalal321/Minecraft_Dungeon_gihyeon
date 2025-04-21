@@ -23,7 +23,7 @@ public:
     void        Collision_Exit(CCollider* pOther)           override;
 
 private:
-
+    _float      m_fAnimTimer = 0.f;
 
 public:
     static CState_Player*  Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEPLAYER_DESC* pDesc);

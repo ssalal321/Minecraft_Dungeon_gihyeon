@@ -72,9 +72,9 @@ _bool CState_Zombie::Change_State_To_Attack()
 	// 공격 가능 거리 && 스턴 X 상태
 	_float lengthToPlayer = m_pZombie->Length_To_Player(TEXT("Prototype_GameObject_PlayerHex"), LEVEL_GAMEPLAY);
 
-	if (lengthToPlayer < m_pMonsterDesc->fAttackableRange && !m_pMonsterDesc->bStunned)
+	if (lengthToPlayer < m_pMonsterDesc->fAttackableRange)
 	{
-		m_pZombie->Change_State(ZOMBIE_STATE::ATTACK);
+		m_pZombie->Change_State(Make_ZombieState(ZOMBIE_STATE::ATTACK));
 		return true;
 	}
 
@@ -87,10 +87,9 @@ _bool CState_Zombie::Change_State_To_Walk()
 
 	// 플레이어 인지 거리 && 스턴 X 상태
 	if (m_pZombie->Player_In_DetectRange(TEXT("Prototype_GameObject_PlayerHex"), LEVEL_GAMEPLAY) &&
-		lengthToPlayer > m_pMonsterDesc->fAttackableRange &&
-		!m_pMonsterDesc->bStunned)
+		lengthToPlayer > m_pMonsterDesc->fAttackableRange)
 	{
-		m_pZombie->Change_State(ZOMBIE_STATE::WALK);
+		m_pZombie->Change_State(Make_ZombieState(ZOMBIE_STATE::WALK));
 		return true;
 	}
 
@@ -103,7 +102,7 @@ _bool CState_Zombie::Change_State_To_Idle()
 
 	if (!playerInRange)
 	{
-		m_pZombie->Change_State(ZOMBIE_STATE::IDLE);
+		m_pZombie->Change_State(Make_ZombieState(ZOMBIE_STATE::IDLE));
 		return true;
 	}
 
@@ -114,7 +113,7 @@ _bool CState_Zombie::Change_State_To_GetHit(CCollider* pOther)
 {
 	if (TEXT("PlayerWeapon_OBB") == pOther->Get_OwnerTag() && pOther->Get_OtherAttacking())
 	{
-		m_pZombie->Change_State(ZOMBIE_STATE::GET_HIT_FRONT);
+		m_pZombie->Change_State(Make_ZombieState(ZOMBIE_STATE::GET_HIT_FRONT));
 
 		return true;
 	}

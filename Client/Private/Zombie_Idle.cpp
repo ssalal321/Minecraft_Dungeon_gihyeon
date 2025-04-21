@@ -54,7 +54,7 @@ void CZombie_Idle::State_Update(_float fTimeDelta)
 
 		if (dist(gen) < 0.4f) // 40% È®·ü
 		{
-			m_pZombie->Change_State(ZOMBIE_STATE::NOVELTY_SLEEP);
+			m_pZombie->Change_State(Make_ZombieState(ZOMBIE_STATE::NOVELTY_SLEEP));
 			return;
 		}
 		else

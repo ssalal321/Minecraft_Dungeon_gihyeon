@@ -21,7 +21,7 @@ RasterizerState RS_Wireframe
 RasterizerState RS_Cull_None
 {
     FillMode = Solid;   // 면을 채운 렌더링 유지
-    CullMode = NONE;    // 컬링 없음 (뒷면도 렌더링)
+    CullMode = None;    // 컬링 없음 (뒷면도 렌더링)
     FrontCounterClockwise = false;
 };
 
