@@ -12,7 +12,8 @@ namespace Client
 }
 
 #include "Client_Struct.h"
-#include "Client_Enum.h"
+//#include "Client_Enum.h"
+#include "MonsterState.h"
 
 extern		HINSTANCE	g_hInstance;
 extern		HWND		g_hWnd;

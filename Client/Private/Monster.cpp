@@ -1,3 +1,4 @@
+
 #include "Monster.h"
 #include "GameInstance.h"
 
@@ -69,11 +70,24 @@ HRESULT CMonster::Render()
 	return S_OK;
 }
 
-void CMonster::Change_State(ZOMBIE_STATE monsterState)
+#include "MonsterState.h"
+
+void CMonster::Change_State(const MonsterState& state)
 {
-	m_iState = static_cast<_uint>(monsterState);
+	switch (state.monsterType)
+	{
+	case MONSTER_TYPE::ZOMBIE:
+		m_iState = static_cast<_uint>(state.ZombieState);
+		break;
+
+	case MONSTER_TYPE::SKELETON:
+		m_iState = static_cast<_uint>(state.SkeletonState);
+		break;
+	}
+
 	m_pMonsterFSM->Change_State(m_StatesVec[m_iState]);
 }
+
 
 void CMonster::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)
 {

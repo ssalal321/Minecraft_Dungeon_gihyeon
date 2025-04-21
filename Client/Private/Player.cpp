@@ -149,7 +149,7 @@ HRESULT CPlayer::Ready_PartObjects()
 	WeaponDesc.pContainerObject = this;
 	WeaponDesc.pContainerObjAttacking = &m_bAttacking;
 
-	if (FAILED(__super::Add_PartObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Weapon"), TEXT("Part_Weapon"), &WeaponDesc)))
+	if (FAILED(__super::Add_PartObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Weapon"), TEXT("Part_MeleeWeapon"), &WeaponDesc)))
 		return E_FAIL;
 
 

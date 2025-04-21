@@ -133,6 +133,30 @@
     <Filter Include="02.GameObjects\Player\02. State\Player_GetHit">
       <UniqueIdentifier>{ec2f2eb7-86f5-4d82-b48b-db550ed92c84}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster\Skeleton">
+      <UniqueIdentifier>{ea033f82-cc04-4cda-ba19-522de26c7a4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Skeleton\00. Body_Skeleton">
+      <UniqueIdentifier>{557a3983-6cc4-40dd-8a9e-d9bbfa9a168f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Skeleton\01. State">
+      <UniqueIdentifier>{918e96c2-d0aa-4aad-a0a1-0d1dd40854b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Skeleton\01. State\Skeleton_Idle">
+      <UniqueIdentifier>{9ce11e69-7281-495e-a8be-6ec9c7b28dd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Skeleton\01. State\Skeleton_Walk">
+      <UniqueIdentifier>{fcea4a69-afab-4f0a-bdd8-553a62183101}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Skeleton\01. State\Skeleton_HeadSpin">
+      <UniqueIdentifier>{4e1846b7-c3e7-4f41-a473-7d9b744169c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Skeleton\01. State\Skeleton_GetHit">
+      <UniqueIdentifier>{aee1c940-b731-4a06-b78c-4d395d84c8d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Skeleton\01. State\Skeleton_BowAction">
+      <UniqueIdentifier>{757f20cf-5865-4d73-9099-fee7866e62a8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -261,6 +285,33 @@
     <ClInclude Include="..\Public\Player_GetHit.h">
       <Filter>02.GameObjects\Player\02. State\Player_GetHit</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Skeleton.h">
+      <Filter>02.GameObjects\Monster\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Body_Skeleton.h">
+      <Filter>02.GameObjects\Monster\Skeleton\00. Body_Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Skeleton_Idle.h">
+      <Filter>02.GameObjects\Monster\Skeleton\01. State\Skeleton_Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Skeleton.h">
+      <Filter>02.GameObjects\Monster\Skeleton\01. State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Skeleton_Walk.h">
+      <Filter>02.GameObjects\Monster\Skeleton\01. State\Skeleton_Walk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Skeleton_HeadSpin.h">
+      <Filter>02.GameObjects\Monster\Skeleton\01. State\Skeleton_HeadSpin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Skeleton_GetHit.h">
+      <Filter>02.GameObjects\Monster\Skeleton\01. State\Skeleton_GetHit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Skeleton_BowAction.h">
+      <Filter>02.GameObjects\Monster\Skeleton\01. State\Skeleton_BowAction</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -386,6 +437,30 @@
     </ClCompile>
     <ClCompile Include="..\Private\Player_GetHit.cpp">
       <Filter>02.GameObjects\Player\02. State\Player_GetHit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Skeleton.cpp">
+      <Filter>02.GameObjects\Monster\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Body_Skeleton.cpp">
+      <Filter>02.GameObjects\Monster\Skeleton\00. Body_Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Skeleton_Idle.cpp">
+      <Filter>02.GameObjects\Monster\Skeleton\01. State\Skeleton_Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Skeleton.cpp">
+      <Filter>02.GameObjects\Monster\Skeleton\01. State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Skeleton_Walk.cpp">
+      <Filter>02.GameObjects\Monster\Skeleton\01. State\Skeleton_Walk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Skeleton_HeadSpin.cpp">
+      <Filter>02.GameObjects\Monster\Skeleton\01. State\Skeleton_HeadSpin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Skeleton_GetHit.cpp">
+      <Filter>02.GameObjects\Monster\Skeleton\01. State\Skeleton_GetHit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Skeleton_BowAction.cpp">
+      <Filter>02.GameObjects\Monster\Skeleton\01. State\Skeleton_BowAction</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

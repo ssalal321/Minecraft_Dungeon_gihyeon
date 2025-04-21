@@ -39,7 +39,7 @@ void CZombie_Sleep::State_Update(_float fTimeDelta)
 
 	if (m_bAnimationFinished)
 	{
-		m_pZombie->Change_State(ZOMBIE_STATE::IDLE);
+		m_pZombie->Change_State(Make_ZombieState(ZOMBIE_STATE::IDLE));
 	}
 }
 
