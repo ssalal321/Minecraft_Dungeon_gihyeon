@@ -202,6 +202,21 @@ HRESULT CGameInstance::Open_Level(_uint iNextLevelIndex, CLevel* pNewLevel)
 {
 	return m_pLevel_Manager->Open_Level(iNextLevelIndex, pNewLevel);
 }
+
+_uint CGameInstance::Get_CurrentLevelIndex() const
+{
+	return m_pLevel_Manager->Get_CurrentLevelIndex();
+}
+
+_uint CGameInstance::Get_PrototypeLevelIndex() const
+{
+	return m_pLevel_Manager->Get_PrototypeLevelIndex();
+}
+
+void CGameInstance::Set_PrototypeLevelIndex(_uint iNextLevelIndex) const
+{
+	return m_pLevel_Manager->Set_PrototypeLevelIndex(iNextLevelIndex);
+}
 #pragma endregion
 
 

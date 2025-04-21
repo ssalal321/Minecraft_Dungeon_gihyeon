@@ -9,6 +9,10 @@ CLevel_Manager::CLevel_Manager()
     Safe_AddRef(m_pGameInstance);
 }
 
+CLevel_Manager::~CLevel_Manager()
+{
+}
+
 HRESULT CLevel_Manager::Initialize()
 {
     return S_OK;

@@ -103,7 +103,7 @@ HRESULT CWeapon::Ready_Components()
 	CMesh::MESH_DESC	pMeshDesc = {};
 	pMeshDesc.bPickable = true;
 
-	if (nullptr == Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_GlaiveSteel"),
+	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Model_GlaiveSteel"),
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom), &pMeshDesc))
 		return E_FAIL;
 

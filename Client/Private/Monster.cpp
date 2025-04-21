@@ -110,9 +110,27 @@ void CMonster::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eColl
 HRESULT CMonster::Ready_Components()
 {
 	/* Com_Navigation */
-	if (nullptr == Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Navigation_LoungeMap"),
-		TEXT("Com_Navigation_LoungeMap"), reinterpret_cast<CComponent**>(&m_pNavigationCom)))
-		return E_FAIL;
+	_uint	LevelIndex = m_pGameInstance->Get_PrototypeLevelIndex();
+
+	switch (LevelIndex)
+	{
+	case LEVEL_LOUNGE:
+		{
+		if (nullptr == Add_Component(LevelIndex, TEXT("Prototype_Component_Navigation_LoungeMap"),
+			TEXT("Com_Navigation_LoungeMap"), reinterpret_cast<CComponent**>(&m_pNavigationCom)))
+			return E_FAIL;
+		}
+		break;
+
+	case LEVEL_GAMEPLAY:
+		{
+		if (nullptr == Add_Component(LevelIndex, TEXT("Prototype_Component_Navigation_LoungeMap"),
+			TEXT("Com_Navigation_LoungeMap"), reinterpret_cast<CComponent**>(&m_pNavigationCom)))
+			return E_FAIL;
+		}
+		break;
+
+	}
 
 	/* Com_Collider */
 	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereCollDesc{};
@@ -162,8 +180,10 @@ _vector CMonster::Vec_To_Player(const _wstring& strPlayerPrototypeTag, _uint iPl
 
 _float CMonster::Length_To_Player(const _wstring& strPlayerPrototypeTag, _uint iPlayerLayerLevelIndex) const
 {
+	_uint	CurrentLevelIndex = m_pGameInstance->Get_CurrentLevelIndex();
+
 	_float   lengthToPlayer = {};
-	_vector  vecToPlayer = Vec_To_Player(TEXT("Prototype_GameObject_PlayerHex"), LEVEL_GAMEPLAY);
+	_vector  vecToPlayer = Vec_To_Player(TEXT("Prototype_GameObject_PlayerHex"), CurrentLevelIndex);
 	XMStoreFloat(&lengthToPlayer, XMVector3Length(vecToPlayer));
 
 	return lengthToPlayer;

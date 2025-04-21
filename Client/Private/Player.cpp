@@ -113,9 +113,26 @@ void CPlayer::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eColli
 HRESULT CPlayer::Ready_Components()
 {
 	/* Com_Navigation */
-	if (nullptr == Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Navigation_LoungeMap"),
-		TEXT("Com_Navigation_LoungeMap"), reinterpret_cast<CComponent**>(&m_pNavigationCom)))
-		return E_FAIL;
+	_uint	LevelIndex = m_pGameInstance->Get_PrototypeLevelIndex();
+
+	switch (LevelIndex)
+	{
+	case LEVEL_LOUNGE:
+		{
+		if (nullptr == Add_Component(LevelIndex, TEXT("Prototype_Component_Navigation_LoungeMap"),
+			TEXT("Com_Navigation_LoungeMap"), reinterpret_cast<CComponent**>(&m_pNavigationCom)))
+			return E_FAIL;
+		}
+		break;
+
+	case LEVEL_GAMEPLAY:
+		{
+		if (nullptr == Add_Component(LevelIndex, TEXT("Prototype_Component_Navigation_LoungeMap"),
+			TEXT("Com_Navigation_LoungeMap"), reinterpret_cast<CComponent**>(&m_pNavigationCom)))
+			return E_FAIL;
+		}
+	break;
+	}
 
 	return S_OK;
 }
@@ -149,7 +166,7 @@ HRESULT CPlayer::Ready_PartObjects()
 	WeaponDesc.pContainerObject = this;
 	WeaponDesc.pContainerObjAttacking = &m_bAttacking;
 
-	if (FAILED(__super::Add_PartObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Weapon"), TEXT("Part_MeleeWeapon"), &WeaponDesc)))
+	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Weapon"), TEXT("Part_MeleeWeapon"), &WeaponDesc)))
 		return E_FAIL;
 
 

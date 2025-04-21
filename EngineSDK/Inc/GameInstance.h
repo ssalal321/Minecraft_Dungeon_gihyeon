@@ -39,7 +39,6 @@ public:
 #pragma endregion
 
 #pragma region TIMER_MANAGER
-public:
 	_float		Get_TimeDelta(const _wstring& strTimerTag);
 	HRESULT		Add_Timer(const _wstring& strTimerTag);
 	void		Compute_TimeDelta(const _wstring& strTimerTag);
@@ -47,6 +46,9 @@ public:
 
 #pragma region LEVEL_MANAGER
 	HRESULT		Open_Level(_uint iNextLevelIndex, class CLevel* pNewLevel);
+	_uint		Get_CurrentLevelIndex() const;
+	_uint		Get_PrototypeLevelIndex() const;
+	void		Set_PrototypeLevelIndex(_uint iNextLevelIndex) const;
 #pragma endregion
 
 #pragma region PROTOTYPE_MANAGER
@@ -101,7 +103,7 @@ public:
 
 #pragma region COLLISION_MANAGER
 	HRESULT		Add_ColliderCom(CComponent* pColliderCom, const _wstring& PartObject_Tag, const _wstring& ContainerGroup_Tag) const;
-	unordered_map<_wstring, vector<CCollider*>>* Get_Colliders();
+	unordered_map<_wstring, vector<CCollider*>>*	Get_Colliders();
 #pragma endregion UI_MANAGER
 
 private:

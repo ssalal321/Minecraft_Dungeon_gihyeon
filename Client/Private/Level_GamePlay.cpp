@@ -195,7 +195,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& strLayerTag)
     Desc.fSpeedPerSec = 8.f;
     Desc.fRotationPerSec = XMConvertToRadians(180.f);
 
-    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Free"),
+    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Free"),
         LEVEL_GAMEPLAY, strLayerTag, &Desc)))
         return E_FAIL;
 
