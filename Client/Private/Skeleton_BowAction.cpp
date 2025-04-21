@@ -43,7 +43,8 @@ void CSkeleton_BowAction::State_Update(_float fTimeDelta)
 
 	if (m_fAnimTimer <= AIMING_TIME)
 	{
-		_float4 playerPos = m_pSkeleton->Get_Player_Position(TEXT("Prototype_GameObject_PlayerHex"), LEVEL_GAMEPLAY);
+		_float4 playerPos = m_pSkeleton->Get_Player_Position(TEXT("Prototype_GameObject_PlayerHex"),
+															 m_pGameInstance->Get_CurrentLevelIndex());
 		m_pTransformCom->LookAt(XMLoadFloat4(&playerPos));
 	}
 

@@ -79,7 +79,7 @@ HRESULT CZombie::Ready_PartObjects()
 	BodyDesc.pContainerObject = this;
 	BodyDesc.pContainerObjAttacking = &m_bAttacking;
 
-	if (FAILED(__super::Add_PartObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Body_Zombie"), TEXT("Part_Body"), &BodyDesc)))
+	if (FAILED(__super::Add_PartObject(m_pGameInstance->Get_PrototypeLevelIndex(), TEXT("Prototype_GameObject_Body_Zombie"), TEXT("Part_Body"), &BodyDesc)))
 		return E_FAIL;
 
 
@@ -95,7 +95,7 @@ HRESULT CZombie::Ready_PartObjects()
 	//WeaponDesc.pState = &m_iState;
 	//WeaponDesc.pSocketMatrix = pBody->Get_CombinedTransformationMatrix("J_R_Weapon");
 
-	//if (FAILED(__super::Add_PartObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Weapon"), TEXT("Part_Weapon"), &WeaponDesc)))
+	//if (FAILED(__super::Add_PartObject(m_pGameInstance->Get_CurrentLevelIndex(), TEXT("Prototype_GameObject_Weapon"), TEXT("Part_Weapon"), &WeaponDesc)))
 	//	return E_FAIL;
 
 

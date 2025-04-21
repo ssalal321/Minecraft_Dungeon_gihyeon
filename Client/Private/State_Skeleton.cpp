@@ -61,8 +61,10 @@ void CState_Skeleton::Collision_Exit(CCollider* pOther)
 _bool CState_Skeleton::Change_State_To_Attack()  // 얘도 Walk 내부에서만 호출해도 괜찮을지도
 {
 	// 공격 가능 거리
-	// 너무 멀지도, 너무 가깝지도 않을 때. 
-	_float lengthToPlayer = m_pSkeleton->Length_To_Player(TEXT("Prototype_GameObject_PlayerHex"), LEVEL_GAMEPLAY);
+	// 너무 멀지도, 너무 가깝지도 않을 때.
+	_uint  currentLevelIndex = m_pGameInstance->Get_CurrentLevelIndex();
+
+	_float lengthToPlayer = m_pSkeleton->Length_To_Player(TEXT("Prototype_GameObject_PlayerHex"), currentLevelIndex);
 
 	if ((m_pMonsterDesc->fAttackableRange - 1.f < lengthToPlayer) &&
 		(lengthToPlayer < m_pMonsterDesc->fAttackableRange + 1.f))
@@ -77,11 +79,12 @@ _bool CState_Skeleton::Change_State_To_Attack()  // 얘도 Walk 내부에서만 호출해�
 
 _bool CState_Skeleton::Change_State_To_Walk()
 {
-	_float lengthToPlayer = m_pSkeleton->Length_To_Player(TEXT("Prototype_GameObject_PlayerHex"), LEVEL_GAMEPLAY);
+	_uint  currentLevelIndex = m_pGameInstance->Get_CurrentLevelIndex();
+	_float lengthToPlayer = m_pSkeleton->Length_To_Player(TEXT("Prototype_GameObject_PlayerHex"), currentLevelIndex);
 
 	// 플레이어 인지 거리
 	// 플레이어가 가까울 땐 좀 떨어지고, 너무 멀면 좀 가까이 간다.
-	if (m_pSkeleton->Player_In_DetectRange(TEXT("Prototype_GameObject_PlayerHex"), LEVEL_GAMEPLAY) &&
+	if (m_pSkeleton->Player_In_DetectRange(TEXT("Prototype_GameObject_PlayerHex"), currentLevelIndex) &&
 		(m_pMonsterDesc->fAttackableRange + 1.f < lengthToPlayer) || 
 		(lengthToPlayer < m_pMonsterDesc->fAttackableRange - 1.f))
 	{
@@ -94,7 +97,9 @@ _bool CState_Skeleton::Change_State_To_Walk()
 
 _bool CState_Skeleton::Change_State_To_Idle()
 {
-	_bool	playerInRange = m_pSkeleton->Player_In_DetectRange(TEXT("Prototype_GameObject_PlayerHex"), LEVEL_GAMEPLAY);
+	_uint  currentLevelIndex = m_pGameInstance->Get_CurrentLevelIndex();
+
+	_bool	playerInRange = m_pSkeleton->Player_In_DetectRange(TEXT("Prototype_GameObject_PlayerHex"), currentLevelIndex);
 
 	if (!playerInRange)
 	{

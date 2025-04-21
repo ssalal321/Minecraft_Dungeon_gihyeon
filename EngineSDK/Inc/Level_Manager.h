@@ -12,7 +12,13 @@ class CLevel_Manager final : public CBase
 {
 private:
 	CLevel_Manager();
-	virtual ~CLevel_Manager() = default;
+	~CLevel_Manager()	override;
+
+public:
+	_uint		Get_CurrentLevelIndex() const { return m_iLevelIndex; }
+	_uint		Get_PrototypeLevelIndex() const { return m_iNextLevelIndex; }
+
+	void		Set_PrototypeLevelIndex(_uint iNextLevelIndex) { m_iNextLevelIndex = iNextLevelIndex; }
 
 public:
 	HRESULT		Initialize();
@@ -22,12 +28,13 @@ public:
 
 private:
 	_uint					m_iLevelIndex = {};
+	_uint					m_iNextLevelIndex = {};
 	class CLevel*			m_pCurrentLevel = { nullptr };
 	class CGameInstance*	m_pGameInstance = { nullptr };
 
 public:
 	static CLevel_Manager* Create();
-	virtual void Free() override;
+	void	Free()	override;
 };
 
 END

@@ -165,10 +165,15 @@ HRESULT CLoader::Loading_For_Static()
 
 	lstrcpy(m_szLoadingText, TEXT("¸ðµ¨ ·Îµù Áß"));
 	_matrix		PreTransformMatrix = XMMatrixIdentity();
+
 	/* For.Prototype_Component_Model_PlayerHex */
-	//PreTransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f));
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_PlayerHex"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Player/PlayerHex.fbx", PreTransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_GlaiveSteel */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_GlaiveSteel"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Weapon/GlaiveSteel.fbx", PreTransformMatrix))))
 		return E_FAIL;
 
 
@@ -230,6 +235,16 @@ HRESULT CLoader::Loading_For_Static()
 		CBody_Player::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_Camera_Free */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Free"),
+		CCamera_Free::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Weapon */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Weapon"),
+		CWeapon::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -273,10 +288,7 @@ HRESULT CLoader::Loading_For_GamePlay()
 	lstrcpy(m_szLoadingText, TEXT("¸ðµ¨ ·Îµù Áß"));
 	_matrix		PreTransformMatrix = XMMatrixIdentity();
 
-	/* For.Prototype_Component_Model_GlaiveSteel */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_GlaiveSteel"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Weapon/GlaiveSteel.fbx", PreTransformMatrix))))
-		return E_FAIL;
+	
 
 	/* For.Prototype_Component_Model_Zombie */
 	//PreTransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f));
@@ -341,20 +353,12 @@ HRESULT CLoader::Loading_For_GamePlay()
 		CSkeleton::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_Camera_Free */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Free"),
-		CCamera_Free::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
 
 	/* For.Prototype_GameObject_LoungeMap */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_LoungeMap"),
 		CLoungeMap::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_Weapon */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Weapon"),
-		CWeapon::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
 
 	///* For.Prototype_GameObject_Sky */
 	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Sky"),

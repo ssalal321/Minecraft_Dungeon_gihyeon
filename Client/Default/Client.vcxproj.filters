@@ -67,9 +67,6 @@
     <Filter Include="02.GameObjects\Sky">
       <UniqueIdentifier>{f921d5a2-b17c-4a73-a7d3-028b1053c5a0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Levels\02. GamePlay">
-      <UniqueIdentifier>{fae995d6-0f45-4682-97aa-35fe9c6e9a44}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\LoungeMap">
       <UniqueIdentifier>{a35214a7-3599-46bc-96d0-e0ce666aaa40}</UniqueIdentifier>
     </Filter>
@@ -157,6 +154,9 @@
     <Filter Include="02.GameObjects\Monster\Skeleton\01. State\Skeleton_BowAction">
       <UniqueIdentifier>{757f20cf-5865-4d73-9099-fee7866e62a8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Levels\02. Lounge">
+      <UniqueIdentifier>{fae995d6-0f45-4682-97aa-35fe9c6e9a44}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -184,7 +184,7 @@
       <Filter>01.Levels\00.Loading\Loader</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Level_GamePlay.h">
-      <Filter>01.Levels\02. GamePlay</Filter>
+      <Filter>01.Levels\02. Lounge</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Camera_Free.h">
       <Filter>02.GameObjects\Camera\Free</Filter>
@@ -340,7 +340,7 @@
       <Filter>01.Levels\00.Loading\Loader</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_GamePlay.cpp">
-      <Filter>01.Levels\02. GamePlay</Filter>
+      <Filter>01.Levels\02. Lounge</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Camera_Free.cpp">
       <Filter>02.GameObjects\Camera\Free</Filter>
