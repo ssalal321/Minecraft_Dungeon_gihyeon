@@ -1,6 +1,7 @@
 #include "GameInstance.h"
 
 #include "Collision_Manager.h"
+#include "EventBus.h"
 #include "Input_Device.h"
 #include "Graphic_Device.h"
 #include "Timer_Manager.h"
@@ -45,7 +46,7 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	if (nullptr == m_pInput_Manager)
 		return E_FAIL;
 
-	m_pPicking = CPicking::Create(*ppDevice, *ppContext, EngineDesc.hWnd, EngineDesc.iViewportWidth, EngineDesc.iViewportHeight);
+	m_pPicking = CPicking::Create(EngineDesc.hWnd, EngineDesc.iViewportWidth, EngineDesc.iViewportHeight);
 	if (nullptr == m_pPicking)
 		return E_FAIL;
 
@@ -72,6 +73,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	m_pCollision_Manager = CCollision_Manager::Create(EngineDesc.iNumLevels);
 	if (nullptr == m_pCollision_Manager)
 		return E_FAIL;
+
+	/*m_pEventBus = CEventBus::Create();
+	if (nullptr == m_pEventBus)
+		return E_FAIL;*/
 
 	return S_OK;
 }
@@ -121,7 +126,6 @@ void CGameInstance::Clear(_uint iCurrentLevelIndex, _uint iNextLevelIndex)
 	m_pUI_Manager->Clear(iCurrentLevelIndex, iNextLevelIndex);
 
 	m_pPrototype_Manager->Clear(iCurrentLevelIndex);
-
 }
 
 _float CGameInstance::Compute_Random_Normal()
@@ -133,7 +137,6 @@ _float CGameInstance::Compute_Random(_float fMin, _float fMax)
 {
 	return	fMin + (fMax - fMin) * Compute_Random_Normal();
 }
-
 
 #pragma region GRAPHIC_DEVICE
 HRESULT CGameInstance::Clear_BackBuffer_View(_float4 vClearColor)
@@ -394,6 +397,7 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pLight_Manager);
 	Safe_Release(m_pUI_Manager);
 	Safe_Release(m_pCollision_Manager);
+	//Safe_Release(m_pEventBus);
 
 	Safe_Release(m_pGraphic_Device);
 

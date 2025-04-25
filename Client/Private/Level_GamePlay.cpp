@@ -11,7 +11,7 @@
 #include "Camera_Free.h"
 #include "InventoryBase.h"
 #include "InventoryGearSlot.h"
-#include "InventoryItemSlot.h"
+#include "InventoryArtifactSlot.h"
 #include "LoungeMap.h"
 #include "Player.h"
 #include "Zombie.h"
@@ -39,8 +39,8 @@ HRESULT CLevel_GamePlay::Initialize()
     if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
         return E_FAIL;
 
-    if (FAILED(Ready_Layer_UI(TEXT("Layer_UI"))))
-        return E_FAIL;
+    /*if (FAILED(Ready_Layer_UI(TEXT("Layer_UI"))))
+        return E_FAIL;*/
 
     return S_OK;
 }
@@ -199,7 +199,6 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& strLayerTag)
         LEVEL_GAMEPLAY, strLayerTag, &Desc)))
         return E_FAIL;
 
-
     return S_OK;
 }
 
@@ -310,10 +309,10 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& strLayerTag)
         _int col = i % iColumns;  // 열 계산
 
         // X, Y 좌표 계산
-        _float fXPosition = fStartX + (fRightSlotWidth + fStoreSlotSpacing) * static_cast<float>(col);   // 열에 맞게 X 좌표 계산
-        _float fYPosition = fStartY + (fRightSlotWidth + fStoreSlotSpacing) * static_cast<float>(row);  // 행에 맞게 Y 좌표 계산
+        _float fXPosition = fStartX + (fRightSlotWidth + fStoreSlotSpacing) * static_cast<_float>(col);   // 열에 맞게 X 좌표 계산
+        _float fYPosition = fStartY + (fRightSlotWidth + fStoreSlotSpacing) * static_cast<_float>(row);  // 행에 맞게 Y 좌표 계산
 
-        std::wstring strSlotName = L"GameObject_InventoryStoreSlot_" + std::to_wstring(i);
+        const _wstring& strSlotName = L"GameObject_InventoryStoreSlot_" + std::to_wstring(i);
 
         CInventoryBase::INVENTORY_BASE_DESC  InventoryStoreSlotDesc
         (strSlotName.c_str(), CUIObject::CLICKABLE,
@@ -330,9 +329,10 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& strLayerTag)
     }
 
 
-    float fLeftSlotsWidth = 80.f; // 슬롯의 너비
+    _float  fLeftSlotsWidth = 80.f; // 슬롯의 너비
+
     // 근접 무기 슬롯
-    CInventoryGearSlot::INVENTORY_GEARSLOT_DESC  InventoryMeleeSlot
+    CInventorySlot::INVENTORY_SLOT_DESC     InventoryMeleeSlot
     (TEXT("GameObject_InventoryMeleeSlot"), CUIObject::UNCLICKABLE,
         92.f, 202.2f, 0.4f, fLeftSlotsWidth, fLeftSlotsWidth,
         L"Prototype_Component_Texture_InventoryGearSlot");
@@ -343,9 +343,10 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& strLayerTag)
 
     if (nullptr == pInventoryGearSlot) return E_FAIL;
     pInventoryGearSlot->Set_Parent(pInventoryBase);  // 부모 설정
+    
 
     // 갑옷 슬롯
-    CInventoryGearSlot::INVENTORY_GEARSLOT_DESC  InventoryArmorSlotDesc
+    CInventorySlot::INVENTORY_SLOT_DESC     InventoryArmorSlotDesc
     (TEXT("GameObject_InventoryArmorSlot"), CUIObject::UNCLICKABLE,
         237.7f, 174.7f, 0.4f, fLeftSlotsWidth, fLeftSlotsWidth,
         L"Prototype_Component_Texture_InventoryGearSlot");
@@ -357,8 +358,9 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& strLayerTag)
     if (nullptr == pInventoryGearSlot) return E_FAIL;
     pInventoryGearSlot->Set_Parent(pInventoryBase);  // 부모 설정
 
+
     // 원거리 무기 슬롯
-    CInventoryGearSlot::INVENTORY_GEARSLOT_DESC  InventoryRangedSlotDesc
+    CInventorySlot::INVENTORY_SLOT_DESC     InventoryRangedSlotDesc
     (TEXT("GameObject_InventoryRangedSlot"), CUIObject::UNCLICKABLE,
         383.5f, 202.2f, 0.4f, fLeftSlotsWidth, fLeftSlotsWidth,
         L"Prototype_Component_Texture_InventoryGearSlot");
@@ -374,25 +376,25 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& strLayerTag)
     // 유물 슬롯
     for (int i = 0; i < 3; ++i)
     {
-        float fItemSlotStartX = 126.5f;   // 첫 번째 슬롯의 시작 위치
+        _float  fItemSlotStartX = 126.5f;   // 첫 번째 슬롯의 시작 위치
         
-        float fItemSlotSpacing = 31.5f;  // 슬롯 간 간격
+        _float  fItemSlotSpacing = 31.5f;  // 슬롯 간 간격
 
-        float fSlotX = fItemSlotStartX + static_cast<float>(i) * (fLeftSlotsWidth + fItemSlotSpacing); // 겹치지 않도록 계산
+        _float  fSlotX = fItemSlotStartX + static_cast<float>(i) * (fLeftSlotsWidth + fItemSlotSpacing); // 겹치지 않도록 계산
 
-        std::wstring strSlotName = L"GameObject_InventoryItemSlot_Empty_" + std::to_wstring(i);
+        const _wstring& strSlotName = L"GameObject_InventoryArtifactSlot_Empty_" + std::to_wstring(i);
 
-        CInventoryGearSlot::INVENTORY_GEARSLOT_DESC InventoryItemSlotDesc
+        CInventorySlot::INVENTORY_SLOT_DESC     InventoryArtifactSlotDesc
         (strSlotName.c_str(), CUIObject::UNCLICKABLE,
             fSlotX, 626.f, 0.4f, 80.f, 80.f,
-            L"Prototype_Component_Texture_InventoryItemSlot_Empty");
+            L"Prototype_Component_Texture_InventoryArtifactSlot_Empty");
 
-        CUIObject* pInventoryItemSlot = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_GAMEPLAY,
-            TEXT("Prototype_GameObject_InventoryItemSlot_Empty"),
-            CUI_Manager::PERSISTENT, &InventoryItemSlotDesc);
+        CUIObject* pInventoryArtifactSlot = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_GAMEPLAY,
+            TEXT("Prototype_GameObject_InventoryArtifactSlot_Empty"),
+            CUI_Manager::PERSISTENT, &InventoryArtifactSlotDesc);
 
-        if (nullptr == pInventoryItemSlot) return E_FAIL;
-        pInventoryItemSlot->Set_Parent(pInventoryBase);  // 부모 설정
+        if (nullptr == pInventoryArtifactSlot)  return E_FAIL;
+        pInventoryArtifactSlot->Set_Parent(pInventoryBase);  // 부모 설정
     }
 #pragma endregion
 
@@ -416,5 +418,4 @@ CLevel_GamePlay* CLevel_GamePlay::Create(ID3D11Device* pDevice, ID3D11DeviceCont
 void CLevel_GamePlay::Free()
 {
     __super::Free();
-
 }

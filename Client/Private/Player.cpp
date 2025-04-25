@@ -2,9 +2,10 @@
 #include "GameInstance.h"
 
 #include "Body_Player.h"
-#include "Weapon.h"
+#include "Item.h"
 
 #include "FSM.h"
+#include "InventoryData.h"
 #include "Player_GetHit.h"
 #include "Player_Glaive_Combo.h"
 #include "Player_Idle.h"
@@ -37,6 +38,9 @@ HRESULT CPlayer::Initialize(void* pArg)
 		return E_FAIL;
 
 	if (FAILED(Ready_Components()))
+		return E_FAIL;
+
+	if (FAILED(Ready_Inventory()))
 		return E_FAIL;
 
 	if (FAILED(Ready_PartObjects()))
@@ -137,6 +141,16 @@ HRESULT CPlayer::Ready_Components()
 	return S_OK;
 }
 
+HRESULT CPlayer::Ready_Inventory()
+{
+	m_pInventoryData = CInventoryData::Create();
+
+	if (nullptr == m_pInventoryData)
+		return E_FAIL;
+
+	return S_OK;
+}
+
 HRESULT CPlayer::Ready_PartObjects()
 {
 	/* 몸통을 추가한다. */
@@ -153,22 +167,25 @@ HRESULT CPlayer::Ready_PartObjects()
 
 
 	/* 무기를 추가한다. */
-	CWeapon::WEAPON_DESC	WeaponDesc{};
+	CItem::ITEM_DESC	ItemDesc{};
 
 	CModel* pBody = dynamic_cast<CModel*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Model")));
 	if (nullptr == pBody)
 		return E_FAIL;
 
-	WeaponDesc.pGameObjectTag = TEXT("GameObject_Weapon");
-	WeaponDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
-	WeaponDesc.pState = &m_iState;
-	WeaponDesc.pSocketMatrix = pBody->Get_CombinedTransformationMatrix("J_R_Weapon");
-	WeaponDesc.pContainerObject = this;
-	WeaponDesc.pContainerObjAttacking = &m_bAttacking;
+	ItemDesc.pGameObjectTag = TEXT("GameObject_Weapon");
+	ItemDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
+	ItemDesc.pState = &m_iState;
+	ItemDesc.pSocketMatrix = pBody->Get_CombinedTransformationMatrix("J_R_Weapon");
+	ItemDesc.pContainerObject = this;
+	ItemDesc.pContainerObjAttacking = &m_bAttacking;
+	ItemDesc.eItemtype = ITEMTYPE::MELEE;
+	ItemDesc.strTexPrototypeTag = TEXT("Prototype_Component_Texture_Glaive_Steel");
 
-	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Weapon"), TEXT("Part_MeleeWeapon"), &WeaponDesc)))
+	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Glaive"), TEXT("Part_MeleeWeapon"), &ItemDesc)))
 		return E_FAIL;
 
+	
 
 	/* 이펙트를 추가한다. */
 
@@ -193,7 +210,6 @@ HRESULT CPlayer::Ready_States()
 	m_StatesVec[static_cast<_uint>(PLAYER_STATE::ROLL)] = CPlayer_Roll::Create(this, m_pPlayerInfo, &pStatePlayerDesc);
 	m_StatesVec[static_cast<_uint>(PLAYER_STATE::GET_HIT_FRONT)] = CPlayer_GetHit::Create(this, m_pPlayerInfo, &pStatePlayerDesc);
 	m_StatesVec[static_cast<_uint>(PLAYER_STATE::GLAIVE_COMBO)] = CPlayer_Glaive_Combo::Create(this, m_pPlayerInfo, &pStatePlayerDesc);
-	
 
 	m_pPlayerFSM = FSM::Create();
 
@@ -234,12 +250,13 @@ void CPlayer::Free()
 	__super::Free();
 
 	Safe_Delete(m_pPlayerInfo);
+	Safe_Release(m_pInventoryData);
 	Safe_Delete(m_pPlayerFSM);
 	Safe_Release(m_pNavigationCom);
 
 	for (auto& stateVec : m_StatesVec)
 	{
 		if (stateVec!= nullptr)
-			Safe_Release(stateVec) ;
+			Safe_Release(stateVec);
 	}
 }

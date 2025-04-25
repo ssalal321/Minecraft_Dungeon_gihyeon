@@ -2,12 +2,12 @@
 #include "GameInstance.h"
 
 CInventoryGearSlot::CInventoryGearSlot(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CUIObject(pDevice, pContext)
+	: CInventorySlot(pDevice, pContext)
 {
 }
 
 CInventoryGearSlot::CInventoryGearSlot(const CInventoryGearSlot& Prototype)
-	: CUIObject(Prototype)
+	: CInventorySlot(Prototype)
 {
 }
 
@@ -20,7 +20,7 @@ HRESULT CInventoryGearSlot::Initialize(void* pArg)
 {
 	if (nullptr != pArg)
 	{
-		m_pDesc = new INVENTORY_GEARSLOT_DESC(*static_cast<INVENTORY_GEARSLOT_DESC*>(pArg));
+		m_pDesc = new INVENTORY_SLOT_DESC(*static_cast<INVENTORY_SLOT_DESC*>(pArg));
 	}
 	else
 		return E_FAIL;
@@ -60,7 +60,7 @@ HRESULT CInventoryGearSlot::Render()
 		return E_FAIL;
 
 
-	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture")))
+	if (FAILED(m_pSlotTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture")))
 		return E_FAIL;
 
 	m_pVIBufferCom->Input_Assembler();
@@ -75,7 +75,7 @@ HRESULT CInventoryGearSlot::Ready_Components()
 {
 	/* Com_Texture */
 	if (nullptr == Add_Component(LEVEL_STATIC, m_pDesc->strTexPrototypeTag,
-		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom)))
+		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pSlotTextureCom)))
 		return E_FAIL;
 
 	/* Com_Shader */
@@ -120,9 +120,4 @@ CGameObject* CInventoryGearSlot::Clone(void* pArg)
 void CInventoryGearSlot::Free()
 {
 	__super::Free();
-
-	Safe_Delete(m_pDesc);
-	Safe_Release(m_pTextureCom);
-	Safe_Release(m_pShaderCom);
-	Safe_Release(m_pVIBufferCom);
 }

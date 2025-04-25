@@ -1,5 +1,9 @@
 #include "InventoryBase.h"
 #include "GameInstance.h"
+#include "Item.h"
+#include "InventoryArtifactSlot.h"
+#include "InventoryGearSlot.h"
+#include "InventoryStoreSlot.h"
 
 CInventoryBase::CInventoryBase(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CUIObject(pDevice, pContext)
@@ -25,12 +29,19 @@ HRESULT CInventoryBase::Initialize(void* pArg)
 	else
 		return E_FAIL;
 
-	if (FAILED(__super::Initialize(m_pDesc)))
-		return E_FAIL;
+	m_UIStoreSlots.resize(STORESLOTSIZE, nullptr);
+	m_UIGearSlots.resize(GEARSLOTSIZE, nullptr);
+	m_UIArtifactSlots.resize(ARTIFACTSLOTSIZE, nullptr);
 
+	if (FAILED(__super::Initialize(pArg)))
+		return E_FAIL;
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
+
+	m_pGameInstance->Subscribe<Item_Added>(
+		[this](const Item_Added& evt) { this->Item_Added_To_StoreSlot(evt); }
+	);
 
 	return S_OK;
 }
@@ -75,6 +86,7 @@ HRESULT CInventoryBase::Render()
 	return S_OK;
 }
 
+
 HRESULT CInventoryBase::Ready_Components()
 {
 	/* Com_Texture */
@@ -93,6 +105,29 @@ HRESULT CInventoryBase::Ready_Components()
 		return E_FAIL;
 
 	return S_OK;
+}
+
+void CInventoryBase::Item_Added_To_StoreSlot(const Item_Added& evt)
+{
+	if (false == m_UIStoreSlots[evt.slotIndex]->Is_Empty() ||
+		evt.slotIndex < 0 || evt.slotIndex >= m_UIStoreSlots.size())
+		return;
+
+	CInventoryStoreSlot* pInventoryStoreSlot = m_UIStoreSlots[evt.slotIndex];
+	pInventoryStoreSlot->Set_Empty(false);
+	pInventoryStoreSlot->Set_IconTag(evt.m_strIconTexPrototypeTag);
+}
+
+void CInventoryBase::Update_SlotTexture(CInventorySlot* pSlot, const _wstring& texTag, _bool bEmpty)
+{
+	if (!pSlot)
+		return;
+
+	if (bEmpty)
+		//TexComponent_Change();
+
+	pSlot->Set_IconTag(texTag);
+	// 여기에 pSlot->m_pIcon 등 실제 Texture 변경 로직도 들어가야 함
 }
 
 CInventoryBase* CInventoryBase::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -124,6 +159,24 @@ CGameObject* CInventoryBase::Clone(void* pArg)
 void CInventoryBase::Free()
 {
 	__super::Free();
+
+	for (auto& storeSlot : m_UIStoreSlots)
+	{
+		Safe_Release(storeSlot);
+	}
+	m_UIStoreSlots.clear();
+
+	for (auto& gearSlot : m_UIGearSlots)
+	{
+		Safe_Release(gearSlot);
+	}
+	m_UIGearSlots.clear();
+
+	for (auto& artifactSlot : m_UIArtifactSlots)
+	{
+		Safe_Release(artifactSlot);
+	}
+	m_UIArtifactSlots.clear();
 
 	Safe_Delete(m_pDesc);
 	Safe_Release(m_pTextureCom);

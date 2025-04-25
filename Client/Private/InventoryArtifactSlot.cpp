@@ -1,21 +1,22 @@
-#include "InventoryStoreSlot.h"
+#include "InventoryArtifactSlot.h"
 #include "GameInstance.h"
-CInventoryStoreSlot::CInventoryStoreSlot(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+
+CInventoryArtifactSlot::CInventoryArtifactSlot(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CInventorySlot(pDevice, pContext)
 {
 }
 
-CInventoryStoreSlot::CInventoryStoreSlot(const CInventoryStoreSlot& Prototype)
+CInventoryArtifactSlot::CInventoryArtifactSlot(const CInventoryArtifactSlot& Prototype)
 	: CInventorySlot(Prototype)
 {
 }
 
-HRESULT CInventoryStoreSlot::Initialize_Prototype()
+HRESULT CInventoryArtifactSlot::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CInventoryStoreSlot::Initialize(void* pArg)
+HRESULT CInventoryArtifactSlot::Initialize(void* pArg)
 {
 	if (nullptr != pArg)
 	{
@@ -24,10 +25,8 @@ HRESULT CInventoryStoreSlot::Initialize(void* pArg)
 	else
 		return E_FAIL;
 
-
-	if (FAILED(__super::Initialize(pArg)))
+	if (FAILED(__super::Initialize(m_pDesc)))
 		return E_FAIL;
-
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
@@ -35,20 +34,19 @@ HRESULT CInventoryStoreSlot::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CInventoryStoreSlot::Priority_Update(_float fTimeDelta)
-{
-
-}
-
-void CInventoryStoreSlot::Update(_float fTimeDelta)
+void CInventoryArtifactSlot::Priority_Update(_float fTimeDelta)
 {
 }
 
-void CInventoryStoreSlot::Late_Update(_float fTimeDelta)
+void CInventoryArtifactSlot::Update(_float fTimeDelta)
 {
 }
 
-HRESULT CInventoryStoreSlot::Render()
+void CInventoryArtifactSlot::Late_Update(_float fTimeDelta)
+{
+}
+
+HRESULT CInventoryArtifactSlot::Render()
 {
 	if (!Is_Visible())
 		return S_OK;
@@ -71,7 +69,7 @@ HRESULT CInventoryStoreSlot::Render()
 	return S_OK;
 }
 
-HRESULT CInventoryStoreSlot::Ready_Components()
+HRESULT CInventoryArtifactSlot::Ready_Components()
 {
 	/* Com_Texture */
 	if (nullptr == Add_Component(LEVEL_STATIC, m_pDesc->strTexPrototypeTag,
@@ -84,40 +82,40 @@ HRESULT CInventoryStoreSlot::Ready_Components()
 		return E_FAIL;
 
 	/* Com_VIBuffer */
-	if(nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
+	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
 		TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom)))
 		return E_FAIL;
 
 	return S_OK;
 }
 
-CInventoryStoreSlot* CInventoryStoreSlot::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CInventoryArtifactSlot* CInventoryArtifactSlot::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	CInventoryStoreSlot* pGameInstance = new CInventoryStoreSlot(pDevice, pContext);
+	CInventoryArtifactSlot* pGameInstance = new CInventoryArtifactSlot(pDevice, pContext);
 
 	if (FAILED(pGameInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Create : CInventoryStoreSlot");
+		MSG_BOX("Failed to Create : CInventoryArtifactSlot");
 		Safe_Release(pGameInstance);
 	}
 
 	return pGameInstance;
 }
 
-CGameObject* CInventoryStoreSlot::Clone(void* pArg)
+CGameObject* CInventoryArtifactSlot::Clone(void* pArg)
 {
-	CInventoryStoreSlot* pGameInstance = new CInventoryStoreSlot(*this);
+	CInventoryArtifactSlot* pGameInstance = new CInventoryArtifactSlot(*this);
 
 	if (FAILED(pGameInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Clone : CInventoryStoreSlot");
+		MSG_BOX("Failed to Clone : CInventoryArtifactSlot");
 		Safe_Release(pGameInstance);
 	}
 
 	return pGameInstance;
 }
 
-void CInventoryStoreSlot::Free()
+void CInventoryArtifactSlot::Free()
 {
 	__super::Free();
 }

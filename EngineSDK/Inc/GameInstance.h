@@ -7,6 +7,7 @@
 #include "Prototype_Manager.h"
 #include "PipeLine.h"
 #include "UI_Manager.h"
+#include "EventBus.h"
 
 BEGIN(Engine)
 	class ENGINE_DLL CGameInstance final : public CBase
@@ -104,7 +105,21 @@ public:
 #pragma region COLLISION_MANAGER
 	HRESULT		Add_ColliderCom(CComponent* pColliderCom, const _wstring& PartObject_Tag, const _wstring& ContainerGroup_Tag) const;
 	unordered_map<_wstring, vector<CCollider*>>*	Get_Colliders();
-#pragma endregion UI_MANAGER
+#pragma endregion
+
+#pragma region EVENTBUS
+	template <typename T>
+	void   Subscribe(function<void(const T&)> handler)
+	{
+		m_pEventBus->Subscribe(handler);
+	}
+
+	template <typename T>
+	void   Publish(const T& event) const
+	{
+		m_pEventBus->Publish(event);
+	}
+#pragma endregion
 
 private:
 	class	CGraphic_Device*		m_pGraphic_Device		= { nullptr };
@@ -120,6 +135,7 @@ private:
 	class	CUI_Manager*			m_pUI_Manager			= { nullptr };
 	class	CCollision_Manager*		m_pCollision_Manager	= { nullptr };
 	class	CPicking*				m_pPicking				= { nullptr };
+	class   CEventBus*				m_pEventBus				= { nullptr };
 	
 public:
 	void	Release_Engine();

@@ -157,6 +157,15 @@
     <Filter Include="01.Levels\02. Lounge">
       <UniqueIdentifier>{fae995d6-0f45-4682-97aa-35fe9c6e9a44}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UIObjects\Inventory\InventoryIcon">
+      <UniqueIdentifier>{a672ba4a-bb13-4ecb-a7d8-5c4d0d1fb614}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Item">
+      <UniqueIdentifier>{986d68eb-39f5-4cd9-afec-fc22bf5a13eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Inventory">
+      <UniqueIdentifier>{141438c3-b8df-4b8c-b93f-a466fc15c1c1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -216,11 +225,8 @@
     <ClInclude Include="..\Public\InventoryGearSlot.h">
       <Filter>02.GameObjects\UIObjects\Inventory\InventoryGearSlot</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\InventoryItemSlot.h">
+    <ClInclude Include="..\Public\InventoryArtifactSlot.h">
       <Filter>02.GameObjects\UIObjects\Inventory\InventoryItemSlot</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Weapon.h">
-      <Filter>02.GameObjects\Player\01. Weapon</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\LoungeMap.h">
       <Filter>02.GameObjects\LoungeMap</Filter>
@@ -312,6 +318,24 @@
     <ClInclude Include="..\Public\Skeleton_BowAction.h">
       <Filter>02.GameObjects\Monster\Skeleton\01. State\Skeleton_BowAction</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\InventorySlot.h">
+      <Filter>02.GameObjects\UIObjects\Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\InventoryIcon.h">
+      <Filter>02.GameObjects\UIObjects\Inventory\InventoryIcon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Item.h">
+      <Filter>02.GameObjects\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Weapon_Glaive.h">
+      <Filter>02.GameObjects\Player\01. Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\InventoryData.h">
+      <Filter>03. Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EventTypes.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -372,11 +396,8 @@
     <ClCompile Include="..\Private\InventoryGearSlot.cpp">
       <Filter>02.GameObjects\UIObjects\Inventory\InventoryGearSlot</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\InventoryItemSlot.cpp">
+    <ClCompile Include="..\Private\InventoryArtifactSlot.cpp">
       <Filter>02.GameObjects\UIObjects\Inventory\InventoryItemSlot</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Weapon.cpp">
-      <Filter>02.GameObjects\Player\01. Weapon</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\LoungeMap.cpp">
       <Filter>02.GameObjects\LoungeMap</Filter>
@@ -461,6 +482,21 @@
     </ClCompile>
     <ClCompile Include="..\Private\Skeleton_BowAction.cpp">
       <Filter>02.GameObjects\Monster\Skeleton\01. State\Skeleton_BowAction</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\InventorySlot.cpp">
+      <Filter>02.GameObjects\UIObjects\Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\InventoryIcon.cpp">
+      <Filter>02.GameObjects\UIObjects\Inventory\InventoryIcon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Item.cpp">
+      <Filter>02.GameObjects\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Weapon_Glaive.cpp">
+      <Filter>02.GameObjects\Player\01. Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\InventoryData.cpp">
+      <Filter>03. Inventory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

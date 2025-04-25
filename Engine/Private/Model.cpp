@@ -96,9 +96,14 @@ HRESULT CModel::Initialize_Prototype(TYPE eModelType, const _char* pModelFilePat
 
 HRESULT CModel::Initialize(void* pArg)
 {
+	if (nullptr == pArg)
+		return S_OK;
+
+	MODEL_DESC* pDesc = static_cast<MODEL_DESC*>(pArg);
+	
 	for (auto& Mesh : m_Meshes)
 	{
-		Mesh->Initialize(pArg);
+		Mesh->Set_Pickable(pDesc->bPickable);
 	}
 
     return S_OK;

@@ -91,11 +91,11 @@ HRESULT CBody_Zombie::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Model */
-	CMesh::MESH_DESC	pMeshDesc = {};
-	pMeshDesc.bPickable = true;
+	CModel::MODEL_DESC	pModelDesc = {};
+	pModelDesc.bPickable = true;
 
 	if (nullptr == Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Zombie"),
-		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom), &pMeshDesc))
+		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom), &pModelDesc))
 		return E_FAIL;
 
 

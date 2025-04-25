@@ -45,6 +45,12 @@ private:
 	HRESULT		Loading_For_GamePlay();
 
 
+	HRESULT		Ready_Prototype_TextureCom_Static();
+	HRESULT		Ready_Prototype_ShaderCom_Static();
+	HRESULT		Ready_Prototype_ColliderCom_Static();
+	HRESULT		Ready_Prototype_GameObject_Static();
+
+
 public:
 	static	 CLoader*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevelID);
 	void	Free()	override;

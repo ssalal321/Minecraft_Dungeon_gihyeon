@@ -10,12 +10,12 @@ END
 
 BEGIN(Client)
 
-class CInventoryGearSlot final : public CInventorySlot
+class CInventoryArtifactSlot final : public CInventorySlot
 {
 private:
-	CInventoryGearSlot(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CInventoryGearSlot(const CInventoryGearSlot& Prototype);
-	~CInventoryGearSlot() override = default;
+	CInventoryArtifactSlot(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CInventoryArtifactSlot(const CInventoryArtifactSlot& Prototype);
+	~CInventoryArtifactSlot() override = default;
 
 public:
 	HRESULT		Initialize_Prototype()				override;
@@ -28,14 +28,10 @@ public:
 	HRESULT		Render()							override;
 
 private:
-	GEAR_TYPE	m_eGearType = { GEAR_TYPE::NONE };
-
-private:
 	HRESULT		Ready_Components();
 
-
 public:
-	static	 CInventoryGearSlot*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static	 CInventoryArtifactSlot*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CGameObject*	Clone(void* pArg)	override;
 	void			Free()				override;
 };

@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 
 namespace Client
 {
@@ -60,4 +61,9 @@ namespace Client
 		WALK,
 		STATE_END
 	};
+
+	enum class	ITEMTYPE { MELEE, ARMOR, RANGED, ARTIFACT, NONE };
+
+	enum class	GEAR_TYPE { MELEE, ARMOR, RANGED, NONE };
+
 }

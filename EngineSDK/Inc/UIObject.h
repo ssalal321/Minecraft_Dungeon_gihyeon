@@ -18,7 +18,7 @@ public:
 			_float x, _float y, _float z, _float sizeX, _float sizeY, const wstring& texPrototypeTag, _float rotationPerSec = 0.f, _float speedPerSec = 0.f)
 			: GAMEOBJECT_DESC(GameObjectTag, rotationPerSec, speedPerSec),
 			eUIState(uiState), fX(x), fY(y), fZ(z), fSizeX(sizeX), fSizeY(sizeY), strTexPrototypeTag(texPrototypeTag) {
-}
+		}
 
 //tagUIObjectDesc(const tagUIObjectDesc& other)
 //	: GAMEOBJECT_DESC(other), eUIState(other.eUIState),
@@ -26,9 +26,9 @@ public:
 //	  strTexPrototypeTag(other.strTexPrototypeTag) {
 //}
 
-~tagUIObjectDesc() override = default;
+		~tagUIObjectDesc() override = default;
 
-}UIOBJECT_DESC;
+	}UIOBJECT_DESC;
 
 protected:
 	CUIObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
