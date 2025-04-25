@@ -73,7 +73,7 @@ HRESULT CZombie::Ready_PartObjects()
 	/* 몸통을 추가한다. */
 	CBody_Zombie::BODY_ZOMBIE_DESC		BodyDesc{};
 
-	BodyDesc.pGameObjectTag = TEXT("GameObject_Body_Zombie");
+	BodyDesc.strGameObjectTag = TEXT("GameObject_Body_Zombie");
 	BodyDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	BodyDesc.pState = &m_iState;
 	BodyDesc.pContainerObject = this;

@@ -7,13 +7,6 @@ class CVIBuffer_Cube;
 
 class ENGINE_DLL CMesh final : public CVIBuffer
 {
-public:
-	typedef struct tagMesh
-	{
-		_bool bPickable = { false };
-
-	}MESH_DESC;
-
 private:
 	CMesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CMesh(const CMesh& Prototype);
@@ -21,6 +14,8 @@ private:
 
 public:
 	_uint		Get_MaterialIndex() const { return m_iMaterialIndex; }
+
+	void		Set_Pickable(_bool bPickable) { m_bPickable = bPickable; }
 
 public:
 	HRESULT Initialize_Prototype(CModel::TYPE eModelType, const vector<class CBone*>& Bones, const aiMesh* pAIMesh, _fmatrix PreTransformMatrix);

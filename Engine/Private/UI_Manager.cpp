@@ -31,12 +31,12 @@ CUIObject* CUI_Manager::Add_UIObject(_uint iPrototypeLevelIndex, _uint iLayerLev
 	if (iLayerLevelIndex != m_iObjectLevelIndex)
 	{
 		// 새로운 레벨로 추가 (다음 레벨 UI)
-		m_NextUIObjects[eUILifeTime].insert({ uiObjectDesc->pGameObjectTag, pUIObject });
+		m_NextUIObjects[eUILifeTime].insert({ uiObjectDesc->strGameObjectTag, pUIObject });
 	}
 	else 
 	{
 		// 현재 레벨 UI에 추가
-		m_CurrentUIObjects[eUILifeTime].insert({ uiObjectDesc->pGameObjectTag, pUIObject });
+		m_CurrentUIObjects[eUILifeTime].insert({ uiObjectDesc->strGameObjectTag, pUIObject });
 	}
 
 	return pUIObject;

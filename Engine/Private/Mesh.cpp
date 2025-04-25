@@ -75,11 +75,7 @@ HRESULT CMesh::Initialize_Prototype(CModel::TYPE eModelType, const vector<class 
 
 HRESULT CMesh::Initialize(void* pArg)
 {
-	if (nullptr == pArg)
-		return S_OK;
-
-	MESH_DESC* pDesc = static_cast<MESH_DESC*>(pArg);
-	m_bPickable = pDesc->bPickable;
+	
 
 	return S_OK;
 }

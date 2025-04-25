@@ -6,6 +6,7 @@
 
 BEGIN(Client)
 class CState;
+class CInventoryData;
 
 class CPlayer final : public CContainerObject
 {
@@ -77,20 +78,28 @@ public:
 	void	Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState) override;
 
 private:
-	_uint				m_iState	  = { static_cast<_uint>(PLAYER_STATE::STATE_END) };
-	class FSM*			m_pPlayerFSM  = { nullptr };
 	PLAYER_DESC*		m_pPlayerInfo = { nullptr };
-	vector<CState*>     m_StatesVec;
+	_float4				m_NextPosition = { 0.f, 0.f, 0.f, 1.f };
 
 	CNavigation*		m_pNavigationCom = { nullptr };
 
-	_float4				m_NextPosition	= {0.f, 0.f, 0.f, 1.f};
-	_bool				m_bAttacking	= { false };
+	CInventoryData*		m_pInventoryData = { nullptr };
+
+#pragma region FSM
+	_uint				m_iState	  = { static_cast<_uint>(PLAYER_STATE::STATE_END) };
+	class FSM*			m_pPlayerFSM  = { nullptr };
+	vector<CState*>     m_StatesVec;
+#pragma endregion
+
+#pragma region MONSTER
+	_bool				m_bAttacking = { false };
 	_bool				m_bChasing		= { false };
 	CTransform*			m_pMonsterTransformCom = { nullptr };
+#pragma endregion
 
 private:
 	HRESULT		Ready_Components();
+	HRESULT		Ready_Inventory();
 	HRESULT		Ready_PartObjects();
 	HRESULT		Ready_States();
 

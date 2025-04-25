@@ -1,33 +1,27 @@
-#include "InventoryItemSlot.h"
+#include "InventoryIcon.h"
 #include "GameInstance.h"
 
-CInventoryItemSlot::CInventoryItemSlot(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CUIObject(pDevice, pContext)
+CInventoryIcon::CInventoryIcon(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+    : CUIObject(pDevice, pContext)
 {
 }
 
-CInventoryItemSlot::CInventoryItemSlot(const CInventoryItemSlot& Prototype)
-	: CUIObject(Prototype)
-{
-}
-
-HRESULT CInventoryItemSlot::Initialize_Prototype()
+HRESULT CInventoryIcon::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CInventoryItemSlot::Initialize(void* pArg)
+HRESULT CInventoryIcon::Initialize(void* pArg)
 {
 	if (nullptr != pArg)
 	{
-		m_pDesc = new INVENTORY_ITEMSLOT_DESC(*static_cast<INVENTORY_ITEMSLOT_DESC*>(pArg));
+		m_pDesc = new INVENTORY_ICON_DESC(*static_cast<INVENTORY_ICON_DESC*>(pArg));
 	}
 	else
 		return E_FAIL;
 
-	if (FAILED(__super::Initialize(m_pDesc)))
+	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
-
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
@@ -35,20 +29,20 @@ HRESULT CInventoryItemSlot::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CInventoryItemSlot::Priority_Update(_float fTimeDelta)
-{
-
-}
-
-void CInventoryItemSlot::Update(_float fTimeDelta)
+void CInventoryIcon::Priority_Update(_float fTimeDelta)
 {
 }
 
-void CInventoryItemSlot::Late_Update(_float fTimeDelta)
+void CInventoryIcon::Update(_float fTimeDelta)
 {
 }
 
-HRESULT CInventoryItemSlot::Render()
+void CInventoryIcon::Late_Update(_float fTimeDelta)
+{
+	
+}
+
+HRESULT CInventoryIcon::Render()
 {
 	if (!Is_Visible())
 		return S_OK;
@@ -71,7 +65,7 @@ HRESULT CInventoryItemSlot::Render()
 	return S_OK;
 }
 
-HRESULT CInventoryItemSlot::Ready_Components()
+HRESULT CInventoryIcon::Ready_Components()
 {
 	/* Com_Texture */
 	if (nullptr == Add_Component(LEVEL_STATIC, m_pDesc->strTexPrototypeTag,
@@ -91,33 +85,33 @@ HRESULT CInventoryItemSlot::Ready_Components()
 	return S_OK;
 }
 
-CInventoryItemSlot* CInventoryItemSlot::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CInventoryIcon* CInventoryIcon::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	CInventoryItemSlot* pGameInstance = new CInventoryItemSlot(pDevice, pContext);
+	CInventoryIcon* pGameInstance = new CInventoryIcon(pDevice, pContext);
 
 	if (FAILED(pGameInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Create : CInventoryItemSlot");
+		MSG_BOX("Failed to Create : CInventoryIcon");
 		Safe_Release(pGameInstance);
 	}
 
 	return pGameInstance;
 }
 
-CGameObject* CInventoryItemSlot::Clone(void* pArg)
+CGameObject* CInventoryIcon::Clone(void* pArg)
 {
-	CInventoryItemSlot* pGameInstance = new CInventoryItemSlot(*this);
+	CInventoryIcon* pGameInstance = new CInventoryIcon(*this);
 
 	if (FAILED(pGameInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Clone : CInventoryItemSlot");
+		MSG_BOX("Failed to Clone : CInventoryIcon");
 		Safe_Release(pGameInstance);
 	}
 
 	return pGameInstance;
 }
 
-void CInventoryItemSlot::Free()
+void CInventoryIcon::Free()
 {
 	__super::Free();
 

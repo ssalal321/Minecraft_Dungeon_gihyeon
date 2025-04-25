@@ -62,16 +62,16 @@ HRESULT CBody_Zombie::Render()
 
 	for (size_t i = 0; i < iNumMeshes; i++)
 	{
-		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
+		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", static_cast<_uint>(i), aiTextureType_DIFFUSE, 0)))
 			return E_FAIL;
 
-		if (FAILED(m_pModelCom->Bind_BoneMatrices(m_pShaderCom, "g_BoneMatrices", i)))
+		if (FAILED(m_pModelCom->Bind_BoneMatrices(m_pShaderCom, "g_BoneMatrices", static_cast<_uint>(i))))
 			return E_FAIL;
 
 		if (FAILED(m_pShaderCom->Begin(0)))
 			return E_FAIL;
 
-		if (FAILED(m_pModelCom->Render(i)))
+		if (FAILED(m_pModelCom->Render(static_cast<_uint>(i))))
 			return E_FAIL;
 	}
 
@@ -91,11 +91,11 @@ HRESULT CBody_Zombie::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Model */
-	CMesh::MESH_DESC	pMeshDesc = {};
-	pMeshDesc.bPickable = true;
+	CModel::MODEL_DESC	pModelDesc = {};
+	pModelDesc.bPickable = true;
 
 	if (nullptr == Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Zombie"),
-		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom), &pMeshDesc))
+		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom), &pModelDesc))
 		return E_FAIL;
 
 

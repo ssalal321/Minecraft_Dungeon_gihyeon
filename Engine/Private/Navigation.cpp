@@ -151,7 +151,7 @@ HRESULT CNavigation::Make_Cell(const _float3* fCellPoints)
 
 
 	// ½Ã°¢È­¿ë ¼¿ »ý¼ºÇÏ±á
-	CCell* pCell = CCell::Create(m_pDevice, m_pContext, sortedPoints, m_Cells.size(), CellKey);
+	CCell* pCell = CCell::Create(m_pDevice, m_pContext, sortedPoints, static_cast<_int>(m_Cells.size()), CellKey);
 	if (nullptr == pCell)
 		return E_FAIL;
 
@@ -269,7 +269,7 @@ HRESULT CNavigation::Read_Cell(const _tchar* pNavigationDataFilePath)
 
 		std::string CellKey(keyBuffer.data());
 
-		CCell* pCell = CCell::Create(m_pDevice, m_pContext, vPoints, m_Cells.size(), CellKey);
+		CCell* pCell = CCell::Create(m_pDevice, m_pContext, vPoints, static_cast<_int>(m_Cells.size()), CellKey);
 		if (nullptr == pCell)
 			return E_FAIL;
 

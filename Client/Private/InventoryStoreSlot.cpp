@@ -1,13 +1,12 @@
 #include "InventoryStoreSlot.h"
 #include "GameInstance.h"
-
 CInventoryStoreSlot::CInventoryStoreSlot(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CUIObject(pDevice, pContext)
+	: CInventorySlot(pDevice, pContext)
 {
 }
 
 CInventoryStoreSlot::CInventoryStoreSlot(const CInventoryStoreSlot& Prototype)
-	: CUIObject(Prototype)
+	: CInventorySlot(Prototype)
 {
 }
 
@@ -20,12 +19,13 @@ HRESULT CInventoryStoreSlot::Initialize(void* pArg)
 {
 	if (nullptr != pArg)
 	{
-		m_pDesc = new INVENTORY_STORESLOT_DESC(*static_cast<INVENTORY_STORESLOT_DESC*>(pArg));
+		m_pDesc = new INVENTORY_SLOT_DESC(*static_cast<INVENTORY_SLOT_DESC*>(pArg));
 	}
 	else
 		return E_FAIL;
 
-	if (FAILED(__super::Initialize(m_pDesc)))
+
+	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
 
@@ -60,7 +60,7 @@ HRESULT CInventoryStoreSlot::Render()
 		return E_FAIL;
 
 
-	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture")))
+	if (FAILED(m_pSlotTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture")))
 		return E_FAIL;
 
 	m_pVIBufferCom->Input_Assembler();
@@ -75,7 +75,7 @@ HRESULT CInventoryStoreSlot::Ready_Components()
 {
 	/* Com_Texture */
 	if (nullptr == Add_Component(LEVEL_STATIC, m_pDesc->strTexPrototypeTag,
-		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom)))
+		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pSlotTextureCom)))
 		return E_FAIL;
 
 	/* Com_Shader */
@@ -120,9 +120,4 @@ CGameObject* CInventoryStoreSlot::Clone(void* pArg)
 void CInventoryStoreSlot::Free()
 {
 	__super::Free();
-
-	Safe_Delete(m_pDesc);
-	Safe_Release(m_pTextureCom);
-	Safe_Release(m_pShaderCom);
-	Safe_Release(m_pVIBufferCom);
 }

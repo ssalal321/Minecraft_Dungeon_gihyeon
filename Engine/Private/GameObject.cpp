@@ -46,7 +46,7 @@ HRESULT CGameObject::Initialize(void* pArg)
 	{
 		GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
 
-		lstrcpy(m_szGameObjectTag, pDesc->pGameObjectTag);		
+		m_strGameObjectTag = pDesc->strGameObjectTag;		
 	}
 
 	return S_OK;

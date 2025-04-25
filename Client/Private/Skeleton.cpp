@@ -80,7 +80,7 @@ HRESULT CSkeleton::Ready_PartObjects()
 	/* 몸통을 추가한다. */
 	CBody_Skeleton::BODY_SKELETON_DESC		BodyDesc{};
 
-	BodyDesc.pGameObjectTag = TEXT("GameObject_Body_Skeleton");
+	BodyDesc.strGameObjectTag = TEXT("GameObject_Body_Skeleton");
 	BodyDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	BodyDesc.pState = &m_iState;
 	BodyDesc.pContainerObject = this;

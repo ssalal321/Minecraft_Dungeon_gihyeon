@@ -1,34 +1,35 @@
-#include "Weapon.h"
-#include "Mesh.h"
+#include "Weapon_Glaive.h"
 #include "GameInstance.h"
+#include "Item.h"
 
-CWeapon::CWeapon(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CPartObject(pDevice, pContext)
+CWeapon_Glaive::CWeapon_Glaive(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	: CItem(pDevice, pContext)
 {
 
 }
 
-CWeapon::CWeapon(const CWeapon& Prototype)
-	: CPartObject(Prototype)
+CWeapon_Glaive::CWeapon_Glaive(const CWeapon_Glaive& Prototype)
+	: CItem(Prototype)
 {
 
 }
 
-HRESULT CWeapon::Initialize_Prototype()
+HRESULT CWeapon_Glaive::Initialize_Prototype()
 {
 	/* 외부 데이터베이스를 통해서 값을 채운다. */
 
 	return S_OK;
 }
 
-HRESULT CWeapon::Initialize(void* pArg)
+HRESULT CWeapon_Glaive::Initialize(void* pArg)
 {
 	/* 원형의 데이터를 복제하여 사본을 만들고. */
 	/* 추가적으로 필요한 데이터를 Arg로 받아와 실 사용하기위한 객체의 정보를 생성해준다. */	
-	WEAPON_DESC* pDesc = static_cast<WEAPON_DESC*>(pArg);
+	ITEM_DESC* pDesc = static_cast<ITEM_DESC*>(pArg);
 
 	m_pTargetState = pDesc->pState;
 	m_pSocketMatrix = pDesc->pSocketMatrix;
+	m_eItemtype = ITEMTYPE::MELEE;
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -43,18 +44,17 @@ HRESULT CWeapon::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CWeapon::Priority_Update(_float fTimeDelta)
+void CWeapon_Glaive::Priority_Update(_float fTimeDelta)
 {
 
 }
 
-void CWeapon::Update(_float fTimeDelta)
+void CWeapon_Glaive::Update(_float fTimeDelta)
 {
-
 
 }
 
-void CWeapon::Late_Update(_float fTimeDelta)
+void CWeapon_Glaive::Late_Update(_float fTimeDelta)
 {
 	_matrix		SocketMatrix = XMLoadFloat4x4(m_pSocketMatrix);
 
@@ -69,7 +69,7 @@ void CWeapon::Late_Update(_float fTimeDelta)
 	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 }
 
-HRESULT CWeapon::Render()
+HRESULT CWeapon_Glaive::Render()
 {
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
@@ -92,7 +92,7 @@ HRESULT CWeapon::Render()
 	return S_OK;
 }
 
-HRESULT CWeapon::Ready_Components()
+HRESULT CWeapon_Glaive::Ready_Components()
 {
 	/* Com_Shader */
 	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxMesh"),
@@ -100,11 +100,11 @@ HRESULT CWeapon::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Model */
-	CMesh::MESH_DESC	pMeshDesc = {};
-	pMeshDesc.bPickable = true;
+	CModel::MODEL_DESC	pModelDesc = {};
+	pModelDesc.bPickable = false;
 
 	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Model_GlaiveSteel"),
-		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom), &pMeshDesc))
+		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom), &pModelDesc))
 		return E_FAIL;
 
 	/* Com_Collider */
@@ -128,41 +128,14 @@ HRESULT CWeapon::Ready_Components()
 	return S_OK;
 }
 
-HRESULT CWeapon::Bind_ShaderResources()
+
+CWeapon_Glaive* CWeapon_Glaive::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix)))
-		return E_FAIL;
-
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Transform_Float4x4(CPipeLine::D3DTS_VIEW))))
-		return E_FAIL;
-
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(CPipeLine::D3DTS_PROJ))))
-		return E_FAIL;
-
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4))))
-		return E_FAIL;
-	
-	const LIGHT_DESC* pLightDesc = m_pGameInstance->Get_LightDesc(0);
-	if (nullptr == pLightDesc)
-		return E_FAIL;
-
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightDiffuse", &pLightDesc->vDiffuse, sizeof(_float4))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightAmbient", &pLightDesc->vAmbient, sizeof(_float4))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightSpecular", &pLightDesc->vSpecular, sizeof(_float4))))
-		return E_FAIL;
-
-	return S_OK;
-}
-
-CWeapon* CWeapon::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-{
-	CWeapon* pGameInstance = new CWeapon(pDevice, pContext);
+	CWeapon_Glaive* pGameInstance = new CWeapon_Glaive(pDevice, pContext);
 
 	if (FAILED(pGameInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Create : CWeapon");
+		MSG_BOX("Failed to Create : CWeapon_Glaive");
 		Safe_Release(pGameInstance);
 	}
 
@@ -170,24 +143,21 @@ CWeapon* CWeapon::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 }
 
 
-CGameObject* CWeapon::Clone(void* pArg)
+CGameObject* CWeapon_Glaive::Clone(void* pArg)
 {
-	CWeapon* pGameInstance = new CWeapon(*this);
+	CWeapon_Glaive* pGameInstance = new CWeapon_Glaive(*this);
 
 	if (FAILED(pGameInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Clone : CWeapon");
+		MSG_BOX("Failed to Clone : CWeapon_Glaive");
 		Safe_Release(pGameInstance);
 	}
 
 	return pGameInstance;
 }
 
-void CWeapon::Free()
+void CWeapon_Glaive::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pColliderCom);
-	Safe_Release(m_pShaderCom);
-	Safe_Release(m_pModelCom);
 }

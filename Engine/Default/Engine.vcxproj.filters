@@ -157,6 +157,9 @@
     <Filter Include="01.Utility\04. Component\Collider\Manager">
       <UniqueIdentifier>{742cfa93-b9df-4015-a828-c6d91fc966d9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\11. EventBus">
+      <UniqueIdentifier>{240c367b-fb5d-46a7-be33-01ca7ea212c6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Base.h">
@@ -321,6 +324,9 @@
     <ClInclude Include="..\Public\Collision_Manager.h">
       <Filter>01.Utility\04. Component\Collider\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\EventBus.h">
+      <Filter>01.Utility\11. EventBus</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -469,6 +475,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Collision_Manager.cpp">
       <Filter>01.Utility\04. Component\Collider\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EventBus.cpp">
+      <Filter>01.Utility\11. EventBus</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -9,6 +9,11 @@ class CVIBuffer_Rect;
 END
 
 BEGIN(Client)
+class CItem;
+class CInventorySlot;
+class CInventoryArtifactSlot;
+class CInventoryGearSlot;
+class CInventoryStoreSlot;
 
 class CInventoryBase final : public CUIObject
 {
@@ -37,7 +42,6 @@ private:
 	CInventoryBase(const CInventoryBase& Prototype);
 	~CInventoryBase() override = default;
 
-
 public:
 	HRESULT		Initialize_Prototype()				override;
 	HRESULT		Initialize(void* pArg)				override;
@@ -49,14 +53,25 @@ public:
 	HRESULT		Render()							override;
 
 private:
-	INVENTORY_BASE_DESC*	m_pDesc			= { nullptr };
+	INVENTORY_BASE_DESC*	m_pDesc		= { nullptr };
 
 	CTexture*			m_pTextureCom	= { nullptr };
 	CShader*			m_pShaderCom	= { nullptr };
 	CVIBuffer_Rect*		m_pVIBufferCom	= { nullptr };
 
+	vector<CInventoryStoreSlot*>		m_UIStoreSlots;
+	vector<CInventoryGearSlot*>			m_UIGearSlots;       // 고정 크기 3
+	vector<CInventoryArtifactSlot*>		m_UIArtifactSlots;   // 고정 크기 3
+
+	_bool		m_bReadyForEvents = { false };
+
 private:
+	HRESULT		Ready_UISlots();
 	HRESULT		Ready_Components();
+
+	void		Item_Added_To_StoreSlot(const Item_Added& event);
+
+	void		Update_SlotTexture(CInventorySlot* pSlot, const _wstring& texTag, _bool bEmpty = true);
 
 public:
 	static	 CInventoryBase*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

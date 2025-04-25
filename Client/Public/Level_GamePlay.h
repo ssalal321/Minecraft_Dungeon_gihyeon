@@ -33,7 +33,7 @@ public:
 
 private:
 	_bool	bShowInventory = { false };
-	_bool   m_bClickLock = { false };
+	//_bool   m_bClickLock = { false };
 	_bool	m_bHoveringMonster = { false };
 
 	CPlayer*	m_pPlayer = { nullptr };
