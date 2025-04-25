@@ -26,10 +26,10 @@ HRESULT CItem::Initialize(void* pArg)
 	/* 추가적으로 필요한 데이터를 Arg로 받아와 실 사용하기위한 객체의 정보를 생성해준다. */	
 	ITEM_DESC* pDesc = static_cast<ITEM_DESC*>(pArg);
 
-	m_pTargetState		 = pDesc->pState;
-	m_pSocketMatrix		 = pDesc->pSocketMatrix;
-	m_strTexPrototypeTag = pDesc->strTexPrototypeTag;
-	m_eItemtype			 = pDesc->eItemtype;
+	m_pTargetState			= pDesc->pState;
+	m_pSocketMatrix			= pDesc->pSocketMatrix;
+	m_strTexPrototypeTag	= pDesc->strTexPrototypeTag;
+	m_strIconGameObjectTag	= pDesc->strIconGameObjectTag;
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;

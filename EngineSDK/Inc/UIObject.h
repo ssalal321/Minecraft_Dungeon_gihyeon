@@ -14,7 +14,7 @@ public:
 		_float		fX, fY, fZ, fSizeX, fSizeY;
 		_wstring	strTexPrototypeTag;
 
-		tagUIObjectDesc(const _tchar* GameObjectTag, UI_STATE uiState,
+		tagUIObjectDesc(const wstring& GameObjectTag, UI_STATE uiState,
 			_float x, _float y, _float z, _float sizeX, _float sizeY, const wstring& texPrototypeTag, _float rotationPerSec = 0.f, _float speedPerSec = 0.f)
 			: GAMEOBJECT_DESC(GameObjectTag, rotationPerSec, speedPerSec),
 			eUIState(uiState), fX(x), fY(y), fZ(z), fSizeX(sizeX), fSizeY(sizeY), strTexPrototypeTag(texPrototypeTag) {
@@ -62,7 +62,7 @@ protected:
 	_float4x4		m_ViewMatrix = {};
 	_float4x4		m_ProjMatrix = {};
 
-	_float			m_fX{}, m_fY{}, m_fSizeX{}, m_fSizeY{};
+	_float			m_fX{}, m_fY{}, m_fZ{}, m_fSizeX{}, m_fSizeY{};
 
 	bool			m_bVisible = false;
 

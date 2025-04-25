@@ -40,10 +40,10 @@ void CState_Player::State_Enter()
 
 void CState_Player::State_Priority_Update(_float fTimeDelta)
 {
-#ifdef _DEBUG
-	if (m_pGameInstance->Key_Down(VK_F1))
-		m_bClickLock = !m_bClickLock;
-#endif
+//#ifdef _DEBUG
+//	if (m_pGameInstance->Key_Down(VK_F1))
+//		m_bClickLock = !m_bClickLock;
+//#endif
 }
 
 void CState_Player::State_Update(_float fTimeDelta)
@@ -93,7 +93,7 @@ _bool CState_Player::Change_State_To_Idle()
 
 _bool CState_Player::Change_State_To_Walk()
 {
-	if (m_pGameInstance->Get_Key(VK_LBUTTON) && !m_bClickLock)
+	if (m_pGameInstance->Get_Key(VK_LBUTTON) && !bMouseClickLock)
 	{
 		_float4 fWorldPickedPos = { 0.f, 0.f, 0.f, 1.f };
 

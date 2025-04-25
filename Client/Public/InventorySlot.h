@@ -33,7 +33,11 @@ public:
 
 		~INVENTORY_SLOT_DESC() override = default;
 
-	}INVENTORY_BASE_DESC;
+	}INVENTORY_SLOT_DESC;
+
+protected:
+    CInventorySlot(ID3D11Device* device, ID3D11DeviceContext* context);
+    ~CInventorySlot() override;
 
 public:
 	_bool	Is_Empty() const { return m_bIsEmpty; }
@@ -42,14 +46,10 @@ public:
 	void	Set_IconTag(const _wstring& strIconTexPrototypeTag) { m_strIconTexPrototypeTag = strIconTexPrototypeTag; }
 
 public:
-    CInventorySlot(ID3D11Device* device, ID3D11DeviceContext* context);
-    ~CInventorySlot() override;
-
-public:
-
-
-public:
 	HRESULT		Initialize(void* pArg)		override;
+
+public:
+	HRESULT		Add_Icon_Image(const _wstring& GameObjectTag, const _wstring& strIconTexPrototypeTag);
 
 protected:
 	CTexture*			m_pEmptyTextureCom	= { nullptr };

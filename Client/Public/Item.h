@@ -19,7 +19,7 @@ public:
 		const _float4x4*	pSocketMatrix = { nullptr };
 
 		_wstring			strTexPrototypeTag;
-		ITEMTYPE			eItemtype;
+		_wstring			strIconGameObjectTag = {};
 
 	}ITEM_DESC;
 
@@ -30,6 +30,7 @@ protected:
 
 public:
 	const _wstring&  Get_TexPrototypeTag() { return m_strTexPrototypeTag; }
+	const _wstring&  Get_IconGameObjectTag() { return m_strIconGameObjectTag; }
 	ITEMTYPE	Get_ItemType() const { return m_eItemtype; }
 
 public:
@@ -50,6 +51,7 @@ protected:
 	const  _uint*		m_pTargetState  = { nullptr };
 
 	_wstring	m_strTexPrototypeTag = {};
+	_wstring	m_strIconGameObjectTag = {};
 	ITEMTYPE	m_eItemtype = { ITEMTYPE::NONE };
 
 protected:

@@ -74,9 +74,9 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	if (nullptr == m_pCollision_Manager)
 		return E_FAIL;
 
-	/*m_pEventBus = CEventBus::Create();
+	m_pEventBus = CEventBus::Create();
 	if (nullptr == m_pEventBus)
-		return E_FAIL;*/
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -397,7 +397,7 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pLight_Manager);
 	Safe_Release(m_pUI_Manager);
 	Safe_Release(m_pCollision_Manager);
-	//Safe_Release(m_pEventBus);
+	Safe_Release(m_pEventBus);
 
 	Safe_Release(m_pGraphic_Device);
 

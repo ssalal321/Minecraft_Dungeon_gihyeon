@@ -10,10 +10,10 @@ class ENGINE_DLL CGameObject abstract : public CBase
 public:
 	typedef struct tagGameObjectDesc : public CTransform::TRANSFORM_DESC
 	{
-		const _tchar* pGameObjectTag;
+		_wstring	strGameObjectTag = {};
 
-		tagGameObjectDesc(const _tchar* gameObjectTag = TEXT(""), _float rotationPerSec = 0.f, _float speedPerSec = 0.f)
-			: tagTransformDesc(rotationPerSec, speedPerSec), pGameObjectTag(gameObjectTag) {}
+		tagGameObjectDesc(const wstring& gameObjectTag = TEXT(""), _float rotationPerSec = 0.f, _float speedPerSec = 0.f)
+			: tagTransformDesc(rotationPerSec, speedPerSec), strGameObjectTag(gameObjectTag) {}
 
 		/*tagGameObjectDesc(const tagGameObjectDesc &other)
 			: CTransform::TRANSFORM_DESC(other),
@@ -47,7 +47,7 @@ protected:
 	CTransform*				m_pTransformCom = { nullptr };
 
 protected:
-	_tchar									m_szGameObjectTag[MAX_PATH] = {};
+	_wstring	m_strGameObjectTag = {};
 	map<const _wstring, class CComponent*>	m_Components;
 
 protected:

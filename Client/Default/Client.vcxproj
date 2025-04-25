@@ -213,6 +213,7 @@
     <ClCompile Include="..\Private\Body_Skeleton.cpp" />
     <ClCompile Include="..\Private\Body_Zombie.cpp" />
     <ClCompile Include="..\private\Camera_Free.cpp" />
+    <ClCompile Include="..\Private\Clien_Defines.cpp" />
     <ClCompile Include="..\Private\InventoryData.cpp" />
     <ClCompile Include="..\Private\InventoryIcon.cpp" />
     <ClCompile Include="..\Private\InventorySlot.cpp" />

@@ -41,7 +41,7 @@ protected:
     CCollider*              m_pColliderOBBCom = { nullptr };
 
     _bool			        m_bAnimationFinished = { false };
-    _bool                   m_bClickLock = { false };
+    //_bool                   m_bClickLock = { false };
 
     static _bool            m_bCombo1_Finished;
     static _bool            m_bCombo2_Finished;

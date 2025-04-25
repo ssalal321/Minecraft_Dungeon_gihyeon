@@ -29,6 +29,7 @@ HRESULT CWeapon_Glaive::Initialize(void* pArg)
 
 	m_pTargetState = pDesc->pState;
 	m_pSocketMatrix = pDesc->pSocketMatrix;
+	m_eItemtype = ITEMTYPE::MELEE;
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -50,7 +51,6 @@ void CWeapon_Glaive::Priority_Update(_float fTimeDelta)
 
 void CWeapon_Glaive::Update(_float fTimeDelta)
 {
-
 
 }
 

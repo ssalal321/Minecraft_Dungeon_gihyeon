@@ -25,7 +25,7 @@ void CInventoryData::Add_Item_To_StoreSlot(CItem* pItem)
 		{
 			m_StoreSlots[i] = pItem;
 
-			Item_Added itemAddedEvent{ pItem, static_cast<_int>(i), pItem->Get_TexPrototypeTag() };
+			Item_Added itemAddedEvent{ pItem, static_cast<_int>(i), pItem->Get_IconGameObjectTag(), pItem->Get_TexPrototypeTag() };
 			m_pGameInstance->Publish(itemAddedEvent);
 
 			break;

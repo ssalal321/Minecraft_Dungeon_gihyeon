@@ -498,6 +498,9 @@
     <ClCompile Include="..\Private\InventoryData.cpp">
       <Filter>03. Inventory</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Clien_Defines.cpp">
+      <Filter>99.Defines</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">

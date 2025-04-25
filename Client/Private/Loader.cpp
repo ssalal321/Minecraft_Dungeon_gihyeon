@@ -8,6 +8,7 @@
 #include "InventoryBase.h"
 #include "InventoryGearSlot.h"
 #include "InventoryArtifactSlot.h"
+#include "InventoryIcon.h"
 #include "InventoryStoreSlot.h"
 #include "LoungeMap.h"
 #include "Sky.h"
@@ -389,6 +390,11 @@ HRESULT CLoader::Ready_Prototype_GameObject_Static()
 	/* For.Prototype_GameObject_InventoryArtifactSlot */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_InventoryArtifactSlot_Empty"),
 		CInventoryArtifactSlot::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_InventoryArtifactSlot */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_InventoryIcon"),
+		CInventoryIcon::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Player */

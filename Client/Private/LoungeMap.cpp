@@ -35,7 +35,7 @@ HRESULT CLoungeMap::Initialize(void* pArg)
 	/* 추가적으로 필요한 데이터를 Arg로 받아와 실 사용하기위한 객체의 정보를 생성해준다. */	
 	CGameObject::GAMEOBJECT_DESC		Desc{};
 
-	Desc.pGameObjectTag = TEXT("GameObject_LoungeMap");
+	Desc.strGameObjectTag = TEXT("GameObject_LoungeMap");
 	Desc.fSpeedPerSec = 0.f;
 	Desc.fRotationPerSec = 0.f;
 

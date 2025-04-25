@@ -53,7 +53,7 @@ public:
 	HRESULT		Render()							override;
 
 private:
-	INVENTORY_BASE_DESC*	m_pDesc			= { nullptr };
+	INVENTORY_BASE_DESC*	m_pDesc		= { nullptr };
 
 	CTexture*			m_pTextureCom	= { nullptr };
 	CShader*			m_pShaderCom	= { nullptr };
@@ -63,10 +63,13 @@ private:
 	vector<CInventoryGearSlot*>			m_UIGearSlots;       // 고정 크기 3
 	vector<CInventoryArtifactSlot*>		m_UIArtifactSlots;   // 고정 크기 3
 
+	_bool		m_bReadyForEvents = { false };
+
 private:
+	HRESULT		Ready_UISlots();
 	HRESULT		Ready_Components();
 
-	void		Item_Added_To_StoreSlot(const Item_Added& evt);
+	void		Item_Added_To_StoreSlot(const Item_Added& event);
 
 	void		Update_SlotTexture(CInventorySlot* pSlot, const _wstring& texTag, _bool bEmpty = true);
 

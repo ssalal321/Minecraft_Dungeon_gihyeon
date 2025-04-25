@@ -156,7 +156,7 @@ HRESULT CPlayer::Ready_PartObjects()
 	/* 몸통을 추가한다. */
 	CBody_Player::BODY_PLAYER_DESC		BodyDesc{};
 
-	BodyDesc.pGameObjectTag = TEXT("GameObject_Body_Player");
+	BodyDesc.strGameObjectTag = TEXT("GameObject_Body_Player");
 	BodyDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	BodyDesc.pState = &m_iState;
 	BodyDesc.pContainerObject = this;
@@ -173,19 +173,20 @@ HRESULT CPlayer::Ready_PartObjects()
 	if (nullptr == pBody)
 		return E_FAIL;
 
-	ItemDesc.pGameObjectTag = TEXT("GameObject_Weapon");
+	ItemDesc.strGameObjectTag = TEXT("GameObject_Weapon");
 	ItemDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	ItemDesc.pState = &m_iState;
 	ItemDesc.pSocketMatrix = pBody->Get_CombinedTransformationMatrix("J_R_Weapon");
 	ItemDesc.pContainerObject = this;
 	ItemDesc.pContainerObjAttacking = &m_bAttacking;
-	ItemDesc.eItemtype = ITEMTYPE::MELEE;
 	ItemDesc.strTexPrototypeTag = TEXT("Prototype_Component_Texture_Glaive_Steel");
+	ItemDesc.strIconGameObjectTag = TEXT("UIGameObject_Glaive_Steel");
 
 	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Glaive"), TEXT("Part_MeleeWeapon"), &ItemDesc)))
 		return E_FAIL;
 
-	
+	CItem* pGlaive = dynamic_cast<CItem*>(Find_PartObject(TEXT("Part_MeleeWeapon")));
+	m_pInventoryData->Add_Item_To_StoreSlot(pGlaive);
 
 	/* 이펙트를 추가한다. */
 
