@@ -15,7 +15,7 @@ namespace Client
     struct Unequipped_To_StoreSlot
     {
         int     iStoreSlotIndex = { -1 };
-        int     iGearSlotIndex = { -1 };
+        int     iOtherSlotIndex = { -1 };
 
         CItem* pItem = { nullptr };
     };

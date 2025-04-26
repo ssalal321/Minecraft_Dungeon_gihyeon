@@ -166,6 +166,12 @@
     <Filter Include="03. Inventory">
       <UniqueIdentifier>{141438c3-b8df-4b8c-b93f-a466fc15c1c1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Player\01. Weapon\Glaive">
+      <UniqueIdentifier>{eceafa73-f980-4124-9299-94b46878732a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Player\01. Weapon\ShortBow">
+      <UniqueIdentifier>{357aa7d7-963a-4187-9b68-1fb06e1baf3d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -327,14 +333,17 @@
     <ClInclude Include="..\Public\Item.h">
       <Filter>02.GameObjects\Item</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Weapon_Glaive.h">
-      <Filter>02.GameObjects\Player\01. Weapon</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\InventoryData.h">
       <Filter>03. Inventory</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\EventTypes.h">
       <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Weapon_Glaive.h">
+      <Filter>02.GameObjects\Player\01. Weapon\Glaive</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Weapon_ShortBow.h">
+      <Filter>02.GameObjects\Player\01. Weapon\ShortBow</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -492,14 +501,17 @@
     <ClCompile Include="..\Private\Item.cpp">
       <Filter>02.GameObjects\Item</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Weapon_Glaive.cpp">
-      <Filter>02.GameObjects\Player\01. Weapon</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\InventoryData.cpp">
       <Filter>03. Inventory</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Clien_Defines.cpp">
       <Filter>99.Defines</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Weapon_Glaive.cpp">
+      <Filter>02.GameObjects\Player\01. Weapon\Glaive</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Weapon_ShortBow.cpp">
+      <Filter>02.GameObjects\Player\01. Weapon\ShortBow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

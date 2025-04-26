@@ -373,12 +373,6 @@ HRESULT CGameInstance::Delete_UIObject(const _wstring& strGameObjectTag, CUI_Man
 	return m_pUI_Manager->Delete_UIObject(strGameObjectTag, eUILifeTime);
 }
 
-void CGameInstance::Request_Add_UIObject(_uint iPrototypeLevelIndex, _uint iLayerLevelIndex,
-	const _wstring& strPrototypeTag, CUI_Manager::UI_LIFETIME eUILifeTime, void* pArg)
-{
-	return m_pUI_Manager->Request_Add_UIObject(iPrototypeLevelIndex, iLayerLevelIndex, strPrototypeTag, eUILifeTime, pArg);
-}
-
 void CGameInstance::Request_Delete_UIObject(const _wstring& strGameObjectTag, CUI_Manager::UI_LIFETIME eUILifeTime)
 {
 	return m_pUI_Manager->Request_Delete_UIObject(strGameObjectTag, eUILifeTime);
