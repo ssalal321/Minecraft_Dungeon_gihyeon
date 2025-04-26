@@ -66,12 +66,16 @@ private:
 	_bool		m_bReadyForEvents = { false };
 
 private:
+	HRESULT		Ready_Subscribe_Events();
 	HRESULT		Ready_UISlots();
 	HRESULT		Ready_Components();
 
-	void		Item_Added_To_StoreSlot(const Item_Added& event);
-
-	void		Update_SlotTexture(CInventorySlot* pSlot, const _wstring& texTag, _bool bEmpty = true);
+	void		Add_Icon_To_StoreSlot(const Item_Added_To_StoreSlot& itemAddedEvent);
+	void		Unequip_Icon_To_StoreSlot(const Unequipped_To_StoreSlot& event);
+	void		Swap_Store_and_Gear_Icon(const Swap_Store_with_Gear& swap_Store_GearEvent);
+	void		Swap_Store_and_Artifact_Icon(const Swap_Store_with_Artifact& swap_Store_ArtifactEvent);
+	void		Equip_Icon_To_GearSlot(const Equip_To_Gear& equip_To_GearEvent);
+	void		Equip_Icon_To_ArtifactSlot(const Equip_To_Artifact& equip_To_ArtifactEvent);
 
 public:
 	static	 CInventoryBase*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

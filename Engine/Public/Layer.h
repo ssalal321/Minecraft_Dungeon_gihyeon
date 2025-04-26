@@ -13,7 +13,7 @@ private:
 	~CLayer() override = default;
 
 public:
-	HRESULT			Add_GameObject(_wstring strLayerTag, CGameObject* pGameObject);
+	HRESULT			Add_GameObject(const _wstring& strLayerTag, CGameObject* pGameObject);
 	CComponent*		Get_Component(const _wstring& strComponentTag, _uint iIndex);
 	unordered_map<_wstring, CGameObject*>*	Get_LayerObjects() { return &m_GameObjects; }
 

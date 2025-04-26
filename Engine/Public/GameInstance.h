@@ -54,11 +54,11 @@ public:
 
 #pragma region PROTOTYPE_MANAGER
 	HRESULT		Add_Prototype(_uint iLevelIndex, const _wstring& strPrototypeTag, CBase* pPrototype);
-	CBase*		Clone_Prototype(PROTOTYPE ePrototype, _uint iPrototypeLevelIndex, _wstring strPrototypeTag, void* pArg = nullptr);
+	CBase*		Clone_Prototype(PROTOTYPE ePrototype, _uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, void* pArg = nullptr);
 #pragma endregion
 
 #pragma region OBJECT_MANAGER
-	HRESULT		Add_GameObject(_uint iPrototypeLevelIndex, _wstring strPrototypeTag,
+	HRESULT		Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag,
 							   _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg = nullptr);
 	CGameObject* Find_GameObject(_wstring strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag);
 	CComponent*  Get_Component(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strComponentTag, _uint iIndex = 0);
@@ -99,7 +99,10 @@ public:
 
 #pragma region UI_MANAGER
 	CUIObject*	Add_UIObject(_uint iPrototypeLevelIndex, _uint iLayerLevelIndex, const _wstring& strPrototypeTag, CUI_Manager::UI_LIFETIME eUILifeTime, void* pArg = nullptr) const;
-	CUIObject*  Find_UIGameObject(_wstring strGameObjectTag, CUI_Manager::UI_LIFETIME eUILifeTime) const;
+	CUIObject*  Find_UIGameObject(const _wstring& strGameObjectTag, CUI_Manager::UI_LIFETIME eUILifeTime) const;
+	HRESULT		Delete_UIObject(const _wstring& strGameObjectTag, CUI_Manager::UI_LIFETIME eUILifeTime);
+	void		Request_Add_UIObject(_uint iPrototypeLevelIndex, _uint iLayerLevelIndex, const _wstring& strPrototypeTag, CUI_Manager::UI_LIFETIME eUILifeTime, void* pArg);
+	void        Request_Delete_UIObject(const _wstring& strGameObjectTag, CUI_Manager::UI_LIFETIME eUILifeTime);
 #pragma endregion
 
 #pragma region COLLISION_MANAGER
@@ -109,15 +112,21 @@ public:
 
 #pragma region EVENTBUS
 	template <typename T>
-	void   Subscribe(function<void(const T&)> handler)
+	HRESULT   Subscribe(function<void(const T&)> handler)
 	{
-		m_pEventBus->Subscribe(handler);
+		if (FAILED(m_pEventBus->Subscribe(handler)))
+			return E_FAIL;
+
+		return S_OK;
 	}
 
 	template <typename T>
-	void   Publish(const T& event) const
+	HRESULT   Publish(const T& event) const
 	{
-		m_pEventBus->Publish(event);
+		if (FAILED(m_pEventBus->Publish(event)))
+			return E_FAIL;
+
+		return S_OK;
 	}
 #pragma endregion
 

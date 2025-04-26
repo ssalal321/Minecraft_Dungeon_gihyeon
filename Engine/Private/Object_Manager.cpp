@@ -10,7 +10,7 @@ CObject_Manager::CObject_Manager()
     Safe_AddRef(m_pGameInstance);
 }
 
-HRESULT CObject_Manager::Add_GameObject(_uint iPrototypeLevelIndex, _wstring strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg)
+HRESULT CObject_Manager::Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg)
 {
 	if (nullptr == m_pLayers || 
 		iLayerLevelIndex >= m_iNumLevels)
@@ -107,7 +107,7 @@ CLayer* CObject_Manager::Find_Layer(_uint iLevelIndex, const _wstring& strLayerT
 	return iter->second;
 }
 
-HRESULT CObject_Manager::Add_To_Layer(CGameObject* pGameObject, _uint iLayerLevelIndex, const _wstring& strLayerTag, _wstring strPrototypeTag)
+HRESULT CObject_Manager::Add_To_Layer(CGameObject* pGameObject, _uint iLayerLevelIndex, const _wstring& strLayerTag, const _wstring& strPrototypeTag)
 {
 	CLayer* pLayer = Find_Layer(iLayerLevelIndex, strLayerTag);
 

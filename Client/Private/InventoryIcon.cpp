@@ -1,5 +1,6 @@
 #include "InventoryIcon.h"
 #include "GameInstance.h"
+#include "InventoryStoreSlot.h"
 
 CInventoryIcon::CInventoryIcon(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : CUIObject(pDevice, pContext)
@@ -35,6 +36,27 @@ void CInventoryIcon::Priority_Update(_float fTimeDelta)
 
 void CInventoryIcon::Update(_float fTimeDelta)
 {
+	if (m_pGameInstance->Key_Down(VK_LBUTTON) && Is_Hovering())
+	{
+		CInventorySlot* pInventorySlot = dynamic_cast<CInventorySlot*>(m_pParent);
+		_int  slotIndex = pInventorySlot->Get_Slot_Index();
+
+		if (SLOT_TYPE::STORE == pInventorySlot->Get_SlotType())
+		{
+			DoubleClicked_From_StoreSlot  doubleClicked_From_StoreEvent{ slotIndex };
+			m_pGameInstance->Publish(doubleClicked_From_StoreEvent);
+		}
+		else if (SLOT_TYPE::GEAR == pInventorySlot->Get_SlotType())
+		{
+			DoubleClicked_From_GearSlot  doubleClicked_From_GearEvent{ slotIndex };
+			m_pGameInstance->Publish(doubleClicked_From_GearEvent);
+		}
+		else if (SLOT_TYPE::ARTIFACT == pInventorySlot->Get_SlotType())
+		{
+			DoubleClicked_From_ArtifactSlot  doubleClicked_From_ArtifactEvent{ slotIndex };
+			m_pGameInstance->Publish(doubleClicked_From_ArtifactEvent);
+		}
+	}
 }
 
 void CInventoryIcon::Late_Update(_float fTimeDelta)

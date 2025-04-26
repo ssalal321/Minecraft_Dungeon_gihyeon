@@ -2,6 +2,8 @@
 #include "InventoryIcon.h"
 #include "GameInstance.h"
 
+_int CInventorySlot::m_iIconGameObjectTagID = 0;
+
 CInventorySlot::CInventorySlot(ID3D11Device* device, ID3D11DeviceContext* context)
     : CUIObject(device, context) {
 }
@@ -14,61 +16,42 @@ HRESULT CInventorySlot::Initialize(void* pArg)
 {
     __super::Initialize(pArg);
 
-    /*m_pGameInstance->Subscribe<struct Add_Icon>(
-        [this](const Add_Icon& event) { this->Add_Icon_Image(event); }
-    );*/
-
     return S_OK;
 }
 
-HRESULT CInventorySlot::Add_Icon_Image(const _wstring& GameObjectTag, const _wstring& strIconTexPrototypeTag)
+HRESULT CInventorySlot::Add_Icon_Image(const _wstring& strGameObjectTag, const _wstring& strIconTexPrototypeTag, ITEM_TYPE eItemType)
 {
-    CInventoryIcon::INVENTORY_ICON_DESC  InventoryIconDesc
-    (GameObjectTag, CUIObject::CLICKABLE,
-        m_fX, m_fY, m_fZ - 0.1f, m_fSizeX * 0.8f, m_fSizeY * 0.8f,
-        strIconTexPrototypeTag);
+    // GameObjectTag에 고유한 ID를 추가
+    _wstring    uniqueTag = strGameObjectTag + std::to_wstring(m_iIconGameObjectTagID++);
 
-    CUIObject* pIconObject =  m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_GAMEPLAY, 
-															TEXT("Prototype_GameObject_InventoryIcon"),
-															CUI_Manager::PERSISTENT, &InventoryIconDesc);
+    CInventoryIcon::INVENTORY_ICON_DESC   InventoryIconDesc(uniqueTag,
+															CUIObject::CLICKABLE,
+                                                            m_fX, m_fY, m_fZ - 0.1f,
+                                                            m_fSizeX * 0.8f, m_fSizeY * 0.8f,
+                                                            strIconTexPrototypeTag, eItemType);
 
-    if (nullptr == pIconObject)  return E_FAIL;
-    pIconObject->Set_Parent(this);  // 부모 설정
+    CUIObject* pIconObject = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_GAMEPLAY,
+														TEXT("Prototype_GameObject_InventoryIcon"),
+														CUI_Manager::PERSISTENT, &InventoryIconDesc);
+
+    if (nullptr == pIconObject)
+        return E_FAIL;
+
+    pIconObject->Set_Parent(this);
     m_pIcon = dynamic_cast<CInventoryIcon*>(pIconObject);
 
     return S_OK;
 }
 
-//void CInventorySlot::Create_Icon(const wstring& texPrototypeTag)
-//{
-//    m_pIcon = new CInventoryIcon(m_pDevice, m_pContext);
-//
-//    CInventoryIcon::UIOBJECT_DESC iconDesc = {
-//        L"InventoryIcon",
-//        UI_STATE::CLICKABLE,
-//        0.f, 0.f, 0.f,
-//        m_fSizeX, m_fSizeY,
-//        texPrototypeTag
-//    };
-//
-//    m_pIcon->Initialize(&iconDesc);
-//    m_pIcon->Set_Parent(this);
-//}
-//
-//void CInventorySlot::Set_Item(const ItemData* pItem) {
-//    m_pItemData = pItem;
-//
-//    if (m_pIcon)
-//        m_pIcon->Set_Item(pItem);
-//}
-//
-//void CInventorySlot::Clear_Item() {
-//    m_pItemData = nullptr;
-//
-//    if (m_pIcon)
-//        m_pIcon->Clear();
-//}
 
+HRESULT CInventorySlot::Clear_Icon()
+{
+    const _wstring& gameObjectTag = m_pIcon->Get_Icon_Desc()->strGameObjectTag;
+
+    m_pGameInstance->Request_Delete_UIObject(gameObjectTag, CUI_Manager::PERSISTENT);
+
+    return S_OK;
+}
 
 void CInventorySlot::Free()
 {

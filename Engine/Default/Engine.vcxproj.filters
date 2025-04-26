@@ -282,9 +282,6 @@
     <ClInclude Include="..\Public\ContainerObject.h">
       <Filter>01.Utility\03. GameObject\ContainerObject</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\UIObject.h">
-      <Filter>01.Utility\08. UI</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\VIBuffer_Cube.h">
       <Filter>01.Utility\04. Component\VIBuffer\Cube</Filter>
     </ClInclude>
@@ -326,6 +323,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\EventBus.h">
       <Filter>01.Utility\11. EventBus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UIObject.h">
+      <Filter>01.Utility\08. UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

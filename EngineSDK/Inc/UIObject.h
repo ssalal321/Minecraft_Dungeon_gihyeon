@@ -6,7 +6,7 @@ BEGIN(Engine)
 class ENGINE_DLL CUIObject abstract : public CGameObject
 {
 public:
-	enum  UI_STATE { CLICKABLE, UNCLICKABLE };
+	enum  UI_STATE { CLICKABLE, UNCLICKABLE, STATE_NONE };
 
 	typedef struct tagUIObjectDesc : public CGameObject::GAMEOBJECT_DESC
 	{
@@ -14,8 +14,8 @@ public:
 		_float		fX, fY, fZ, fSizeX, fSizeY;
 		_wstring	strTexPrototypeTag;
 
-		tagUIObjectDesc(const wstring& GameObjectTag, UI_STATE uiState,
-			_float x, _float y, _float z, _float sizeX, _float sizeY, const wstring& texPrototypeTag, _float rotationPerSec = 0.f, _float speedPerSec = 0.f)
+		tagUIObjectDesc(const _wstring& GameObjectTag, UI_STATE uiState,
+			_float x, _float y, _float z, _float sizeX, _float sizeY, const _wstring& texPrototypeTag, _float rotationPerSec = 0.f, _float speedPerSec = 0.f)
 			: GAMEOBJECT_DESC(GameObjectTag, rotationPerSec, speedPerSec),
 			eUIState(uiState), fX(x), fY(y), fZ(z), fSizeX(sizeX), fSizeY(sizeY), strTexPrototypeTag(texPrototypeTag) {
 		}
@@ -62,7 +62,9 @@ protected:
 	_float4x4		m_ViewMatrix = {};
 	_float4x4		m_ProjMatrix = {};
 
+	UI_STATE		m_eUIState = STATE_NONE;
 	_float			m_fX{}, m_fY{}, m_fZ{}, m_fSizeX{}, m_fSizeY{};
+	_wstring		m_strTexPrototypeTag = {};
 
 	bool			m_bVisible = false;
 

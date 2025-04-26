@@ -18,7 +18,7 @@ public:
 		const _uint*		pState = { nullptr };
 		const _float4x4*	pSocketMatrix = { nullptr };
 
-		_wstring			strTexPrototypeTag;
+		_wstring			strIconTexPrototypeTag;
 		_wstring			strIconGameObjectTag = {};
 
 	}ITEM_DESC;
@@ -29,9 +29,9 @@ protected:
 	~CItem() override = default;
 
 public:
-	const _wstring&  Get_TexPrototypeTag() { return m_strTexPrototypeTag; }
+	const _wstring&  Get_IconTexPrototypeTag() { return m_strTexPrototypeTag; }
 	const _wstring&  Get_IconGameObjectTag() { return m_strIconGameObjectTag; }
-	ITEMTYPE	Get_ItemType() const { return m_eItemtype; }
+	ITEM_TYPE	Get_ItemType() const { return m_eItemtype; }
 
 public:
 	HRESULT		Initialize_Prototype()				override;
@@ -52,7 +52,7 @@ protected:
 
 	_wstring	m_strTexPrototypeTag = {};
 	_wstring	m_strIconGameObjectTag = {};
-	ITEMTYPE	m_eItemtype = { ITEMTYPE::NONE };
+	ITEM_TYPE	m_eItemtype = { ITEM_TYPE::NONE };
 
 protected:
 	virtual  HRESULT	Ready_Components() = 0;

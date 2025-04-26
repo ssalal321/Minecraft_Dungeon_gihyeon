@@ -28,7 +28,7 @@ HRESULT CItem::Initialize(void* pArg)
 
 	m_pTargetState			= pDesc->pState;
 	m_pSocketMatrix			= pDesc->pSocketMatrix;
-	m_strTexPrototypeTag	= pDesc->strTexPrototypeTag;
+	m_strTexPrototypeTag	= pDesc->strIconTexPrototypeTag;
 	m_strIconGameObjectTag	= pDesc->strIconGameObjectTag;
 
 	if (FAILED(__super::Initialize(pArg)))

@@ -62,7 +62,9 @@ namespace Client
 		STATE_END
 	};
 
-	enum class	ITEMTYPE { MELEE, ARMOR, RANGED, ARTIFACT, NONE };
+	enum class	SLOT_TYPE { STORE, GEAR, ARTIFACT, NONE };
+
+	enum class	ITEM_TYPE { MELEE, ARMOR, RANGED, ARTIFACT, NONE };
 
 	enum class	GEAR_TYPE { MELEE, ARMOR, RANGED, NONE };
 
