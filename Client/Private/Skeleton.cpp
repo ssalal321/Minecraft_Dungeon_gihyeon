@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 
 #include "Body_Skeleton.h"
+#include "Item.h"
 
 #include "FSM.h"
 #include "Skeleton_BowAction.h"
@@ -10,12 +11,6 @@
 #include "Skeleton_Idle.h"
 #include "Skeleton_Walk.h"
 #include "State_Monster.h"
-//#include "Skeleton_BowAction.h"
-//#include "Skeleton_GetHit.h"
-//#include "Skeleton_Idle.h"
-//#include "Skeleton_Sleep.h"
-//#include "Skeleton_Stun.h"
-//#include "Skeleton_Walk.h"
 
 
 CSkeleton::CSkeleton(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -91,19 +86,23 @@ HRESULT CSkeleton::Ready_PartObjects()
 
 
 	///* 무기를 추가한다. */
-	//CWeapon::WEAPON_DESC	WeaponDesc{};
+	CItem::ITEM_DESC	ItemDesc{};
 
-	//CModel* pBody = dynamic_cast<CModel*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Model")));
-	//if (nullptr == pBody)
-	//	return E_FAIL;
+	CModel* pBody = dynamic_cast<CModel*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Model")));
+	if (nullptr == pBody)
+		return E_FAIL;
 
-	//WeaponDesc.pGameObjectTag = TEXT("GameObject_Weapon");
-	//WeaponDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
-	//WeaponDesc.pState = &m_iState;
-	//WeaponDesc.pSocketMatrix = pBody->Get_CombinedTransformationMatrix("J_R_Weapon");
+	ItemDesc.strGameObjectTag = TEXT("GameObject_Weapon");
+	ItemDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
+	ItemDesc.pState = &m_iState;
+	ItemDesc.pSocketMatrix = pBody->Get_CombinedTransformationMatrix("J_L_Weapon");
+	ItemDesc.pContainerObject = this;
+	ItemDesc.pContainerObjAttacking = &m_bAttacking;
+	ItemDesc.strIconTexPrototypeTag = TEXT("Prototype_Component_Texture_ShortBow");
+	ItemDesc.strIconGameObjectTag = TEXT("UIGameObject_ShortBow");
 
-	//if (FAILED(__super::Add_PartObject(m_pGameInstance->Get_PrototypeLevelIndex(), TEXT("Prototype_GameObject_Weapon"), TEXT("Part_Weapon"), &WeaponDesc)))
-	//	return E_FAIL;
+	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_ShortBow"), TEXT("Part_Weapon_ShortBow"), &ItemDesc)))
+		return E_FAIL;
 
 
 	/* 이펙트를 추가한다. */

@@ -182,10 +182,10 @@ HRESULT CPlayer::Ready_PartObjects()
 	ItemDesc.strIconTexPrototypeTag = TEXT("Prototype_Component_Texture_Glaive_Steel");
 	ItemDesc.strIconGameObjectTag = TEXT("UIGameObject_Glaive_Steel");
 
-	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Glaive"), TEXT("Part_MeleeWeapon"), &ItemDesc)))
+	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Glaive"), TEXT("Part_Weapon_Glaive"), &ItemDesc)))
 		return E_FAIL;
 
-	CItem* pGlaive = dynamic_cast<CItem*>(Find_PartObject(TEXT("Part_MeleeWeapon")));
+	CItem* pGlaive = dynamic_cast<CItem*>(Find_PartObject(TEXT("Part_Weapon_Glaive")));
 	m_pInventoryData->Add_Item_To_StoreSlot(pGlaive);
 
 	/* 이펙트를 추가한다. */

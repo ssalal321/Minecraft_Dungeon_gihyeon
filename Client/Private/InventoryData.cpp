@@ -146,8 +146,8 @@ void CInventoryData::Unequip_ArtifactSlot(const DoubleClicked_From_ArtifactSlot&
 	m_StoreSlots[emptyStoreIndex] = m_ArtifactSlots[event.iArtifactSlotIndex];
 	m_ArtifactSlots[event.iArtifactSlotIndex] = nullptr;
 
-	Item_Added_To_StoreSlot  unequipToStoreEvent{ emptyStoreIndex, m_StoreSlots[emptyStoreIndex] };
-	m_pGameInstance->Publish(unequipToStoreEvent);
+	Unequipped_To_StoreSlot  unequippedToStoreEvent{ emptyStoreIndex, event.iArtifactSlotIndex, m_StoreSlots[emptyStoreIndex] };
+	m_pGameInstance->Publish(unequippedToStoreEvent);
 }
 
 _int CInventoryData::Find_Empty_StoreSlot()

@@ -30,9 +30,7 @@ public:
 
     CUIObject*  Find_UIGameObject(_wstring strGameObjectTag, UI_LIFETIME eUILifeTime) const;
     HRESULT     Delete_UIObject(const _wstring& strGameObjectTag, UI_LIFETIME eUILifeTime);
-    void Request_Add_UIObject(_uint iPrototypeLevelIndex, _uint iLayerLevelIndex, const _wstring& strPrototypeTag,
-                              UI_LIFETIME eUILifeTime, void* pArg);
-    void Process_AddQueue();
+    
     void        Request_Delete_UIObject(const _wstring& strGameObjectTag, UI_LIFETIME eUILifeTime);
     void        Process_DeleteQueue();
 

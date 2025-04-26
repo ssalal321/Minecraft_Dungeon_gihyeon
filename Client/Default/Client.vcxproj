@@ -196,6 +196,7 @@
     <ClInclude Include="..\Public\UI_Image.h" />
     <ClInclude Include="..\Public\Item.h" />
     <ClInclude Include="..\Public\Weapon_Glaive.h" />
+    <ClInclude Include="..\Public\Weapon_ShortBow.h" />
     <ClInclude Include="..\Public\Zombie.h" />
     <ClInclude Include="..\Public\Zombie_Attack.h" />
     <ClInclude Include="..\Public\Zombie_GetHit.h" />
@@ -251,6 +252,7 @@
     <ClCompile Include="..\Private\UI_Image.cpp" />
     <ClCompile Include="..\Private\Item.cpp" />
     <ClCompile Include="..\Private\Weapon_Glaive.cpp" />
+    <ClCompile Include="..\Private\Weapon_ShortBow.cpp" />
     <ClCompile Include="..\Private\Zombie.cpp" />
     <ClCompile Include="..\Private\Zombie_Attack.cpp" />
     <ClCompile Include="..\Private\Zombie_GetHit.cpp" />

@@ -98,21 +98,6 @@ HRESULT CBody_Skeleton::Ready_Components()
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom), &pModelDesc))
 		return E_FAIL;
 
-	///* Com_Collider */
-	//CBounding_AABB::BOUNDING_AABB_DESC		AABBCollDesc{};
-
-	//AABBCollDesc.vCenter = _float3(0.f, AABBCollDesc.vExtents.y, 0.f);
-	//AABBCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
-	//AABBCollDesc.pGameObject = static_cast<CGameObject*>(this);
-	//AABBCollDesc.vExtents = _float3(0.35f, 0.6f, 0.35f);
-
-	//CComponent* pColliderCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
-	//	TEXT("Com_Collider_AABB"), reinterpret_cast<CComponent**>(&m_pColliderOBB[COLL_AABB]), &AABBCollDesc);
-
-	//if (nullptr == pColliderCom)
-	//	return E_FAIL;
-
-	//m_pGameInstance->Add_ColliderCom(pColliderCom, TEXT("Zombie"), TEXT("Monster"));
 
 	///* Com_Collider */
 	//CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereCollDesc{};

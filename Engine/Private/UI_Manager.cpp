@@ -71,21 +71,6 @@ HRESULT CUI_Manager::Delete_UIObject(const _wstring& strGameObjectTag, UI_LIFETI
 	return E_FAIL; // 못 찾으면 실패
 }
 
-
-void CUI_Manager::Request_Add_UIObject(_uint iPrototypeLevelIndex, _uint iLayerLevelIndex, const _wstring& strPrototypeTag, UI_LIFETIME eUILifeTime, void* pArg)
-{
-	m_AddQueue.push_back({ iPrototypeLevelIndex, iLayerLevelIndex, strPrototypeTag, eUILifeTime, pArg });
-}
-
-void CUI_Manager::Process_AddQueue()
-{
-	for (auto& request : m_AddQueue)
-	{
-		Add_UIObject(request.iPrototypeLevelIndex, request.iLayerLevelIndex, request.strPrototypeTag, request.eUILifeTime, request.pArg);
-	}
-	m_AddQueue.clear();
-}
-
 void CUI_Manager::Request_Delete_UIObject(const _wstring& strGameObjectTag, UI_LIFETIME eUILifeTime)
 {
 	m_DeleteQueue.push_back({ strGameObjectTag, eUILifeTime });
@@ -98,7 +83,6 @@ void CUI_Manager::Process_DeleteQueue()
 
 	m_DeleteQueue.clear();
 }
-
 
 void CUI_Manager::Priority_Update(_float fDeltaTime)
 {

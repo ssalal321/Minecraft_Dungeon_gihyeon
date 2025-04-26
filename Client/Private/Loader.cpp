@@ -17,6 +17,7 @@
 #include "PlayerHP.h"
 #include "Skeleton.h"
 #include "Weapon_Glaive.h"
+#include "Weapon_ShortBow.h"
 #include "Zombie.h"
 
 
@@ -128,9 +129,13 @@ HRESULT CLoader::Loading_For_Static()
 
 	/* For.Prototype_Component_Model_GlaiveSteel */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_GlaiveSteel"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Weapon/GlaiveSteel.fbx", PreTransformMatrix))))
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Weapon/Glaive/GlaiveSteel.fbx", PreTransformMatrix))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Model_ShortBow1 */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_ShortBow"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Weapon/ShortBow/ShortBow.fbx", PreTransformMatrix))))
+		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("콜라이더 로딩 중"));
 	if (FAILED(Ready_Prototype_ColliderCom_Static()))
@@ -250,7 +255,6 @@ HRESULT CLoader::Loading_For_GamePlay()
 		CSkeleton::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-
 	/* For.Prototype_GameObject_LoungeMap */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_LoungeMap"),
 		CLoungeMap::Create(m_pDevice, m_pContext))))
@@ -304,7 +308,12 @@ HRESULT CLoader::Ready_Prototype_TextureCom_Static()
 
 	/* For.Prototype_Component_Texture_Glaive_Steel */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Glaive_Steel"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Inventory/T_Glaive_Icon_inventory.png"), 1))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Inventory/T_Glaive_Icon_inventory.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_ShortBow */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_ShortBow"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Inventory/T_ShortBow_Icon_inventory.dds"), 1))))
 		return E_FAIL;
 
 	return S_OK;
@@ -412,9 +421,14 @@ HRESULT CLoader::Ready_Prototype_GameObject_Static()
 		CCamera_Free::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_Weapon */
+	/* For.Prototype_GameObject_Glaive */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Glaive"),
 		CWeapon_Glaive::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_ShortBow */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_ShortBow"),
+		CWeapon_ShortBow::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	return S_OK;

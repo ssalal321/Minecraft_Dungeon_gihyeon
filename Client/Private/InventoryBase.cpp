@@ -189,6 +189,7 @@ HRESULT CInventoryBase::Ready_UISlots()
 	if (nullptr == pInventoryGearSlot) return E_FAIL;
 	pInventoryGearSlot->Set_Parent(this);  // 부모 설정
 	m_UIGearSlots[1] = dynamic_cast<CInventoryGearSlot*>(pInventoryGearSlot);
+	m_UIGearSlots[1]->Set_Slot_Index(1);
 
 
 	// 원거리 무기 슬롯
@@ -204,6 +205,7 @@ HRESULT CInventoryBase::Ready_UISlots()
 	if (nullptr == pInventoryGearSlot) return E_FAIL;
 	pInventoryGearSlot->Set_Parent(this);  // 부모 설정
 	m_UIGearSlots[2] = dynamic_cast<CInventoryGearSlot*>(pInventoryGearSlot);
+	m_UIGearSlots[2]->Set_Slot_Index(2);
 
 
 	// 유물 슬롯
@@ -229,6 +231,7 @@ HRESULT CInventoryBase::Ready_UISlots()
 		if (nullptr == pInventoryArtifactSlot)  return E_FAIL;
 		pInventoryArtifactSlot->Set_Parent(this);  // 부모 설정
 		m_UIArtifactSlots[i] = dynamic_cast<CInventoryArtifactSlot*>(pInventoryArtifactSlot);
+		m_UIArtifactSlots[i]->Set_Slot_Index(i);
 	}
 
 	return S_OK;
@@ -274,14 +277,38 @@ void CInventoryBase::Add_Icon_To_StoreSlot(const Item_Added_To_StoreSlot& event)
 void CInventoryBase::Unequip_Icon_To_StoreSlot(const Unequipped_To_StoreSlot& event)
 {
 	if (false == m_UIStoreSlots[event.iStoreSlotIndex]->Is_Empty() ||
-		true == m_UIGearSlots[event.iGearSlotIndex]->Is_Empty() ||
 		event.iStoreSlotIndex < 0 || event.iStoreSlotIndex >= static_cast<_int>(m_UIStoreSlots.size()) ||
-		event.iGearSlotIndex < 0 || event.iGearSlotIndex >= static_cast<_int>(m_UIGearSlots.size()))
+		event.iOtherSlotIndex < 0 || event.iOtherSlotIndex >= static_cast<_int>(m_UIGearSlots.size()))
 		return;
 
-	CInventoryGearSlot* pInventoryGearSlot = m_UIGearSlots[event.iGearSlotIndex];
-	if (FAILED(pInventoryGearSlot->Clear_Icon()))
-		return;
+	switch (event.pItem->Get_ItemType())
+	{
+	case ITEM_TYPE::MELEE:
+	case ITEM_TYPE::ARMOR:
+	case ITEM_TYPE::RANGED:
+	{
+		CInventoryGearSlot* pInventoryGearSlot = m_UIGearSlots[event.iOtherSlotIndex];
+
+		if (pInventoryGearSlot->Is_Empty())
+			return;
+
+		if (FAILED(pInventoryGearSlot->Clear_Icon()))
+			return;
+	}
+	break;
+
+	case ITEM_TYPE::ARTIFACT:
+	{
+		CInventoryArtifactSlot* pInventoryArtifactSlot = m_UIArtifactSlots[event.iOtherSlotIndex];
+
+		if (pInventoryArtifactSlot->Is_Empty())
+			return;
+
+		if (FAILED(pInventoryArtifactSlot->Clear_Icon()))
+			return;
+	}
+	break;
+	}
 
 	CInventoryStoreSlot* pInventoryStoreSlot = m_UIStoreSlots[event.iStoreSlotIndex];
 	CItem* pItem = event.pItem;
