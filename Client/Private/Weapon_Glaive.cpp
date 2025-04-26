@@ -29,7 +29,7 @@ HRESULT CWeapon_Glaive::Initialize(void* pArg)
 
 	m_pTargetState = pDesc->pState;
 	m_pSocketMatrix = pDesc->pSocketMatrix;
-	m_eItemtype = ITEMTYPE::MELEE;
+	m_eItemtype = ITEM_TYPE::MELEE;
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;

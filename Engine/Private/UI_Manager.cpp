@@ -53,6 +53,53 @@ CUIObject* CUI_Manager::Find_UIGameObject(_wstring strGameObjectTag, UI_LIFETIME
 	return nullptr;
 }
 
+HRESULT CUI_Manager::Delete_UIObject(const _wstring& strGameObjectTag, UI_LIFETIME eUILifeTime)
+{
+	if (eUILifeTime >= LIFETIME_END)
+		return E_FAIL;
+
+	auto& uiMap = m_CurrentUIObjects[eUILifeTime];
+
+	auto iter = uiMap.find(strGameObjectTag);
+	if (iter != uiMap.end())
+	{
+		Safe_Release(iter->second); // UIObject 메모리 해제
+		uiMap.erase(iter);          // map에서 삭제
+		return S_OK;
+	}
+
+	return E_FAIL; // 못 찾으면 실패
+}
+
+
+void CUI_Manager::Request_Add_UIObject(_uint iPrototypeLevelIndex, _uint iLayerLevelIndex, const _wstring& strPrototypeTag, UI_LIFETIME eUILifeTime, void* pArg)
+{
+	m_AddQueue.push_back({ iPrototypeLevelIndex, iLayerLevelIndex, strPrototypeTag, eUILifeTime, pArg });
+}
+
+void CUI_Manager::Process_AddQueue()
+{
+	for (auto& request : m_AddQueue)
+	{
+		Add_UIObject(request.iPrototypeLevelIndex, request.iLayerLevelIndex, request.strPrototypeTag, request.eUILifeTime, request.pArg);
+	}
+	m_AddQueue.clear();
+}
+
+void CUI_Manager::Request_Delete_UIObject(const _wstring& strGameObjectTag, UI_LIFETIME eUILifeTime)
+{
+	m_DeleteQueue.push_back({ strGameObjectTag, eUILifeTime });
+}
+
+void CUI_Manager::Process_DeleteQueue()
+{
+	for (auto& pair : m_DeleteQueue)
+		Delete_UIObject(pair.first, pair.second);
+
+	m_DeleteQueue.clear();
+}
+
+
 void CUI_Manager::Priority_Update(_float fDeltaTime)
 {
 	for (_uint i = 0; i < LIFETIME_END; ++i)
@@ -69,6 +116,9 @@ void CUI_Manager::Update(_float fDeltaTime)
 		for (auto& uiObject : m_CurrentUIObjects[i])
 			uiObject.second->Update(fDeltaTime);  // 모든 UI 객체 업데이트
 	}
+
+	Process_DeleteQueue();
+	//Process_AddQueue();
 }
 
 void CUI_Manager::Late_Update(_float fDeltaTime)

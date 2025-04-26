@@ -229,7 +229,7 @@ HRESULT CGameInstance::Add_Prototype(_uint iLevelIndex, const _wstring& strProto
 	return m_pPrototype_Manager->Add_Prototype(iLevelIndex, strPrototypeTag, pPrototype);
 }
 
-CBase* CGameInstance::Clone_Prototype(PROTOTYPE ePrototype, _uint iPrototypeLevelIndex, _wstring strPrototypeTag, void* pArg)
+CBase* CGameInstance::Clone_Prototype(PROTOTYPE ePrototype, _uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, void* pArg)
 {
 	return m_pPrototype_Manager->Clone_Prototype(ePrototype, iPrototypeLevelIndex, strPrototypeTag, pArg);
 }
@@ -237,7 +237,7 @@ CBase* CGameInstance::Clone_Prototype(PROTOTYPE ePrototype, _uint iPrototypeLeve
 
 
 #pragma region OBJECT_MANAGER
-HRESULT CGameInstance::Add_GameObject(_uint iPrototypeLevelIndex, _wstring strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg)
+HRESULT CGameInstance::Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg)
 {
 	return m_pObject_Manager->Add_GameObject(iPrototypeLevelIndex, strPrototypeTag, iLayerLevelIndex, strLayerTag, pArg);
 }
@@ -363,9 +363,25 @@ CUIObject* CGameInstance::Add_UIObject(_uint iPrototypeLevelIndex, _uint iLayerL
 	return m_pUI_Manager->Add_UIObject(iPrototypeLevelIndex, iLayerLevelIndex, strPrototypeTag, eUILifeTime, pArg);
 }
 
-CUIObject* CGameInstance::Find_UIGameObject(_wstring strGameObjectTag, CUI_Manager::UI_LIFETIME eUILifeTime) const
+CUIObject* CGameInstance::Find_UIGameObject(const _wstring& strGameObjectTag, CUI_Manager::UI_LIFETIME eUILifeTime) const
 {
 	return m_pUI_Manager->Find_UIGameObject(strGameObjectTag, eUILifeTime);
+}
+
+HRESULT CGameInstance::Delete_UIObject(const _wstring& strGameObjectTag, CUI_Manager::UI_LIFETIME eUILifeTime)
+{
+	return m_pUI_Manager->Delete_UIObject(strGameObjectTag, eUILifeTime);
+}
+
+void CGameInstance::Request_Add_UIObject(_uint iPrototypeLevelIndex, _uint iLayerLevelIndex,
+	const _wstring& strPrototypeTag, CUI_Manager::UI_LIFETIME eUILifeTime, void* pArg)
+{
+	return m_pUI_Manager->Request_Add_UIObject(iPrototypeLevelIndex, iLayerLevelIndex, strPrototypeTag, eUILifeTime, pArg);
+}
+
+void CGameInstance::Request_Delete_UIObject(const _wstring& strGameObjectTag, CUI_Manager::UI_LIFETIME eUILifeTime)
+{
+	return m_pUI_Manager->Request_Delete_UIObject(strGameObjectTag, eUILifeTime);
 }
 #pragma endregion
 

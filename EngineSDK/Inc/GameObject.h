@@ -12,7 +12,7 @@ public:
 	{
 		_wstring	strGameObjectTag = {};
 
-		tagGameObjectDesc(const wstring& gameObjectTag = TEXT(""), _float rotationPerSec = 0.f, _float speedPerSec = 0.f)
+		tagGameObjectDesc(const _wstring& gameObjectTag = TEXT(""), _float rotationPerSec = 0.f, _float speedPerSec = 0.f)
 			: tagTransformDesc(rotationPerSec, speedPerSec), strGameObjectTag(gameObjectTag) {}
 
 		/*tagGameObjectDesc(const tagGameObjectDesc &other)

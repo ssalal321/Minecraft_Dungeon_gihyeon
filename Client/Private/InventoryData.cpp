@@ -14,6 +14,18 @@ HRESULT CInventoryData::Initialize()
 	m_GearSlots.resize(GEARSLOTSIZE, nullptr);
 	m_ArtifactSlots.resize(ARTIFACTSLOTSIZE, nullptr);
 
+	m_pGameInstance->Subscribe<DoubleClicked_From_StoreSlot>(
+		[this](const DoubleClicked_From_StoreSlot& doubleClicked_From_StoreEvent) { this->Equip_From_StoreSlot(doubleClicked_From_StoreEvent); }
+	);
+
+	m_pGameInstance->Subscribe<DoubleClicked_From_GearSlot>(
+		[this](const DoubleClicked_From_GearSlot& doubleClicked_From_GearEvent) { this->Unequip_GearSlot(doubleClicked_From_GearEvent); }
+	);
+
+	m_pGameInstance->Subscribe<DoubleClicked_From_ArtifactSlot>(
+		[this](const DoubleClicked_From_ArtifactSlot& doubleClicked_From_ArtifactEvent) { this->Unequip_ArtifactSlot(doubleClicked_From_ArtifactEvent); }
+	);
+
 	return S_OK;
 }
 
@@ -25,7 +37,7 @@ void CInventoryData::Add_Item_To_StoreSlot(CItem* pItem)
 		{
 			m_StoreSlots[i] = pItem;
 
-			Item_Added itemAddedEvent{ pItem, static_cast<_int>(i), pItem->Get_IconGameObjectTag(), pItem->Get_TexPrototypeTag() };
+			Item_Added_To_StoreSlot itemAddedEvent{ static_cast<_int>(i), m_StoreSlots[i] };
 			m_pGameInstance->Publish(itemAddedEvent);
 
 			break;
@@ -33,61 +45,68 @@ void CInventoryData::Add_Item_To_StoreSlot(CItem* pItem)
 	}
 }
 
-void CInventoryData::Equip_From_StoreSlot(_int storeSlotIndex)  // 몇 번째 StoreSlot에서 아이템 가져올 것인가?
+void CInventoryData::Equip_From_StoreSlot(const DoubleClicked_From_StoreSlot& event)  // 몇 번째 StoreSlot에서 아이템 가져올 것인가?
 {
-	if (storeSlotIndex < 0 || storeSlotIndex >= static_cast<_int>(m_StoreSlots.size()) ||
-		nullptr == m_StoreSlots[storeSlotIndex])
+	if (event.iStoreSlotIndex < 0 || event.iStoreSlotIndex >= static_cast<_int>(m_StoreSlots.size()) ||
+		nullptr == m_StoreSlots[event.iStoreSlotIndex])
 		return;
 
-	CItem* pItem = m_StoreSlots[storeSlotIndex];
+	CItem* pStoreItem = m_StoreSlots[event.iStoreSlotIndex];
 
-	switch (pItem->Get_ItemType())
+	switch (pStoreItem->Get_ItemType())
 	{
-	case ITEMTYPE::MELEE:
-	case ITEMTYPE::ARMOR:
-	case ITEMTYPE::RANGED:
+	case ITEM_TYPE::MELEE:
+	case ITEM_TYPE::ARMOR:
+	case ITEM_TYPE::RANGED:
 	{
 		// Gear 슬롯 인덱스 매칭
 		_int gearIndex = 0;
-		if (pItem->Get_ItemType() == ITEMTYPE::ARMOR)
+		if (pStoreItem->Get_ItemType() == ITEM_TYPE::ARMOR)
 			gearIndex = 1;
-		else if (pItem->Get_ItemType() == ITEMTYPE::RANGED)
+		else if (pStoreItem->Get_ItemType() == ITEM_TYPE::RANGED)
 			gearIndex = 2;
+
 
 		CItem*  pGearItem = m_GearSlots[gearIndex];
 
-		if (nullptr != pGearItem)
+		if (nullptr != pGearItem)  // 빈 슬롯이 없으면
 		{
-			Swap_With_Gear(storeSlotIndex, gearIndex);
+			if (FAILED(Swap_With_Gear(event.iStoreSlotIndex, gearIndex)))
+				return;
+
+			Swap_Store_with_Gear  swapStoreWithGearEvent{ event.iStoreSlotIndex, gearIndex, m_StoreSlots[event.iStoreSlotIndex], m_GearSlots[gearIndex]};
+			m_pGameInstance->Publish(swapStoreWithGearEvent);
 		}
 		else
 		{
-			m_GearSlots[gearIndex] = pItem;
-			m_StoreSlots[storeSlotIndex] = nullptr;
-		}
+			m_GearSlots[gearIndex] = pStoreItem;
+			m_StoreSlots[event.iStoreSlotIndex] = nullptr;
 
-		//Update_SlotTexture(pGearSlot, pItem->Get_TexPrototypeTag());
+			Equip_To_Gear  equipToGearEvent{ event.iStoreSlotIndex, gearIndex, m_GearSlots[gearIndex] };
+			m_pGameInstance->Publish(equipToGearEvent);
+		}
 		break;
 	}
 
-	case ITEMTYPE::ARTIFACT:
+	case ITEM_TYPE::ARTIFACT:
 	{
 		_int emptyIndex = Find_Empty_ArtifactSlot();
 
-		if (emptyIndex == -1)
+		if (emptyIndex == -1)  // 빈 슬롯이 없으면
 		{
-			CItem*  pArtfifactItem = m_ArtifactSlots[0];
+			if (FAILED(Swap_With_Artifact(event.iStoreSlotIndex, 0)))
+				return;
 
-			Swap_With_Artifact(storeSlotIndex, 0);
-
-			//Update_SlotTexture(pArtifactSlot, pItem->Get_TexPrototypeTag());
+			Swap_Store_with_Artifact  swapStoreWithArtifactEvent{ event.iStoreSlotIndex, 0, m_StoreSlots[event.iStoreSlotIndex], m_ArtifactSlots[0] };
+			m_pGameInstance->Publish(swapStoreWithArtifactEvent);
 		}
 		else
 		{
-			m_ArtifactSlots[emptyIndex] = pItem;
-			m_StoreSlots[storeSlotIndex] = nullptr;
+			m_ArtifactSlots[emptyIndex] = pStoreItem;
+			m_StoreSlots[event.iStoreSlotIndex] = nullptr;
 
-			//Update_SlotTexture(pArtifactSlot, pItem->Get_TexPrototypeTag());
+			Equip_To_Artifact  equipToArtifactEvent{ event.iStoreSlotIndex, emptyIndex, m_ArtifactSlots[emptyIndex] };
+			m_pGameInstance->Publish(equipToArtifactEvent);
 		}
 		break;
 	}
@@ -97,39 +116,38 @@ void CInventoryData::Equip_From_StoreSlot(_int storeSlotIndex)  // 몇 번째 Store
 	}
 }
 
-void CInventoryData::Unequip_Gear(GEAR_TYPE gearType)
+void CInventoryData::Unequip_GearSlot(const DoubleClicked_From_GearSlot& event)
 {
-	_int gearTypeIndex = static_cast<_int>(gearType);
-	if (gearTypeIndex < 0 || gearTypeIndex >= GEARSLOTSIZE ||
-		nullptr == m_GearSlots[gearTypeIndex])
+	if (event.iGearSlotIndex < 0 || event.iGearSlotIndex >= GEARSLOTSIZE ||
+		nullptr == m_GearSlots[event.iGearSlotIndex])
 		return;
 
 	_int emptyStoreIndex = Find_Empty_StoreSlot();
 	if (emptyStoreIndex == -1)
 		return;
 
-	m_StoreSlots[emptyStoreIndex] = m_GearSlots[gearTypeIndex];
-	m_GearSlots[gearTypeIndex] = nullptr;
+	m_StoreSlots[emptyStoreIndex] = m_GearSlots[event.iGearSlotIndex];
+	m_GearSlots[event.iGearSlotIndex] = nullptr;
 
-	//Update_SlotTexture(pStoreSlot, pStoreSlot->Get_Item()->Get_TexPrototypeTag());
-	//Update_SlotTexture(pGearSlot, TEXT("Empty"));
+	Unequipped_To_StoreSlot  unequippedToStoreEvent{ emptyStoreIndex, event.iGearSlotIndex, m_StoreSlots[emptyStoreIndex] };
+	m_pGameInstance->Publish(unequippedToStoreEvent);
 }
 
-void CInventoryData::Unequip_Artifact(_int artifactSlotIndex)
+void CInventoryData::Unequip_ArtifactSlot(const DoubleClicked_From_ArtifactSlot& event)
 {
-	if (artifactSlotIndex < 0 || artifactSlotIndex >= ARTIFACTSLOTSIZE ||
-		nullptr == m_ArtifactSlots[artifactSlotIndex])
+	if (event.iArtifactSlotIndex < 0 || event.iArtifactSlotIndex >= ARTIFACTSLOTSIZE ||
+		nullptr == m_ArtifactSlots[event.iArtifactSlotIndex])
 		return;
 
 	_int emptyStoreIndex = Find_Empty_StoreSlot();
 	if (emptyStoreIndex == -1) 
 		return;
 
-	m_StoreSlots[emptyStoreIndex] = m_ArtifactSlots[artifactSlotIndex];
-	m_ArtifactSlots[artifactSlotIndex] = nullptr;
+	m_StoreSlots[emptyStoreIndex] = m_ArtifactSlots[event.iArtifactSlotIndex];
+	m_ArtifactSlots[event.iArtifactSlotIndex] = nullptr;
 
-	//Update_SlotTexture(pStoreSlot, pStoreSlot->Get_Item()->Get_TexPrototypeTag());
-	//Update_SlotTexture(pItemSlot, TEXT("Empty"));
+	Item_Added_To_StoreSlot  unequipToStoreEvent{ emptyStoreIndex, m_StoreSlots[emptyStoreIndex] };
+	m_pGameInstance->Publish(unequipToStoreEvent);
 }
 
 _int CInventoryData::Find_Empty_StoreSlot()
@@ -152,35 +170,36 @@ _int CInventoryData::Find_Empty_ArtifactSlot()
 	return -1;
 }
 
-void CInventoryData::Swap_With_Gear(_int iStoreSlotIndex, _int iGearSlotIndex)
+HRESULT CInventoryData::Swap_With_Gear(_int iStoreSlotIndex, _int iGearSlotIndex)
 {
-	if (iStoreSlotIndex < 0 || iStoreSlotIndex >= static_cast<_int>(m_StoreSlots.size())) return;
-	if (iGearSlotIndex < 0 || iGearSlotIndex >= static_cast<_int>(m_GearSlots.size())) return;
+	if (iStoreSlotIndex < 0 || iStoreSlotIndex >= static_cast<_int>(m_StoreSlots.size())) return E_FAIL;
+	if (iGearSlotIndex < 0 || iGearSlotIndex >= static_cast<_int>(m_GearSlots.size())) return E_FAIL;
 
 	CItem* pStoreItem  = m_StoreSlots[iStoreSlotIndex];
 	CItem* pGearItem   = m_GearSlots[iGearSlotIndex];
 
 	if (!pStoreItem || !pGearItem)
-		return;
+		return E_FAIL;
 
-	std::swap(pStoreItem, pGearItem);
+	std::swap(m_StoreSlots[iStoreSlotIndex], m_GearSlots[iGearSlotIndex]);
 
-	// Icon 처리도 해줘야
+	return S_OK;
 }
 
-void CInventoryData::Swap_With_Artifact(_int iStoreSlotIndex, _int iItemSlotIndex)
+HRESULT CInventoryData::Swap_With_Artifact(_int iStoreSlotIndex, _int iItemSlotIndex)
 {
-	if (iStoreSlotIndex < 0 || iStoreSlotIndex >= m_StoreSlots.size()) return;
-	if (iItemSlotIndex < 0 || iItemSlotIndex >= m_ArtifactSlots.size()) return;
+	if (iStoreSlotIndex < 0 || iStoreSlotIndex >= static_cast<_int>(m_StoreSlots.size())) return E_FAIL;
+	if (iItemSlotIndex < 0 || iItemSlotIndex >= static_cast<_int>(m_ArtifactSlots.size())) return E_FAIL;
 
 	CItem* pStoreItem	  = m_StoreSlots[iStoreSlotIndex];
 	CItem* pArtifactItem  = m_ArtifactSlots[iItemSlotIndex];
 
-	if (!pStoreItem || !pArtifactItem) return;
+	if (!pStoreItem || !pArtifactItem) 
+		return E_FAIL;
 
-	std::swap(pStoreItem, pArtifactItem);
+	std::swap(m_StoreSlots[iStoreSlotIndex], m_ArtifactSlots[iItemSlotIndex]);
 
-	// Icon 처리도 해줘야
+	return S_OK;
 }
 
 CInventoryData* CInventoryData::Create()

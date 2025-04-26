@@ -25,6 +25,8 @@ HRESULT CInventoryGearSlot::Initialize(void* pArg)
 	else
 		return E_FAIL;
 
+	m_eSlotType = SLOT_TYPE::GEAR;
+
 	if (FAILED(__super::Initialize(m_pDesc)))
 		return E_FAIL;
 

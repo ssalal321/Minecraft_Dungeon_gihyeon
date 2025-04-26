@@ -2,12 +2,21 @@
 #include "Base.h"
 
 BEGIN(Engine)
-	class CUIObject;
+class CUIObject;
 
-	class CUI_Manager : public CBase
+class CUI_Manager : public CBase
 {
 public:
     enum UI_LIFETIME { TEMPORARY, PERSISTENT, LIFETIME_END  };
+
+    struct UIAddRequest
+    {
+        _uint           iPrototypeLevelIndex;
+        _uint           iLayerLevelIndex;
+        _wstring        strPrototypeTag;
+        UI_LIFETIME     eUILifeTime;
+        void*           pArg;
+    };
 
 private:
 	CUI_Manager();
@@ -20,6 +29,12 @@ public:
 							 UI_LIFETIME eUILifeTime, void* pArg = nullptr);
 
     CUIObject*  Find_UIGameObject(_wstring strGameObjectTag, UI_LIFETIME eUILifeTime) const;
+    HRESULT     Delete_UIObject(const _wstring& strGameObjectTag, UI_LIFETIME eUILifeTime);
+    void Request_Add_UIObject(_uint iPrototypeLevelIndex, _uint iLayerLevelIndex, const _wstring& strPrototypeTag,
+                              UI_LIFETIME eUILifeTime, void* pArg);
+    void Process_AddQueue();
+    void        Request_Delete_UIObject(const _wstring& strGameObjectTag, UI_LIFETIME eUILifeTime);
+    void        Process_DeleteQueue();
 
     void        Priority_Update(_float fDeltaTime);
     void        Update(_float fDeltaTime);
@@ -36,6 +51,9 @@ private:
 
     unordered_map<_wstring, CUIObject*>   m_CurrentUIObjects[LIFETIME_END]   = {};  // 包府且 UI 按眉甸
     unordered_map<_wstring, CUIObject*>   m_NextUIObjects[LIFETIME_END]      = {};       // 包府且 UI 按眉甸
+
+    vector<UIAddRequest>                  m_AddQueue;
+    vector<pair<_wstring, UI_LIFETIME>>   m_DeleteQueue;
 
 private:
     _uint   m_iNumLevels = {};

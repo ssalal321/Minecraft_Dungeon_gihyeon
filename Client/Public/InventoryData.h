@@ -23,9 +23,9 @@ public:
 
 	void		Add_Item_To_StoreSlot(Client::CItem* pItem);
 
-	void		Equip_From_StoreSlot(_int storeSlotIndex);
-	void		Unequip_Gear(GEAR_TYPE gearType);
-	void		Unequip_Artifact(_int artifactSlotIndex);
+	void		Equip_From_StoreSlot(const DoubleClicked_From_StoreSlot& event);
+	void		Unequip_GearSlot(const DoubleClicked_From_GearSlot& event);
+	void		Unequip_ArtifactSlot(const DoubleClicked_From_ArtifactSlot& event);
 
 private:
 	CGameInstance*		m_pGameInstance = { nullptr };
@@ -35,7 +35,7 @@ private:
 	vector<CItem*>		m_ArtifactSlots;   // 고정 크기 3
 
 	CItem*				m_pItem = { nullptr };
-	ITEMTYPE			m_eWeaponType = {ITEMTYPE::NONE };
+	ITEM_TYPE			m_eWeaponType = {ITEM_TYPE::NONE };
 
 	//_int		m_iSlotIndex = { -1 };
 
@@ -43,8 +43,8 @@ private:
 	_int		Find_Empty_ArtifactSlot();
 	_int		Find_Empty_StoreSlot();
 
-	void		Swap_With_Gear(_int iStoreSlotIndex, _int iGearSlotIndex);
-	void		Swap_With_Artifact(_int iStoreSlotIndex, _int iItemSlotIndex);
+	HRESULT		Swap_With_Gear(_int iStoreSlotIndex, _int iGearSlotIndex);
+	HRESULT		Swap_With_Artifact(_int iStoreSlotIndex, _int iItemSlotIndex);
 
 public:
 	static	 CInventoryData*	Create();

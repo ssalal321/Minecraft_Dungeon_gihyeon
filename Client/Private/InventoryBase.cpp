@@ -37,11 +37,9 @@ HRESULT CInventoryBase::Initialize(void* pArg)
 	m_UIGearSlots.resize(GEARSLOTSIZE, nullptr);
 	m_UIArtifactSlots.resize(ARTIFACTSLOTSIZE, nullptr);
 
-	m_pGameInstance->Subscribe<Item_Added>(
-		[this](const Item_Added& event) { this->Item_Added_To_StoreSlot(event); }
-	);
-
-	m_bReadyForEvents = true;
+	
+	if (FAILED(Ready_Subscribe_Events()))
+		return E_FAIL;
 
 	if (FAILED(Ready_UISlots()))
 		return E_FAIL;
@@ -94,6 +92,36 @@ HRESULT CInventoryBase::Render()
 }
 
 
+HRESULT CInventoryBase::Ready_Subscribe_Events()
+{
+	if (FAILED(m_pGameInstance->Subscribe<Item_Added_To_StoreSlot>(
+		[this](const Item_Added_To_StoreSlot& item_AddedEvent) { this->Add_Icon_To_StoreSlot(item_AddedEvent); })))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Subscribe<Unequipped_To_StoreSlot>(
+		[this](const Unequipped_To_StoreSlot& item_Unequipped_To_StoreEvent) { this->Unequip_Icon_To_StoreSlot(item_Unequipped_To_StoreEvent); })))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Subscribe<Swap_Store_with_Gear>(
+		[this](const Swap_Store_with_Gear& swap_Store_GearEvent) { this->Swap_Store_and_Gear_Icon(swap_Store_GearEvent); })))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Subscribe<Swap_Store_with_Artifact>(
+		[this](const Swap_Store_with_Artifact& swap_Store_ArtifactEvent) { this->Swap_Store_and_Artifact_Icon(swap_Store_ArtifactEvent); })))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Subscribe<Equip_To_Gear>(
+		[this](const Equip_To_Gear& equip_To_GearEvent) { this->Equip_Icon_To_GearSlot(equip_To_GearEvent); })))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Subscribe<Equip_To_Artifact>(
+		[this](const Equip_To_Artifact& equip_To_ArtifactEvent) { this->Equip_Icon_To_ArtifactSlot(equip_To_ArtifactEvent); })))
+		return E_FAIL;
+
+	m_bReadyForEvents = true;
+	return S_OK;
+}
+
 HRESULT CInventoryBase::Ready_UISlots()
 {
 	const _float fStartX = 513.f; // 첫 번째 열의 X 좌표 시작점
@@ -128,6 +156,7 @@ HRESULT CInventoryBase::Ready_UISlots()
 		pInventoryStoreSlot->Set_Parent(this);  // 부모 설정
 
 		m_UIStoreSlots[i] = dynamic_cast<CInventoryStoreSlot*>(pInventoryStoreSlot);
+		m_UIStoreSlots[i]->Set_Slot_Index(i);
 	}
 
 	_float  fLeftSlotsWidth = 80.f; // 슬롯의 너비
@@ -145,7 +174,7 @@ HRESULT CInventoryBase::Ready_UISlots()
 	if (nullptr == pInventoryGearSlot) return E_FAIL;
 	pInventoryGearSlot->Set_Parent(this);  // 부모 설정
 	m_UIGearSlots[0] = dynamic_cast<CInventoryGearSlot*>(pInventoryGearSlot);
-
+	m_UIGearSlots[0]->Set_Slot_Index(0);
 
 	// 갑옷 슬롯
 	CInventorySlot::INVENTORY_SLOT_DESC     InventoryArmorSlotDesc
@@ -225,34 +254,110 @@ HRESULT CInventoryBase::Ready_Components()
 	return S_OK;
 }
 
-void CInventoryBase::Item_Added_To_StoreSlot(const Item_Added& event)
+void CInventoryBase::Add_Icon_To_StoreSlot(const Item_Added_To_StoreSlot& event)
 {
 	if (false == m_bReadyForEvents)
 		return;
 
-	if (false == m_UIStoreSlots[event.slotIndex]->Is_Empty() ||
-		event.slotIndex < 0 ||
-		event.slotIndex >= m_UIStoreSlots.size())
+	if (false == m_UIStoreSlots[event.iStoreSlotIndex]->Is_Empty() ||
+		event.iStoreSlotIndex < 0 ||
+		event.iStoreSlotIndex >= m_UIStoreSlots.size())
 		return;
 
-	CInventoryStoreSlot*  pInventoryStoreSlot = m_UIStoreSlots[event.slotIndex];
+	CInventoryStoreSlot*  pInventoryStoreSlot = m_UIStoreSlots[event.iStoreSlotIndex];
+	CItem* pItem = event.pItem;
+
+	pInventoryStoreSlot->Add_Icon_Image(pItem->Get_IconGameObjectTag(), pItem->Get_IconTexPrototypeTag(), pItem->Get_ItemType());
 	pInventoryStoreSlot->Set_Empty(false);
-
-	pInventoryStoreSlot->Add_Icon_Image(event.pGameObjectTag, event.m_strIconTexPrototypeTag);
-
-	// 여기도 이벤트를 걸어서 Icon이 생성되게 해봅시다..
 }
 
-void CInventoryBase::Update_SlotTexture(CInventorySlot* pSlot, const _wstring& texTag, _bool bEmpty)
+void CInventoryBase::Unequip_Icon_To_StoreSlot(const Unequipped_To_StoreSlot& event)
 {
-	if (!pSlot)
+	if (false == m_UIStoreSlots[event.iStoreSlotIndex]->Is_Empty() ||
+		true == m_UIGearSlots[event.iGearSlotIndex]->Is_Empty() ||
+		event.iStoreSlotIndex < 0 || event.iStoreSlotIndex >= static_cast<_int>(m_UIStoreSlots.size()) ||
+		event.iGearSlotIndex < 0 || event.iGearSlotIndex >= static_cast<_int>(m_UIGearSlots.size()))
 		return;
 
-	if (bEmpty)
-		//TexComponent_Change();
+	CInventoryGearSlot* pInventoryGearSlot = m_UIGearSlots[event.iGearSlotIndex];
+	if (FAILED(pInventoryGearSlot->Clear_Icon()))
+		return;
 
-	pSlot->Set_IconTag(texTag);
-	// 여기에 pSlot->m_pIcon 등 실제 Texture 변경 로직도 들어가야 함
+	CInventoryStoreSlot* pInventoryStoreSlot = m_UIStoreSlots[event.iStoreSlotIndex];
+	CItem* pItem = event.pItem;
+
+	pInventoryStoreSlot->Add_Icon_Image(pItem->Get_IconGameObjectTag(), pItem->Get_IconTexPrototypeTag(), pItem->Get_ItemType());
+	pInventoryStoreSlot->Set_Empty(false);
+}
+
+void CInventoryBase::Swap_Store_and_Gear_Icon(const Swap_Store_with_Gear& swap_Store_GearEvent)
+{
+	if (swap_Store_GearEvent.iStoreSlotIndex < 0 || swap_Store_GearEvent.iStoreSlotIndex > m_UIStoreSlots.size() ||
+		swap_Store_GearEvent.iGearSlotIndex < 0 || swap_Store_GearEvent.iGearSlotIndex > m_UIGearSlots.size())
+		return;
+
+	CInventoryStoreSlot* pInventoryStoreSlot = m_UIStoreSlots[swap_Store_GearEvent.iStoreSlotIndex];
+	CInventoryGearSlot*  pInventoryGearSlot  = m_UIGearSlots[swap_Store_GearEvent.iGearSlotIndex];
+	if (FAILED(pInventoryStoreSlot->Clear_Icon()) || FAILED(pInventoryGearSlot->Clear_Icon()))
+		return;
+
+	CItem* pStoreItem = swap_Store_GearEvent.pSwappedStoreItem;
+	CItem* pGearItem  = swap_Store_GearEvent.pSwappedGearItem;
+
+	pInventoryStoreSlot->Add_Icon_Image(pStoreItem->Get_IconGameObjectTag(), pStoreItem->Get_IconTexPrototypeTag(), pStoreItem->Get_ItemType());
+	pInventoryGearSlot->Add_Icon_Image(pGearItem->Get_IconGameObjectTag(), pGearItem->Get_IconTexPrototypeTag(), pGearItem->Get_ItemType());
+}
+
+void CInventoryBase::Swap_Store_and_Artifact_Icon(const Swap_Store_with_Artifact& swap_Store_ArtifactEvent)
+{
+	if (swap_Store_ArtifactEvent.iStoreSlotIndex < 0 || swap_Store_ArtifactEvent.iStoreSlotIndex > m_UIStoreSlots.size() ||
+		swap_Store_ArtifactEvent.iArtifactSlotIndex < 0 || swap_Store_ArtifactEvent.iArtifactSlotIndex > m_UIGearSlots.size())
+		return;
+
+	CInventoryStoreSlot* pInventoryStoreSlot = m_UIStoreSlots[swap_Store_ArtifactEvent.iStoreSlotIndex];
+	CInventoryArtifactSlot* pInventoryArtifactSlot = m_UIArtifactSlots[swap_Store_ArtifactEvent.iArtifactSlotIndex];
+	if (FAILED(pInventoryStoreSlot->Clear_Icon()) || FAILED(pInventoryArtifactSlot->Clear_Icon()))
+		return;
+
+	CItem* pStoreItem = swap_Store_ArtifactEvent.pSwappedStoreItem;
+	CItem* pArtifactItem = swap_Store_ArtifactEvent.pSwappedArtifactItem;
+
+	pInventoryStoreSlot->Add_Icon_Image(pStoreItem->Get_IconGameObjectTag(), pStoreItem->Get_IconTexPrototypeTag(), pStoreItem->Get_ItemType());
+	pInventoryArtifactSlot->Add_Icon_Image(pArtifactItem->Get_IconGameObjectTag(), pArtifactItem->Get_IconTexPrototypeTag(), pArtifactItem->Get_ItemType());
+}
+
+void CInventoryBase::Equip_Icon_To_GearSlot(const Equip_To_Gear& equip_To_GearEvent)
+{
+	if (equip_To_GearEvent.iStoreSlotIndex < 0 || equip_To_GearEvent.iStoreSlotIndex > m_UIStoreSlots.size() ||
+		equip_To_GearEvent.iGearSlotIndex < 0 || equip_To_GearEvent.iGearSlotIndex > m_UIGearSlots.size())
+		return;
+
+	CInventoryStoreSlot* pInventoryStoreSlot = m_UIStoreSlots[equip_To_GearEvent.iStoreSlotIndex];
+	CInventoryGearSlot*  pInventoryGearSlot  = m_UIGearSlots[equip_To_GearEvent.iGearSlotIndex];
+	if (FAILED(pInventoryStoreSlot->Clear_Icon()))  return;
+	pInventoryStoreSlot->Set_Empty(true);
+
+	CItem* pGearItem = equip_To_GearEvent.pEquippedItem;
+
+	pInventoryGearSlot->Add_Icon_Image(pGearItem->Get_IconGameObjectTag(), pGearItem->Get_IconTexPrototypeTag(), pGearItem->Get_ItemType());
+	pInventoryGearSlot->Set_Empty(false);
+}
+
+void CInventoryBase::Equip_Icon_To_ArtifactSlot(const Equip_To_Artifact& equip_To_ArtifactEvent)
+{
+	if (equip_To_ArtifactEvent.iStoreSlotIndex < 0 || equip_To_ArtifactEvent.iStoreSlotIndex > m_UIStoreSlots.size() ||
+		equip_To_ArtifactEvent.iArtifactSlotIndex < 0 || equip_To_ArtifactEvent.iArtifactSlotIndex > m_UIGearSlots.size())
+		return;
+
+	CInventoryStoreSlot* pInventoryStoreSlot = m_UIStoreSlots[equip_To_ArtifactEvent.iStoreSlotIndex];
+	CInventoryArtifactSlot* pInventoryArtifactSlot = m_UIArtifactSlots[equip_To_ArtifactEvent.iArtifactSlotIndex];
+	if (FAILED(pInventoryStoreSlot->Clear_Icon()))	return;
+	pInventoryStoreSlot->Set_Empty(true);
+
+	CItem* pGearItem = equip_To_ArtifactEvent.pEquippedItem;
+
+	pInventoryArtifactSlot->Add_Icon_Image(pGearItem->Get_IconGameObjectTag(), pGearItem->Get_IconTexPrototypeTag(), pGearItem->Get_ItemType());
+	pInventoryArtifactSlot->Set_Empty(false);
 }
 
 CInventoryBase* CInventoryBase::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

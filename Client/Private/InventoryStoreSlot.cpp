@@ -24,6 +24,7 @@ HRESULT CInventoryStoreSlot::Initialize(void* pArg)
 	else
 		return E_FAIL;
 
+	m_eSlotType = SLOT_TYPE::STORE;
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;

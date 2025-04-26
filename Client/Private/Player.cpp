@@ -179,7 +179,7 @@ HRESULT CPlayer::Ready_PartObjects()
 	ItemDesc.pSocketMatrix = pBody->Get_CombinedTransformationMatrix("J_R_Weapon");
 	ItemDesc.pContainerObject = this;
 	ItemDesc.pContainerObjAttacking = &m_bAttacking;
-	ItemDesc.strTexPrototypeTag = TEXT("Prototype_Component_Texture_Glaive_Steel");
+	ItemDesc.strIconTexPrototypeTag = TEXT("Prototype_Component_Texture_Glaive_Steel");
 	ItemDesc.strIconGameObjectTag = TEXT("UIGameObject_Glaive_Steel");
 
 	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Glaive"), TEXT("Part_MeleeWeapon"), &ItemDesc)))
