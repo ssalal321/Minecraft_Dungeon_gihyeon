@@ -117,7 +117,7 @@ HRESULT CBody_Player::Ready_Components()
 	if (nullptr == pColliderCom)
 		return E_FAIL;
 
-	m_pGameInstance->Add_ColliderCom(pColliderCom, TEXT("PlayerBody_OBB"), TEXT("Player"));
+	m_pGameInstance->Add_ColliderCom(pColliderCom, TEXT("Player_Body"), TEXT("Player"));
 
 	return S_OK;
 }

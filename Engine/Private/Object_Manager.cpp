@@ -10,15 +10,15 @@ CObject_Manager::CObject_Manager()
     Safe_AddRef(m_pGameInstance);
 }
 
-HRESULT CObject_Manager::Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg)
+CGameObject* CObject_Manager::Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg)
 {
 	if (nullptr == m_pLayers || 
 		iLayerLevelIndex >= m_iNumLevels)
-		return E_FAIL;
+		return nullptr;
 
 	CGameObject*	pGameObject = dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTOTYPE_GAMEOBJECT, iPrototypeLevelIndex, strPrototypeTag, pArg));
 	if (nullptr == pGameObject)
-		return E_FAIL;
+		return nullptr;
 
 	return Add_To_Layer(pGameObject, iLayerLevelIndex, strLayerTag, pGameObject->Get_GameObjectTag());
 }
@@ -107,7 +107,7 @@ CLayer* CObject_Manager::Find_Layer(_uint iLevelIndex, const _wstring& strLayerT
 	return iter->second;
 }
 
-HRESULT CObject_Manager::Add_To_Layer(CGameObject* pGameObject, _uint iLayerLevelIndex, const _wstring& strLayerTag, const _wstring& strGameObjectTag)
+CGameObject* CObject_Manager::Add_To_Layer(CGameObject* pGameObject, _uint iLayerLevelIndex, const _wstring& strLayerTag, const _wstring& strGameObjectTag)
 {
 	CLayer* pLayer = Find_Layer(iLayerLevelIndex, strLayerTag);
 
@@ -115,18 +115,18 @@ HRESULT CObject_Manager::Add_To_Layer(CGameObject* pGameObject, _uint iLayerLeve
 	{
 		pLayer = CLayer::Create();
 		if (nullptr == pLayer)
-			return E_FAIL;
+			return nullptr;
 
 		if (FAILED(pLayer->Add_GameObject(strGameObjectTag, pGameObject)))
-			return E_FAIL;
+			return nullptr;
 
 		m_pLayers[iLayerLevelIndex].emplace(strLayerTag, pLayer);
 	}
 	else
 		if (FAILED(pLayer->Add_GameObject(strGameObjectTag, pGameObject)))
-			return E_FAIL;
+			return nullptr;
 
-	return S_OK;
+	return pGameObject;
 }
 
 

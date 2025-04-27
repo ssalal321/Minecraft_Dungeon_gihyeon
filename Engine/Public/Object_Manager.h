@@ -17,7 +17,7 @@ private:
 	~CObject_Manager() override = default;
 
 public:
-	HRESULT			Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag,
+	CGameObject*	Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag,
 							   _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg);
 	CComponent*		Get_Component(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strComponentTag, _uint iIndex);
 	CGameObject*	Find_GameObject(const _wstring& strGameObjectTag, _uint iLayerLevelIndex, const _wstring& strLayerTag);
@@ -39,7 +39,7 @@ private:
 
 private:
 	class	CLayer*		Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag);
-	HRESULT				Add_To_Layer(CGameObject* pGameObject, _uint iLayerLevelIndex,
+	CGameObject*		Add_To_Layer(CGameObject* pGameObject, _uint iLayerLevelIndex,
 									 const _wstring& strLayerTag, const _wstring& strGameObjectTag);
 
 public:

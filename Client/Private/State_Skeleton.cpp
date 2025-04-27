@@ -45,8 +45,6 @@ void CState_Skeleton::State_Exit()
 
 void CState_Skeleton::Collision_Enter(CCollider* pOther)
 {
-	if (Change_State_To_GetHit(pOther))
-		return;
 }
 
 void CState_Skeleton::Collision_Stay(CCollider* pOther)
@@ -112,7 +110,7 @@ _bool CState_Skeleton::Change_State_To_Idle()
 
 _bool CState_Skeleton::Change_State_To_GetHit(CCollider* pOther)
 {
-	if (TEXT("PlayerWeapon_OBB") == pOther->Get_OwnerTag() && pOther->Get_OtherAttacking())
+	if (TEXT("Player_Weapon") == pOther->Get_ColliderTag() && pOther->Get_OtherAttacking())
 	{
 		m_pSkeleton->Change_State(Make_SkeletonState(SKELETON_STATE::GET_HIT_FRONT));
 

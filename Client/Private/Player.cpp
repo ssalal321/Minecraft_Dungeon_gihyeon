@@ -1,4 +1,6 @@
 #include "Player.h"
+
+#include "ArrowPool_Player.h"
 #include "GameInstance.h"
 
 #include "Body_Player.h"
@@ -6,6 +8,7 @@
 
 #include "FSM.h"
 #include "InventoryData.h"
+#include "Player_BowAction.h"
 #include "Player_GetHit.h"
 #include "Player_Glaive_Combo.h"
 #include "Player_Idle.h"
@@ -32,13 +35,16 @@ HRESULT CPlayer::Initialize_Prototype()
 
 HRESULT CPlayer::Initialize(void* pArg)
 {
-	m_pPlayerInfo = new PLAYER_DESC(TEXT("GameObject_Player"), 10, 10, 2, 5.f, false, 90.f, 3.f);
+	m_pPlayerInfo = new PLAYER_DESC(TEXT("GameObject_Player"), 100, 100, 2, 5.f, false, 90.f, 3.f);
 
 	if (FAILED(__super::Initialize(m_pPlayerInfo)))
 		return E_FAIL;
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
+
+	m_pArrowPool_Player = CArrowPool_Player::Create();
+	if (nullptr == m_pArrowPool_Player)	return E_FAIL;
 
 	if (FAILED(Ready_Inventory()))
 		return E_FAIL;
@@ -156,7 +162,6 @@ HRESULT CPlayer::Ready_PartObjects()
 	/* 몸통을 추가한다. */
 	CBody_Player::BODY_PLAYER_DESC		BodyDesc{};
 
-	BodyDesc.strGameObjectTag = TEXT("GameObject_Body_Player");
 	BodyDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	BodyDesc.pState = &m_iState;
 	BodyDesc.pContainerObject = this;
@@ -173,7 +178,6 @@ HRESULT CPlayer::Ready_PartObjects()
 	if (nullptr == pBody)
 		return E_FAIL;
 
-	ItemDesc.strGameObjectTag = TEXT("GameObject_Glaive_Player");
 	ItemDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	ItemDesc.pState = &m_iState;
 	ItemDesc.pSocketMatrix = pBody->Get_CombinedTransformationMatrix("J_R_Weapon");
@@ -185,6 +189,12 @@ HRESULT CPlayer::Ready_PartObjects()
 	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Glaive"), TEXT("Part_Weapon_Glaive"), &ItemDesc)))
 		return E_FAIL;
 
+	//// 처음엔 콜라이더 끄기
+	//CItem* pWeapon = dynamic_cast<CItem*>(Find_PartObject(TEXT("Part_Weapon_Glaive")));
+	//CCollider* pWeaponCollider = dynamic_cast<CCollider*>(pWeapon->Find_Component(pWeapon->Get_CollidergGroupTag()));
+	//pWeaponCollider->Set_ColliderActive(false);
+
+	// 인벤토리에 넣기
 	CItem* pGlaive = dynamic_cast<CItem*>(Find_PartObject(TEXT("Part_Weapon_Glaive")));
 	m_pInventoryData->Add_Item_To_StoreSlot(pGlaive);
 
@@ -205,12 +215,14 @@ HRESULT CPlayer::Ready_States()
 	pStatePlayerDesc.pActorModelCom		= pPlayerModel;
 	pStatePlayerDesc.pNavigationCom		= m_pNavigationCom;
 	pStatePlayerDesc.pTransformCom		= m_pTransformCom;
+	pStatePlayerDesc.pArrowPool_Player	= m_pArrowPool_Player;
 
 	m_StatesVec[static_cast<_uint>(PLAYER_STATE::IDLE)] = CPlayer_Idle::Create(this, m_pPlayerInfo, &pStatePlayerDesc);
 	m_StatesVec[static_cast<_uint>(PLAYER_STATE::WALK)] = CPlayer_Walk::Create(this, m_pPlayerInfo, &pStatePlayerDesc);
 	m_StatesVec[static_cast<_uint>(PLAYER_STATE::ROLL)] = CPlayer_Roll::Create(this, m_pPlayerInfo, &pStatePlayerDesc);
 	m_StatesVec[static_cast<_uint>(PLAYER_STATE::GET_HIT_FRONT)] = CPlayer_GetHit::Create(this, m_pPlayerInfo, &pStatePlayerDesc);
 	m_StatesVec[static_cast<_uint>(PLAYER_STATE::GLAIVE_COMBO)] = CPlayer_Glaive_Combo::Create(this, m_pPlayerInfo, &pStatePlayerDesc);
+	m_StatesVec[static_cast<_uint>(PLAYER_STATE::BOW_ACTION)] = CPlayer_BowAction::Create(this, m_pPlayerInfo, &pStatePlayerDesc);
 
 	m_pPlayerFSM = FSM::Create();
 
@@ -252,6 +264,7 @@ void CPlayer::Free()
 
 	Safe_Delete(m_pPlayerInfo);
 	Safe_Release(m_pInventoryData);
+	Safe_Release(m_pArrowPool_Player);
 	Safe_Delete(m_pPlayerFSM);
 	Safe_Release(m_pNavigationCom);
 

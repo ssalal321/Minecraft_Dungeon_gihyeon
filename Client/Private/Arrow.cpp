@@ -19,7 +19,7 @@ HRESULT CArrow::Initialize_Prototype()
 
 HRESULT CArrow::Initialize(void* pArg)
 {
-	const _wstring& arrowGameObjectTag = TEXT("GameObject_Arrow") + to_wstring(m_iArrowID++);
+	const _wstring& arrowGameObjectTag = TEXT("GameObject_Arrow_") + to_wstring(m_iArrowID++);
 
 	m_pArrowDesc = new GAMEOBJECT_DESC(arrowGameObjectTag, 0.f, 3.f);
 

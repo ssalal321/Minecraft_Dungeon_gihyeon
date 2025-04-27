@@ -4,8 +4,13 @@
 
 /* 플레이어라는 객체를 구성하기위한 파츠들을 모아서 쥐고 있는 객체. */
 
+namespace Client
+{
+	class CArrowPool_Player;
+}
+
 BEGIN(Client)
-class CState;
+	class CState;
 class CInventoryData;
 
 class CPlayer final : public CContainerObject
@@ -19,8 +24,8 @@ public:
 		_float   fEffectiveRange;
 		_bool    bStunned;
 
-		PLAYER_DESC(const _tchar* GameObjectTag, _int currentHP, _int maxHP, _int attackPoint,
-			_float effectiveRange, _bool stunned = false,
+		PLAYER_DESC(const _wstring& GameObjectTag, _int currentHP, const _int& maxHP, _int attackPoint,
+			const _float&  effectiveRange, _bool stunned = false,
 			_float rotationPerSec = 0.f, _float speedPerSec = 0.f)
 			: GAMEOBJECT_DESC(GameObjectTag, rotationPerSec, speedPerSec), iCurrentHP(currentHP), iMaxHP(maxHP), iAttackPoint(attackPoint),
 			fEffectiveRange(effectiveRange), bStunned(stunned) {
@@ -57,7 +62,8 @@ public:
 	const _float4&	Get_NextPosition() const { return m_NextPosition; }
 	_bool			Get_Chasing() const { return m_bChasing; }
 	CTransform*		Get_MonsterTransformCom() const { return m_pMonsterTransformCom; }
-
+	_bool			Get_ShootArrow() const { return m_bShootArrow; }
+	const _float3&	Get_MonsterPosition() const { return m_MonsterPos; }
 
 	void	Set_Attacking(_bool bAttacking) { m_bAttacking = bAttacking; }
 
@@ -72,6 +78,12 @@ public:
 		m_pMonsterTransformCom = pMonsterTransformCom;
 	}
 
+	void	Set_Shoot_Arrow(_bool bShootArrow, _float3 monsterPos)
+	{
+		m_bShootArrow = bShootArrow;
+		m_MonsterPos = monsterPos;
+	}
+
 public:
 	void	Change_State(PLAYER_STATE playerState);
 
@@ -83,6 +95,8 @@ private:
 
 	CNavigation*		m_pNavigationCom = { nullptr };
 
+	CArrowPool_Player*			m_pArrowPool_Player = { nullptr };
+
 	CInventoryData*		m_pInventoryData = { nullptr };
 
 #pragma region FSM
@@ -92,9 +106,12 @@ private:
 #pragma endregion
 
 #pragma region MONSTER
-	_bool				m_bAttacking = { false };
+	_bool				m_bAttacking	= { false };
 	_bool				m_bChasing		= { false };
 	CTransform*			m_pMonsterTransformCom = { nullptr };
+
+	_bool				m_bShootArrow	= { false };
+	_float3				m_MonsterPos	= { 0.f, 0.f, 0.f };
 #pragma endregion
 
 private:

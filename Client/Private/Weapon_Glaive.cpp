@@ -79,7 +79,7 @@ HRESULT CWeapon_Glaive::Render()
 
 	for (size_t i = 0; i < iNumMeshes; i++)
 	{
-		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
+		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", static_cast<_uint>(i), aiTextureType_DIFFUSE, 0)))
 			return E_FAIL;	
 
 		if (FAILED(m_pShaderCom->Begin(0)))
@@ -123,7 +123,7 @@ HRESULT CWeapon_Glaive::Ready_Components()
 	if (nullptr == pColliderCom)
 		return E_FAIL;
 
-	m_pGameInstance->Add_ColliderCom(pColliderCom, TEXT("PlayerWeapon_OBB"), TEXT("Player"));
+	m_pGameInstance->Add_ColliderCom(pColliderCom, TEXT("Player_Weapon"), TEXT("Player"));
 
 	return S_OK;
 }

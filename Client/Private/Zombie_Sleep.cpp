@@ -55,6 +55,8 @@ void CZombie_Sleep::State_Exit()
 void CZombie_Sleep::Collision_Enter(CCollider* pOther)
 {
 	__super::Collision_Enter(pOther);
+
+	Change_State_To_GetHit(pOther);
 }
 
 void CZombie_Sleep::Collision_Stay(CCollider* pOther)

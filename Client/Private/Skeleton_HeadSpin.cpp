@@ -55,6 +55,8 @@ void CSkeleton_HeadSpin::State_Exit()
 void CSkeleton_HeadSpin::Collision_Enter(CCollider* pOther)
 {
 	__super::Collision_Enter(pOther);
+
+	Change_State_To_GetHit(pOther);
 }
 
 void CSkeleton_HeadSpin::Collision_Stay(CCollider* pOther)

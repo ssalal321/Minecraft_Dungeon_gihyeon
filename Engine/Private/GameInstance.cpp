@@ -237,7 +237,7 @@ CBase* CGameInstance::Clone_Prototype(PROTOTYPE ePrototype, _uint iPrototypeLeve
 
 
 #pragma region OBJECT_MANAGER
-HRESULT CGameInstance::Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg)
+CGameObject* CGameInstance::Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg)
 {
 	return m_pObject_Manager->Add_GameObject(iPrototypeLevelIndex, strPrototypeTag, iLayerLevelIndex, strLayerTag, pArg);
 }
@@ -374,9 +374,9 @@ void CGameInstance::Request_Delete_UIObject(const _wstring& strGameObjectTag, CU
 
 
 #pragma region COLLISION_MANAGER
-HRESULT CGameInstance::Add_ColliderCom(CComponent* pColliderCom, const _wstring& PartObject_Tag, const _wstring& ContainerGroup_Tag) const
+HRESULT CGameInstance::Add_ColliderCom(CComponent* pColliderCom, const _wstring& PartObject_Tag, const _wstring& ObjectType) const
 {
-	return m_pCollision_Manager->Add_ColliderCom(pColliderCom, PartObject_Tag, ContainerGroup_Tag);
+	return m_pCollision_Manager->Add_ColliderCom(pColliderCom, PartObject_Tag, ObjectType);
 }
 
 unordered_map<_wstring, vector<CCollider*>>* CGameInstance::Get_Colliders()

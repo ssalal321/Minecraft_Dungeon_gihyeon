@@ -6,27 +6,24 @@
 #include "Base.h"
 #include <queue>
 
-namespace Engine
-{
-	class CGameInstance;
-}
+BEGIN(Engine)
+class CGameInstance;
+END
 
 BEGIN(Client)
-	class CArrow;
+class CArrow;
 
-class CArrowPool final : public CBase
+class CArrowPool_Player final : public CBase
 {
-	DECLARE_SINGLETON(CArrowPool)
 private:
-	CArrowPool();
-	~CArrowPool() override = default;
+	CArrowPool_Player();
+	~CArrowPool_Player() override = default;
 
 public:
 	HRESULT		Initialize();
-	void		Update(_float fTimeDelta);
-	HRESULT		Draw();
+	/*void		Update(_float fTimeDelta);
+	HRESULT		Draw();*/
 	void		Clear(_uint iCurrentLevelIndex, _uint iNextLevelIndex);
-	void		Release_ArrowPool();
 
 public:
 	// 화살 꺼내오기
@@ -41,6 +38,7 @@ private:
 	queue<CArrow*>	m_ArrowPool;
 
 public:
+	static  CArrowPool_Player*  Create();
 	void	Free()				override;
 };
 

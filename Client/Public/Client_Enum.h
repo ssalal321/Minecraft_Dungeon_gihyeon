@@ -12,7 +12,7 @@ namespace Client
 		LEVEL_GAMEPLAY,
 		LEVEL_END
 	};
-
+	
 	enum class PLAYER_STATE
 	{
 		BOW_ACTION,				CLAYMORE_COMBO,

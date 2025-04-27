@@ -12,7 +12,7 @@ private:
 	~CCollision_Manager() override = default;
 
 public:
-	HRESULT		Add_ColliderCom(CComponent* pColliderCom, const _wstring& PartObject_Tag, const _wstring& ContainerGroup_Tag);
+	HRESULT		Add_ColliderCom(CComponent* pColliderCom, const _wstring& PartObject_Tag, const _wstring& ObjectType);
 	unordered_map<_wstring, vector<CCollider*>>* Get_Colliders() { return &m_ColliderGroups; }
 
 public:

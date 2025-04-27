@@ -49,7 +49,7 @@ void CPlayer_Idle::Collision_Enter(CCollider* pOther)
 {
 	__super::Collision_Enter(pOther);
 
-	//if (pOther->Get_OwnerTag())
+	Change_State_To_GetHitFront(pOther);
 }
 
 void CPlayer_Idle::Collision_Stay(CCollider* pOther)

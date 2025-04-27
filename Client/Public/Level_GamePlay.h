@@ -29,7 +29,8 @@ public:
 	HRESULT Ready_Layer_UI(const _wstring& strLayerTag);
 
 	CCollider*	Get_Closest_Collider(const _float4& mousePos, const _float3& mouseRay);
-	void		Handle_Monster_Click(CMonster* pMonster);
+	void		Click_Chase_Monster(CMonster* pMonster);
+	void		Click_Shoot_Arrow(CMonster* pMonster);
 
 private:
 	_bool	bShowInventory = { false };

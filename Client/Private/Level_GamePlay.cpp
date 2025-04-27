@@ -89,11 +89,16 @@ void CLevel_GamePlay::Update(_float fTimeDelta)
         pCurrMonster->Set_Hovered(true);
         m_pPickedMonster = pCurrMonster;
 
-        std::wcerr << "[휘바휘바]" << std::endl;
+        //std::wcerr << "[휘바휘바]" << std::endl;
 
         if (m_pGameInstance->Get_Key(VK_LBUTTON) && !bMouseClickLock)
         {
-            Handle_Monster_Click(pCurrMonster);
+            Click_Chase_Monster(pCurrMonster);
+        }
+
+        if (m_pGameInstance->Get_Key(VK_RBUTTON) && !bMouseClickLock)
+        {
+            Click_Shoot_Arrow(pCurrMonster);
         }
     }
 }
@@ -132,7 +137,7 @@ CCollider* CLevel_GamePlay::Get_Closest_Collider(const _float4& mousePos, const 
 }
 
 
-void CLevel_GamePlay::Handle_Monster_Click(CMonster* pMonster)
+void CLevel_GamePlay::Click_Chase_Monster(CMonster* pMonster)
 {
     if (!pMonster) return;
 	
@@ -144,6 +149,20 @@ void CLevel_GamePlay::Handle_Monster_Click(CMonster* pMonster)
     //m_pPlayer->Change_State(PLAYER_STATE::WALK);  // 무기 바꾸면 여기 상태도 수정해야 함
 }
 
+void CLevel_GamePlay::Click_Shoot_Arrow(CMonster* pMonster)
+{
+    if (!pMonster) return;
+
+    CTransform* pMonsterTransform = dynamic_cast<CTransform*>(pMonster->Find_Component(TEXT("Com_Transform")));
+    if (!pMonsterTransform) return;
+
+    _float3 monsterPos = {};
+    XMStoreFloat3(&monsterPos, pMonsterTransform->Get_State(CTransform::STATE_POSITION));
+
+    m_pPlayer->Set_Shoot_Arrow(true, monsterPos);
+
+    //m_pPlayer->Change_State(PLAYER_STATE::WALK);  // 무기 바꾸면 여기 상태도 수정해야 함
+}
 
 HRESULT CLevel_GamePlay::Render()
 {
@@ -195,49 +214,42 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& strLayerTag)
     Desc.fSpeedPerSec = 8.f;
     Desc.fRotationPerSec = XMConvertToRadians(180.f);
 
-    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Free"),
-        LEVEL_GAMEPLAY, strLayerTag, &Desc)))
-        return E_FAIL;
+    CGameObject* pCameraObject = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Free"),
+        LEVEL_GAMEPLAY, strLayerTag, &Desc);
+    if (nullptr == pCameraObject)     return E_FAIL;
 
     return S_OK;
 }
 
 HRESULT CLevel_GamePlay::Ready_Layer_Player(const _wstring& strLayerTag)
 {
-    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerHex"),
-        LEVEL_GAMEPLAY, strLayerTag)))
-        return E_FAIL;
+    CGameObject* pPlayerObject = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerHex"),
+        LEVEL_GAMEPLAY, strLayerTag);
+    if (nullptr == pPlayerObject)   return E_FAIL;
 
-    m_pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(
-        TEXT("GameObject_Player"), LEVEL_GAMEPLAY, TEXT("Layer_Player")));
-    if (nullptr == m_pPlayer)
-        return E_FAIL;
+    m_pPlayer = dynamic_cast<CPlayer*>(pPlayerObject);
 
     return S_OK;
 }
 
 HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& strLayerTag)
 {
-    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Zombie"),
-        LEVEL_GAMEPLAY, strLayerTag)))
-        return E_FAIL;
+    CGameObject* pZombie = m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Zombie"),
+        LEVEL_GAMEPLAY, strLayerTag);
+    if (nullptr == pZombie)     return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Skeleton"),
-        LEVEL_GAMEPLAY, strLayerTag)))
-        return E_FAIL;
+    CGameObject* pSkeleton = m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Skeleton"),
+        LEVEL_GAMEPLAY, strLayerTag);
+    if (nullptr == pSkeleton)     return E_FAIL;
 
     return S_OK;
 }
 
 HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _wstring& strLayerTag)
 {
-    /*if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Terrain"),
-        LEVEL_GAMEPLAY, strLayerTag)))
-        return E_FAIL;*/
-
-    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_LoungeMap"),
-        LEVEL_GAMEPLAY, strLayerTag)))
-        return E_FAIL;
+    CGameObject* pLoungeMap = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_LoungeMap"),
+        LEVEL_GAMEPLAY, strLayerTag);
+    if (nullptr == pLoungeMap)      return E_FAIL;
 
     /*if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Sky"),
         LEVEL_GAMEPLAY, strLayerTag)))

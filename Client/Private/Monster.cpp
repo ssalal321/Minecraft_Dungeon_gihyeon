@@ -147,7 +147,9 @@ HRESULT CMonster::Ready_Components()
 	if (nullptr == pColliderSphereCom)
 		return E_FAIL;
 
-	m_pGameInstance->Add_ColliderCom(pColliderSphereCom, TEXT("Zombie_Sphere"), TEXT("Monster"));
+	dynamic_cast<CCollider*>(pColliderSphereCom)->Set_MouseCollider(true);
+
+	m_pGameInstance->Add_ColliderCom(pColliderSphereCom, TEXT("Monster_Sphere"), TEXT("Monster"));
 
 	return S_OK;
 }

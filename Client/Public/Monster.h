@@ -22,7 +22,7 @@ public:
 		_float	 fDetectableRange;
 		_bool    bStunned;
 
-		MONSTER_DESC(const _wstring& GameObjectTag, _int currentHP, _int maxHP, _int attackPoint,
+		MONSTER_DESC(const _wstring& GameObjectTag, _int currentHP, const _int& maxHP, _int attackPoint,
 			_float attackableRange, _float detectRange, _bool stunned = false,
 			_float rotationPerSec = 0.f, _float speedPerSec = 0.f)
 			: GAMEOBJECT_DESC(GameObjectTag, rotationPerSec, speedPerSec), iCurrentHP(currentHP), iMaxHP(maxHP), iAttackPoint(attackPoint),

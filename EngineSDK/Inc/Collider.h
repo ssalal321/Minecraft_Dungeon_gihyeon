@@ -5,8 +5,8 @@
 #include "Component.h"
 
 BEGIN(Engine)
-	class CBounding;
-	class CGameObject;
+class CBounding;
+class CGameObject;
 
 class ENGINE_DLL CCollider final : public CComponent
 {
@@ -20,15 +20,17 @@ private:
 
 public:
 	void	Set_IsCollision(_bool bIsCollision) { m_bIsCollision = bIsCollision; }
-	void	Set_OwnerTag(const _wstring& strOwnerTag) { m_strOwnerTag = strOwnerTag; }
-	void	Set_Collider_Off(_bool ColliderOff) { m_bColliderOff = ColliderOff; }
+	void	Set_ColliderTag(const _wstring& strColliderTag) { m_strColliderTag = strColliderTag; }
+	void	Set_ColliderActive(_bool ColliderActive) { m_bColliderActive = ColliderActive; }
+	void	Set_MouseCollider(_bool ColliderForMouse) { m_bMouseCollider = ColliderForMouse; }
 
-	const _wstring&	Get_OwnerTag() { return m_strOwnerTag; }
-	COLLIDER	Get_ColliderType() const { return m_eColliderType; }
-	CBounding*	Get_Bounding() const { return m_pBounding; }
-	_bool		Get_Collider_Off() const { return m_bColliderOff; }
-	_bool		Get_OtherAttacking() const { return *m_bContainerObjAttacking; }
-	CGameObject* Get_OwnerObject() const { return m_pOwnerGameObject; }
+	const _wstring&		Get_ColliderTag() { return m_strColliderTag; }
+	COLLIDER			Get_ColliderType() const { return m_eColliderType; }
+	CBounding*			Get_Bounding() const { return m_pBounding; }
+	_bool				Get_ColliderActive() const { return m_bColliderActive; }
+	_bool				Get_MouseCollider() const { return m_bMouseCollider; }
+	_bool				Get_OtherAttacking() const { return *m_bContainerObjAttacking; }
+	CGameObject*		Get_OwnerObject() const { return m_pOwnerGameObject; }
 
 public:
 	virtual HRESULT Initialize_Prototype(COLLIDER eColliderType);
@@ -48,8 +50,10 @@ private:
 	COLLIDER			m_eColliderType = { COLLIDER::TYPE_END };
 	class CBounding*	m_pBounding		= { nullptr };
 	_bool				m_bIsCollision	= { false };
-	_wstring			m_strOwnerTag	= {};
-	_bool				m_bColliderOff	= { false };
+	_wstring			m_strColliderTag	= {};
+	_bool				m_bColliderActive	= { true };
+	_bool				m_bMouseCollider	= { false };
+	_wstring			m_bTotalGroup		= {};
 
 	unordered_set<CCollider*>	m_prevCollisions;
 	unordered_set<CCollider*>	m_currCollisions;
@@ -57,6 +61,7 @@ private:
 	CGameObject*		m_pOwnerGameObject	= { nullptr };
 	_float4x4*			m_CombinedWorldMatrix = { nullptr };
 	_bool*				m_bContainerObjAttacking = { nullptr };
+
 
 #ifdef _DEBUG
 	PrimitiveBatch<VertexPositionColor>*	m_pBatch = { nullptr };

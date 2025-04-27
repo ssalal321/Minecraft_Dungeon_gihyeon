@@ -175,6 +175,9 @@
     <Filter Include="02.GameObjects\Arrow">
       <UniqueIdentifier>{893bd376-3991-4702-af61-bf48a5e6ff93}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Player\02. State\Player_Attack\Player_BowAction">
+      <UniqueIdentifier>{ec22efd6-d6f8-4601-ac97-fcd8afe526e8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -351,8 +354,11 @@
     <ClInclude Include="..\Public\Arrow.h">
       <Filter>02.GameObjects\Arrow</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\ArrowPool.h">
+    <ClInclude Include="..\Public\ArrowPool_Player.h">
       <Filter>02.GameObjects\Arrow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Player_BowAction.h">
+      <Filter>02.GameObjects\Player\02. State\Player_Attack\Player_BowAction</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -525,8 +531,11 @@
     <ClCompile Include="..\Private\Arrow.cpp">
       <Filter>02.GameObjects\Arrow</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\ArrowPool.cpp">
+    <ClCompile Include="..\Private\ArrowPool_Player.cpp">
       <Filter>02.GameObjects\Arrow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player_BowAction.cpp">
+      <Filter>02.GameObjects\Player\02. State\Player_Attack\Player_BowAction</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -55,7 +55,7 @@ void CPlayer_GetHit::Collision_Enter(CCollider* pOther)
 {
 	__super::Collision_Enter(pOther);
 
-	//if (pOther->Get_OwnerTag())
+	//if (pOther->Get_CollidergGroupTag())
 }
 
 void CPlayer_GetHit::Collision_Stay(CCollider* pOther)
