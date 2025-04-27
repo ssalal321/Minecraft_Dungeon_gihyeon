@@ -43,8 +43,8 @@ void CSkeleton_Walk::State_Update(_float fTimeDelta)
 
 	_uint  currentLevelIndex = m_pGameInstance->Get_CurrentLevelIndex();
 
-	_float4 playerPos = m_pSkeleton->Get_Player_Position(TEXT("Prototype_GameObject_PlayerHex"), currentLevelIndex);
-	_vector vecToPlayer = m_pSkeleton->Vec_To_Player(TEXT("Prototype_GameObject_PlayerHex"), currentLevelIndex);
+	_float4 playerPos = m_pSkeleton->Get_Player_Position(TEXT("GameObject_Player"), currentLevelIndex);
+	_vector vecToPlayer = m_pSkeleton->Vec_To_Player(TEXT("GameObject_Player"), currentLevelIndex);
 	_vector vOppositeDir = XMVector3Normalize(-vecToPlayer);
 
 	_float lengthToPlayer = {};

@@ -27,6 +27,8 @@ private:
 	
 	_float4		m_NextPosition = {0.f, 0.f, 0.f, 1.f};
 
+	static _int		m_iSkeletonID;
+
 private:
 	HRESULT		Ready_PartObjects()  override;
 	HRESULT		Ready_States()		 override;

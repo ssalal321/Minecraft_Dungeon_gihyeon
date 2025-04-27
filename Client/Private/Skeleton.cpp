@@ -12,6 +12,7 @@
 #include "Skeleton_Walk.h"
 #include "State_Monster.h"
 
+_int  CSkeleton::m_iSkeletonID = 0;
 
 CSkeleton::CSkeleton(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CMonster(pDevice, pContext)
@@ -32,7 +33,9 @@ HRESULT CSkeleton::Initialize_Prototype()
 
 HRESULT CSkeleton::Initialize(void* pArg)
 {
-	m_pMonsterInfo = new MONSTER_DESC(TEXT("GameObject_Skeleton"), 10, 10, 2, 10.f, 14.f, false, 90.f, 1.5f);
+	const _wstring& skeletonGameObjectTag = TEXT("GameObject_Skeleton") + to_wstring(m_iSkeletonID++);
+
+	m_pMonsterInfo = new MONSTER_DESC(skeletonGameObjectTag, 10, 10, 2, 10.f, 14.f, false, 90.f, 1.5f);
 
 	if (FAILED(__super::Initialize(m_pMonsterInfo)))
 		return E_FAIL;
@@ -92,7 +95,7 @@ HRESULT CSkeleton::Ready_PartObjects()
 	if (nullptr == pBody)
 		return E_FAIL;
 
-	ItemDesc.strGameObjectTag = TEXT("GameObject_Weapon");
+	ItemDesc.strGameObjectTag = TEXT("GameObject_ShortBow_Skeleton");
 	ItemDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	ItemDesc.pState = &m_iState;
 	ItemDesc.pSocketMatrix = pBody->Get_CombinedTransformationMatrix("J_L_Weapon");

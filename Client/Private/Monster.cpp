@@ -116,7 +116,7 @@ HRESULT CMonster::Ready_Components()
 	{
 	case LEVEL_LOUNGE:
 		{
-		if (nullptr == Add_Component(LevelIndex, TEXT("Prototype_Component_Navigation_LoungeMap"),
+		if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Navigation_LoungeMap"),
 			TEXT("Com_Navigation_LoungeMap"), reinterpret_cast<CComponent**>(&m_pNavigationCom)))
 			return E_FAIL;
 		}
@@ -124,7 +124,7 @@ HRESULT CMonster::Ready_Components()
 
 	case LEVEL_GAMEPLAY:
 		{
-		if (nullptr == Add_Component(LevelIndex, TEXT("Prototype_Component_Navigation_LoungeMap"),
+		if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Navigation_LoungeMap"),
 			TEXT("Com_Navigation_LoungeMap"), reinterpret_cast<CComponent**>(&m_pNavigationCom)))
 			return E_FAIL;
 		}
@@ -152,9 +152,9 @@ HRESULT CMonster::Ready_Components()
 	return S_OK;
 }
 
-_float4 CMonster::Get_Player_Position(const _wstring& strPlayerPrototypeTag, _uint iPlayerLayerLevelIndex) const
+_float4 CMonster::Get_Player_Position(const _wstring& strPlayerGameObjectTag, _uint iPlayerLayerLevelIndex) const
 {
-	CPlayer*	  pPlayer				= dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(strPlayerPrototypeTag, iPlayerLayerLevelIndex, TEXT("Layer_Player")));
+	CPlayer*	  pPlayer				= dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(strPlayerGameObjectTag, iPlayerLayerLevelIndex, TEXT("Layer_Player")));
 	CTransform*   pPlayerTransformCom	= dynamic_cast<CTransform*>(pPlayer->Find_Component(TEXT("Com_Transform")));
 	_vector		  vPlayerPosition		= pPlayerTransformCom->Get_State(CTransform::STATE_POSITION);
 
@@ -164,9 +164,9 @@ _float4 CMonster::Get_Player_Position(const _wstring& strPlayerPrototypeTag, _ui
 	return	 playerPos;
 }
 
-_vector CMonster::Vec_To_Player(const _wstring& strPlayerPrototypeTag, _uint iPlayerLayerLevelIndex) const
+_vector CMonster::Vec_To_Player(const _wstring& strPlayerGameObjectTag, _uint iPlayerLayerLevelIndex) const
 {
-	CPlayer*	 pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(strPlayerPrototypeTag, iPlayerLayerLevelIndex, TEXT("Layer_Player")));
+	CPlayer*	 pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(strPlayerGameObjectTag, iPlayerLayerLevelIndex, TEXT("Layer_Player")));
 	CTransform*  pPlayerTransformCom = dynamic_cast<CTransform*>(pPlayer->Find_Component(TEXT("Com_Transform")));
 
 	_vector		vPlayerPos  = pPlayerTransformCom->Get_State(CTransform::STATE_POSITION);
@@ -183,7 +183,7 @@ _float CMonster::Length_To_Player(const _wstring& strPlayerPrototypeTag, _uint i
 	_uint	CurrentLevelIndex = m_pGameInstance->Get_CurrentLevelIndex();
 
 	_float   lengthToPlayer = {};
-	_vector  vecToPlayer = Vec_To_Player(TEXT("Prototype_GameObject_PlayerHex"), CurrentLevelIndex);
+	_vector  vecToPlayer = Vec_To_Player(TEXT("GameObject_Player"), CurrentLevelIndex);
 	XMStoreFloat(&lengthToPlayer, XMVector3Length(vecToPlayer));
 
 	return lengthToPlayer;

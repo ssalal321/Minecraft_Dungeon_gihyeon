@@ -54,7 +54,7 @@ void CLevel_GamePlay::Update(_float fTimeDelta)
             CUI_Manager::PERSISTENT);
         CUIObject* pUIObject = dynamic_cast<CUIObject*>(pInventoryBase);
         pUIObject->Set_Visible(bShowInventory);
-        CGameObject* pPlayer = m_pGameInstance->Find_GameObject(TEXT("Prototype_GameObject_PlayerHex"),
+        CGameObject* pPlayer = m_pGameInstance->Find_GameObject(TEXT("GameObject_Player"),
             LEVEL_GAMEPLAY, TEXT("Layer_Player"));
         CPlayer* pPlayerHex = dynamic_cast<CPlayer*>(pPlayer);
         pPlayerHex->Show_Player_Inventory(bShowInventory);
@@ -209,7 +209,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Player(const _wstring& strLayerTag)
         return E_FAIL;
 
     m_pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(
-        TEXT("Prototype_GameObject_PlayerHex"), LEVEL_GAMEPLAY, TEXT("Layer_Player")));
+        TEXT("GameObject_Player"), LEVEL_GAMEPLAY, TEXT("Layer_Player")));
     if (nullptr == m_pPlayer)
         return E_FAIL;
 
@@ -235,19 +235,13 @@ HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _wstring& strLayerTag)
         LEVEL_GAMEPLAY, strLayerTag)))
         return E_FAIL;*/
 
-    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_LoungeMap"),
+    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_LoungeMap"),
         LEVEL_GAMEPLAY, strLayerTag)))
         return E_FAIL;
 
     /*if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Sky"),
         LEVEL_GAMEPLAY, strLayerTag)))
         return E_FAIL;
-
-    for (size_t i = 0; i < 5; i++)
-    {
-        if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ForkLift"),
-            LEVEL_GAMEPLAY, strLayerTag)))
-            return E_FAIL;
     }*/
 
     return S_OK;

@@ -123,7 +123,7 @@ HRESULT CPlayer::Ready_Components()
 	{
 	case LEVEL_LOUNGE:
 		{
-		if (nullptr == Add_Component(LevelIndex, TEXT("Prototype_Component_Navigation_LoungeMap"),
+		if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Navigation_LoungeMap"),
 			TEXT("Com_Navigation_LoungeMap"), reinterpret_cast<CComponent**>(&m_pNavigationCom)))
 			return E_FAIL;
 		}
@@ -131,7 +131,7 @@ HRESULT CPlayer::Ready_Components()
 
 	case LEVEL_GAMEPLAY:
 		{
-		if (nullptr == Add_Component(LevelIndex, TEXT("Prototype_Component_Navigation_LoungeMap"),
+		if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Navigation_LoungeMap"),
 			TEXT("Com_Navigation_LoungeMap"), reinterpret_cast<CComponent**>(&m_pNavigationCom)))
 			return E_FAIL;
 		}
@@ -173,7 +173,7 @@ HRESULT CPlayer::Ready_PartObjects()
 	if (nullptr == pBody)
 		return E_FAIL;
 
-	ItemDesc.strGameObjectTag = TEXT("GameObject_Weapon");
+	ItemDesc.strGameObjectTag = TEXT("GameObject_Glaive_Player");
 	ItemDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	ItemDesc.pState = &m_iState;
 	ItemDesc.pSocketMatrix = pBody->Get_CombinedTransformationMatrix("J_R_Weapon");

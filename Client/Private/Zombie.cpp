@@ -11,6 +11,8 @@
 #include "Zombie_Stun.h"
 #include "Zombie_Walk.h"
 
+_int  CZombie::m_iZombieID = 0;
+
 CZombie::CZombie(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CMonster(pDevice, pContext)
 {
@@ -30,7 +32,9 @@ HRESULT CZombie::Initialize_Prototype()
 
 HRESULT CZombie::Initialize(void* pArg)
 {
-	m_pMonsterInfo = new MONSTER_DESC(TEXT("GameObject_Zombie"), 10, 10, 2, 1.8f, 10.f, false, 90.f, 1.5f);
+	const _wstring& zombieGameObjectTag = TEXT("GameObject_Zombie_") + to_wstring(m_iZombieID++);
+
+	m_pMonsterInfo = new MONSTER_DESC(zombieGameObjectTag, 10, 10, 2, 1.8f, 10.f, false, 90.f, 1.5f);
 
 	if (FAILED(__super::Initialize(m_pMonsterInfo)))
 		return E_FAIL;

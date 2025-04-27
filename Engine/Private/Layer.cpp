@@ -5,12 +5,12 @@ CLayer::CLayer()
 {
 }
 
-HRESULT CLayer::Add_GameObject(const _wstring& strLayerTag, CGameObject* pGameObject)
+HRESULT CLayer::Add_GameObject(const _wstring& strGameObjectTag, CGameObject* pGameObject)
 {
     if (nullptr == pGameObject)
         return E_FAIL;
 
-    m_GameObjects.insert({ strLayerTag, pGameObject });
+    m_GameObjects.insert({ strGameObjectTag, pGameObject });
 
     return S_OK;
 }
@@ -52,9 +52,9 @@ void CLayer::Late_Update(_float fTimeDelta)
     }
 }
 
-CGameObject* CLayer::Find_GameObject(_wstring strPrototypeTag)
+CGameObject* CLayer::Find_GameObject(const _wstring& strGameObjectTag)
 {
-    auto iter = m_GameObjects.find(strPrototypeTag);
+    auto iter = m_GameObjects.find(strGameObjectTag);
     if (iter != m_GameObjects.end())
     	return iter->second;
 

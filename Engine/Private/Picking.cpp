@@ -20,7 +20,7 @@ HRESULT CPicking::Initialize(HWND hWnd, _uint iWinSizeX, _uint iWinSizeY)
 	return S_OK;
 }
 
-_bool CPicking::Picked_Model(_float4& worldPickedPos, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag)
+_bool CPicking::Picked_Model(_float4& worldPickedPos, const _wstring& strGameObjectTag, _uint iLayerLevelIndex, const _wstring& strLayerTag)
 {
     _float4  fWorldMousePos = {};
     _float3  fWorldMouseRay = {};
@@ -28,7 +28,7 @@ _bool CPicking::Picked_Model(_float4& worldPickedPos, const _wstring& strPrototy
 
     Compute_MouseRay(fWorldMousePos, fWorldMouseRay);
 
-    CGameObject*  pPickedObject = m_pGameInstance->Find_GameObject(strPrototypeTag, iLayerLevelIndex, strLayerTag);
+    CGameObject*  pPickedObject = m_pGameInstance->Find_GameObject(strGameObjectTag, iLayerLevelIndex, strLayerTag);
     CModel*       pPickedObjModelCom = dynamic_cast<CModel*>(pPickedObject->Find_Component(TEXT("Com_Model")));
     CTransform*   pPickedObjTransformCom = dynamic_cast<CTransform*>(pPickedObject->Find_Component(TEXT("Com_Transform")));
     const _float4x4&  pPickedObjWorldMatrix = pPickedObjTransformCom->Get_WorldMatrix();
@@ -46,14 +46,14 @@ _bool CPicking::Picked_Model(_float4& worldPickedPos, const _wstring& strPrototy
     return false;
 }
 
-_bool CPicking::Picked_Vertex(_float3& fLocalPickedVertex, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag)
+_bool CPicking::Picked_Vertex(_float3& fLocalPickedVertex, const _wstring& strGameObjectTag, _uint iLayerLevelIndex, const _wstring& strLayerTag)
 {
     _float4  fWorldMousePos = {};
 	_float3  fWorldMouseRay = {};
 
     Compute_MouseRay(fWorldMousePos, fWorldMouseRay);
 
-    CGameObject* pPickedObject = m_pGameInstance->Find_GameObject(strPrototypeTag, iLayerLevelIndex, strLayerTag);
+    CGameObject* pPickedObject = m_pGameInstance->Find_GameObject(strGameObjectTag, iLayerLevelIndex, strLayerTag);
     CModel* pPickedObjModelCom = dynamic_cast<CModel*>(pPickedObject->Find_Component(TEXT("Com_Model")));
     CTransform* pPickedObjTransformCom = dynamic_cast<CTransform*>(pPickedObject->Find_Component(TEXT("Com_Transform")));
     const _float4x4& pPickedObjWorldMatrix = pPickedObjTransformCom->Get_WorldMatrix();

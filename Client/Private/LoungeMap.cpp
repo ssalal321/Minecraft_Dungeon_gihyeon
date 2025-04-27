@@ -69,7 +69,7 @@ void CLoungeMap::Update(_float fTimeDelta)
 	//{
 	//	_float3		fLocalPickedVertex = {};
 
-	//	if (m_pGameInstance->Picked_Vertex(fLocalPickedVertex, TEXT("Prototype_GameObject_LoungeMap"), LEVEL_GAMEPLAY, TEXT("Layer_BackGround")))
+	//	if (m_pGameInstance->Picked_Vertex(fLocalPickedVertex, TEXT("GameObject_LoungeMap"), LEVEL_GAMEPLAY, TEXT("Layer_BackGround")))
 	//	{
 	//		
 	//		_vector vWorldPickedVertex = {};
@@ -96,7 +96,7 @@ void CLoungeMap::Update(_float fTimeDelta)
 	//			m_iPointNum = 0;
 	//		}
 
-	//		/*CPlayer* pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("Prototype_GameObject_PlayerHex"),
+	//		/*CPlayer* pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("GameObject_Player"),
 	//						LEVEL_GAMEPLAY, TEXT("Layer_Player")));
 	//					pPlayer->Set_NextPosition({ fWorldPickedPos.x, fWorldPickedPos.y, fWorldPickedPos.z, 1.f });
 	//					pPlayer->Change_State(PLAYER_STATE::WALK);*/
@@ -170,12 +170,12 @@ HRESULT CLoungeMap::Ready_Components()
 	CModel::MODEL_DESC  pModelDesc = {};
 	pModelDesc.bPickable = true;
 
-	if (nullptr == Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_LoungeMap"),
+	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Model_LoungeMap"),
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom), &pModelDesc))
 		return E_FAIL;
 
 	/* Com_Navigation */
-	if (nullptr == __super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Navigation_LoungeMap"),
+	if (nullptr == __super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Navigation_LoungeMap"),
 		TEXT("Com_Navigation"), reinterpret_cast<CComponent**>(&m_pNavigationCom)))
 		return E_FAIL;
 

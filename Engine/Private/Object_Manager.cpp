@@ -20,7 +20,7 @@ HRESULT CObject_Manager::Add_GameObject(_uint iPrototypeLevelIndex, const _wstri
 	if (nullptr == pGameObject)
 		return E_FAIL;
 
-	return Add_To_Layer(pGameObject, iLayerLevelIndex, strLayerTag, strPrototypeTag);
+	return Add_To_Layer(pGameObject, iLayerLevelIndex, strLayerTag, pGameObject->Get_GameObjectTag());
 }
 
 CComponent* CObject_Manager::Get_Component(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strComponentTag, _uint iIndex)
@@ -84,7 +84,7 @@ void CObject_Manager::Clear(_uint iLevelIndex)
 	m_pLayers[iLevelIndex].clear();
 }
 
-CGameObject* CObject_Manager::Find_GameObject(_wstring strPrototypeTag, _uint iLayerLevelIndex,
+CGameObject* CObject_Manager::Find_GameObject(const _wstring& strGameObjectTag, _uint iLayerLevelIndex,
 	const _wstring& strLayerTag)
 {
 	if (nullptr == m_pLayers || iLayerLevelIndex >= m_iNumLevels)
@@ -94,7 +94,7 @@ CGameObject* CObject_Manager::Find_GameObject(_wstring strPrototypeTag, _uint iL
 	if (nullptr == pLayer)
 		return nullptr;
 
-	return pLayer->Find_GameObject(strPrototypeTag);
+	return pLayer->Find_GameObject(strGameObjectTag);
 }
 
 CLayer* CObject_Manager::Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag)
@@ -107,7 +107,7 @@ CLayer* CObject_Manager::Find_Layer(_uint iLevelIndex, const _wstring& strLayerT
 	return iter->second;
 }
 
-HRESULT CObject_Manager::Add_To_Layer(CGameObject* pGameObject, _uint iLayerLevelIndex, const _wstring& strLayerTag, const _wstring& strPrototypeTag)
+HRESULT CObject_Manager::Add_To_Layer(CGameObject* pGameObject, _uint iLayerLevelIndex, const _wstring& strLayerTag, const _wstring& strGameObjectTag)
 {
 	CLayer* pLayer = Find_Layer(iLayerLevelIndex, strLayerTag);
 
@@ -117,27 +117,16 @@ HRESULT CObject_Manager::Add_To_Layer(CGameObject* pGameObject, _uint iLayerLeve
 		if (nullptr == pLayer)
 			return E_FAIL;
 
-		if (FAILED(pLayer->Add_GameObject(strPrototypeTag, pGameObject)))
+		if (FAILED(pLayer->Add_GameObject(strGameObjectTag, pGameObject)))
 			return E_FAIL;
 
 		m_pLayers[iLayerLevelIndex].emplace(strLayerTag, pLayer);
 	}
 	else
-		if (FAILED(pLayer->Add_GameObject(strPrototypeTag, pGameObject)))
+		if (FAILED(pLayer->Add_GameObject(strGameObjectTag, pGameObject)))
 			return E_FAIL;
 
-
 	return S_OK;
-}
-
-unordered_map<_wstring, CGameObject*>* CObject_Manager::Get_LayerObjects(_uint iLayerLevelIndex, const _wstring& strLayerTag)
-{
-	CLayer* pLayer = Find_Layer(iLayerLevelIndex, strLayerTag);
-
-	if (nullptr == pLayer)
-		return nullptr;
-
-	return pLayer->Get_LayerObjects();
 }
 
 
