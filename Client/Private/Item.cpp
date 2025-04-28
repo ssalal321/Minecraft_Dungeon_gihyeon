@@ -1,6 +1,8 @@
 #include "Item.h"
 #include "GameInstance.h"
 
+_int CItem::m_iItemID = 0;
+
 CItem::CItem(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CPartObject(pDevice, pContext)
 {
@@ -25,7 +27,7 @@ HRESULT CItem::Initialize(void* pArg)
 	/* 원형의 데이터를 복제하여 사본을 만들고. */
 	/* 추가적으로 필요한 데이터를 Arg로 받아와 실 사용하기위한 객체의 정보를 생성해준다. */	
 	ITEM_DESC* pDesc = static_cast<ITEM_DESC*>(pArg);
-
+	
 	m_pTargetState			= pDesc->pState;
 	m_pSocketMatrix			= pDesc->pSocketMatrix;
 	m_strTexPrototypeTag	= pDesc->strIconTexPrototypeTag;

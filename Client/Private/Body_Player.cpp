@@ -82,7 +82,7 @@ HRESULT CBody_Player::Render()
 
 void CBody_Player::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)
 {
-	CPlayer* pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("Prototype_GameObject_PlayerHex"), LEVEL_GAMEPLAY, TEXT("Layer_Player")));
+	CPlayer* pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("GameObject_Player"), LEVEL_GAMEPLAY, TEXT("Layer_Player")));
 	pPlayer->Collided_With(pOther, eCollisionState);
 }
 
@@ -117,7 +117,7 @@ HRESULT CBody_Player::Ready_Components()
 	if (nullptr == pColliderCom)
 		return E_FAIL;
 
-	m_pGameInstance->Add_ColliderCom(pColliderCom, TEXT("PlayerBody_OBB"), TEXT("Player"));
+	m_pGameInstance->Add_ColliderCom(pColliderCom, TEXT("Player_Body"), TEXT("Player"));
 
 	return S_OK;
 }

@@ -21,7 +21,7 @@ public:
 	void			Update(_float fTimeDelta);
 	void			Late_Update(_float fTimeDelta);
 
-	CGameObject*	Find_GameObject(_wstring strPrototypeTag);
+	CGameObject*	Find_GameObject(const _wstring& strGameObjectTag);
 
 private:
 	unordered_map<_wstring, CGameObject*>	m_GameObjects;

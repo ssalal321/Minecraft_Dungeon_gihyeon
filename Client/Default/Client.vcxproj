@@ -151,6 +151,8 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Public\Player_Arrow.h" />
+    <ClInclude Include="..\Public\ArrowPool_Player.h" />
     <ClInclude Include="..\Public\Body_Player.h" />
     <ClInclude Include="..\Public\Body_Skeleton.h" />
     <ClInclude Include="..\Public\Body_Zombie.h" />
@@ -176,6 +178,7 @@
     <ClInclude Include="..\Public\MainApp.h" />
     <ClInclude Include="..\Public\Monster.h" />
     <ClInclude Include="..\Public\Player.h" />
+    <ClInclude Include="..\Public\Player_BowAction.h" />
     <ClInclude Include="..\Public\Player_GetHit.h" />
     <ClInclude Include="..\Public\Player_Glaive_Combo.h" />
     <ClInclude Include="..\Public\Player_Idle.h" />
@@ -210,6 +213,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Private\Player_Arrow.cpp" />
+    <ClCompile Include="..\Private\ArrowPool_Player.cpp" />
     <ClCompile Include="..\Private\Body_Player.cpp" />
     <ClCompile Include="..\Private\Body_Skeleton.cpp" />
     <ClCompile Include="..\Private\Body_Zombie.cpp" />
@@ -232,6 +237,7 @@
     <ClCompile Include="..\Private\MainApp.cpp" />
     <ClCompile Include="..\Private\Monster.cpp" />
     <ClCompile Include="..\Private\Player.cpp" />
+    <ClCompile Include="..\Private\Player_BowAction.cpp" />
     <ClCompile Include="..\Private\Player_GetHit.cpp" />
     <ClCompile Include="..\Private\Player_Glaive_Combo.cpp" />
     <ClCompile Include="..\Private\Player_Idle.cpp" />

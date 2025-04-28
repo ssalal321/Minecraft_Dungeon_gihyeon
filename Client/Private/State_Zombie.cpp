@@ -45,24 +45,21 @@ void CState_Zombie::State_Exit()
 
 void CState_Zombie::Collision_Enter(CCollider* pOther)
 {
-	if (Change_State_To_GetHit(pOther))
-		return;
-
-	/*_wstring other = pOther->Get_OwnerTag();
+	/*_wstring other = pOther->Get_CollidergGroupTag();
 
 	std::wcerr << "[좀비와 " << other << " 충돌 Enter]" << std::endl;*/
 }
 
 void CState_Zombie::Collision_Stay(CCollider* pOther)
 {
-	/*_wstring other = pOther->Get_OwnerTag();
+	/*_wstring other = pOther->Get_CollidergGroupTag();
 
 	std::wcerr << "[좀비와 " << other << " 충돌 Stay]" << std::endl;*/
 }
 
 void CState_Zombie::Collision_Exit(CCollider* pOther)
 {
-	/*_wstring other = pOther->Get_OwnerTag();
+	/*_wstring other = pOther->Get_CollidergGroupTag();
 
 	std::wcerr << "[좀비와 " << other << " 충돌 Exit]" << std::endl;*/
 }
@@ -73,7 +70,7 @@ _bool CState_Zombie::Change_State_To_Attack()
 	_float lengthToPlayer = m_pZombie->Length_To_Player(TEXT("Prototype_GameObject_PlayerHex"),
 														m_pGameInstance->Get_CurrentLevelIndex());
 
-	if (lengthToPlayer < m_pMonsterDesc->fAttackableRange)
+	if (lengthToPlayer < m_pMonsterInfo->fAttackableRange)
 	{
 		m_pZombie->Change_State(Make_ZombieState(ZOMBIE_STATE::ATTACK));
 		return true;
@@ -90,7 +87,7 @@ _bool CState_Zombie::Change_State_To_Walk()
 
 	// 플레이어 인지 거리 && 스턴 X 상태
 	if (m_pZombie->Player_In_DetectRange(TEXT("Prototype_GameObject_PlayerHex"), currentLevelIndex) &&
-		lengthToPlayer > m_pMonsterDesc->fAttackableRange)
+		lengthToPlayer > m_pMonsterInfo->fAttackableRange)
 	{
 		m_pZombie->Change_State(Make_ZombieState(ZOMBIE_STATE::WALK));
 		return true;
@@ -115,7 +112,9 @@ _bool CState_Zombie::Change_State_To_Idle()
 
 _bool CState_Zombie::Change_State_To_GetHit(CCollider* pOther)
 {
-	if (TEXT("PlayerWeapon_OBB") == pOther->Get_OwnerTag() && pOther->Get_OtherAttacking())
+	if ((TEXT("Player_Weapon") == pOther->Get_ColliderTag() ||
+		 TEXT("Player_Arrow") == pOther->Get_ColliderTag())
+		 && pOther->Get_OtherAttacking())
 	{
 		m_pZombie->Change_State(Make_ZombieState(ZOMBIE_STATE::GET_HIT_FRONT));
 

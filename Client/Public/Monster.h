@@ -22,7 +22,7 @@ public:
 		_float	 fDetectableRange;
 		_bool    bStunned;
 
-		MONSTER_DESC(const _tchar* GameObjectTag, _int currentHP, _int maxHP, _int attackPoint,
+		MONSTER_DESC(const _wstring& GameObjectTag, _int currentHP, const _int& maxHP, _int attackPoint,
 			_float attackableRange, _float detectRange, _bool stunned = false,
 			_float rotationPerSec = 0.f, _float speedPerSec = 0.f)
 			: GAMEOBJECT_DESC(GameObjectTag, rotationPerSec, speedPerSec), iCurrentHP(currentHP), iMaxHP(maxHP), iAttackPoint(attackPoint),
@@ -65,8 +65,8 @@ public:
 	void		Change_State(const MonsterState& state);
 	void		Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)	override;
 
-	_float4		Get_Player_Position(const _wstring& strPlayerPrototypeTag, _uint iPlayerLayerLevelIndex) const;
-	_vector		Vec_To_Player(const _wstring& strPlayerPrototypeTag, _uint iPlayerLayerLevelIndex) const;
+	_float4		Get_Player_Position(const _wstring& strPlayerGameObjectTag, _uint iPlayerLayerLevelIndex) const;
+	_vector		Vec_To_Player(const _wstring& strPlayerGameObjectTag, _uint iPlayerLayerLevelIndex) const;
 	_float		Length_To_Player(const _wstring& strPlayerPrototypeTag, _uint iPlayerLayerLevelIndex) const;
 	_bool		Player_In_DetectRange(const _wstring& strPrototypeTag, _uint iLayerLevelIndex) const;
 

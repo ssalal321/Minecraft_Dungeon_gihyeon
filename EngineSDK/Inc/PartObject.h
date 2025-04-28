@@ -23,6 +23,9 @@ protected:
 	~CPartObject() override = default;
 
 public:
+	CContainerObject* Get_ContainerObject() { return m_pContainerObject; }
+
+public:
 	HRESULT		Initialize_Prototype()				override;
 	HRESULT		Initialize(void* pArg)				override;
 	void		Priority_Update(_float fTimeDelta)	override;

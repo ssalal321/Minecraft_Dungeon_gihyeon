@@ -20,14 +20,17 @@ HRESULT CState_Player::Init_State()
 {
 	m_pPlayer = dynamic_cast<CPlayer*>(m_pActor);
 
-	m_pPlayerDesc = dynamic_cast<CPlayer::PLAYER_DESC*>(m_pGameObjectDesc);
+	m_pPlayerInfo = dynamic_cast<CPlayer::PLAYER_DESC*>(m_pGameObjectInfo);
 
 	m_pActorModelCom	= m_pStatePlayerDesc->pActorModelCom;
 	m_pColliderOBBCom	= m_pStatePlayerDesc->pColliderOBBCom;
 	m_pTransformCom		= m_pStatePlayerDesc->pTransformCom;
 	m_pNavigationCom	= m_pStatePlayerDesc->pNavigationCom;
 
-	if (nullptr == m_pPlayer || nullptr == m_pPlayerDesc || nullptr == m_pActorModelCom ||
+	// 얘 나중에 Player_BowAction으로 빼기
+	m_pArrowPool_Player = m_pStatePlayerDesc->pArrowPool_Player;
+
+	if (nullptr == m_pPlayer || nullptr == m_pPlayerInfo || nullptr == m_pActorModelCom ||
 		nullptr == m_pTransformCom || nullptr == m_pNavigationCom || nullptr == m_pColliderOBBCom)
 		return E_FAIL;
 
@@ -63,24 +66,22 @@ void CState_Player::State_Exit()
 
 void CState_Player::Collision_Enter(CCollider* pOther)
 {
-	if (Change_State_To_GetHitFront(pOther))
-		return;
-
-	/*_wstring other = pOther->Get_OwnerTag();
+	
+	/*_wstring other = pOther->Get_CollidergGroupTag();
 
 	std::wcerr << "[플레이어와 " << other << " 충돌 Enter]" << std::endl;*/
 }
 
 void CState_Player::Collision_Stay(CCollider* pOther)
 {
-	/*_wstring other = pOther->Get_OwnerTag();
+	/*_wstring other = pOther->Get_CollidergGroupTag();
 
 	std::wcerr << "[플레이어와 " << other << " 충돌 Stay]" << std::endl;*/
 }
 
 void CState_Player::Collision_Exit(CCollider* pOther)
 {
-	/*_wstring other = pOther->Get_OwnerTag();
+	/*_wstring other = pOther->Get_CollidergGroupTag();
 
 	std::wcerr << "[플레이어와 " << other << " 충돌 Exit]" << std::endl;*/
 }
@@ -98,7 +99,7 @@ _bool CState_Player::Change_State_To_Walk()
 		_float4 fWorldPickedPos = { 0.f, 0.f, 0.f, 1.f };
 
 		// 2. LoungeMap에 피킹 요청 (BoundingBox 충돌 체크)
-		if (m_pGameInstance->Picked_Model(fWorldPickedPos, TEXT("Prototype_GameObject_LoungeMap"),
+		if (m_pGameInstance->Picked_Model(fWorldPickedPos, TEXT("GameObject_LoungeMap"),
 			LEVEL_GAMEPLAY, TEXT("Layer_BackGround")))
 		{
 			m_pPlayer->Set_NextPosition(fWorldPickedPos);
@@ -124,7 +125,7 @@ _bool CState_Player::Change_State_To_Roll()
 	return false;
 }
 
-_bool CState_Player::Change_State_To_Attack()
+_bool CState_Player::Change_State_To_GlaiveCombo()
 {
 	if (m_pPlayer->Get_Chasing())
 	{
@@ -150,10 +151,35 @@ _bool CState_Player::Change_State_To_Attack()
 
 }
 
+_bool CState_Player::Change_State_To_BowAction()
+{
+	if (m_pGameInstance->Get_Key(VK_RBUTTON) && !bMouseClickLock)
+	{
+		_float4 fWorldPickedPos = { 0.f, 0.f, 0.f, 1.f };
+
+		// 2. LoungeMap에 피킹 요청 (BoundingBox 충돌 체크)
+		if (m_pGameInstance->Picked_Model(fWorldPickedPos, TEXT("GameObject_LoungeMap"),
+			LEVEL_GAMEPLAY, TEXT("Layer_BackGround")))
+		{
+			m_pPlayer->Set_Shoot_Arrow(true, fWorldPickedPos);
+			m_pTransformCom->LookAt(XMLoadFloat4(&fWorldPickedPos));
+			m_pPlayer->Change_State(PLAYER_STATE::BOW_ACTION);
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
 _bool CState_Player::Change_State_To_GetHitFront(CCollider* pOther)
 {
-	if (TEXT("MonsterBody_OBB") == pOther->Get_OwnerTag() && pOther->Get_OtherAttacking())
+	if ((TEXT("Monster_Body_Hit") == pOther->Get_ColliderTag() ||
+		 TEXT("Monster_Weapon") == pOther->Get_ColliderTag())
+		&& pOther->Get_OtherAttacking())
 	{
+		// 상대에 따라 다르게 피 깎여야 하는뎅
+
 		m_pPlayer->Change_State(PLAYER_STATE::GET_HIT_FRONT);
 
 		return true;

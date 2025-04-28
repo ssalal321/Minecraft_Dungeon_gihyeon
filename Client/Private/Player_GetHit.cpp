@@ -34,6 +34,9 @@ void CPlayer_GetHit::State_Update(_float fTimeDelta)
 		if (Change_State_To_Roll())
 			return;
 
+		if (Change_State_To_BowAction())
+			return;
+
 		if (Change_State_To_Walk())
 			return;
 
@@ -55,7 +58,7 @@ void CPlayer_GetHit::Collision_Enter(CCollider* pOther)
 {
 	__super::Collision_Enter(pOther);
 
-	//if (pOther->Get_OwnerTag())
+	//if (pOther->Get_CollidergGroupTag())
 }
 
 void CPlayer_GetHit::Collision_Stay(CCollider* pOther)

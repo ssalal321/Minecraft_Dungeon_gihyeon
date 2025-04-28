@@ -172,6 +172,12 @@
     <Filter Include="02.GameObjects\Player\01. Weapon\ShortBow">
       <UniqueIdentifier>{357aa7d7-963a-4187-9b68-1fb06e1baf3d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Arrow">
+      <UniqueIdentifier>{893bd376-3991-4702-af61-bf48a5e6ff93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Player\02. State\Player_Attack\Player_BowAction">
+      <UniqueIdentifier>{ec22efd6-d6f8-4601-ac97-fcd8afe526e8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -345,6 +351,15 @@
     <ClInclude Include="..\Public\Weapon_ShortBow.h">
       <Filter>02.GameObjects\Player\01. Weapon\ShortBow</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Player_Arrow.h">
+      <Filter>02.GameObjects\Arrow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ArrowPool_Player.h">
+      <Filter>02.GameObjects\Arrow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Player_BowAction.h">
+      <Filter>02.GameObjects\Player\02. State\Player_Attack\Player_BowAction</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -512,6 +527,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\Weapon_ShortBow.cpp">
       <Filter>02.GameObjects\Player\01. Weapon\ShortBow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player_Arrow.cpp">
+      <Filter>02.GameObjects\Arrow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ArrowPool_Player.cpp">
+      <Filter>02.GameObjects\Arrow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player_BowAction.cpp">
+      <Filter>02.GameObjects\Player\02. State\Player_Attack\Player_BowAction</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

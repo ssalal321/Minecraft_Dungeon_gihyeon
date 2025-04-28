@@ -19,9 +19,9 @@ public:
     /* 뷰스페이스 상에서 마우스 레이로 변형하여 */
     /* 월드까지 변환시켜서 보관하자. */
     
-    _bool   Picked_Model(_float4& worldPickedPos, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag);
+    _bool   Picked_Model(_float4& worldPickedPos, const _wstring& strGameObjectTag, _uint iLayerLevelIndex, const _wstring& strLayerTag);
 
-	_bool   Picked_Vertex(_float3& fLocalPickedVertex, const _wstring& strPrototypeTag, _uint iLayerLevelIndex,
+	_bool   Picked_Vertex(_float3& fLocalPickedVertex, const _wstring& strGameObjectTag, _uint iLayerLevelIndex,
                           const _wstring& strLayerTag);
     void    Compute_MouseRay(_float4& worldMousePos, _float3& worldMouseRay);
 

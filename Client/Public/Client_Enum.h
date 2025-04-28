@@ -12,7 +12,7 @@ namespace Client
 		LEVEL_GAMEPLAY,
 		LEVEL_END
 	};
-
+	
 	enum class PLAYER_STATE
 	{
 		BOW_ACTION,				CLAYMORE_COMBO,
@@ -57,7 +57,6 @@ namespace Client
 		GET_HIT_FRONT,
 		IDLE,
 		HEAD_SPIN,  // Novelty
-		STUN,
 		WALK,
 		STATE_END
 	};

@@ -13,7 +13,7 @@ class CState abstract : public CBase
 protected:
     CState(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc)
         : m_pGameInstance(CGameInstance::GetInstance()),
-		m_pActor(pActor), m_pGameObjectDesc(pGameObjectDesc)
+		m_pActor(pActor), m_pGameObjectInfo(pGameObjectDesc)
     {
          Safe_AddRef(m_pGameInstance);
     }
@@ -38,7 +38,7 @@ protected:
     CModel*         m_pActorModelCom    = { nullptr };
     CTransform*     m_pTransformCom     = { nullptr };
     CNavigation*    m_pNavigationCom    = { nullptr };
-    CGameObject::GAMEOBJECT_DESC*    m_pGameObjectDesc   = { nullptr };
+    CGameObject::GAMEOBJECT_DESC*    m_pGameObjectInfo   = { nullptr };
 
 public:
     void    Free()  override;

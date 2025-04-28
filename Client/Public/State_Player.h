@@ -14,6 +14,7 @@ public:
         CCollider*      pColliderOBBCom = { nullptr };
         CTransform*     pTransformCom = { nullptr };
         CNavigation*    pNavigationCom = { nullptr };
+        CArrowPool_Player*  pArrowPool_Player = { nullptr };
 
     }STATEPLAYER_DESC;
 
@@ -36,9 +37,10 @@ public:
 
 protected:
     CPlayer*                m_pPlayer = { nullptr };
-    CPlayer::PLAYER_DESC*   m_pPlayerDesc = { nullptr };
+    CPlayer::PLAYER_DESC*   m_pPlayerInfo = { nullptr };
     STATEPLAYER_DESC*       m_pStatePlayerDesc = { nullptr };
     CCollider*              m_pColliderOBBCom = { nullptr };
+    CArrowPool_Player*      m_pArrowPool_Player = { nullptr };
 
     _bool			        m_bAnimationFinished = { false };
     //_bool                   m_bClickLock = { false };
@@ -55,7 +57,8 @@ protected:
     _bool   Change_State_To_Idle();
     _bool   Change_State_To_Walk();
     _bool   Change_State_To_Roll();
-    _bool   Change_State_To_Attack();   // 최대한 Walk에서만 호출하기
+    _bool   Change_State_To_GlaiveCombo();   // 최대한 Walk에서만 호출하기
+    _bool   Change_State_To_BowAction();
     _bool   Change_State_To_GetHitFront(CCollider* pOther);
 
     void    Check_Combo_Timeout(_float fTimeDelta);

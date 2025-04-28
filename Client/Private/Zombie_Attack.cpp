@@ -71,7 +71,7 @@ void CZombie_Attack::State_Update(_float fTimeDelta)
         m_bHitbox_Activated = false;
     }
 
-    _float4 playerPos = m_pZombie->Get_Player_Position(TEXT("Prototype_GameObject_PlayerHex"), LEVEL_GAMEPLAY);
+    _float4 playerPos = m_pZombie->Get_Player_Position(TEXT("GameObject_Player"), LEVEL_GAMEPLAY);
     m_pTransformCom->LookAt(XMLoadFloat4(&playerPos));
 }
 
@@ -88,6 +88,8 @@ void CZombie_Attack::State_Exit()
 void CZombie_Attack::Collision_Enter(CCollider* pOther)
 {
     __super::Collision_Enter(pOther);
+
+    Change_State_To_GetHit(pOther);
 }
 
 void CZombie_Attack::Collision_Stay(CCollider* pOther)

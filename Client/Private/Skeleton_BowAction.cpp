@@ -26,7 +26,7 @@ void CSkeleton_BowAction::State_Enter()
 	m_fAnimTimer = 0.f;
 	m_bArrowShot = false;
 
-	m_pActorModelCom->Set_Animation(static_cast<_uint>(SKELETON_STATE::BOW_ACTION), true);
+	m_pActorModelCom->Set_Animation(static_cast<_uint>(SKELETON_STATE::BOW_ACTION), true, 0.9f);
 }
 
 void CSkeleton_BowAction::State_Priority_Update(_float fTimeDelta)
@@ -43,7 +43,7 @@ void CSkeleton_BowAction::State_Update(_float fTimeDelta)
 
 	if (m_fAnimTimer <= AIMING_TIME)
 	{
-		_float4 playerPos = m_pSkeleton->Get_Player_Position(TEXT("Prototype_GameObject_PlayerHex"),
+		_float4 playerPos = m_pSkeleton->Get_Player_Position(TEXT("GameObject_Player"),
 															 m_pGameInstance->Get_CurrentLevelIndex());
 		m_pTransformCom->LookAt(XMLoadFloat4(&playerPos));
 	}
@@ -94,6 +94,8 @@ void CSkeleton_BowAction::State_Exit()
 void CSkeleton_BowAction::Collision_Enter(CCollider* pOther)
 {
     __super::Collision_Enter(pOther);
+
+	Change_State_To_GetHit(pOther);
 }
 
 void CSkeleton_BowAction::Collision_Stay(CCollider* pOther)

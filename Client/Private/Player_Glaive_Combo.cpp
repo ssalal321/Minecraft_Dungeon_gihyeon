@@ -19,7 +19,7 @@ HRESULT CPlayer_Glaive_Combo::Init_State()
 void CPlayer_Glaive_Combo::State_Enter()
 {
 	m_pPlayer->Set_Attacking(true);
-	m_fAnimTimer = 0.f;
+	//m_fAnimTimer = 0.f;
 
 	m_pTransformCom->LookAt(m_pPlayer->Get_MonsterTransformCom()->Get_State(CTransform::STATE_POSITION));
 
@@ -79,12 +79,19 @@ void CPlayer_Glaive_Combo::State_Update(_float fTimeDelta)
 		return;
 	}
 
-	m_fAnimTimer += fTimeDelta;
+	//m_fAnimTimer += fTimeDelta;
 
-	if (m_fAnimTimer <= 0.2f)
-	{
-		// 무기 콜라이더 꺼놨다가 켜야 하는데 무기 장착도 버거워서 좀 나중에 하자...ㅁ재더라니어리ㅓ맆ㄸㅉ컲ㅋㅁㄷ;	
-	}
+	//if (m_fAnimTimer <= 0.2f)
+	//{
+
+	//	CItem* pWeapon = dynamic_cast<CItem*>(m_pPlayer->Find_PartObject(TEXT("GameObject_Glaive_Player")));
+	//	CCollider* pWeaponCollider = dynamic_cast<CCollider*>(pWeapon->Find_Component(pWeapon->Get_CollidergGroupTag()));
+	//	pWeaponCollider->Set_ColliderActive(false);
+
+
+
+	//	// 무기 콜라이더 꺼놨다가 켜야 하는데 무기 장착도 버거워서 좀 나중에 하자...ㅁ재더라니어리ㅓ맆ㄸㅉ컲ㅋㅁㄷ;	
+	//}
 
 }
 
@@ -108,6 +115,8 @@ void CPlayer_Glaive_Combo::Collision_Enter(CCollider* pOther)
 {
 	__super::Collision_Enter(pOther);
 
+	if (m_bAnimationFinished)
+		Change_State_To_GetHitFront(pOther);
 }
 
 void CPlayer_Glaive_Combo::Collision_Stay(CCollider* pOther)

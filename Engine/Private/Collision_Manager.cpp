@@ -13,16 +13,16 @@ HRESULT CCollision_Manager::Initialize(_uint iNumLevels)
 	return S_OK;
 }
 
-HRESULT CCollision_Manager::Add_ColliderCom(CComponent* pCollider, const _wstring& PartObject_Tag, const _wstring& ContainerGroup_Tag)
+HRESULT CCollision_Manager::Add_ColliderCom(CComponent* pCollider, const _wstring& PartObject_Tag, const _wstring& ObjectType)
 {
 	CCollider* pColliderCom = dynamic_cast<CCollider*>(pCollider);
 
 	if (!pCollider)
 		return E_FAIL;
 
-	pColliderCom->Set_OwnerTag(PartObject_Tag);
+	pColliderCom->Set_ColliderTag(PartObject_Tag);
 
-	m_ColliderGroups[ContainerGroup_Tag].emplace_back(pColliderCom);
+	m_ColliderGroups[ObjectType].emplace_back(pColliderCom);
 	return S_OK;
 }
 
@@ -52,12 +52,11 @@ void CCollision_Manager::Update()
 
             for (auto* colliderA : collidersInGroupA)
             {
-                if (!colliderA) continue;   // null 검사
-                // collider 켜져있나?
+                if (!colliderA || colliderA->Get_MouseCollider()) continue;   // null 검사
 
                 for (auto* colliderB : collidersInGroupB)
                 {
-                    if (!colliderB) continue;  // null 검사
+                    if (!colliderB || colliderB->Get_MouseCollider()) continue;  // null 검사
 
                     if (colliderA->Intersect(colliderB))
                     {

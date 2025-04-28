@@ -15,7 +15,7 @@ HRESULT CPlayer_Roll::Init_State()
 
 void CPlayer_Roll::State_Enter()
 {
-	m_pColliderOBBCom->Set_Collider_Off(true);
+	m_pColliderOBBCom->Set_ColliderActive(true);
 
 	m_fRollingTime = 0.f;
 
@@ -33,6 +33,9 @@ void CPlayer_Roll::State_Update(_float fTimeDelta)
 
 	if (m_bAnimationFinished)
 	{
+		if (Change_State_To_BowAction())
+			return;
+
 		if (Change_State_To_Walk())
 			return;
 
@@ -53,7 +56,7 @@ void CPlayer_Roll::State_Late_Update(_float fTimeDelta)
 
 void CPlayer_Roll::State_Exit()
 {
-	m_pColliderOBBCom->Set_Collider_Off(false);
+	m_pColliderOBBCom->Set_ColliderActive(false);
 }
 
 void CPlayer_Roll::Collision_Enter(CCollider* pOther)

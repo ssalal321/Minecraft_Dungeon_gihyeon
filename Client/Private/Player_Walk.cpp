@@ -32,7 +32,10 @@ void CPlayer_Walk::State_Update(_float fTimeDelta)
 	if (Change_State_To_Roll())
 		return;
 
-	if (Change_State_To_Attack())
+	if (Change_State_To_BowAction())
+		return;
+
+	if (Change_State_To_GlaiveCombo())
 		return;
 
 	Chase_Monster();
@@ -40,7 +43,6 @@ void CPlayer_Walk::State_Update(_float fTimeDelta)
 	Change_State_To_Walk();	
 
 	Walk_Through_Destination(fTimeDelta);
-
 }
 
 void CPlayer_Walk::State_Late_Update(_float fTimeDelta)
@@ -55,6 +57,8 @@ void CPlayer_Walk::State_Exit()
 void CPlayer_Walk::Collision_Enter(CCollider* pOther)
 {
 	__super::Collision_Enter(pOther);
+
+	Change_State_To_GetHitFront(pOther);
 }
 
 void CPlayer_Walk::Collision_Stay(CCollider* pOther)

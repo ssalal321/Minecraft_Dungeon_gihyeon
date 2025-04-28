@@ -237,28 +237,21 @@ CBase* CGameInstance::Clone_Prototype(PROTOTYPE ePrototype, _uint iPrototypeLeve
 
 
 #pragma region OBJECT_MANAGER
-HRESULT CGameInstance::Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg)
+CGameObject* CGameInstance::Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg)
 {
 	return m_pObject_Manager->Add_GameObject(iPrototypeLevelIndex, strPrototypeTag, iLayerLevelIndex, strLayerTag, pArg);
 }
 
-CGameObject* CGameInstance::Find_GameObject(_wstring strPrototypeTag, _uint iLayerLevelIndex,
+CGameObject* CGameInstance::Find_GameObject(const _wstring& strGameObjectTag, _uint iLayerLevelIndex,
 	const _wstring& strLayerTag)
 {
-	return m_pObject_Manager->Find_GameObject(strPrototypeTag, iLayerLevelIndex, strLayerTag);
+	return m_pObject_Manager->Find_GameObject(strGameObjectTag, iLayerLevelIndex, strLayerTag);
 }
 
 CComponent* CGameInstance::Get_Component(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strComponentTag, _uint iIndex)
 {
 	return m_pObject_Manager->Get_Component(iLevelIndex, strLayerTag, strComponentTag, iIndex);
 }
-
-unordered_map<_wstring, CGameObject*>* CGameInstance::Get_LayerObjects(_uint iLayerLevelIndex, const _wstring& strLayerTag)
-{
-	return m_pObject_Manager->Get_LayerObjects(iLayerLevelIndex, strLayerTag);
-}
-#pragma endregion
-
 
 #pragma region INPUT_MANAGER
 _bool CGameInstance::Get_Key(_int _iKey) const
@@ -293,14 +286,14 @@ void CGameInstance::Compute_MouseRay(_float4& worldMousePos, _float3& worldMouse
 #pragma endregion
 
 #pragma region PICKING
-_bool   CGameInstance::Picked_Model(_float4& fWorldPickedPos, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag)
+_bool   CGameInstance::Picked_Model(_float4& fWorldPickedPos, const _wstring& strGameObjectTag, _uint iLayerLevelIndex, const _wstring& strLayerTag)
 {
-	return m_pPicking->Picked_Model(fWorldPickedPos, strPrototypeTag, iLayerLevelIndex, strLayerTag);
+	return m_pPicking->Picked_Model(fWorldPickedPos, strGameObjectTag, iLayerLevelIndex, strLayerTag);
 }
 
-_bool   CGameInstance::Picked_Vertex(_float3& fLocalPickedVertex, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag)
+_bool   CGameInstance::Picked_Vertex(_float3& fLocalPickedVertex, const _wstring& strGameObjectTag, _uint iLayerLevelIndex, const _wstring& strLayerTag)
 {
-	return m_pPicking->Picked_Vertex(fLocalPickedVertex, strPrototypeTag, iLayerLevelIndex, strLayerTag);
+	return m_pPicking->Picked_Vertex(fLocalPickedVertex, strGameObjectTag, iLayerLevelIndex, strLayerTag);
 }
 #pragma endregion
 
@@ -381,9 +374,9 @@ void CGameInstance::Request_Delete_UIObject(const _wstring& strGameObjectTag, CU
 
 
 #pragma region COLLISION_MANAGER
-HRESULT CGameInstance::Add_ColliderCom(CComponent* pColliderCom, const _wstring& PartObject_Tag, const _wstring& ContainerGroup_Tag) const
+HRESULT CGameInstance::Add_ColliderCom(CComponent* pColliderCom, const _wstring& PartObject_Tag, const _wstring& ObjectType) const
 {
-	return m_pCollision_Manager->Add_ColliderCom(pColliderCom, PartObject_Tag, ContainerGroup_Tag);
+	return m_pCollision_Manager->Add_ColliderCom(pColliderCom, PartObject_Tag, ObjectType);
 }
 
 unordered_map<_wstring, vector<CCollider*>>* CGameInstance::Get_Colliders()

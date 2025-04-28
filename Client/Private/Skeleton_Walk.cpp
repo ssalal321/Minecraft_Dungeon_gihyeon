@@ -43,21 +43,21 @@ void CSkeleton_Walk::State_Update(_float fTimeDelta)
 
 	_uint  currentLevelIndex = m_pGameInstance->Get_CurrentLevelIndex();
 
-	_float4 playerPos = m_pSkeleton->Get_Player_Position(TEXT("Prototype_GameObject_PlayerHex"), currentLevelIndex);
-	_vector vecToPlayer = m_pSkeleton->Vec_To_Player(TEXT("Prototype_GameObject_PlayerHex"), currentLevelIndex);
+	_float4 playerPos = m_pSkeleton->Get_Player_Position(TEXT("GameObject_Player"), currentLevelIndex);
+	_vector vecToPlayer = m_pSkeleton->Vec_To_Player(TEXT("GameObject_Player"), currentLevelIndex);
 	_vector vOppositeDir = XMVector3Normalize(-vecToPlayer);
 
 	_float lengthToPlayer = {};
 	XMStoreFloat(&lengthToPlayer, XMVector3Length(vecToPlayer));
 
-	if (m_pMonsterDesc->fAttackableRange + 1.f < lengthToPlayer)
+	if (m_pMonsterInfo->fAttackableRange + 1.f < lengthToPlayer)
 	{
 		m_bRetreating = false;  // 걷는 방향 초기화
 
 		m_pTransformCom->LookAt(XMLoadFloat4(&playerPos));
 		m_pTransformCom->Go_Straight(fTimeDelta, m_pNavigationCom);
 	}
-	else if (lengthToPlayer < m_pMonsterDesc->fAttackableRange - 1.f)
+	else if (lengthToPlayer < m_pMonsterInfo->fAttackableRange - 1.f)
 	{
 		if (!m_bRetreating)
 		{
@@ -97,6 +97,8 @@ void CSkeleton_Walk::State_Exit()
 void CSkeleton_Walk::Collision_Enter(CCollider* pOther)
 {
 	__super::Collision_Enter(pOther);
+
+	Change_State_To_GetHit(pOther);
 }
 
 void CSkeleton_Walk::Collision_Stay(CCollider* pOther)

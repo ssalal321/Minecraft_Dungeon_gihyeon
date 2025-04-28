@@ -31,7 +31,8 @@ protected:
 public:
 	const _wstring&  Get_IconTexPrototypeTag() { return m_strTexPrototypeTag; }
 	const _wstring&  Get_IconGameObjectTag() { return m_strIconGameObjectTag; }
-	ITEM_TYPE	Get_ItemType() const { return m_eItemtype; }
+	ITEM_TYPE		 Get_ItemType() const { return m_eItemtype; }
+	const _wstring&  Get_ColliderTag() { return m_strColliderTag; }
 
 public:
 	HRESULT		Initialize_Prototype()				override;
@@ -46,13 +47,15 @@ protected:
 	CModel*			m_pModelCom  = { nullptr };
 	CCollider*		m_pColliderCom = { nullptr };
 
-protected:
 	const  _float4x4*	m_pSocketMatrix = { nullptr };
 	const  _uint*		m_pTargetState  = { nullptr };
 
 	_wstring	m_strTexPrototypeTag = {};
 	_wstring	m_strIconGameObjectTag = {};
 	ITEM_TYPE	m_eItemtype = { ITEM_TYPE::NONE };
+
+	_wstring	m_strColliderTag = {};
+	static  _int	m_iItemID;
 
 protected:
 	virtual  HRESULT	Ready_Components() = 0;

@@ -29,6 +29,9 @@ protected:
 	virtual ~CGameObject() override = default;
 
 public:
+	const _wstring&		Get_GameObjectTag() { return m_strGameObjectTag; }
+
+public:
 	virtual   HRESULT	Initialize_Prototype();
 	virtual   HRESULT	Initialize(void* pArg);
 	virtual   void		Priority_Update(_float fTimeDelta);

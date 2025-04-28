@@ -42,9 +42,11 @@ public:
 	HRESULT		Render()							override;
 	
 private:
-	_uint				m_iState = { static_cast<_uint>(ZOMBIE_STATE::STATE_END) };
+	_uint			m_iState = { static_cast<_uint>(ZOMBIE_STATE::STATE_END) };
 	
-	_float4				m_NextPosition = {0.f, 0.f, 0.f, 1.f};
+	_float4			m_NextPosition = {0.f, 0.f, 0.f, 1.f};
+
+	static _int		m_iZombieID;
 
 private:
 	HRESULT		Ready_PartObjects()  override;

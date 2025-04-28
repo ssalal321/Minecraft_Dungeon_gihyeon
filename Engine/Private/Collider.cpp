@@ -75,7 +75,7 @@ HRESULT CCollider::Initialize(void* pArg)
 
 _bool CCollider::Intersect(CCollider* pTargetCollider)
 {
-	if ((false == *m_bContainerObjAttacking && false == pTargetCollider->Get_OtherAttacking() || m_bColliderOff))
+	if ((false == *m_bContainerObjAttacking && false == pTargetCollider->Get_OtherAttacking() || !m_bColliderActive))
 	{
 		m_bIsCollision = false;
 		pTargetCollider->Set_IsCollision(false);
@@ -121,7 +121,7 @@ void CCollider::Process_Collisions()
 
 void CCollider::Update()
 {
-	if (m_bColliderOff)
+	if (!m_bColliderActive)
 		return;
 
 	_matrix  mCombinedWorldMatrix = XMLoadFloat4x4(m_CombinedWorldMatrix);
@@ -131,7 +131,7 @@ void CCollider::Update()
 #ifdef _DEBUG
 HRESULT CCollider::Render()
 {
-	if (m_bColliderOff)
+	if (!m_bColliderActive)
 		return S_OK;
 
 	m_pEffect->SetWorld(XMMatrixIdentity());
