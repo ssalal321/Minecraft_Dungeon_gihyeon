@@ -351,7 +351,7 @@
     <ClInclude Include="..\Public\Weapon_ShortBow.h">
       <Filter>02.GameObjects\Player\01. Weapon\ShortBow</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Arrow.h">
+    <ClInclude Include="..\Public\Player_Arrow.h">
       <Filter>02.GameObjects\Arrow</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\ArrowPool_Player.h">
@@ -528,7 +528,7 @@
     <ClCompile Include="..\Private\Weapon_ShortBow.cpp">
       <Filter>02.GameObjects\Player\01. Weapon\ShortBow</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Arrow.cpp">
+    <ClCompile Include="..\Private\Player_Arrow.cpp">
       <Filter>02.GameObjects\Arrow</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\ArrowPool_Player.cpp">

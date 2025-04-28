@@ -33,6 +33,9 @@ void CPlayer_Roll::State_Update(_float fTimeDelta)
 
 	if (m_bAnimationFinished)
 	{
+		if (Change_State_To_BowAction())
+			return;
+
 		if (Change_State_To_Walk())
 			return;
 

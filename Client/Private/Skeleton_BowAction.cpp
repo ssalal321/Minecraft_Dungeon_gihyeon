@@ -26,7 +26,7 @@ void CSkeleton_BowAction::State_Enter()
 	m_fAnimTimer = 0.f;
 	m_bArrowShot = false;
 
-	m_pActorModelCom->Set_Animation(static_cast<_uint>(SKELETON_STATE::BOW_ACTION), true);
+	m_pActorModelCom->Set_Animation(static_cast<_uint>(SKELETON_STATE::BOW_ACTION), true, 0.9f);
 }
 
 void CSkeleton_BowAction::State_Priority_Update(_float fTimeDelta)

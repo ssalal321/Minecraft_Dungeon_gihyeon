@@ -11,7 +11,7 @@ class CGameInstance;
 END
 
 BEGIN(Client)
-class CArrow;
+class CPlayer_Arrow;
 
 class CArrowPool_Player final : public CBase
 {
@@ -27,15 +27,15 @@ public:
 
 public:
 	// 화살 꺼내오기
-	CArrow*		Get_Arrow();
+	CPlayer_Arrow*		Get_Arrow();
 
 	// 화살 반납하기
-	void		Return_Arrow(CArrow* pArrow);
+	void		Return_Arrow(CPlayer_Arrow* pArrow);
 
 private:
 	CGameInstance*	m_pGameInstance = { nullptr };
 
-	queue<CArrow*>	m_ArrowPool;
+	queue<CPlayer_Arrow*>	m_PlayerArrowPool;
 
 public:
 	static  CArrowPool_Player*  Create();

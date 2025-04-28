@@ -37,7 +37,7 @@ public:
 
 protected:
     CPlayer*                m_pPlayer = { nullptr };
-    CPlayer::PLAYER_DESC*   m_pPlayerDesc = { nullptr };
+    CPlayer::PLAYER_DESC*   m_pPlayerInfo = { nullptr };
     STATEPLAYER_DESC*       m_pStatePlayerDesc = { nullptr };
     CCollider*              m_pColliderOBBCom = { nullptr };
     CArrowPool_Player*      m_pArrowPool_Player = { nullptr };

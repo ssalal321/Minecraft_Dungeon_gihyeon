@@ -30,7 +30,6 @@ public:
 
 	CCollider*	Get_Closest_Collider(const _float4& mousePos, const _float3& mouseRay);
 	void		Click_Chase_Monster(CMonster* pMonster);
-	void		Click_Shoot_Arrow(CMonster* pMonster);
 
 private:
 	_bool	bShowInventory = { false };

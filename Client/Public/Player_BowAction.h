@@ -4,11 +4,11 @@
 
 BEGIN(Client)
 
-class CPlayer_BowAction final: public CState_Player
+class CPlayer_BowAction final : public CState_Player
 {
 private:
     CPlayer_BowAction(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEPLAYER_DESC* pDesc);
-	~CPlayer_BowAction() override = default;
+    ~CPlayer_BowAction() override = default;
 
 public:
     HRESULT     Init_State()                                override;
@@ -24,7 +24,10 @@ public:
     void        Collision_Exit(CCollider* pOther)           override;
 
 private:
-    _float      m_fAnimTimer = 0.f;
+    _bool       m_ShotArrow = { false };
+
+private:
+    void        Shoot_Arrow();
 
 public:
     static CState_Player*  Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEPLAYER_DESC* pDesc);

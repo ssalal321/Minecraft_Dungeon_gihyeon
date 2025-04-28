@@ -4,14 +4,10 @@
 
 /* 플레이어라는 객체를 구성하기위한 파츠들을 모아서 쥐고 있는 객체. */
 
-namespace Client
-{
-	class CArrowPool_Player;
-}
-
 BEGIN(Client)
-	class CState;
+class CState;
 class CInventoryData;
+class CArrowPool_Player;
 
 class CPlayer final : public CContainerObject
 {
@@ -24,11 +20,13 @@ public:
 		_float   fEffectiveRange;
 		_bool    bStunned;
 
+		_int	 iArrowNum;
+
 		PLAYER_DESC(const _wstring& GameObjectTag, _int currentHP, const _int& maxHP, _int attackPoint,
-			const _float&  effectiveRange, _bool stunned = false,
+			const _float&  effectiveRange, _int arrowNum, _bool stunned = false,
 			_float rotationPerSec = 0.f, _float speedPerSec = 0.f)
 			: GAMEOBJECT_DESC(GameObjectTag, rotationPerSec, speedPerSec), iCurrentHP(currentHP), iMaxHP(maxHP), iAttackPoint(attackPoint),
-			fEffectiveRange(effectiveRange), bStunned(stunned) {
+			fEffectiveRange(effectiveRange), bStunned(stunned), iArrowNum(arrowNum) {
 		}
 
 		~PLAYER_DESC() override = default;
@@ -60,10 +58,11 @@ public:
 
 public:
 	const _float4&	Get_NextPosition() const { return m_NextPosition; }
-	_bool			Get_Chasing() const { return m_bChasing; }
+	const _bool&	Get_Chasing() const { return m_bChasing; }
 	CTransform*		Get_MonsterTransformCom() const { return m_pMonsterTransformCom; }
-	_bool			Get_ShootArrow() const { return m_bShootArrow; }
-	const _float3&	Get_MonsterPosition() const { return m_MonsterPos; }
+	const _bool&	Get_ShootArrow() const { return m_bShootArrow; }
+	const _float4&	Get_PickedPosition() const { return m_PickedPos; }
+	const _bool&	Get_Attacking() const { return m_bAttacking; }
 
 	void	Set_Attacking(_bool bAttacking) { m_bAttacking = bAttacking; }
 
@@ -78,11 +77,13 @@ public:
 		m_pMonsterTransformCom = pMonsterTransformCom;
 	}
 
-	void	Set_Shoot_Arrow(_bool bShootArrow, _float3 monsterPos)
+	void	Set_Shoot_Arrow(_bool bShootArrow, _float4 pickedPos)
 	{
 		m_bShootArrow = bShootArrow;
-		m_MonsterPos = monsterPos;
+		m_PickedPos = pickedPos;
 	}
+
+	void	Set_Shoot_Arrow(_bool bShootArrow) { m_bShootArrow = bShootArrow; }
 
 public:
 	void	Change_State(PLAYER_STATE playerState);
@@ -95,7 +96,7 @@ private:
 
 	CNavigation*		m_pNavigationCom = { nullptr };
 
-	CArrowPool_Player*			m_pArrowPool_Player = { nullptr };
+	CArrowPool_Player*	m_pArrowPool_Player = { nullptr };
 
 	CInventoryData*		m_pInventoryData = { nullptr };
 
@@ -111,7 +112,7 @@ private:
 	CTransform*			m_pMonsterTransformCom = { nullptr };
 
 	_bool				m_bShootArrow	= { false };
-	_float3				m_MonsterPos	= { 0.f, 0.f, 0.f };
+	_float4				m_PickedPos	= { 0.f, 0.f, 0.f, 1.f };
 #pragma endregion
 
 private:

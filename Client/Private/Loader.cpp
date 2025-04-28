@@ -1,6 +1,6 @@
 #include "Loader.h"
 
-#include "Arrow.h"
+#include "Player_Arrow.h"
 #include "GameInstance.h"
 
 #include "Camera_Free.h"
@@ -403,7 +403,7 @@ HRESULT CLoader::Ready_Prototype_GameObject_Static()
 
 	/* For.Prototype_GameObject_Arrow */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Arrow"),
-		CArrow::Create(m_pDevice, m_pContext))))
+		CPlayer_Arrow::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_LoungeMap */

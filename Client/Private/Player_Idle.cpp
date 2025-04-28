@@ -32,6 +32,9 @@ void CPlayer_Idle::State_Update(_float fTimeDelta)
 	if (Change_State_To_Roll())
 		return;
 
+	if (Change_State_To_BowAction())
+		return;
+
 	if (Change_State_To_Walk())
 		return;
 }

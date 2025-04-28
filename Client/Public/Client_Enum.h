@@ -57,7 +57,6 @@ namespace Client
 		GET_HIT_FRONT,
 		IDLE,
 		HEAD_SPIN,  // Novelty
-		STUN,
 		WALK,
 		STATE_END
 	};

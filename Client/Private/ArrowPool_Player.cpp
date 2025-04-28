@@ -1,5 +1,5 @@
 #include "ArrowPool_Player.h"
-#include "Arrow.h"
+#include "Player_Arrow.h"
 #include "GameInstance.h"
 
 CArrowPool_Player::CArrowPool_Player() : m_pGameInstance(CGameInstance::GetInstance())
@@ -9,14 +9,14 @@ CArrowPool_Player::CArrowPool_Player() : m_pGameInstance(CGameInstance::GetInsta
 
 HRESULT CArrowPool_Player::Initialize()
 {
-	for (int i = 0; i < 30; ++i)
+	for (_int i = 0; i < 0; ++i)
 	{
 		CGameObject* pArrowObject = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Arrow"),
 													LEVEL_STATIC, TEXT("Layer_Arrow"));
 		if (nullptr == pArrowObject)	return E_FAIL;
 
-		CArrow*	 pArrow = dynamic_cast<CArrow*>(pArrowObject);
-		m_ArrowPool.push(pArrow);
+		CPlayer_Arrow*	 pArrow = dynamic_cast<CPlayer_Arrow*>(pArrowObject);
+		m_PlayerArrowPool.push(pArrow);
 	}
 
 	return S_OK;
@@ -34,46 +34,46 @@ HRESULT CArrowPool_Player::Initialize()
 
 void CArrowPool_Player::Clear(_uint iCurrentLevelIndex, _uint iNextLevelIndex)
 {
-	while (!m_ArrowPool.empty())
+	while (!m_PlayerArrowPool.empty())
 	{
-		CArrow* pArrow = m_ArrowPool.front();
-		m_ArrowPool.pop();
+		CPlayer_Arrow* pArrow = m_PlayerArrowPool.front();
+		m_PlayerArrowPool.pop();
 		Safe_Release(pArrow);
 	}
 }
 
-CArrow* CArrowPool_Player::Get_Arrow()
+CPlayer_Arrow* CArrowPool_Player::Get_Arrow()
 {
-	if (m_ArrowPool.empty())
+	if (m_PlayerArrowPool.empty())
 	{
 		// 풀에 없으면 새로 생성
 		CGameObject* pArrowObject = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Arrow"),
 			LEVEL_STATIC, TEXT("Layer_Arrow"));
 		if (nullptr == pArrowObject)	return nullptr;
 
-		CArrow* pNewArrow = dynamic_cast<CArrow*>(pArrowObject);
-		m_ArrowPool.push(pNewArrow);
-		pNewArrow = m_ArrowPool.front();
-		m_ArrowPool.pop();  // 맨 앞에 있는 걸 꺼내고 제거
+		CPlayer_Arrow* pNewArrow = dynamic_cast<CPlayer_Arrow*>(pArrowObject);
+		m_PlayerArrowPool.push(pNewArrow);
+		pNewArrow = m_PlayerArrowPool.front();
+		m_PlayerArrowPool.pop();  // 맨 앞에 있는 걸 꺼내고 제거
 
 		return pNewArrow;
 	}
 	else
 	{
 		// 있으면 재사용
-		CArrow*  pArrow = m_ArrowPool.front();
-		m_ArrowPool.pop();
+		CPlayer_Arrow*  pArrow = m_PlayerArrowPool.front();
+		m_PlayerArrowPool.pop();
 
 		return pArrow;
 	}
 }
 
-void CArrowPool_Player::Return_Arrow(CArrow* pArrow)
+void CArrowPool_Player::Return_Arrow(CPlayer_Arrow* pArrow)
 {
 	if (pArrow)
 	{
 		pArrow->Reset(); // 재사용을 위해 상태 초기화
-		m_ArrowPool.push(pArrow);
+		m_PlayerArrowPool.push(pArrow);
 	}
 }
 
@@ -94,12 +94,12 @@ void CArrowPool_Player::Free()
 {
 	__super::Free();
 
-	while (!m_ArrowPool.empty())
+	/*while (!m_PlayerArrowPool.empty())
 	{
-		CArrow* pArrow = m_ArrowPool.front();
+		CPlayer_Arrow* pArrow = m_PlayerArrowPool.front();
 		Safe_Release(pArrow);
-		m_ArrowPool.pop();
-	}
+		m_PlayerArrowPool.pop();
+	}*/
 
 	Safe_Release(m_pGameInstance);
 }

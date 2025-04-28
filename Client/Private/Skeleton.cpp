@@ -132,7 +132,6 @@ HRESULT CSkeleton::Ready_States()
 	m_StatesVec[static_cast<_uint>(SKELETON_STATE::WALK)]			 = CSkeleton_Walk::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
 	m_StatesVec[static_cast<_uint>(SKELETON_STATE::BOW_ACTION)]		 = CSkeleton_BowAction::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
 	m_StatesVec[static_cast<_uint>(SKELETON_STATE::GET_HIT_FRONT)]	 = CSkeleton_GetHit::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
-	//m_StatesVec[static_cast<_uint>(SKELETON_STATE::STUN)]			 = CSkeleton_Stun::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
 	m_StatesVec[static_cast<_uint>(SKELETON_STATE::HEAD_SPIN)] = CSkeleton_HeadSpin::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
 
 	m_pMonsterFSM = FSM::Create();

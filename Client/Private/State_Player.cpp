@@ -20,7 +20,7 @@ HRESULT CState_Player::Init_State()
 {
 	m_pPlayer = dynamic_cast<CPlayer*>(m_pActor);
 
-	m_pPlayerDesc = dynamic_cast<CPlayer::PLAYER_DESC*>(m_pGameObjectDesc);
+	m_pPlayerInfo = dynamic_cast<CPlayer::PLAYER_DESC*>(m_pGameObjectInfo);
 
 	m_pActorModelCom	= m_pStatePlayerDesc->pActorModelCom;
 	m_pColliderOBBCom	= m_pStatePlayerDesc->pColliderOBBCom;
@@ -30,7 +30,7 @@ HRESULT CState_Player::Init_State()
 	// 얘 나중에 Player_BowAction으로 빼기
 	m_pArrowPool_Player = m_pStatePlayerDesc->pArrowPool_Player;
 
-	if (nullptr == m_pPlayer || nullptr == m_pPlayerDesc || nullptr == m_pActorModelCom ||
+	if (nullptr == m_pPlayer || nullptr == m_pPlayerInfo || nullptr == m_pActorModelCom ||
 		nullptr == m_pTransformCom || nullptr == m_pNavigationCom || nullptr == m_pColliderOBBCom)
 		return E_FAIL;
 
@@ -153,9 +153,20 @@ _bool CState_Player::Change_State_To_GlaiveCombo()
 
 _bool CState_Player::Change_State_To_BowAction()
 {
-	if (m_pPlayer->Get_ShootArrow())  // && 화살 개수가 남아있다면!
+	if (m_pGameInstance->Get_Key(VK_RBUTTON) && !bMouseClickLock)
 	{
-		return true;
+		_float4 fWorldPickedPos = { 0.f, 0.f, 0.f, 1.f };
+
+		// 2. LoungeMap에 피킹 요청 (BoundingBox 충돌 체크)
+		if (m_pGameInstance->Picked_Model(fWorldPickedPos, TEXT("GameObject_LoungeMap"),
+			LEVEL_GAMEPLAY, TEXT("Layer_BackGround")))
+		{
+			m_pPlayer->Set_Shoot_Arrow(true, fWorldPickedPos);
+			m_pTransformCom->LookAt(XMLoadFloat4(&fWorldPickedPos));
+			m_pPlayer->Change_State(PLAYER_STATE::BOW_ACTION);
+
+			return true;
+		}
 	}
 
 	return false;

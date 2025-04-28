@@ -36,7 +36,7 @@ public:
     void      Collision_Exit(CCollider* pOther)         override;
 
 protected:
-    CMonster::MONSTER_DESC*     m_pMonsterDesc = { nullptr };
+    CMonster::MONSTER_DESC*     m_pMonsterInfo = { nullptr };
     STATEMONSTER_DESC*          m_pStateMonsterDesc = { nullptr };
     CCollider*                  m_pColliderOBBCom = { nullptr };
 

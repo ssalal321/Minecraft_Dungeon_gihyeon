@@ -50,14 +50,14 @@ void CSkeleton_Walk::State_Update(_float fTimeDelta)
 	_float lengthToPlayer = {};
 	XMStoreFloat(&lengthToPlayer, XMVector3Length(vecToPlayer));
 
-	if (m_pMonsterDesc->fAttackableRange + 1.f < lengthToPlayer)
+	if (m_pMonsterInfo->fAttackableRange + 1.f < lengthToPlayer)
 	{
 		m_bRetreating = false;  // 걷는 방향 초기화
 
 		m_pTransformCom->LookAt(XMLoadFloat4(&playerPos));
 		m_pTransformCom->Go_Straight(fTimeDelta, m_pNavigationCom);
 	}
-	else if (lengthToPlayer < m_pMonsterDesc->fAttackableRange - 1.f)
+	else if (lengthToPlayer < m_pMonsterInfo->fAttackableRange - 1.f)
 	{
 		if (!m_bRetreating)
 		{
