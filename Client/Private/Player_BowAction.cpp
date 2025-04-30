@@ -36,11 +36,13 @@ void CPlayer_BowAction::State_Update(_float fTimeDelta)
 	{
 		if (Change_State_To_Idle())
 			return;
+
+		m_bShotArrow = false;
 	}
 
 	_float fAnimCurTrackPos = m_pActorModelCom->Get_AnimCurrentTrackPosition();
 
-	if (!m_ShotArrow && SHOOT_ARROW <= fAnimCurTrackPos)
+	if (!m_bShotArrow && SHOOT_ARROW <= fAnimCurTrackPos)
 		Shoot_Arrow();
 }
 
@@ -51,7 +53,7 @@ void CPlayer_BowAction::State_Late_Update(_float fTimeDelta)
 
 void CPlayer_BowAction::State_Exit()
 {
-	m_ShotArrow = false;
+	m_bShotArrow = false;
 
 	m_pPlayer->Set_Shoot_Arrow(false, { 0.f, 0.f, 0.f, 1.f });
 }
@@ -76,12 +78,12 @@ void CPlayer_BowAction::Collision_Exit(CCollider* pOther)
 
 void CPlayer_BowAction::Shoot_Arrow()
 {
-	CPlayer_Arrow* pPlayerArrow = m_pArrowPool_Player->Get_Arrow();
+	CPlayer_Arrow* pPlayerArrow = m_pArrowPool_Player->Get_Arrow(m_pPlayerInfo->Get_Arrow_DealPoint());
 
 	_float4 playerPos = {};
 	XMStoreFloat4(&playerPos, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 
-	m_ShotArrow = true;
+	m_bShotArrow = true;
 	m_pPlayerInfo->iArrowNum -= 1;
 	pPlayerArrow->Shoot(playerPos, m_pPlayer->Get_PickedPosition());
 }

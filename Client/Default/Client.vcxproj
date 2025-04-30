@@ -151,6 +151,8 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Public\ArrowPool_Monster.h" />
+    <ClInclude Include="..\Public\Monster_Arrow.h" />
     <ClInclude Include="..\Public\Player_Arrow.h" />
     <ClInclude Include="..\Public\ArrowPool_Player.h" />
     <ClInclude Include="..\Public\Body_Player.h" />
@@ -213,6 +215,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Private\ArrowPool_Monster.cpp" />
+    <ClCompile Include="..\Private\Monster_Arrow.cpp" />
     <ClCompile Include="..\Private\Player_Arrow.cpp" />
     <ClCompile Include="..\Private\ArrowPool_Player.cpp" />
     <ClCompile Include="..\Private\Body_Player.cpp" />

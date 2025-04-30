@@ -210,7 +210,7 @@ HRESULT CMesh::Ready_VertexBuffer_For_Anim(const aiMesh* pAIMesh, const vector<c
 			_uint	iVertexIndex = pAIBone->mWeights[j].mVertexId;
 
 			/* 중복된 뼈인지 체크하기 위한 배열 */
-			_uint	boneIndex	= i; // 현재 처리 중인 뼈 인덱스
+			_uint	boneIndex	= static_cast<_uint>(i); // 현재 처리 중인 뼈 인덱스
 
 			/* 현재 정점의 기존 블렌드 인덱스들과 비교 */
 			// std::set -> 중복을 자동 제거하는 컨테이너
@@ -229,23 +229,23 @@ HRESULT CMesh::Ready_VertexBuffer_For_Anim(const aiMesh* pAIMesh, const vector<c
 			/* 네개 중에 아직 값이 채워지지 않은 공간을 찾는다. */
 			if (0.f == pVertices[iVertexIndex].vBlendWeight.x)
 			{
-				pVertices[iVertexIndex].vBlendIndex.x = i;
+				pVertices[iVertexIndex].vBlendIndex.x = static_cast<_uint>(i);
 				pVertices[iVertexIndex].vBlendWeight.x = pAIBone->mWeights[j].mWeight;
 			}
 			else if (0.f == pVertices[iVertexIndex].vBlendWeight.y)
 			{
-				pVertices[iVertexIndex].vBlendIndex.y = i;
+				pVertices[iVertexIndex].vBlendIndex.y = static_cast<_uint>(i);
 				pVertices[iVertexIndex].vBlendWeight.y = pAIBone->mWeights[j].mWeight;
 			}
 			
 			else if (0.f == pVertices[iVertexIndex].vBlendWeight.z)
 			{
-				pVertices[iVertexIndex].vBlendIndex.z = i;
+				pVertices[iVertexIndex].vBlendIndex.z = static_cast<_uint>(i);
 				pVertices[iVertexIndex].vBlendWeight.z = pAIBone->mWeights[j].mWeight;
 			}
 			else
 			{
-				pVertices[iVertexIndex].vBlendIndex.w = i;
+				pVertices[iVertexIndex].vBlendIndex.w = static_cast<_uint>(i);
 				pVertices[iVertexIndex].vBlendWeight.w = pAIBone->mWeights[j].mWeight;
 			}
 		}

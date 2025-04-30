@@ -27,7 +27,7 @@ public:
 
 public:
 	// 화살 꺼내오기
-	CPlayer_Arrow*		Get_Arrow();
+	CPlayer_Arrow*		Get_Arrow(_uint uiAttackPoint);
 
 	// 화살 반납하기
 	void		Return_Arrow(CPlayer_Arrow* pArrow);

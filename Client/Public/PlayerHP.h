@@ -9,8 +9,9 @@ class CVIBuffer_Rect;
 END
 
 BEGIN(Client)
+	class CPlayer;
 
-class CPlayerHP final : public CUIObject
+	class CPlayerHP final : public CUIObject
 {
 public:
 
@@ -50,6 +51,9 @@ public:
 	HRESULT		Render()							override;
 
 private:
+	CPlayer*			m_pPlayer = { nullptr };
+
+	_float				m_fInverseMaxHP = {};
 	_float				m_CutOffY		= {};
 
 	PLAYERHP_DESC*		m_pDesc			= { nullptr };
@@ -60,7 +64,6 @@ private:
 
 private:
 	HRESULT		Ready_PlayerHP_Components();
-	_bool		Get_KeyDown();
 
 public:
 	static	 CPlayerHP*		Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

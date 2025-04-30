@@ -27,6 +27,30 @@ private:
 public:
 	void*		Get_Desc() override { return m_pDesc; }
 
+	void	ReSet_Bounding_Center(_float3 center) const
+	{
+		m_pLocalDesc->Center.x = center.x;
+		m_pLocalDesc->Center.y = center.y;
+		m_pLocalDesc->Center.z = center.z;
+	}
+
+	void	ReSet_Bounding_Radius(_float fRadius) const
+	{
+		m_pLocalDesc->Radius = fRadius;
+	}
+
+	void	Edit_Bounding_Center(_float3 moveCenter) const
+	{
+		m_pLocalDesc->Center.x += moveCenter.x;
+		m_pLocalDesc->Center.y += moveCenter.y;
+		m_pLocalDesc->Center.z += moveCenter.z;
+	}
+
+	void	Edit_Bounding_Radius(_float editRadius) const
+	{
+		m_pLocalDesc->Radius += editRadius;
+	}
+
 public:
 	HRESULT		Initialize(const BOUNDING_DESC* pArg);
 	void		Update(_fmatrix WorldMatrix)	override;

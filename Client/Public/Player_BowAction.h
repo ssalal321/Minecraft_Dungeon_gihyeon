@@ -24,7 +24,7 @@ public:
     void        Collision_Exit(CCollider* pOther)           override;
 
 private:
-    _bool       m_ShotArrow = { false };
+    _bool       m_bShotArrow = { false };
 
 private:
     void        Shoot_Arrow();

@@ -219,7 +219,7 @@ void CInventoryData::Free()
 {
 	__super::Free();
 
-	for (auto& storeSlot : m_StoreSlots)
+	/*for (auto& storeSlot : m_StoreSlots)
 	{
 		Safe_Release(storeSlot);
 	}
@@ -235,7 +235,7 @@ void CInventoryData::Free()
 	{
 		Safe_Release(artifactSlot);
 	}
-	m_ArtifactSlots.clear();
+	m_ArtifactSlots.clear();*/
 
 	Safe_Release(m_pGameInstance);
 }

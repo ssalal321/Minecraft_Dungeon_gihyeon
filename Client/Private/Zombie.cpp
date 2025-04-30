@@ -34,7 +34,7 @@ HRESULT CZombie::Initialize(void* pArg)
 {
 	const _wstring& zombieGameObjectTag = TEXT("GameObject_Zombie_") + to_wstring(m_iZombieID++);
 
-	m_pMonsterInfo = new MONSTER_DESC(zombieGameObjectTag, 10, 10, 2, 1.8f, 10.f, false, 90.f, 1.5f);
+	m_pMonsterInfo = new MONSTER_DESC(zombieGameObjectTag, 20, 20, 3, 1.8f, 10.f, false, 90.f, 1.5f);
 
 	if (FAILED(__super::Initialize(m_pMonsterInfo)))
 		return E_FAIL;
@@ -83,26 +83,10 @@ HRESULT CZombie::Ready_PartObjects()
 	BodyDesc.pContainerObject = this;
 	BodyDesc.pContainerObjAttacking = &m_bAttacking;
 
-	if (FAILED(__super::Add_PartObject(m_pGameInstance->Get_PrototypeLevelIndex(), TEXT("Prototype_GameObject_Body_Zombie"), TEXT("Part_Body"), &BodyDesc)))
+	if (FAILED(__super::Add_PartObject(m_pGameInstance->Get_NextLevelIndex(), TEXT("Prototype_GameObject_Body_Zombie"), TEXT("Part_Body"), &BodyDesc)))
 		return E_FAIL;
 
-
-	///* 무기를 추가한다. */
-	//CWeapon::WEAPON_DESC	WeaponDesc{};
-
-	//CModel* pBody = dynamic_cast<CModel*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Model")));
-	//if (nullptr == pBody)
-	//	return E_FAIL;
-
-	//WeaponDesc.pGameObjectTag = TEXT("GameObject_Weapon");
-	//WeaponDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
-	//WeaponDesc.pState = &m_iState;
-	//WeaponDesc.pSocketMatrix = pBody->Get_CombinedTransformationMatrix("J_R_Weapon");
-
-	//if (FAILED(__super::Add_PartObject(m_pGameInstance->Get_CurrentLevelIndex(), TEXT("Prototype_GameObject_Weapon"), TEXT("Part_Weapon"), &WeaponDesc)))
-	//	return E_FAIL;
-
-
+	
 	/* 이펙트를 추가한다. */
 
 	return S_OK;
@@ -113,12 +97,12 @@ HRESULT CZombie::Ready_States()
 	m_StatesVec.resize(static_cast<_uint>(ZOMBIE_STATE::STATE_END));	// state vector 자리 예약
 
 	CModel* pZombieModel = dynamic_cast<CModel*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Model")));
-	CCollider* pColliderOBB = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_OBB")));
-	CCollider* pColliderSphere = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_Sphere")));
+	//CCollider* pColliderOBB = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_OBB")));
+	CCollider* pCollider = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_Sphere")));
 
 	CState_Monster::STATEMONSTER_DESC	pStateMonsterDesc = {};
-	pStateMonsterDesc.pColliderOBBCom		= pColliderOBB;
-	pStateMonsterDesc.pColliderSphereCom	= pColliderSphere;
+	pStateMonsterDesc.pColliderCom		= pCollider;
+	//pStateMonsterDesc.pColliderSphereCom	= pColliderSphere;
 	pStateMonsterDesc.pActorModelCom		= pZombieModel;
 	pStateMonsterDesc.pNavigationCom		= m_pNavigationCom;
 	pStateMonsterDesc.pTransformCom			= m_pTransformCom;

@@ -211,14 +211,14 @@ _uint CGameInstance::Get_CurrentLevelIndex() const
 	return m_pLevel_Manager->Get_CurrentLevelIndex();
 }
 
-_uint CGameInstance::Get_PrototypeLevelIndex() const
+_uint CGameInstance::Get_NextLevelIndex() const
 {
-	return m_pLevel_Manager->Get_PrototypeLevelIndex();
+	return m_pLevel_Manager->Get_NextLevelIndex();
 }
 
-void CGameInstance::Set_PrototypeLevelIndex(_uint iNextLevelIndex) const
+void CGameInstance::Set_NextLevelIndex(_uint iNextLevelIndex) const
 {
-	return m_pLevel_Manager->Set_PrototypeLevelIndex(iNextLevelIndex);
+	return m_pLevel_Manager->Set_NextLevelIndex(iNextLevelIndex);
 }
 #pragma endregion
 

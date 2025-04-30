@@ -15,7 +15,7 @@ HRESULT CLevel_Loading::Initialize(LEVEL eNextLevelID)
 {
     m_eNextLevelID = eNextLevelID;
 
-	m_pGameInstance->Set_PrototypeLevelIndex(m_eNextLevelID);
+	m_pGameInstance->Set_NextLevelIndex(m_eNextLevelID);
 
     /* 다음레벨을 위한 자원을 준비한다. */
     m_pLoader = CLoader::Create(m_pDevice, m_pContext, eNextLevelID);

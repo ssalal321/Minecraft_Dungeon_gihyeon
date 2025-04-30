@@ -1,11 +1,18 @@
 #include "State_Player.h"
-
-#include <iostream>
-
 #include "Player.h"
 #include "Body_Player.h"
 
+#include "Item.h"
+#include "Monster.h"
+#include "Monster_Arrow.h"
+
 _float	CState_Player::m_fCombo_ElapsedTime = 0.f;
+_bool   CState_Player::m_bCombo1_ColliderOn = { false };
+_bool   CState_Player::m_bCombo2_ColliderOn = { false };
+_bool   CState_Player::m_bCombo3_ColliderOn = { false };
+_bool   CState_Player::m_bCombo1_ColliderOff = { false };
+_bool   CState_Player::m_bCombo2_ColliderOff = { false };
+_bool   CState_Player::m_bCombo3_ColliderOff = { false };
 _bool   CState_Player::m_bCombo1_Finished = { false };
 _bool   CState_Player::m_bCombo2_Finished = { false };
 _bool   CState_Player::m_bCombo3_Finished = { false };
@@ -51,6 +58,9 @@ void CState_Player::State_Priority_Update(_float fTimeDelta)
 
 void CState_Player::State_Update(_float fTimeDelta)
 {
+	//if (m_pPlayerInfo->Get_CurrentHP() <= 0)
+	//	//die
+
 	m_bAnimationFinished = m_pActorModelCom->Play_Animation(fTimeDelta);
 
 	Check_Combo_Timeout(fTimeDelta);
@@ -66,7 +76,6 @@ void CState_Player::State_Exit()
 
 void CState_Player::Collision_Enter(CCollider* pOther)
 {
-	
 	/*_wstring other = pOther->Get_CollidergGroupTag();
 
 	std::wcerr << "[플레이어와 " << other << " 충돌 Enter]" << std::endl;*/
@@ -127,7 +136,7 @@ _bool CState_Player::Change_State_To_Roll()
 
 _bool CState_Player::Change_State_To_GlaiveCombo()
 {
-	if (m_pPlayer->Get_Chasing())
+	if (m_pPlayer->Get_Chasing()/* || m_pPlayerInfo->Get_AttackableRange()*/)
 	{
 		CTransform* pMonsterTransformCom = m_pPlayer->Get_MonsterTransformCom();
 		_float4 pMonsterPos = {};
@@ -138,7 +147,8 @@ _bool CState_Player::Change_State_To_GlaiveCombo()
 		_vector  vVecToMonster = vMonsterPos - vPlayerPos;
 
 		_float fDistanceSq = XMVectorGetX(XMVector3LengthSq(vVecToMonster));
-		if (fDistanceSq < 16.f) // 4.f * 4.f
+		const _float& fAttackRangeSq = m_pPlayerInfo->Get_AttackableRange() * m_pPlayerInfo->Get_AttackableRange();
+		if (fDistanceSq < fAttackRangeSq) // 4.f * 4.f
 		{
 			m_pPlayer->Change_State(PLAYER_STATE::GLAIVE_COMBO);
 			m_pPlayer->Set_Chasing(false, nullptr);
@@ -174,11 +184,35 @@ _bool CState_Player::Change_State_To_BowAction()
 
 _bool CState_Player::Change_State_To_GetHitFront(CCollider* pOther)
 {
-	if ((TEXT("Monster_Body_Hit") == pOther->Get_ColliderTag() ||
-		 TEXT("Monster_Weapon") == pOther->Get_ColliderTag())
+	if (TEXT("Monster_Arrow") == pOther->Get_ColliderTag()
 		&& pOther->Get_OtherAttacking())
 	{
-		// 상대에 따라 다르게 피 깎여야 하는뎅
+		CMonster_Arrow* pMonsterArrow = dynamic_cast<CMonster_Arrow*>(pOther->Get_OwnerObject());
+		m_pPlayerInfo->Modify_CurrentHp(-pMonsterArrow->Get_DealPoint());
+
+		m_pPlayer->Change_State(PLAYER_STATE::GET_HIT_FRONT);
+
+		return true;
+	}
+
+	if (TEXT("Monster_Weapon") == pOther->Get_ColliderTag()
+		&& pOther->Get_OtherAttacking())
+	{
+		CItem* pItem = dynamic_cast<CItem*>(pOther->Get_OwnerObject());
+		m_pPlayerInfo->Modify_CurrentHp(-pItem->Get_DealPoint());
+
+		m_pPlayer->Change_State(PLAYER_STATE::GET_HIT_FRONT);
+
+		return true;
+	}
+
+	if (TEXT("Monster_Body_Hit") == pOther->Get_ColliderTag()
+		&& pOther->Get_OtherAttacking())
+	{
+		CPartObject* pMonsterBody = dynamic_cast<CPartObject*>(pOther->Get_OwnerObject());
+		CMonster*	 pMonster = dynamic_cast<CMonster*>(pMonsterBody->Get_ContainerObject());
+
+		m_pPlayerInfo->Modify_CurrentHp(-pMonster->Get_MonsterInfo()->Get_DealPoint());
 
 		m_pPlayer->Change_State(PLAYER_STATE::GET_HIT_FRONT);
 
@@ -206,13 +240,21 @@ void CState_Player::Reset_Combo()
 	m_bComboInitiating	= false;
 	m_fCombo_ElapsedTime = 0.f;
 
+	m_bCombo1_ColliderOn = { false };
+	m_bCombo2_ColliderOn = { false };
+	m_bCombo3_ColliderOn = { false };
+	m_bCombo1_ColliderOff = { false };
+	m_bCombo2_ColliderOff = { false };
+	m_bCombo3_ColliderOff = { false };
 	m_bCombo1_Finished = false;
 	m_bCombo2_Finished = false;
 	m_bCombo3_Finished = false;
 
 	m_fPrevAnimTrackPosition = 0.f;
 
-	std::wcerr << "[콤보 초기화 딩딩딩딩딩~]" << std::endl;
+	m_pPlayer->Set_Attacking(false);
+
+	//std::wcerr << "[콤보 초기화 딩딩딩딩딩~]" << std::endl;
 }
 
 

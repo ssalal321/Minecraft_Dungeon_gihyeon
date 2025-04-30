@@ -20,7 +20,7 @@ HRESULT CPlayer_Arrow::Initialize_Prototype()
 
 HRESULT CPlayer_Arrow::Initialize(void* pArg)
 {
-	const _wstring& arrowGameObjectTag = TEXT("GameObject_Arrow_") + to_wstring(m_iArrowID++);
+	const _wstring& arrowGameObjectTag = TEXT("GameObject_PlayerArrow_") + to_wstring(m_iArrowID++);
 
 	m_pArrowDesc = new GAMEOBJECT_DESC(arrowGameObjectTag, 0.f, 15.f);
 
@@ -29,6 +29,8 @@ HRESULT CPlayer_Arrow::Initialize(void* pArg)
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
+
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, { 0.f, 200.f, 0.f, 1.f });
 
 	return S_OK;
 }
@@ -57,7 +59,7 @@ void CPlayer_Arrow::Update(_float fTimeDelta)
 	{
 		m_fResetTimer += fTimeDelta;
 
-		if (m_fResetTimer >= 0.7f)
+		if (m_fResetTimer >= 0.2f)
 			Reset();
 	}
 }
@@ -139,7 +141,7 @@ void CPlayer_Arrow::Reset()
 	m_pTransformCom->LookAt({ 0.f, 0.f, 0.f, 1.f });
 
 	m_fResetTimer = 0.f;
-
+	m_iDealPoint = 0;
 	m_bAttacking = false;
 	m_bCollided  = false;
 	m_bActive	 = false;
@@ -181,7 +183,7 @@ HRESULT CPlayer_Arrow::Ready_Components()
 
 	OBBCollDesc.vExtents  = _float3(0.2f, 0.2f, 0.6f);
 	OBBCollDesc.vCenter   = _float3(0.f, OBBCollDesc.vExtents.y, 0.f);
-	OBBCollDesc.vRotation = _float3(0.f, /*XMConvertToRadians(0.f)*/ 0.f, 0.f);
+	OBBCollDesc.vRotation = _float3(0.f, /*XMConvertToRadians(0.f)*/ 0.f, 0.f); 
 	OBBCollDesc.pGameObject = this;
 	OBBCollDesc.CombinedWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	OBBCollDesc.pContainerObjAttacking = &m_bAttacking;
@@ -229,7 +231,6 @@ void CPlayer_Arrow::Free()
 {
 	__super::Free();
 
-	Safe_Delete(m_pStaticParentWorldMatrix);
 	Safe_Delete(m_pArrowDesc);
 
 	Safe_Release(m_pColliderCom);

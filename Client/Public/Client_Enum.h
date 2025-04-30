@@ -51,12 +51,50 @@ namespace Client
 		STATE_END
 	};
 
+	enum class BABYZOMBIE_STATE
+	{
+		ATTACK,
+		GET_HIT,
+		IDLE,
+		NOVELTY,  // Novelty
+		WALK,
+		STATE_END
+	};
+
 	enum class SKELETON_STATE
 	{
 		BOW_ACTION,
 		GET_HIT_FRONT,
 		IDLE,
 		HEAD_SPIN,  // Novelty
+		WALK,
+		STATE_END
+	};
+
+	enum class SLIME_LARGE_STATE
+	{
+		ATTACK,
+		IDLE,
+		STUN,
+		WALK,
+		STATE_END
+	};
+
+	enum class SLIME_MEDIUM_STATE
+	{
+		ATTACK,
+		IDLE,
+		NOVELTY,
+		STUN,
+		WALK,
+		STATE_END
+	};
+
+	enum class SLIME_SMALL_STATE
+	{
+		ATTACK,
+		IDLE,
+		NOVELTY,
 		WALK,
 		STATE_END
 	};

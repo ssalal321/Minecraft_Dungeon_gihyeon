@@ -1,7 +1,7 @@
 #include "Skeleton_GetHit.h"
 #include "Skeleton.h"
 
-CSkeleton_GetHit::CSkeleton_GetHit(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
+CSkeleton_GetHit::CSkeleton_GetHit(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATE_SKELETON_DESC* pDesc)
 	: CState_Skeleton(pActor, pGameObjectDesc, pDesc)
 {
 }
@@ -68,7 +68,7 @@ void CSkeleton_GetHit::Collision_Exit(CCollider* pOther)
 	__super::Collision_Exit(pOther);
 }
 
-CState_Monster* CSkeleton_GetHit::Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
+CState_Monster* CSkeleton_GetHit::Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATE_SKELETON_DESC* pDesc)
 {
 	CSkeleton_GetHit* pGameInstance = new CSkeleton_GetHit(pActor, pGameObjectDesc, pDesc);
 

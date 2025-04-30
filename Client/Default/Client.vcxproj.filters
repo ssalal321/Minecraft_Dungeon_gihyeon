@@ -360,6 +360,12 @@
     <ClInclude Include="..\Public\Player_BowAction.h">
       <Filter>02.GameObjects\Player\02. State\Player_Attack\Player_BowAction</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\ArrowPool_Monster.h">
+      <Filter>02.GameObjects\Arrow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Monster_Arrow.h">
+      <Filter>02.GameObjects\Arrow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -536,6 +542,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Player_BowAction.cpp">
       <Filter>02.GameObjects\Player\02. State\Player_Attack\Player_BowAction</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ArrowPool_Monster.cpp">
+      <Filter>02.GameObjects\Arrow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Monster_Arrow.cpp">
+      <Filter>02.GameObjects\Arrow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

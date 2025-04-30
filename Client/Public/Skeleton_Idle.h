@@ -7,7 +7,7 @@ BEGIN(Client)
 class CSkeleton_Idle final: public CState_Skeleton
 {
 private:
-    CSkeleton_Idle(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
+    CSkeleton_Idle(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATE_SKELETON_DESC* pDesc);
 	~CSkeleton_Idle() override = default;
 
 public:
@@ -27,7 +27,7 @@ private:
     _float      m_fLoopTime = { 0.f };
 
 public:
-    static CState_Monster*  Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
+    static CState_Monster*  Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATE_SKELETON_DESC* pDesc);
     void   Free()    override;
 };
 

@@ -48,8 +48,8 @@ public:
 #pragma region LEVEL_MANAGER
 	HRESULT		Open_Level(_uint iNextLevelIndex, class CLevel* pNewLevel);
 	_uint		Get_CurrentLevelIndex() const;
-	_uint		Get_PrototypeLevelIndex() const;
-	void		Set_PrototypeLevelIndex(_uint iNextLevelIndex) const;
+	_uint		Get_NextLevelIndex() const;
+	void		Set_NextLevelIndex(_uint iNextLevelIndex) const;
 #pragma endregion
 
 #pragma region PROTOTYPE_MANAGER

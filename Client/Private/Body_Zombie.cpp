@@ -100,53 +100,38 @@ HRESULT CBody_Zombie::Ready_Components()
 
 
 	///* Com_Collider */
-	//CBounding_AABB::BOUNDING_AABB_DESC		AABBCollDesc{};
+	//CBounding_OBB::BOUNDING_OBB_DESC		OBBCollDesc{};
 
-	//AABBCollDesc.vCenter = _float3(0.f, AABBCollDesc.vExtents.y, 0.f);
-	//AABBCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
-	//AABBCollDesc.pGameObject = static_cast<CGameObject*>(this);
-	//AABBCollDesc.vExtents = _float3(0.35f, 0.6f, 0.35f);
+	//OBBCollDesc.vExtents	= _float3(0.6f, 1.f, 0.6f);
+	//OBBCollDesc.vCenter		= _float3(0.f, OBBCollDesc.vExtents.y, 0.f);
+	//OBBCollDesc.vRotation	= _float3(0.f, /*XMConvertToRadians(0.f)*/ 0.f, 0.f);
+	//OBBCollDesc.pGameObject = this;
+	//OBBCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
+	//OBBCollDesc.pContainerObjAttacking = m_pContainerObjAttacking;
+	//
+	//CComponent* pColliderOBBCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_OBB"),
+	//	TEXT("Com_Collider_OBB"), reinterpret_cast<CComponent**>(&m_pColliderCom), &OBBCollDesc);
 
-	//CComponent* pColliderCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
-	//	TEXT("Com_Collider_AABB"), reinterpret_cast<CComponent**>(&m_pColliderOBB[COLL_AABB]), &AABBCollDesc);
-
-	//if (nullptr == pColliderCom)
+	//if (nullptr == pColliderOBBCom)
 	//	return E_FAIL;
 
-	//m_pGameInstance->Add_ColliderCom(pColliderCom, TEXT("Zombie"), TEXT("Monster"));
+	//m_pGameInstance->Add_ColliderCom(pColliderOBBCom, TEXT("Monster_Body_Hit"), TEXT("Monster"));
 
-	///* Com_Collider */
-	//CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereCollDesc{};
-	//SphereCollDesc.vCenter = _float3(0.f, SphereCollDesc.fRadius, 0.f);
-	//SphereCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
-	//SphereCollDesc.pGameObject = static_cast<CGameObject*>(this);
-	//SphereCollDesc.fRadius = 0.5f;
+	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereCollDesc{};
 
-	//pColliderCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
-	//	TEXT("Com_Collider_Sphere"), reinterpret_cast<CComponent**>(&m_pColliderCom[COLL_SPHERE]), &SphereCollDesc);
+	SphereCollDesc.fRadius = 1.5f;
+	SphereCollDesc.vCenter = _float3(0.f, SphereCollDesc.fRadius, 0.f);
+	SphereCollDesc.pGameObject = this;
+	SphereCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
+	SphereCollDesc.pContainerObjAttacking = m_pContainerObjAttacking;
 
-	//if (nullptr == pColliderCom)
-	//	return E_FAIL;
+	CComponent* pColliderSphereCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
+		TEXT("Com_Collider_Sphere"), reinterpret_cast<CComponent**>(&m_pColliderCom), &SphereCollDesc);
 
-	//m_pGameInstance->Add_ColliderCom(pColliderCom, TEXT("Zombie"), TEXT("Monster"));
-
-	/* Com_Collider */
-	CBounding_OBB::BOUNDING_OBB_DESC		OBBCollDesc{};
-
-	OBBCollDesc.vExtents	= _float3(0.6f, 1.f, 0.6f);
-	OBBCollDesc.vCenter		= _float3(0.f, OBBCollDesc.vExtents.y, 0.f);
-	OBBCollDesc.vRotation	= _float3(0.f, /*XMConvertToRadians(0.f)*/ 0.f, 0.f);
-	OBBCollDesc.pGameObject = this;
-	OBBCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
-	OBBCollDesc.pContainerObjAttacking = m_pContainerObjAttacking;
-	
-	CComponent* pColliderOBBCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_OBB"),
-		TEXT("Com_Collider_OBB"), reinterpret_cast<CComponent**>(&m_pColliderOBBCom), &OBBCollDesc);
-
-	if (nullptr == pColliderOBBCom)
+	if (nullptr == pColliderSphereCom)
 		return E_FAIL;
 
-	m_pGameInstance->Add_ColliderCom(pColliderOBBCom, TEXT("Monster_Body_Hit"), TEXT("Monster"));
+	m_pGameInstance->Add_ColliderCom(m_pColliderCom, TEXT("Monster_Body_Hit"), TEXT("Monster"));
 
 	return S_OK;
 }
@@ -226,7 +211,7 @@ void CBody_Zombie::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pColliderOBBCom);
+	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pModelCom);
 }

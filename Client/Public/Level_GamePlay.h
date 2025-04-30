@@ -26,7 +26,8 @@ public:
 	HRESULT Ready_Layer_Player(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_Monster(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_BackGround(const _wstring& strLayerTag);
-	HRESULT Ready_Layer_UI(const _wstring& strLayerTag);
+	HRESULT Ready_Layer_InventoryUI(const _wstring& strLayerTag);
+	HRESULT Ready_Layer_PlayerSlotUI(const _wstring& strLayerTag);
 
 	CCollider*	Get_Closest_Collider(const _float4& mousePos, const _float3& mouseRay);
 	void		Click_Chase_Monster(CMonster* pMonster);

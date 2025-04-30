@@ -12,16 +12,16 @@ class CZombie final : public CMonster
 public:
 	/*struct ZOMBIE_DESC : public GAMEOBJECT_DESC
 	{
-		_int     iCurrentHP;
-		_int     iMaxHP;
-		_int     iAttackPoint;
+		_int     uiCurrentHP;
+		_int     uiMaxHP;
+		_int     iArrowDealPoint;
 		_float   fAttackableRange;
 		_bool    bStunned;
 
 		ZOMBIE_DESC(const _tchar* GameObjectTag, _int currentHP, _int maxHP, _int attackPoint,
 			_float effectiveRange, _bool stunned = false,
 			_float rotationPerSec = 0.f, _float speedPerSec = 0.f)
-			: GAMEOBJECT_DESC(GameObjectTag, rotationPerSec, speedPerSec), iCurrentHP(currentHP), iMaxHP(maxHP), iAttackPoint(attackPoint),
+			: GAMEOBJECT_DESC(GameObjectTag, rotationPerSec, speedPerSec), uiCurrentHP(currentHP), uiMaxHP(maxHP), iArrowDealPoint(attackPoint),
 			fAttackableRange(effectiveRange), bStunned(stunned) {
 		}
 
@@ -43,8 +43,6 @@ public:
 	
 private:
 	_uint			m_iState = { static_cast<_uint>(ZOMBIE_STATE::STATE_END) };
-	
-	_float4			m_NextPosition = {0.f, 0.f, 0.f, 1.f};
 
 	static _int		m_iZombieID;
 

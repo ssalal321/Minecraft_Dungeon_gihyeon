@@ -1,4 +1,6 @@
 #include "Skeleton.h"
+
+#include "ArrowPool_Monster.h"
 #include "GameInstance.h"
 
 #include "Body_Skeleton.h"
@@ -35,10 +37,13 @@ HRESULT CSkeleton::Initialize(void* pArg)
 {
 	const _wstring& skeletonGameObjectTag = TEXT("GameObject_Skeleton") + to_wstring(m_iSkeletonID++);
 
-	m_pMonsterInfo = new MONSTER_DESC(skeletonGameObjectTag, 10, 10, 2, 10.f, 14.f, false, 90.f, 1.5f);
+	m_pMonsterInfo = new MONSTER_DESC(skeletonGameObjectTag, 30, 30, 3, 10.f, 14.f, false, 90.f, 1.5f);
 
 	if (FAILED(__super::Initialize(m_pMonsterInfo)))
 		return E_FAIL;
+
+	m_pArrowPool_Monster = CArrowPool_Monster::Create();
+	if (nullptr == m_pArrowPool_Monster)	return E_FAIL;
 
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;
@@ -47,7 +52,7 @@ HRESULT CSkeleton::Initialize(void* pArg)
 		return E_FAIL;
 
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
-								XMVectorSet(-5.f, 0.f, -10.f, 1.f));
+								XMVectorSet(-5.f, 0.f, -15.f, 1.f));
 
 	return S_OK;
 }
@@ -84,7 +89,7 @@ HRESULT CSkeleton::Ready_PartObjects()
 	BodyDesc.pContainerObject = this;
 	BodyDesc.pContainerObjAttacking = &m_bAttacking;
 
-	if (FAILED(__super::Add_PartObject(m_pGameInstance->Get_PrototypeLevelIndex(), TEXT("Prototype_GameObject_Body_Skeleton"), TEXT("Part_Body"), &BodyDesc)))
+	if (FAILED(__super::Add_PartObject(m_pGameInstance->Get_NextLevelIndex(), TEXT("Prototype_GameObject_Body_Skeleton"), TEXT("Part_Body"), &BodyDesc)))
 		return E_FAIL;
 
 
@@ -118,21 +123,22 @@ HRESULT CSkeleton::Ready_States()
 	m_StatesVec.resize(static_cast<_uint>(SKELETON_STATE::STATE_END));	// state vector 자리 예약
 
 	CModel* pSkeletonModel = dynamic_cast<CModel*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Model")));
-	CCollider* pColliderOBB = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_OBB")));
+	//CCollider* pColliderOBB = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_OBB")));
 	CCollider* pColliderSphere = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_Sphere")));
 
-	CState_Monster::STATEMONSTER_DESC	pStateMonsterDesc = {};
-	pStateMonsterDesc.pColliderOBBCom		= pColliderOBB;
-	pStateMonsterDesc.pColliderSphereCom	= pColliderSphere;
-	pStateMonsterDesc.pActorModelCom		= pSkeletonModel;
-	pStateMonsterDesc.pNavigationCom		= m_pNavigationCom;
-	pStateMonsterDesc.pTransformCom			= m_pTransformCom;
+	CState_Skeleton::STATE_SKELETON_DESC	pStateSkeletonDesc = {};
+	pStateSkeletonDesc.pColliderCom			= pColliderSphere;
+	//pStateSkeletonDesc.pColliderSphereCom	= pColliderSphere;
+	pStateSkeletonDesc.pActorModelCom		= pSkeletonModel;
+	pStateSkeletonDesc.pNavigationCom		= m_pNavigationCom;
+	pStateSkeletonDesc.pTransformCom		= m_pTransformCom;
+	pStateSkeletonDesc.pArrowPool_Monster	= m_pArrowPool_Monster;
 
-	m_StatesVec[static_cast<_uint>(SKELETON_STATE::IDLE)]			 = CSkeleton_Idle::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
-	m_StatesVec[static_cast<_uint>(SKELETON_STATE::WALK)]			 = CSkeleton_Walk::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
-	m_StatesVec[static_cast<_uint>(SKELETON_STATE::BOW_ACTION)]		 = CSkeleton_BowAction::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
-	m_StatesVec[static_cast<_uint>(SKELETON_STATE::GET_HIT_FRONT)]	 = CSkeleton_GetHit::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
-	m_StatesVec[static_cast<_uint>(SKELETON_STATE::HEAD_SPIN)] = CSkeleton_HeadSpin::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
+	m_StatesVec[static_cast<_uint>(SKELETON_STATE::IDLE)]			 = CSkeleton_Idle::Create(this, m_pMonsterInfo, &pStateSkeletonDesc);
+	m_StatesVec[static_cast<_uint>(SKELETON_STATE::WALK)]			 = CSkeleton_Walk::Create(this, m_pMonsterInfo, &pStateSkeletonDesc);
+	m_StatesVec[static_cast<_uint>(SKELETON_STATE::BOW_ACTION)]		 = CSkeleton_BowAction::Create(this, m_pMonsterInfo, &pStateSkeletonDesc);
+	m_StatesVec[static_cast<_uint>(SKELETON_STATE::GET_HIT_FRONT)]	 = CSkeleton_GetHit::Create(this, m_pMonsterInfo, &pStateSkeletonDesc);
+	m_StatesVec[static_cast<_uint>(SKELETON_STATE::HEAD_SPIN)]		 = CSkeleton_HeadSpin::Create(this, m_pMonsterInfo, &pStateSkeletonDesc);
 
 	m_pMonsterFSM = FSM::Create();
 
@@ -171,6 +177,8 @@ CGameObject* CSkeleton::Clone(void* pArg)
 void CSkeleton::Free()
 {
 	__super::Free();
+
+	Safe_Release(m_pArrowPool_Monster);
 
 	for (auto& stateVec : m_StatesVec)
 	{

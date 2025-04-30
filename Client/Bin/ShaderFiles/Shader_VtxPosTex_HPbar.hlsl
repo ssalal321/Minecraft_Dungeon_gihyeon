@@ -98,9 +98,6 @@ PS_OUT PS_PlayerHP(PS_IN In)
 
 
 
-
-
-
 technique11 DefaultTechnique
 {
     pass PlayerHP

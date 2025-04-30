@@ -45,6 +45,12 @@ protected:
     _bool			        m_bAnimationFinished = { false };
     //_bool                   m_bClickLock = { false };
 
+    static _bool            m_bCombo1_ColliderOn;
+    static _bool            m_bCombo2_ColliderOn;
+    static _bool            m_bCombo3_ColliderOn;
+    static _bool            m_bCombo1_ColliderOff;
+    static _bool            m_bCombo2_ColliderOff;
+    static _bool            m_bCombo3_ColliderOff;
     static _bool            m_bCombo1_Finished;
     static _bool            m_bCombo2_Finished;
     static _bool            m_bCombo3_Finished;

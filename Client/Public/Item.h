@@ -18,8 +18,11 @@ public:
 		const _uint*		pState = { nullptr };
 		const _float4x4*	pSocketMatrix = { nullptr };
 
-		_wstring			strIconTexPrototypeTag;
-		_wstring			strIconGameObjectTag = {};
+		_uint		uiHealPoint = {};
+		_int		iDealPoint = {};
+				
+		_wstring	strIconTexPrototypeTag;
+		_wstring	strIconGameObjectTag = {};
 
 	}ITEM_DESC;
 
@@ -29,10 +32,12 @@ protected:
 	~CItem() override = default;
 
 public:
-	const _wstring&  Get_IconTexPrototypeTag() { return m_strTexPrototypeTag; }
-	const _wstring&  Get_IconGameObjectTag() { return m_strIconGameObjectTag; }
-	ITEM_TYPE		 Get_ItemType() const { return m_eItemtype; }
-	const _wstring&  Get_ColliderTag() { return m_strColliderTag; }
+	const _uint&	Get_HealPoint() const { return m_uiHealPoint; }
+	const _int&		Get_DealPoint() const { return m_iDealPoint; }
+	const _wstring&		Get_IconTexPrototypeTag() { return m_strTexPrototypeTag; }
+	const _wstring&		Get_IconGameObjectTag() { return m_strIconGameObjectTag; }
+	ITEM_TYPE			Get_ItemType() const { return m_eItemtype; }
+	const _wstring&		Get_ColliderTag() { return m_strColliderTag; }
 
 public:
 	HRESULT		Initialize_Prototype()				override;
@@ -50,6 +55,8 @@ protected:
 	const  _float4x4*	m_pSocketMatrix = { nullptr };
 	const  _uint*		m_pTargetState  = { nullptr };
 
+	_int		m_uiHealPoint = { 0 };
+	_int		m_iDealPoint = { 0 };
 	_wstring	m_strTexPrototypeTag = {};
 	_wstring	m_strIconGameObjectTag = {};
 	ITEM_TYPE	m_eItemtype = { ITEM_TYPE::NONE };

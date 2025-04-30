@@ -9,9 +9,9 @@ CArrowPool_Player::CArrowPool_Player() : m_pGameInstance(CGameInstance::GetInsta
 
 HRESULT CArrowPool_Player::Initialize()
 {
-	for (_int i = 0; i < 0; ++i)
+	for (_int i = 0; i < 3; ++i)
 	{
-		CGameObject* pArrowObject = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Arrow"),
+		CGameObject* pArrowObject = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerArrow"),
 													LEVEL_STATIC, TEXT("Layer_Arrow"));
 		if (nullptr == pArrowObject)	return E_FAIL;
 
@@ -42,12 +42,12 @@ void CArrowPool_Player::Clear(_uint iCurrentLevelIndex, _uint iNextLevelIndex)
 	}
 }
 
-CPlayer_Arrow* CArrowPool_Player::Get_Arrow()
+CPlayer_Arrow* CArrowPool_Player::Get_Arrow(_uint uiAttackPoint)
 {
 	if (m_PlayerArrowPool.empty())
 	{
 		// 풀에 없으면 새로 생성
-		CGameObject* pArrowObject = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Arrow"),
+		CGameObject* pArrowObject = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerArrow"),
 			LEVEL_STATIC, TEXT("Layer_Arrow"));
 		if (nullptr == pArrowObject)	return nullptr;
 
@@ -55,6 +55,7 @@ CPlayer_Arrow* CArrowPool_Player::Get_Arrow()
 		m_PlayerArrowPool.push(pNewArrow);
 		pNewArrow = m_PlayerArrowPool.front();
 		m_PlayerArrowPool.pop();  // 맨 앞에 있는 걸 꺼내고 제거
+		pNewArrow->Set_DealPoint(uiAttackPoint);
 
 		return pNewArrow;
 	}
@@ -63,6 +64,7 @@ CPlayer_Arrow* CArrowPool_Player::Get_Arrow()
 		// 있으면 재사용
 		CPlayer_Arrow*  pArrow = m_PlayerArrowPool.front();
 		m_PlayerArrowPool.pop();
+		pArrow->Set_DealPoint(uiAttackPoint);
 
 		return pArrow;
 	}

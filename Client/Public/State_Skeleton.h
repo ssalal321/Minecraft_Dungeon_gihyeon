@@ -4,11 +4,19 @@
 
 BEGIN(Client)
 class CSkeleton;
+class CArrowPool_Monster;
 
 class CState_Skeleton abstract: public CState_Monster
 {
+public:
+    typedef struct tagStateSkeleton : STATEMONSTER_DESC
+    {
+        CArrowPool_Monster*     pArrowPool_Monster = { nullptr };
+
+    }STATE_SKELETON_DESC;
+
 protected:
-    CState_Skeleton(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
+    CState_Skeleton(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATE_SKELETON_DESC* pDesc);
 	~CState_Skeleton() override = default;
 
 public:
@@ -27,11 +35,14 @@ public:
 protected:
     CSkeleton*    m_pSkeleton = { nullptr };
 
+    CArrowPool_Monster*     m_pArrowPool_Monster = { nullptr };;
+
 protected:
     _bool     Change_State_To_Attack();
     _bool     Change_State_To_Walk();
     _bool     Change_State_To_Idle();
-    _bool     Change_State_To_GetHit(CCollider* pOther);
+    _bool     Change_State_To_HeadSpin();
+	_bool     Change_State_To_GetHit(CCollider* pOther);
 
 public:
     void   Free()    override;

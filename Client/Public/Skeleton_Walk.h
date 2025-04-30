@@ -7,7 +7,7 @@ BEGIN(Client)
 class CSkeleton_Walk final: public CState_Skeleton
 {
 private:
-    CSkeleton_Walk(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
+    CSkeleton_Walk(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATE_SKELETON_DESC* pDesc);
 	~CSkeleton_Walk() override = default;
 
 public:
@@ -26,9 +26,10 @@ public:
 private:
     _bool       m_bRetreating = false;
     _vector     m_vRetreatStartPos = {};
+    _vector     m_vOppositeDir = {};
 
 public:
-    static CState_Monster*  Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
+    static CState_Monster*  Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATE_SKELETON_DESC* pDesc);
     void   Free()    override;
 };
 

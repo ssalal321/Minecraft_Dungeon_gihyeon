@@ -417,7 +417,7 @@ void CInventoryBase::Free()
 {
 	__super::Free();
 
-	for (auto& storeSlot : m_UIStoreSlots)
+	/*for (auto& storeSlot : m_UIStoreSlots)
 	{
 		Safe_Release(storeSlot);
 	}
@@ -433,7 +433,7 @@ void CInventoryBase::Free()
 	{
 		Safe_Release(artifactSlot);
 	}
-	m_UIArtifactSlots.clear();
+	m_UIArtifactSlots.clear();*/
 
 	Safe_Delete(m_pDesc);
 	Safe_Release(m_pTextureCom);

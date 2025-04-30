@@ -4,7 +4,7 @@
 #include "Skeleton.h"
 
 
-CSkeleton_Idle::CSkeleton_Idle(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
+CSkeleton_Idle::CSkeleton_Idle(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATE_SKELETON_DESC* pDesc)
 	: CState_Skeleton(pActor, pGameObjectDesc, pDesc)
 {
 }
@@ -89,7 +89,7 @@ void CSkeleton_Idle::Collision_Exit(CCollider* pOther)
 	__super::Collision_Exit(pOther);
 }
 
-CState_Monster* CSkeleton_Idle::Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
+CState_Monster* CSkeleton_Idle::Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATE_SKELETON_DESC* pDesc)
 {
 	CSkeleton_Idle* pGameInstance = new CSkeleton_Idle(pActor, pGameObjectDesc, pDesc);
 

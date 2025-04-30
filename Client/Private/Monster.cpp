@@ -1,10 +1,10 @@
-
 #include "Monster.h"
+
+#include "ArrowPool_Monster.h"
 #include "GameInstance.h"
 
 #include "FSM.h"
 #include "Player.h"
-
 
 CMonster::CMonster(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CContainerObject ( pDevice, pContext )
@@ -110,7 +110,7 @@ void CMonster::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eColl
 HRESULT CMonster::Ready_Components()
 {
 	/* Com_Navigation */
-	_uint	LevelIndex = m_pGameInstance->Get_PrototypeLevelIndex();
+	_uint	LevelIndex = m_pGameInstance->Get_NextLevelIndex();
 
 	switch (LevelIndex)
 	{
@@ -132,24 +132,24 @@ HRESULT CMonster::Ready_Components()
 
 	}
 
-	/* Com_Collider */
-	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereCollDesc{};
+	///* Com_Collider */
+	//CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereCollDesc{};
 
-	SphereCollDesc.fRadius = 1.5f;
-	SphereCollDesc.vCenter = _float3(0.f, SphereCollDesc.fRadius, 0.f);
-	SphereCollDesc.pGameObject = this;
-	SphereCollDesc.CombinedWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
-	SphereCollDesc.pContainerObjAttacking = &m_bHoveringColl;  // 얜 다른 것과는 충돌할 필요 X
+	//SphereCollDesc.fRadius = 1.5f;
+	//SphereCollDesc.vCenter = _float3(0.f, SphereCollDesc.fRadius, 0.f);
+	//SphereCollDesc.pGameObject = this;
+	//SphereCollDesc.CombinedWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
+	//SphereCollDesc.pContainerObjAttacking = &m_bHoveringColl;  // 얜 다른 것과는 충돌할 필요 X
 
-	CComponent* pColliderSphereCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
-		TEXT("Com_Collider_Sphere"), reinterpret_cast<CComponent**>(&m_pColliderSphereCom), &SphereCollDesc);
+	//CComponent* pColliderSphereCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
+	//	TEXT("Com_Collider_Sphere"), reinterpret_cast<CComponent**>(&m_pColliderSphereCom), &SphereCollDesc);
 
-	if (nullptr == pColliderSphereCom)
-		return E_FAIL;
+	//if (nullptr == pColliderSphereCom)
+	//	return E_FAIL;
 
-	dynamic_cast<CCollider*>(pColliderSphereCom)->Set_MouseCollider(true);
+	////dynamic_cast<CCollider*>(pColliderSphereCom)->Set_MouseCollider(true);
 
-	m_pGameInstance->Add_ColliderCom(pColliderSphereCom, TEXT("Monster_Sphere"), TEXT("Monster"));
+	//m_pGameInstance->Add_ColliderCom(pColliderSphereCom, TEXT("Monster_Sphere"), TEXT("Monster"));
 
 	return S_OK;
 }
@@ -157,6 +157,9 @@ HRESULT CMonster::Ready_Components()
 _float4 CMonster::Get_Player_Position(const _wstring& strPlayerGameObjectTag, _uint iPlayerLayerLevelIndex) const
 {
 	CPlayer*	  pPlayer				= dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(strPlayerGameObjectTag, iPlayerLayerLevelIndex, TEXT("Layer_Player")));
+	if (nullptr == pPlayer)
+		return { 0.f, 0.f, 0.f, 1.f };
+
 	CTransform*   pPlayerTransformCom	= dynamic_cast<CTransform*>(pPlayer->Find_Component(TEXT("Com_Transform")));
 	_vector		  vPlayerPosition		= pPlayerTransformCom->Get_State(CTransform::STATE_POSITION);
 
@@ -180,7 +183,7 @@ _vector CMonster::Vec_To_Player(const _wstring& strPlayerGameObjectTag, _uint iP
 	return	 dirToPlayer;
 }
 
-_float CMonster::Length_To_Player(const _wstring& strPlayerPrototypeTag, _uint iPlayerLayerLevelIndex) const
+_float CMonster::Length_To_Player() const
 {
 	_uint	CurrentLevelIndex = m_pGameInstance->Get_CurrentLevelIndex();
 
@@ -192,9 +195,9 @@ _float CMonster::Length_To_Player(const _wstring& strPlayerPrototypeTag, _uint i
 }
 
 
-_bool CMonster::Player_In_DetectRange(const _wstring& strPrototypeTag, _uint iLayerLevelIndex) const
+_bool CMonster::Player_In_DetectRange() const
 {
-	_float	 vecToPlayer = Length_To_Player(strPrototypeTag, iLayerLevelIndex);
+	_float	 vecToPlayer = Length_To_Player();
 
 	return	vecToPlayer < m_pMonsterInfo->Get_DetectRange();
 }
@@ -203,7 +206,7 @@ void CMonster::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pColliderSphereCom);
+	//Safe_Release(m_pColliderSphereCom);
 	Safe_Release(m_pNavigationCom);
 	Safe_Delete(m_pMonsterInfo);
 	Safe_Delete(m_pMonsterFSM);
