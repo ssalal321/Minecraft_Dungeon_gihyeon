@@ -76,6 +76,8 @@ void CState_Player::State_Exit()
 
 void CState_Player::Collision_Enter(CCollider* pOther)
 {
+	Modify_HP(pOther);
+
 	/*_wstring other = pOther->Get_CollidergGroupTag();
 
 	std::wcerr << "[플레이어와 " << other << " 충돌 Enter]" << std::endl;*/
@@ -182,17 +184,20 @@ _bool CState_Player::Change_State_To_BowAction()
 	return false;
 }
 
-_bool CState_Player::Change_State_To_GetHitFront(CCollider* pOther)
+_bool CState_Player::Change_State_To_GetHitFront()
+{
+	m_pPlayer->Change_State(PLAYER_STATE::GET_HIT_FRONT);
+
+	return true;
+}
+
+void CState_Player::Modify_HP(CCollider* pOther)
 {
 	if (TEXT("Monster_Arrow") == pOther->Get_ColliderTag()
 		&& pOther->Get_OtherAttacking())
 	{
 		CMonster_Arrow* pMonsterArrow = dynamic_cast<CMonster_Arrow*>(pOther->Get_OwnerObject());
 		m_pPlayerInfo->Modify_CurrentHp(-pMonsterArrow->Get_DealPoint());
-
-		m_pPlayer->Change_State(PLAYER_STATE::GET_HIT_FRONT);
-
-		return true;
 	}
 
 	if (TEXT("Monster_Weapon") == pOther->Get_ColliderTag()
@@ -200,26 +205,16 @@ _bool CState_Player::Change_State_To_GetHitFront(CCollider* pOther)
 	{
 		CItem* pItem = dynamic_cast<CItem*>(pOther->Get_OwnerObject());
 		m_pPlayerInfo->Modify_CurrentHp(-pItem->Get_DealPoint());
-
-		m_pPlayer->Change_State(PLAYER_STATE::GET_HIT_FRONT);
-
-		return true;
 	}
 
 	if (TEXT("Monster_Body_Hit") == pOther->Get_ColliderTag()
 		&& pOther->Get_OtherAttacking())
 	{
 		CPartObject* pMonsterBody = dynamic_cast<CPartObject*>(pOther->Get_OwnerObject());
-		CMonster*	 pMonster = dynamic_cast<CMonster*>(pMonsterBody->Get_ContainerObject());
+		CMonster* pMonster = dynamic_cast<CMonster*>(pMonsterBody->Get_ContainerObject());
 
 		m_pPlayerInfo->Modify_CurrentHp(-pMonster->Get_MonsterInfo()->Get_DealPoint());
-
-		m_pPlayer->Change_State(PLAYER_STATE::GET_HIT_FRONT);
-
-		return true;
 	}
-
-	return false;
 }
 
 void CState_Player::Check_Combo_Timeout(_float fTimeDelta)
@@ -252,7 +247,7 @@ void CState_Player::Reset_Combo()
 
 	m_fPrevAnimTrackPosition = 0.f;
 
-	m_pPlayer->Set_Attacking(false);
+	//m_pPlayer->Set_Attacking(false);
 
 	//std::wcerr << "[콤보 초기화 딩딩딩딩딩~]" << std::endl;
 }

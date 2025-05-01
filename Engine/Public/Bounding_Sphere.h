@@ -39,6 +39,18 @@ public:
 		m_pLocalDesc->Radius += editRadius;
 	}
 
+	void	ReSet_Bounding_Center(_float3 center) const
+	{
+		m_pLocalDesc->Center.x = center.x;
+		m_pLocalDesc->Center.y = center.y;
+		m_pLocalDesc->Center.z = center.z;
+	}
+
+	void	ReSet_Bounding_Radius(_float fRadius) const
+	{
+		m_pLocalDesc->Radius = fRadius;
+	}
+
 public:
 	HRESULT		Initialize(const BOUNDING_DESC* pArg);
 	void		Update(_fmatrix WorldMatrix)	override;

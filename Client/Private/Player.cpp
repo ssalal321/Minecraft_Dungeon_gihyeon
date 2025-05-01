@@ -178,6 +178,7 @@ HRESULT CPlayer::Ready_PartObjects()
 	if (nullptr == pBody)
 		return E_FAIL;
 
+	ItemDesc.strGameObjectTag = TEXT("GameObject_GlaiveSteel");
 	ItemDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	ItemDesc.pState = &m_iState;
 	ItemDesc.pSocketMatrix = pBody->Get_CombinedTransformationMatrix("J_R_Weapon");
@@ -190,14 +191,14 @@ HRESULT CPlayer::Ready_PartObjects()
 	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Glaive"), TEXT("Part_Weapon_Glaive"), &ItemDesc)))
 		return E_FAIL;
 
-	//// 처음엔 콜라이더 끄기
-	//CItem* pWeapon = dynamic_cast<CItem*>(Find_PartObject(TEXT("Part_Weapon_Glaive")));
-	//CCollider* pWeaponCollider = dynamic_cast<CCollider*>(pWeapon->Find_Component(pWeapon->Get_CollidergGroupTag()));
-	//pWeaponCollider->Set_ColliderActive(false);
+	// 처음엔 콜라이더 끄기
+	CItem* pWeapon = dynamic_cast<CItem*>(Find_PartObject(TEXT("Part_Weapon_Glaive")));
+	CCollider* pWeaponCollider = dynamic_cast<CCollider*>(pWeapon->Find_Component(TEXT("Com_Collider_Sphere")));
+	pWeaponCollider->Set_ColliderActive(false);
 
 	// 인벤토리에 넣기
-	CItem* pGlaive = dynamic_cast<CItem*>(Find_PartObject(TEXT("Part_Weapon_Glaive")));
-	m_pInventoryData->Add_Item_To_StoreSlot(pGlaive);
+	//CItem* pGlaive = dynamic_cast<CItem*>(Find_PartObject(TEXT("Part_Weapon_Glaive")));
+	m_pInventoryData->Add_Item_To_StoreSlot(pWeapon);
 
 	/* 이펙트를 추가한다. */
 

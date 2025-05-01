@@ -42,7 +42,8 @@ protected:
     _bool     Change_State_To_Walk();
     _bool     Change_State_To_Idle();
     _bool     Change_State_To_HeadSpin();
-	_bool     Change_State_To_GetHit(CCollider* pOther);
+	_bool     Change_State_To_GetHit();
+    void      Modify_HP(CCollider* pOther);
 
 public:
     void   Free()    override;

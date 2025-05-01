@@ -55,7 +55,7 @@ void CPlayer_Idle::Collision_Enter(CCollider* pOther)
 {
 	__super::Collision_Enter(pOther);
 
-	Change_State_To_GetHitFront(pOther);
+	//Change_State_To_GetHitFront();
 }
 
 void CPlayer_Idle::Collision_Stay(CCollider* pOther)

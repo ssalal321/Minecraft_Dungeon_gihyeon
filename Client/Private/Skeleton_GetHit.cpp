@@ -19,7 +19,7 @@ HRESULT CSkeleton_GetHit::Init_State()
 
 void CSkeleton_GetHit::State_Enter()
 {
-	m_pActorModelCom->Set_Animation(static_cast<_uint>(SKELETON_STATE::GET_HIT_FRONT), false, 1.4f);
+	m_pActorModelCom->Set_Animation(static_cast<_uint>(SKELETON_STATE::GET_HIT_FRONT), false, 1.5f);
 }
 
 void CSkeleton_GetHit::State_Priority_Update(_float fTimeDelta)

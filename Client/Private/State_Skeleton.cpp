@@ -127,17 +127,20 @@ _bool CState_Skeleton::Change_State_To_HeadSpin()
 	return false;
 }
 
-_bool CState_Skeleton::Change_State_To_GetHit(CCollider* pOther)
+_bool CState_Skeleton::Change_State_To_GetHit()
+{
+	m_pSkeleton->Change_State(Make_SkeletonState(SKELETON_STATE::GET_HIT_FRONT));
+
+	return true;
+}
+
+void CState_Skeleton::Modify_HP(CCollider* pOther)
 {
 	if (TEXT("Player_Weapon") == pOther->Get_ColliderTag()
 		&& pOther->Get_OtherAttacking())
 	{
 		CItem* pItem = dynamic_cast<CItem*>(pOther->Get_OwnerObject());
 		m_pMonsterInfo->Modify_CurrentHp(-pItem->Get_DealPoint());
-
-		m_pSkeleton->Change_State(Make_SkeletonState(SKELETON_STATE::GET_HIT_FRONT));
-
-		return true;
 	}
 
 	if (TEXT("Player_Arrow") == pOther->Get_ColliderTag()
@@ -145,13 +148,7 @@ _bool CState_Skeleton::Change_State_To_GetHit(CCollider* pOther)
 	{
 		CPlayer_Arrow* pPlayerArrow = dynamic_cast<CPlayer_Arrow*>(pOther->Get_OwnerObject());
 		m_pMonsterInfo->Modify_CurrentHp(-pPlayerArrow->Get_DealPoint());
-
-		m_pSkeleton->Change_State(Make_SkeletonState(SKELETON_STATE::GET_HIT_FRONT));
-
-		return true;
 	}
-
-	return false;
 }
 
 void CState_Skeleton::Free()
