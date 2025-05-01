@@ -16,9 +16,9 @@ private:
 
 public:
 	_uint		Get_CurrentLevelIndex() const { return m_iLevelIndex; }
-	_uint		Get_PrototypeLevelIndex() const { return m_iNextLevelIndex; }
+	_uint		Get_NextLevelIndex() const { return m_iNextLevelIndex; }
 
-	void		Set_PrototypeLevelIndex(_uint iNextLevelIndex) { m_iNextLevelIndex = iNextLevelIndex; }
+	void		Set_NextLevelIndex(_uint iNextLevelIndex) { m_iNextLevelIndex = iNextLevelIndex; }
 
 public:
 	HRESULT		Initialize();

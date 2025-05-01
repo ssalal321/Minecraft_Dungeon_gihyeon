@@ -35,7 +35,7 @@ HRESULT CPlayer::Initialize_Prototype()
 
 HRESULT CPlayer::Initialize(void* pArg)
 {
-	m_pPlayerInfo = new PLAYER_DESC(TEXT("GameObject_Player"), 100, 100, 2, 4.f, 40, false, 90.f, 3.f);
+	m_pPlayerInfo = new PLAYER_DESC(TEXT("GameObject_Player"), 100, 100, 5, 3.f, 40, false, 90.f, 3.f);
 
 	if (FAILED(__super::Initialize(m_pPlayerInfo)))
 		return E_FAIL;
@@ -123,7 +123,7 @@ void CPlayer::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eColli
 HRESULT CPlayer::Ready_Components()
 {
 	/* Com_Navigation */
-	_uint	LevelIndex = m_pGameInstance->Get_PrototypeLevelIndex();
+	_uint	LevelIndex = m_pGameInstance->Get_NextLevelIndex();
 
 	switch (LevelIndex)
 	{
@@ -178,25 +178,27 @@ HRESULT CPlayer::Ready_PartObjects()
 	if (nullptr == pBody)
 		return E_FAIL;
 
+	ItemDesc.strGameObjectTag = TEXT("GameObject_GlaiveSteel");
 	ItemDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	ItemDesc.pState = &m_iState;
 	ItemDesc.pSocketMatrix = pBody->Get_CombinedTransformationMatrix("J_R_Weapon");
 	ItemDesc.pContainerObject = this;
 	ItemDesc.pContainerObjAttacking = &m_bAttacking;
+	ItemDesc.iDealPoint = 10;
 	ItemDesc.strIconTexPrototypeTag = TEXT("Prototype_Component_Texture_Glaive_Steel");
 	ItemDesc.strIconGameObjectTag = TEXT("UIGameObject_Glaive_Steel");
 
 	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Glaive"), TEXT("Part_Weapon_Glaive"), &ItemDesc)))
 		return E_FAIL;
 
-	//// 처음엔 콜라이더 끄기
-	//CItem* pWeapon = dynamic_cast<CItem*>(Find_PartObject(TEXT("Part_Weapon_Glaive")));
-	//CCollider* pWeaponCollider = dynamic_cast<CCollider*>(pWeapon->Find_Component(pWeapon->Get_CollidergGroupTag()));
-	//pWeaponCollider->Set_ColliderActive(false);
+	// 처음엔 콜라이더 끄기
+	CItem* pWeapon = dynamic_cast<CItem*>(Find_PartObject(TEXT("Part_Weapon_Glaive")));
+	CCollider* pWeaponCollider = dynamic_cast<CCollider*>(pWeapon->Find_Component(TEXT("Com_Collider_Sphere")));
+	pWeaponCollider->Set_ColliderActive(false);
 
 	// 인벤토리에 넣기
-	CItem* pGlaive = dynamic_cast<CItem*>(Find_PartObject(TEXT("Part_Weapon_Glaive")));
-	m_pInventoryData->Add_Item_To_StoreSlot(pGlaive);
+	//CItem* pGlaive = dynamic_cast<CItem*>(Find_PartObject(TEXT("Part_Weapon_Glaive")));
+	m_pInventoryData->Add_Item_To_StoreSlot(pWeapon);
 
 	/* 이펙트를 추가한다. */
 
@@ -217,12 +219,12 @@ HRESULT CPlayer::Ready_States()
 	pStatePlayerDesc.pTransformCom		= m_pTransformCom;
 	pStatePlayerDesc.pArrowPool_Player	= m_pArrowPool_Player;
 
-	m_StatesVec[static_cast<_uint>(PLAYER_STATE::IDLE)] = CPlayer_Idle::Create(this, m_pPlayerInfo, &pStatePlayerDesc);
-	m_StatesVec[static_cast<_uint>(PLAYER_STATE::WALK)] = CPlayer_Walk::Create(this, m_pPlayerInfo, &pStatePlayerDesc);
-	m_StatesVec[static_cast<_uint>(PLAYER_STATE::ROLL)] = CPlayer_Roll::Create(this, m_pPlayerInfo, &pStatePlayerDesc);
+	m_StatesVec[static_cast<_uint>(PLAYER_STATE::IDLE)]			 = CPlayer_Idle::Create(this, m_pPlayerInfo, &pStatePlayerDesc);
+	m_StatesVec[static_cast<_uint>(PLAYER_STATE::WALK)]			 = CPlayer_Walk::Create(this, m_pPlayerInfo, &pStatePlayerDesc);
+	m_StatesVec[static_cast<_uint>(PLAYER_STATE::ROLL)]			 = CPlayer_Roll::Create(this, m_pPlayerInfo, &pStatePlayerDesc);
 	m_StatesVec[static_cast<_uint>(PLAYER_STATE::GET_HIT_FRONT)] = CPlayer_GetHit::Create(this, m_pPlayerInfo, &pStatePlayerDesc);
-	m_StatesVec[static_cast<_uint>(PLAYER_STATE::GLAIVE_COMBO)] = CPlayer_Glaive_Combo::Create(this, m_pPlayerInfo, &pStatePlayerDesc);
-	m_StatesVec[static_cast<_uint>(PLAYER_STATE::BOW_ACTION)] = CPlayer_BowAction::Create(this, m_pPlayerInfo, &pStatePlayerDesc);
+	m_StatesVec[static_cast<_uint>(PLAYER_STATE::GLAIVE_COMBO)]  = CPlayer_Glaive_Combo::Create(this, m_pPlayerInfo, &pStatePlayerDesc);
+	m_StatesVec[static_cast<_uint>(PLAYER_STATE::BOW_ACTION)]	 = CPlayer_BowAction::Create(this, m_pPlayerInfo, &pStatePlayerDesc);
 
 	m_pPlayerFSM = FSM::Create();
 

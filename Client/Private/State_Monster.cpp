@@ -16,14 +16,14 @@ HRESULT CState_Monster::Init_State()
 {
 	m_pMonsterInfo = dynamic_cast<CMonster::MONSTER_DESC*>(m_pGameObjectInfo);
 
-	m_pActorModelCom	 = m_pStateMonsterDesc->pActorModelCom;
-	m_pColliderOBBCom	 = m_pStateMonsterDesc->pColliderOBBCom;
-	m_pColliderSphereCom = m_pStateMonsterDesc->pColliderSphereCom;
-	m_pTransformCom		 = m_pStateMonsterDesc->pTransformCom;
-	m_pNavigationCom	 = m_pStateMonsterDesc->pNavigationCom;
+	m_pActorModelCom	= m_pStateMonsterDesc->pActorModelCom;
+	m_pColliderCom		= m_pStateMonsterDesc->pColliderCom;
+	//m_pColliderSphereCom = m_pStateMonsterDesc->pColliderSphereCom;
+	m_pTransformCom		= m_pStateMonsterDesc->pTransformCom;
+	m_pNavigationCom	= m_pStateMonsterDesc->pNavigationCom;
 
 	if (nullptr == m_pMonsterInfo || nullptr == m_pActorModelCom || nullptr == m_pTransformCom ||
-		nullptr == m_pNavigationCom || nullptr == m_pColliderOBBCom || nullptr == m_pColliderSphereCom)
+		nullptr == m_pNavigationCom || nullptr == m_pColliderCom/* || nullptr == m_pColliderSphereCom*/)
 		return E_FAIL;
 
 	return S_OK;

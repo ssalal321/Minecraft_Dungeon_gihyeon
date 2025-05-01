@@ -1,5 +1,7 @@
 #include "Collider.h"
 
+#include <iostream>
+
 #include "Bounding_AABB.h"
 #include "Bounding_OBB.h"
 #include "Bounding_Sphere.h"
@@ -100,17 +102,32 @@ void CCollider::Process_Collisions()
 	for (auto* pOther : m_currCollisions)
 	{
 		if (m_prevCollisions.find(pOther) != m_prevCollisions.end())
+		{
 			m_pOwnerGameObject->Collided_With(pOther, STAY);
 
+			/*std::wcerr << "[" << m_pOwnerGameObject->Get_GameObjectTag() << "]客 ["
+				<< pOther->Get_OwnerObject()->Get_GameObjectTag() << "] 面倒 Stay" << std::endl;*/
+		}
+
 		else
+		{
 			m_pOwnerGameObject->Collided_With(pOther, ENTER);
+
+			/*std::wcerr << "[" << m_pOwnerGameObject->Get_GameObjectTag() << "]客 ["
+				<< pOther->Get_OwnerObject()->Get_GameObjectTag() << "] 面倒 Enter" << std::endl;*/
+		}
 	}
 
 	// Exit
 	for (auto* pOther : m_prevCollisions)
 	{
 		if (m_currCollisions.find(pOther) == m_currCollisions.end())
+		{
 			m_pOwnerGameObject->Collided_With(pOther, EXIT);
+
+			/*std::wcerr << "[" << m_pOwnerGameObject->Get_GameObjectTag() << "]客 ["
+				<< pOther->Get_OwnerObject()->Get_GameObjectTag() << "] 面倒 Exit" << std::endl;*/
+		}
 	}
 
 	// Prepare for next frame

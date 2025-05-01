@@ -5,7 +5,8 @@
 /* 플레이어라는 객체를 구성하기위한 파츠들을 모아서 쥐고 있는 객체. */
 
 BEGIN(Client)
-class CState;
+	class CArrowPool_Monster;
+	class CState;
 
 class CSkeleton final : public CMonster
 {
@@ -24,8 +25,8 @@ public:
 	
 private:
 	_uint		m_iState = { static_cast<_uint>(ZOMBIE_STATE::STATE_END) };
-	
-	_float4		m_NextPosition = {0.f, 0.f, 0.f, 1.f};
+
+	CArrowPool_Monster*		m_pArrowPool_Monster = { nullptr };
 
 	static _int		m_iSkeletonID;
 

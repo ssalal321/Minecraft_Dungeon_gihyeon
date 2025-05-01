@@ -57,7 +57,7 @@ void CInventorySlot::Free()
 {
     __super::Free();
 
-    Safe_Release(m_pIcon);
+    //Safe_Release(m_pIcon);
 
     Safe_Delete(m_pDesc);
     Safe_Release(m_pEmptyTextureCom);

@@ -33,10 +33,13 @@ HRESULT CLevel_GamePlay::Initialize()
     if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
         return E_FAIL;
 
-    if (FAILED(Ready_Layer_UI(TEXT("Layer_UI"))))
+    if (FAILED(Ready_Layer_InventoryUI(TEXT("Layer_InventoryUI"))))
         return E_FAIL;
 
     if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
+        return E_FAIL;
+
+    if (FAILED(Ready_Layer_PlayerSlotUI(TEXT("Layer_PlayerSlotUI"))))
         return E_FAIL;
 
     if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
@@ -71,9 +74,11 @@ void CLevel_GamePlay::Update(_float fTimeDelta)
 
     // 1. 현재 가장 가까운 Monster collider 찾기
     CCollider* pClosestCollider = Get_Closest_Collider(fWorldMousePos, fWorldMouseRay);
+    if (nullptr == pClosestCollider)  // 아래에 다른 코드 없기도 하고 나중에 함수로 뺄 생각 하고 넣은 것
+        return;
+
     CMonster* pPrevMonster = m_pPickedMonster;
-    CMonster* pCurrMonster = pClosestCollider ?
-							dynamic_cast<CMonster*>(pClosestCollider->Get_OwnerObject()) : nullptr;
+    CMonster* pCurrMonster = dynamic_cast<CMonster*>(dynamic_cast<CPartObject*>(pClosestCollider->Get_OwnerObject())->Get_ContainerObject());
 
     // 2. 이전 Hovered 상태 해제
     if (pPrevMonster && pPrevMonster != pCurrMonster)
@@ -95,6 +100,11 @@ void CLevel_GamePlay::Update(_float fTimeDelta)
         {
             Click_Chase_Monster(pCurrMonster);
         }
+
+        /*if (m_pGameInstance->Key_Up(VK_LBUTTON) && !bMouseClickLock)
+        {
+            m_pPlayer->Set_Chasing(false, nullptr);
+        }*/
     }
 }
 
@@ -102,7 +112,8 @@ CCollider* CLevel_GamePlay::Get_Closest_Collider(const _float4& mousePos, const 
 {
     unordered_map<_wstring, vector<CCollider*>> colliders = *m_pGameInstance->Get_Colliders();
     auto it = colliders.find(TEXT("Monster"));
-    if (it == colliders.end()) return nullptr;
+    if (it == colliders.end())
+        return nullptr;
 
     CCollider* pClosest = nullptr;
     _float minDist = FLT_MAX;
@@ -239,14 +250,29 @@ HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _wstring& strLayerTag)
     return S_OK;
 }
 
-HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& strLayerTag)
+HRESULT CLevel_GamePlay::Ready_Layer_InventoryUI(const _wstring& strLayerTag)
 {
-#pragma region PlayerStateSlot
+    CInventoryBase::INVENTORY_BASE_DESC  InventoryBaseDesc
+    (TEXT("GameObject_InventoryBase"), CUIObject::UNCLICKABLE,
+        g_iWinSizeX * 0.5f, g_iWinSizeY * 0.5f, 0.6f, 1280.f, 720.f,
+        L"Prototype_Component_Texture_InventoryBase");
+
+    CUIObject* pInventoryBase = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_GAMEPLAY,
+        TEXT("Prototype_GameObject_InventoryBase"),
+        CUI_Manager::PERSISTENT, &InventoryBaseDesc);
+
+    if (nullptr == pInventoryBase) return E_FAIL;
+
+    return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Layer_PlayerSlotUI(const _wstring& strLayerTag)
+{
     _float fPlayerStateSlotX = g_iWinSizeX * 0.5f;
     _float fPlayerStateSlotY = g_iWinSizeY - 105.f * 0.5f;
 
     CUI_Image::UIIMAGE_DESC  PlayerStateSlotDesc
-    (TEXT("GameObject_PlayerStateSlot"), CUI_Image::UNCLICKABLE, 
+    (TEXT("GameObject_PlayerStateSlot"), CUI_Image::UNCLICKABLE,
         fPlayerStateSlotX, fPlayerStateSlotY, 0.9f, 713.f, 105.f,
         L"Prototype_Component_Texture_PlayerStateSlot", LEVEL_STATIC, LEVEL_STATIC);
 
@@ -267,20 +293,6 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& strLayerTag)
         CUI_Manager::PERSISTENT, &PlayerHPDesc);
 
     if (nullptr == pPlayerHP) return E_FAIL;
-#pragma endregion
-
-#pragma region Inventory
-    CInventoryBase::INVENTORY_BASE_DESC  InventoryBaseDesc
-    (TEXT("GameObject_InventoryBase"), CUIObject::UNCLICKABLE,
-        g_iWinSizeX * 0.5f, g_iWinSizeY * 0.5f, 0.6f, 1280.f, 720.f,
-        L"Prototype_Component_Texture_InventoryBase");
-
-    CUIObject* pInventoryBase = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_GAMEPLAY,
-        TEXT("Prototype_GameObject_InventoryBase"),
-        CUI_Manager::PERSISTENT, &InventoryBaseDesc);
-
-    if (nullptr == pInventoryBase) return E_FAIL;
-#pragma endregion
 
     return S_OK;
 }

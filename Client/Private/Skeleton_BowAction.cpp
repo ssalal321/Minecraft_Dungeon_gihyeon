@@ -3,9 +3,12 @@
 
 #include <random>
 
-#define  AIMING_TIME 0.5f
+#include "ArrowPool_Monster.h"
+#include "Monster_Arrow.h"
 
-CSkeleton_BowAction::CSkeleton_BowAction(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
+#define SHOOT_ARROW  28.f
+
+CSkeleton_BowAction::CSkeleton_BowAction(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATE_SKELETON_DESC* pDesc)
 	: CState_Skeleton(pActor, pGameObjectDesc, pDesc)
 {
 }
@@ -23,8 +26,7 @@ HRESULT CSkeleton_BowAction::Init_State()
 
 void CSkeleton_BowAction::State_Enter()
 {
-	m_fAnimTimer = 0.f;
-	m_bArrowShot = false;
+	m_bShotArrow = false;
 
 	m_pActorModelCom->Set_Animation(static_cast<_uint>(SKELETON_STATE::BOW_ACTION), true, 0.9f);
 }
@@ -38,24 +40,6 @@ void CSkeleton_BowAction::State_Priority_Update(_float fTimeDelta)
 void CSkeleton_BowAction::State_Update(_float fTimeDelta)
 {
     __super::State_Update(fTimeDelta);
-
-    m_fAnimTimer += fTimeDelta;
-
-	if (m_fAnimTimer <= AIMING_TIME)
-	{
-		_float4 playerPos = m_pSkeleton->Get_Player_Position(TEXT("GameObject_Player"),
-															 m_pGameInstance->Get_CurrentLevelIndex());
-		m_pTransformCom->LookAt(XMLoadFloat4(&playerPos));
-	}
-
-	if (!m_bArrowShot && m_fAnimTimer > AIMING_TIME )
-	{
-		// 화살 날리기
-		// 화살 오브젝트는 본인이 그 방향으로 날아가는 기능을 가지게 한다.
-
-		m_bArrowShot = true;
-	}
-
    
     if (m_bAnimationFinished)
     {
@@ -65,22 +49,25 @@ void CSkeleton_BowAction::State_Update(_float fTimeDelta)
         if (Change_State_To_Walk())
             return;
 
-		static std::random_device rd;
-		static std::mt19937 gen(rd());
-		static uniform_real_distribution<float> dist(0.0f, 1.0f); // 0.0 ~ 1.0 float 확률
-
-		if (dist(gen) < 0.3f) // 30% 확률
-		{
-			m_pSkeleton->Change_State(Make_SkeletonState(SKELETON_STATE::HEAD_SPIN));
+		if (Change_State_To_HeadSpin())
 			return;
-		}
 
-		m_fAnimTimer = 0.f;
-		m_bArrowShot = false;
-		
-    }    
+		m_bShotArrow = false;
+    }
+
+	_float fAnimCurTrackPos = m_pActorModelCom->Get_AnimCurrentTrackPosition();
+
+	if (!m_bShotArrow && SHOOT_ARROW <= fAnimCurTrackPos)
+		Shoot_Arrow();
+
+	if (m_bShotArrow)
+		return;
+
+	m_PlayerPosition = m_pSkeleton->Get_Player_Position(TEXT("GameObject_Player"),
+														m_pGameInstance->Get_CurrentLevelIndex());
+
+	m_pTransformCom->LookAt(XMLoadFloat4(&m_PlayerPosition));
 }
-
 
 void CSkeleton_BowAction::State_Late_Update(_float fTimeDelta)
 {
@@ -95,7 +82,7 @@ void CSkeleton_BowAction::Collision_Enter(CCollider* pOther)
 {
     __super::Collision_Enter(pOther);
 
-	Change_State_To_GetHit(pOther);
+	Change_State_To_GetHit();
 }
 
 void CSkeleton_BowAction::Collision_Stay(CCollider* pOther)
@@ -108,7 +95,20 @@ void CSkeleton_BowAction::Collision_Exit(CCollider* pOther)
     __super::Collision_Exit(pOther);
 }
 
-CState_Monster* CSkeleton_BowAction::Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
+void CSkeleton_BowAction::Shoot_Arrow()
+{
+	CMonster_Arrow*  pMonsterArrow = m_pArrowPool_Monster->Get_Arrow(m_pMonsterInfo->Get_DealPoint());
+	if (nullptr == pMonsterArrow)
+		return;
+
+	m_bShotArrow = true;
+
+	_float4	 monsterPos = {};
+	XMStoreFloat4(&monsterPos, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+	pMonsterArrow->Shoot(monsterPos, m_PlayerPosition);
+}
+
+CState_Monster* CSkeleton_BowAction::Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATE_SKELETON_DESC* pDesc)
 {
     CSkeleton_BowAction* pGameInstance = new CSkeleton_BowAction(pActor, pGameObjectDesc, pDesc);
 

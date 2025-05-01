@@ -1,5 +1,10 @@
 #include "Collision_Manager.h"
+
+#include <iostream>
+#include <ostream>
+
 #include "GameInstance.h"
+#include "GameObject.h"
 
 CCollision_Manager::CCollision_Manager()
 	: m_pGameInstance{ CGameInstance::GetInstance() }
@@ -63,6 +68,9 @@ void CCollision_Manager::Update()
                         // 충돌 쌍을 서로에게 기록
                         colliderA->Collided_With(colliderB);
                         colliderB->Collided_With(colliderA);
+
+                        /*std::wcerr << "[" << colliderA->Get_OwnerObject()->Get_GameObjectTag() << "]와 ["
+                    	<< colliderB->Get_OwnerObject()->Get_GameObjectTag() << "] 충돌" << std::endl;*/
                     }
                 }
             }

@@ -3,7 +3,7 @@
 #include "Player.h"
 #include "Skeleton.h"
 
-CSkeleton_Walk::CSkeleton_Walk(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
+CSkeleton_Walk::CSkeleton_Walk(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATE_SKELETON_DESC* pDesc)
 	: CState_Skeleton(pActor, pGameObjectDesc, pDesc)
 {
 }
@@ -22,7 +22,7 @@ HRESULT CSkeleton_Walk::Init_State()
 void CSkeleton_Walk::State_Enter()
 {
 	m_bRetreating = false;
-
+	m_vOppositeDir = { 0.f, 0.f, 0.f, 0.f };
 	m_pActorModelCom->Set_Animation(static_cast<_uint>(SKELETON_STATE::WALK), true);
 }
 
@@ -45,7 +45,7 @@ void CSkeleton_Walk::State_Update(_float fTimeDelta)
 
 	_float4 playerPos = m_pSkeleton->Get_Player_Position(TEXT("GameObject_Player"), currentLevelIndex);
 	_vector vecToPlayer = m_pSkeleton->Vec_To_Player(TEXT("GameObject_Player"), currentLevelIndex);
-	_vector vOppositeDir = XMVector3Normalize(-vecToPlayer);
+	
 
 	_float lengthToPlayer = {};
 	XMStoreFloat(&lengthToPlayer, XMVector3Length(vecToPlayer));
@@ -62,11 +62,13 @@ void CSkeleton_Walk::State_Update(_float fTimeDelta)
 		if (!m_bRetreating)
 		{
 			m_bRetreating = true;
+			m_vOppositeDir = XMVector3Normalize(-vecToPlayer);
 			m_vRetreatStartPos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
 		}
 
+		
 		_vector vCurPos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
-		_vector vTargetPos = vCurPos + vOppositeDir;
+		_vector vTargetPos = vCurPos + m_vOppositeDir;
 
 		m_pTransformCom->LookAt(vTargetPos);
 		m_pTransformCom->Go_Straight(fTimeDelta, m_pNavigationCom);
@@ -98,7 +100,7 @@ void CSkeleton_Walk::Collision_Enter(CCollider* pOther)
 {
 	__super::Collision_Enter(pOther);
 
-	Change_State_To_GetHit(pOther);
+	Change_State_To_GetHit();
 }
 
 void CSkeleton_Walk::Collision_Stay(CCollider* pOther)
@@ -111,7 +113,7 @@ void CSkeleton_Walk::Collision_Exit(CCollider* pOther)
 	__super::Collision_Exit(pOther);
 }
 
-CState_Monster* CSkeleton_Walk::Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
+CState_Monster* CSkeleton_Walk::Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATE_SKELETON_DESC* pDesc)
 {
 	CSkeleton_Walk* pGameInstance = new CSkeleton_Walk(pActor, pGameObjectDesc, pDesc);
 

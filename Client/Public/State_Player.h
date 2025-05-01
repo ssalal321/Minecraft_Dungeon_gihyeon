@@ -45,6 +45,12 @@ protected:
     _bool			        m_bAnimationFinished = { false };
     //_bool                   m_bClickLock = { false };
 
+    static _bool            m_bCombo1_ColliderOn;
+    static _bool            m_bCombo2_ColliderOn;
+    static _bool            m_bCombo3_ColliderOn;
+    static _bool            m_bCombo1_ColliderOff;
+    static _bool            m_bCombo2_ColliderOff;
+    static _bool            m_bCombo3_ColliderOff;
     static _bool            m_bCombo1_Finished;
     static _bool            m_bCombo2_Finished;
     static _bool            m_bCombo3_Finished;
@@ -59,7 +65,8 @@ protected:
     _bool   Change_State_To_Roll();
     _bool   Change_State_To_GlaiveCombo();   // 최대한 Walk에서만 호출하기
     _bool   Change_State_To_BowAction();
-    _bool   Change_State_To_GetHitFront(CCollider* pOther);
+    _bool   Change_State_To_GetHitFront();
+    void    Modify_HP(CCollider* pOther);
 
     void    Check_Combo_Timeout(_float fTimeDelta);
     void    Reset_Combo();

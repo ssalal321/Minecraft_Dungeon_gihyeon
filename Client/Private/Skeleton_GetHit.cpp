@@ -1,7 +1,7 @@
 #include "Skeleton_GetHit.h"
 #include "Skeleton.h"
 
-CSkeleton_GetHit::CSkeleton_GetHit(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
+CSkeleton_GetHit::CSkeleton_GetHit(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATE_SKELETON_DESC* pDesc)
 	: CState_Skeleton(pActor, pGameObjectDesc, pDesc)
 {
 }
@@ -19,7 +19,7 @@ HRESULT CSkeleton_GetHit::Init_State()
 
 void CSkeleton_GetHit::State_Enter()
 {
-	m_pActorModelCom->Set_Animation(static_cast<_uint>(SKELETON_STATE::GET_HIT_FRONT), false, 1.4f);
+	m_pActorModelCom->Set_Animation(static_cast<_uint>(SKELETON_STATE::GET_HIT_FRONT), false, 1.5f);
 }
 
 void CSkeleton_GetHit::State_Priority_Update(_float fTimeDelta)
@@ -68,7 +68,7 @@ void CSkeleton_GetHit::Collision_Exit(CCollider* pOther)
 	__super::Collision_Exit(pOther);
 }
 
-CState_Monster* CSkeleton_GetHit::Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
+CState_Monster* CSkeleton_GetHit::Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATE_SKELETON_DESC* pDesc)
 {
 	CSkeleton_GetHit* pGameInstance = new CSkeleton_GetHit(pActor, pGameObjectDesc, pDesc);
 

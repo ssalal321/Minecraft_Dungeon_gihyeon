@@ -1,8 +1,15 @@
 #include "Player_Glaive_Combo.h"
 #include "Body_Player.h"
 
-#define GLAIVE_COMBO1  22.f
-#define GLAIVE_COMBO2  40.f
+#define GLAIVE_COMBO1_AttackOn  10.f
+#define GLAIVE_COMBO1_AttackOff  19.f
+#define GLAIVE_COMBO2_AttackOn  30.f
+#define GLAIVE_COMBO2_AttackOff  37.f
+#define GLAIVE_COMBO3_AttackOn  61.f
+#define GLAIVE_COMBO3_AttackOff  72.f
+#define GLAIVE_COMBO1_Finish  22.f
+#define GLAIVE_COMBO2_Finish  40.f
+#define GLAIVE_COMBO3_Finish  85.f
 
 CPlayer_Glaive_Combo::CPlayer_Glaive_Combo(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEPLAYER_DESC* pDesc)
 	: CState_Player(pActor, pGameObjectDesc, pDesc)
@@ -13,12 +20,14 @@ HRESULT CPlayer_Glaive_Combo::Init_State()
 {
 	__super::Init_State();
 
+	m_pGlaiveCollider = dynamic_cast<CCollider*>(m_pPlayer->Find_Part_Component(TEXT("Part_Weapon_Glaive"),
+																	 TEXT("Com_Collider_Sphere")));
+
 	return S_OK;
 }
 
 void CPlayer_Glaive_Combo::State_Enter()
 {
-	m_pPlayer->Set_Attacking(true);
 	//m_fAnimTimer = 0.f;
 
 	m_pTransformCom->LookAt(m_pPlayer->Get_MonsterTransformCom()->Get_State(CTransform::STATE_POSITION));
@@ -31,7 +40,7 @@ void CPlayer_Glaive_Combo::State_Enter()
 
 	if (m_bCombo1_Finished)  // 두 번째, 세 번째
 	{
-		m_pActorModelCom->Link_AnimationCombo(static_cast<_uint>(PLAYER_STATE::GLAIVE_COMBO), m_fPrevAnimTrackPosition, false, 1.3f);
+		m_pActorModelCom->Link_AnimationCombo(static_cast<_uint>(PLAYER_STATE::GLAIVE_COMBO), m_fPrevAnimTrackPosition, false, 1.1f);
 	}
 }
 
@@ -45,11 +54,54 @@ void CPlayer_Glaive_Combo::State_Update(_float fTimeDelta)
 {
 	__super::State_Update(fTimeDelta);
 
-	_float fAnimCurTrackPos = m_pActorModelCom->Get_AnimCurrentTrackPosition();
+	_float  fAnimCurTrackPos = m_pActorModelCom->Get_AnimCurrentTrackPosition();
 
-	if (!m_bCombo1_Finished && GLAIVE_COMBO1 <= fAnimCurTrackPos)  // GLAIVE_COMBO1까지만
+
+	if (!m_bCombo1_ColliderOn && GLAIVE_COMBO1_AttackOn <= fAnimCurTrackPos)
 	{
-		m_fPrevAnimTrackPosition = GLAIVE_COMBO1;
+		m_pPlayer->Set_Attacking(true);
+		m_pGlaiveCollider->Set_ColliderActive(true);
+		m_bCombo1_ColliderOn = true;
+	}
+		
+	if (!m_bCombo1_ColliderOff && GLAIVE_COMBO1_AttackOff <= fAnimCurTrackPos)
+	{
+		m_pPlayer->Set_Attacking(false);
+		m_pGlaiveCollider->Set_ColliderActive(false);
+		m_bCombo1_ColliderOff = true;
+	}
+
+	if (!m_bCombo2_ColliderOn && GLAIVE_COMBO2_AttackOn <= fAnimCurTrackPos)
+	{
+		m_pPlayer->Set_Attacking(true);
+		m_pGlaiveCollider->Set_ColliderActive(true);
+		m_bCombo2_ColliderOn = true;
+	}
+
+	if (!m_bCombo2_ColliderOff && GLAIVE_COMBO2_AttackOff <= fAnimCurTrackPos)
+	{
+		m_pPlayer->Set_Attacking(false);
+		m_pGlaiveCollider->Set_ColliderActive(false);
+		m_bCombo2_ColliderOff = true;
+	}
+
+	if (!m_bCombo3_ColliderOn && GLAIVE_COMBO3_AttackOn <= fAnimCurTrackPos)
+	{
+		m_pPlayer->Set_Attacking(true);
+		m_pGlaiveCollider->Set_ColliderActive(true);
+		m_bCombo3_ColliderOn = true;
+	}
+
+	if (!m_bCombo3_ColliderOff && GLAIVE_COMBO3_AttackOff <= fAnimCurTrackPos)
+	{
+		m_pPlayer->Set_Attacking(false);
+		m_pGlaiveCollider->Set_ColliderActive(false);
+		m_bCombo3_ColliderOff = true;
+	}
+
+	if (!m_bCombo1_Finished && GLAIVE_COMBO1_Finish <= fAnimCurTrackPos)  // GLAIVE_COMBO1까지만
+	{
+		m_fPrevAnimTrackPosition = GLAIVE_COMBO1_Finish;
 		m_bCombo1_Finished = true;
 
 		m_bComboInitiating = true;
@@ -59,19 +111,19 @@ void CPlayer_Glaive_Combo::State_Update(_float fTimeDelta)
 		return;
 	}
 
-	if (!m_bCombo2_Finished && GLAIVE_COMBO2 <= fAnimCurTrackPos)  // GLAIVE_COMBO2까지만
+	if (!m_bCombo2_Finished && GLAIVE_COMBO2_Finish <= fAnimCurTrackPos)  // GLAIVE_COMBO2까지만
 	{
-		m_fPrevAnimTrackPosition = GLAIVE_COMBO2;
+		m_fPrevAnimTrackPosition = GLAIVE_COMBO2_Finish;
 		m_bCombo2_Finished = true;
 
 		m_bComboInitiating = true;
 		m_fCombo_ElapsedTime = 0.f;
-
+		
 		m_pPlayer->Change_State(PLAYER_STATE::IDLE);
 		return;
 	}
 
-	if (!m_bCombo3_Finished && m_bAnimationFinished)  // GLAIVE_COMBO3 끝나면
+	if (!m_bCombo3_Finished && GLAIVE_COMBO3_Finish <= fAnimCurTrackPos)  // GLAIVE_COMBO3 끝나면
 	{
 		m_bCombo3_Finished = true;
 
@@ -89,10 +141,8 @@ void CPlayer_Glaive_Combo::State_Update(_float fTimeDelta)
 	//	pWeaponCollider->Set_ColliderActive(false);
 
 
-
 	//	// 무기 콜라이더 꺼놨다가 켜야 하는데 무기 장착도 버거워서 좀 나중에 하자...ㅁ재더라니어리ㅓ맆ㄸㅉ컲ㅋㅁㄷ;	
 	//}
-
 }
 
 void CPlayer_Glaive_Combo::State_Late_Update(_float fTimeDelta)
@@ -103,6 +153,7 @@ void CPlayer_Glaive_Combo::State_Late_Update(_float fTimeDelta)
 void CPlayer_Glaive_Combo::State_Exit()
 {
 	m_pPlayer->Set_Attacking(false);
+	m_pGlaiveCollider->Set_ColliderActive(false);
 	m_pPlayer->Set_Chasing(false, nullptr);
 
 	if (m_bCombo3_Finished)
@@ -115,8 +166,8 @@ void CPlayer_Glaive_Combo::Collision_Enter(CCollider* pOther)
 {
 	__super::Collision_Enter(pOther);
 
-	if (m_bAnimationFinished)
-		Change_State_To_GetHitFront(pOther);
+	/*if (m_bCombo3_Finished && false == m_pPlayer->Get_Chasing())
+		Change_State_To_GetHitFront();*/
 }
 
 void CPlayer_Glaive_Combo::Collision_Stay(CCollider* pOther)

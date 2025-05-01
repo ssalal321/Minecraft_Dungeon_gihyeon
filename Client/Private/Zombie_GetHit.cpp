@@ -1,4 +1,7 @@
 #include "Zombie_GetHit.h"
+
+#include <iostream>
+
 #include "Zombie.h"
 
 CZombie_GetHit::CZombie_GetHit(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
@@ -19,7 +22,7 @@ HRESULT CZombie_GetHit::Init_State()
 
 void CZombie_GetHit::State_Enter()
 {
-	m_pActorModelCom->Set_Animation(static_cast<_uint>(ZOMBIE_STATE::GET_HIT_FRONT), false, 1.4f);
+	m_pActorModelCom->Set_Animation(static_cast<_uint>(ZOMBIE_STATE::GET_HIT_FRONT), false, 1.5f);
 }
 
 void CZombie_GetHit::State_Priority_Update(_float fTimeDelta)
@@ -56,6 +59,7 @@ void CZombie_GetHit::State_Exit()
 void CZombie_GetHit::Collision_Enter(CCollider* pOther)
 {
 	__super::Collision_Enter(pOther);
+	
 }
 
 void CZombie_GetHit::Collision_Stay(CCollider* pOther)

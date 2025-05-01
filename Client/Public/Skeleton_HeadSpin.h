@@ -6,7 +6,7 @@ BEGIN(Client)
 class CSkeleton_HeadSpin final: public CState_Skeleton
 {
 private:
-    CSkeleton_HeadSpin(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
+    CSkeleton_HeadSpin(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATE_SKELETON_DESC* pDesc);
 	~CSkeleton_HeadSpin() override = default;
 
 public:
@@ -26,7 +26,7 @@ private:
    
 
 public:
-    static CState_Monster*  Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
+    static CState_Monster*  Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATE_SKELETON_DESC* pDesc);
     void   Free()    override;
 };
 

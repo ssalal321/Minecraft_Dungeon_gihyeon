@@ -53,16 +53,16 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMapFilePath
 	{
 		for (size_t j = 0; j < m_iNumVerticesX; j++)
 		{
-			_uint	iIndex = i * m_iNumVerticesX + j;
+			_uint	iIndex = static_cast<_uint>(i) * m_iNumVerticesX + static_cast<_uint>(j);
 
 		//	255, 255, 255, 255
 		//	11111111 11011101 11011101 11011101
 		//&	00000000 00000000 00000000 11111111
 		//	00000000 00000000 00000000 11011101
 					
-			pVertices[iIndex].vPosition = _float3(j, (pPixel[iIndex] & 0x000000ff) / 10.f, i);
+			pVertices[iIndex].vPosition = _float3(static_cast<_float>(j), (pPixel[iIndex] & 0x000000ff) / 10.f, static_cast<_float>(i));
 			pVertices[iIndex].vNormal = _float3(0.f, 0.f, 0.f);
-			pVertices[iIndex].vTexcoord = _float2(j / (m_iNumVerticesX - 1.f), i / (m_iNumVerticesZ - 1.f));
+			pVertices[iIndex].vTexcoord = _float2(static_cast<_float>(j) / (m_iNumVerticesX - 1.f), static_cast<_float>(i) / (m_iNumVerticesZ - 1.f));
 		}
 	}
 #pragma endregion
@@ -79,7 +79,7 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMapFilePath
 	{
 		for (size_t j = 0; j < m_iNumVerticesX - 1; j++)
 		{
-			_uint	iIndex = i * m_iNumVerticesX + j;
+			_uint	iIndex = static_cast<_uint>(i) * m_iNumVerticesX + static_cast<_uint>(j);
 
 			_uint	iIndices[4] = {
 				iIndex + m_iNumVerticesX,

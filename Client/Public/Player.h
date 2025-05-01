@@ -14,22 +14,44 @@ class CPlayer final : public CContainerObject
 public:
 	struct PLAYER_DESC : public GAMEOBJECT_DESC
 	{
-		_int     iCurrentHP;
-		_int     iMaxHP;
-		_int     iAttackPoint;
-		_float   fEffectiveRange;
-		_bool    bStunned;
+		_uint     uiCurrentHP;
+		_uint     uiMaxHP;
+		_int      iArrowDealPoint;
+		_float    fAttackableRange;
+		_bool     bStunned;
 
-		_int	 iArrowNum;
+		_uint	 iArrowNum;
 
-		PLAYER_DESC(const _wstring& GameObjectTag, _int currentHP, const _int& maxHP, _int attackPoint,
-			const _float&  effectiveRange, _int arrowNum, _bool stunned = false,
+		PLAYER_DESC(const _wstring& GameObjectTag, _uint currentHP, const _uint& maxHP, _int arrowDealPoint,
+			const _float&  attackableRange, _uint arrowNum, _bool stunned = false,
 			_float rotationPerSec = 0.f, _float speedPerSec = 0.f)
-			: GAMEOBJECT_DESC(GameObjectTag, rotationPerSec, speedPerSec), iCurrentHP(currentHP), iMaxHP(maxHP), iAttackPoint(attackPoint),
-			fEffectiveRange(effectiveRange), bStunned(stunned), iArrowNum(arrowNum) {
+			: GAMEOBJECT_DESC(GameObjectTag, rotationPerSec, speedPerSec), uiCurrentHP(currentHP), uiMaxHP(maxHP), iArrowDealPoint(arrowDealPoint),
+			fAttackableRange(attackableRange), bStunned(stunned), iArrowNum(arrowNum) {
 		}
 
 		~PLAYER_DESC() override = default;
+
+		const _uint&	Get_CurrentHP() const { return uiCurrentHP; }
+		const _uint&	Get_MaxHP()		const { return uiMaxHP; }
+		const _int&		Get_Arrow_DealPoint() const { return iArrowDealPoint; }
+		const _float&	Get_AttackableRange() const { return fAttackableRange; }
+
+		void	Modify_CurrentHp(_int iDamageOrHeal)
+		{
+			if (0 >= uiCurrentHP + iDamageOrHeal)
+			{
+				uiCurrentHP = 0;
+				return;
+			}
+
+			if (uiMaxHP <= uiCurrentHP + iDamageOrHeal)
+			{
+				uiCurrentHP = uiMaxHP;
+				return;
+			}
+
+			uiCurrentHP += iDamageOrHeal;
+		}
 	};
 
 	/*enum PLAYERSTATE
@@ -49,20 +71,14 @@ private:
 	~CPlayer() override = default;
 
 public:
-	HRESULT		Initialize_Prototype()				override;
-	HRESULT		Initialize(void* pArg = nullptr)	override;
-	void		Priority_Update(_float fTimeDelta)	override;
-	void		Update(_float fTimeDelta)			override;
-	void		Late_Update(_float fTimeDelta)		override;
-	HRESULT		Render()							override;
+	PLAYER_DESC*		Get_PlayerInfo() { return m_pPlayerInfo; }
 
-public:
-	const _float4&	Get_NextPosition() const { return m_NextPosition; }
-	const _bool&	Get_Chasing() const { return m_bChasing; }
-	CTransform*		Get_MonsterTransformCom() const { return m_pMonsterTransformCom; }
-	const _bool&	Get_ShootArrow() const { return m_bShootArrow; }
-	const _float4&	Get_PickedPosition() const { return m_PickedPos; }
-	const _bool&	Get_Attacking() const { return m_bAttacking; }
+	const  _float4&		Get_NextPosition()			const { return m_NextPosition; }
+	const  _bool&		Get_Chasing()				const { return m_bChasing; }
+	CTransform*			Get_MonsterTransformCom()	const { return m_pMonsterTransformCom; }
+	const  _bool&		Get_ShootArrow()			const { return m_bShootArrow; }
+	const  _float4&		Get_PickedPosition()		const { return m_PickedPos; }
+	const  _bool&		Get_Attacking()				const { return m_bAttacking; }
 
 	void	Set_Attacking(_bool bAttacking) { m_bAttacking = bAttacking; }
 
@@ -84,6 +100,14 @@ public:
 	}
 
 	void	Set_Shoot_Arrow(_bool bShootArrow) { m_bShootArrow = bShootArrow; }
+
+public:
+	HRESULT		Initialize_Prototype()				override;
+	HRESULT		Initialize(void* pArg = nullptr)	override;
+	void		Priority_Update(_float fTimeDelta)	override;
+	void		Update(_float fTimeDelta)			override;
+	void		Late_Update(_float fTimeDelta)		override;
+	HRESULT		Render()							override;
 
 public:
 	void	Change_State(PLAYER_STATE playerState);

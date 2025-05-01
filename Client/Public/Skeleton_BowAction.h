@@ -7,7 +7,7 @@ BEGIN(Client)
 class CSkeleton_BowAction final: public CState_Skeleton
 {
 private:
-    CSkeleton_BowAction(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
+    CSkeleton_BowAction(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATE_SKELETON_DESC* pDesc);
 	~CSkeleton_BowAction() override = default;
 
 public:
@@ -24,11 +24,15 @@ public:
     void        Collision_Exit(CCollider* pOther)         override;
 
 private:
-    _float      m_fAnimTimer = 0.f;
-    _bool       m_bArrowShot = { false };
+	_bool       m_bShotArrow = { false };
+
+    _float4     m_PlayerPosition = { 0.f, 0.f, 0.f, 1.f };
+
+private:
+    void        Shoot_Arrow();
 
 public:
-    static CState_Monster*  Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
+    static CState_Monster*  Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATE_SKELETON_DESC* pDesc);
     void   Free()    override;
 };
 

@@ -4,6 +4,10 @@
 
 #include "Zombie.h"
 
+#include "Player_Arrow.h"
+#include "Item.h"
+
+
 CState_Zombie::CState_Zombie(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
 	: CState_Monster(pActor, pGameObjectDesc, pDesc)
 {
@@ -45,9 +49,9 @@ void CState_Zombie::State_Exit()
 
 void CState_Zombie::Collision_Enter(CCollider* pOther)
 {
-	/*_wstring other = pOther->Get_CollidergGroupTag();
+	_wstring other = pOther->Get_ColliderTag();
 
-	std::wcerr << "[좀비와 " << other << " 충돌 Enter]" << std::endl;*/
+	std::wcerr << "[좀비와 " << other << " 충돌 Enter]" << std::endl;
 }
 
 void CState_Zombie::Collision_Stay(CCollider* pOther)
@@ -67,8 +71,7 @@ void CState_Zombie::Collision_Exit(CCollider* pOther)
 _bool CState_Zombie::Change_State_To_Attack()
 {
 	// 공격 가능 거리 && 스턴 X 상태
-	_float lengthToPlayer = m_pZombie->Length_To_Player(TEXT("Prototype_GameObject_PlayerHex"),
-														m_pGameInstance->Get_CurrentLevelIndex());
+	_float lengthToPlayer = m_pZombie->Length_To_Player();
 
 	if (lengthToPlayer < m_pMonsterInfo->fAttackableRange)
 	{
@@ -83,10 +86,10 @@ _bool CState_Zombie::Change_State_To_Walk()
 {
 	_uint  currentLevelIndex = m_pGameInstance->Get_CurrentLevelIndex();
 
-	_float lengthToPlayer = m_pZombie->Length_To_Player(TEXT("Prototype_GameObject_PlayerHex"), currentLevelIndex);
+	_float lengthToPlayer = m_pZombie->Length_To_Player();
 
 	// 플레이어 인지 거리 && 스턴 X 상태
-	if (m_pZombie->Player_In_DetectRange(TEXT("Prototype_GameObject_PlayerHex"), currentLevelIndex) &&
+	if (m_pZombie->Player_In_DetectRange() &&
 		lengthToPlayer > m_pMonsterInfo->fAttackableRange)
 	{
 		m_pZombie->Change_State(Make_ZombieState(ZOMBIE_STATE::WALK));
@@ -98,8 +101,7 @@ _bool CState_Zombie::Change_State_To_Walk()
 
 _bool CState_Zombie::Change_State_To_Idle()
 {
-	_bool	playerInRange = m_pZombie->Player_In_DetectRange(TEXT("Prototype_GameObject_PlayerHex"),
-															 m_pGameInstance->Get_CurrentLevelIndex());
+	_bool	playerInRange = m_pZombie->Player_In_DetectRange();
 
 	if (!playerInRange)
 	{
@@ -110,18 +112,28 @@ _bool CState_Zombie::Change_State_To_Idle()
 	return false;
 }
 
-_bool CState_Zombie::Change_State_To_GetHit(CCollider* pOther)
+_bool CState_Zombie::Change_State_To_GetHit()
 {
-	if ((TEXT("Player_Weapon") == pOther->Get_ColliderTag() ||
-		 TEXT("Player_Arrow") == pOther->Get_ColliderTag())
-		 && pOther->Get_OtherAttacking())
-	{
-		m_pZombie->Change_State(Make_ZombieState(ZOMBIE_STATE::GET_HIT_FRONT));
+	m_pZombie->Change_State(Make_SkeletonState(SKELETON_STATE::GET_HIT_FRONT));
 
-		return true;
+	return true;
+}
+
+void CState_Zombie::Modify_HP(CCollider* pOther)
+{
+	if (TEXT("Player_Weapon") == pOther->Get_ColliderTag()
+		&& pOther->Get_OtherAttacking())
+	{
+		CItem* pItem = dynamic_cast<CItem*>(pOther->Get_OwnerObject());
+		m_pMonsterInfo->Modify_CurrentHp(-pItem->Get_DealPoint());
 	}
 
-	return false;
+	if (TEXT("Player_Arrow") == pOther->Get_ColliderTag()
+		&& pOther->Get_OtherAttacking())
+	{
+		CPlayer_Arrow* pPlayerArrow = dynamic_cast<CPlayer_Arrow*>(pOther->Get_OwnerObject());
+		m_pMonsterInfo->Modify_CurrentHp(-pPlayerArrow->Get_DealPoint());
+	}
 }
 
 void CState_Zombie::Free()

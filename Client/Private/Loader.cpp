@@ -13,6 +13,7 @@
 #include "InventoryIcon.h"
 #include "InventoryStoreSlot.h"
 #include "LoungeMap.h"
+#include "Monster_Arrow.h"
 #include "Sky.h"
 #include "Player.h"
 #include "UI_Image.h"
@@ -402,8 +403,13 @@ HRESULT CLoader::Ready_Prototype_GameObject_Static()
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Arrow */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Arrow"),
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerArrow"),
 		CPlayer_Arrow::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Arrow */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_MonsterArrow"),
+		CMonster_Arrow::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_LoungeMap */

@@ -1,7 +1,7 @@
 #include "Skeleton_HeadSpin.h"
 #include "Skeleton.h"
 
-CSkeleton_HeadSpin::CSkeleton_HeadSpin(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
+CSkeleton_HeadSpin::CSkeleton_HeadSpin(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATE_SKELETON_DESC* pDesc)
 	: CState_Skeleton(pActor, pGameObjectDesc, pDesc)
 {
 }
@@ -56,7 +56,7 @@ void CSkeleton_HeadSpin::Collision_Enter(CCollider* pOther)
 {
 	__super::Collision_Enter(pOther);
 
-	Change_State_To_GetHit(pOther);
+	Change_State_To_GetHit();
 }
 
 void CSkeleton_HeadSpin::Collision_Stay(CCollider* pOther)
@@ -69,7 +69,7 @@ void CSkeleton_HeadSpin::Collision_Exit(CCollider* pOther)
 	__super::Collision_Exit(pOther);
 }
 
-CState_Monster* CSkeleton_HeadSpin::Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
+CState_Monster* CSkeleton_HeadSpin::Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATE_SKELETON_DESC* pDesc)
 {
 	CSkeleton_HeadSpin* pGameInstance = new CSkeleton_HeadSpin(pActor, pGameObjectDesc, pDesc);
 

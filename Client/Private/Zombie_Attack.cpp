@@ -38,22 +38,22 @@ void CZombie_Attack::State_Update(_float fTimeDelta)
 
     m_fAnimTimer += fTimeDelta;
 
-    CBounding_OBB* pBoundingOBB = dynamic_cast<CBounding_OBB*>(m_pColliderOBBCom->Get_Bounding());
+    CBounding_Sphere* pBoundingSphere = dynamic_cast<CBounding_Sphere*>(m_pColliderCom->Get_Bounding());
 
     // 0.5초 지났을 때 공격 콜라이더 활성화 (1회만)
     if (!m_bHitbox_Activated && m_fAnimTimer > 0.5f)
     {
         m_pZombie->Set_Attacking(true);
-        pBoundingOBB->Edit_Bounding_Extent({ 0.f, 0.f, 0.4f });
-        pBoundingOBB->Edit_Bounding_Center({ 0.f, 0.f, 0.4f });
+        pBoundingSphere->Edit_Bounding_Radius(0.5f);
+        pBoundingSphere->Edit_Bounding_Center({ 0.f, 0.f, 0.5f });
         m_bHitbox_Activated = true;
     }
 
     // 1.0초 쯤 다시 초기화
     if (m_bHitbox_Activated && m_fAnimTimer > 1.0f)
     {
-        pBoundingOBB->Edit_Bounding_Extent({ 0.f, 0.f, -0.4f });
-        pBoundingOBB->Edit_Bounding_Center({ 0.f, 0.f, -0.4f });
+        pBoundingSphere->Edit_Bounding_Radius(-0.5f);
+        pBoundingSphere->Edit_Bounding_Center({ 0.f, 0.f, -0.5f });
         m_bHitbox_Activated = false; // 다시 사용할 수 있게
         m_pZombie->Set_Attacking(false);
     }
@@ -83,13 +83,16 @@ void CZombie_Attack::State_Late_Update(_float fTimeDelta)
 
 void CZombie_Attack::State_Exit()
 {
+    CBounding_Sphere* pBoundingSphere = dynamic_cast<CBounding_Sphere*>(m_pColliderCom->Get_Bounding());
+    pBoundingSphere->ReSet_Bounding_Radius(1.5f);
+    pBoundingSphere->ReSet_Bounding_Center({ 0.f, 1.5f, 0.f });
 }
 
 void CZombie_Attack::Collision_Enter(CCollider* pOther)
 {
     __super::Collision_Enter(pOther);
 
-    Change_State_To_GetHit(pOther);
+    Change_State_To_GetHit();
 }
 
 void CZombie_Attack::Collision_Stay(CCollider* pOther)

@@ -7,7 +7,7 @@ BEGIN(Client)
 class CSkeleton_GetHit final: public CState_Skeleton
 {
 private:
-    CSkeleton_GetHit(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
+    CSkeleton_GetHit(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATE_SKELETON_DESC* pDesc);
 	~CSkeleton_GetHit() override = default;
 
 public:
@@ -27,7 +27,7 @@ private:
 
 
 public:
-    static CState_Monster*  Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
+    static CState_Monster*  Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATE_SKELETON_DESC* pDesc);
     void   Free()    override;
 };
 
