@@ -100,7 +100,7 @@ void CSkeleton_Walk::Collision_Enter(CCollider* pOther)
 {
 	__super::Collision_Enter(pOther);
 
-	Change_State_To_GetHit();
+	Change_State_To_GetHit(pOther);
 }
 
 void CSkeleton_Walk::Collision_Stay(CCollider* pOther)

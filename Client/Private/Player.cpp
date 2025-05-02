@@ -210,10 +210,10 @@ HRESULT CPlayer::Ready_States()
 	m_StatesVec.resize(static_cast<_uint>(PLAYER_STATE::STATE_END));	// state vector 자리 예약
 
 	CModel* pPlayerModel  = dynamic_cast<CModel*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Model")));
-	CCollider* pCollider = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_OBB")));
+	CCollider* pCollider = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_Sphere")));
 
 	CState_Player::STATEPLAYER_DESC		pStatePlayerDesc = {};
-	pStatePlayerDesc.pColliderOBBCom	= pCollider;
+	pStatePlayerDesc.pColliderCom		= pCollider;
 	pStatePlayerDesc.pActorModelCom		= pPlayerModel;
 	pStatePlayerDesc.pNavigationCom		= m_pNavigationCom;
 	pStatePlayerDesc.pTransformCom		= m_pTransformCom;

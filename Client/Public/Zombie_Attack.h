@@ -25,7 +25,7 @@ public:
 
 private:
     _float      m_fAnimTimer = 0.f;
-    _bool       m_bHitbox_Activated = false;
+    _bool       m_bHitMode_Activated = false;
 
 public:
     static CState_Monster*  Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);

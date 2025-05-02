@@ -11,7 +11,7 @@ public:
     typedef struct tagStatePlayer
     {
         CModel*         pActorModelCom = { nullptr };
-        CCollider*      pColliderOBBCom = { nullptr };
+        CCollider*      pColliderCom = { nullptr };
         CTransform*     pTransformCom = { nullptr };
         CNavigation*    pNavigationCom = { nullptr };
         CArrowPool_Player*  pArrowPool_Player = { nullptr };

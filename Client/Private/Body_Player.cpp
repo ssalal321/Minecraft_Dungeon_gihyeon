@@ -102,22 +102,38 @@ HRESULT CBody_Player::Ready_Components()
 		return E_FAIL;
 
 
-	CBounding_OBB::BOUNDING_OBB_DESC		OBBCollDesc{};
+	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereCollDesc{};
 
-	OBBCollDesc.vExtents = _float3(0.6f, 1.f, 0.6f);
-	OBBCollDesc.vCenter = _float3(0.f, OBBCollDesc.vExtents.y, 0.f);
-	OBBCollDesc.vRotation = _float3(0.f, /*XMConvertToRadians(0.f)*/ 0.f, 0.f);
-	OBBCollDesc.pGameObject = this;
-	OBBCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
-	OBBCollDesc.pContainerObjAttacking = m_pContainerObjAttacking;
+	SphereCollDesc.fRadius = 1.5f;
+	SphereCollDesc.vCenter = _float3(0.f, SphereCollDesc.fRadius, 0.f);
+	SphereCollDesc.pGameObject = this;
+	SphereCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
+	SphereCollDesc.pContainerObjAttacking = m_pContainerObjAttacking;
 
-	CComponent* pColliderCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_OBB"),
-		TEXT("Com_Collider_OBB"), reinterpret_cast<CComponent**>(&m_pColliderCom), &OBBCollDesc);
+	CComponent* pColliderSphereCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
+		TEXT("Com_Collider_Sphere"), reinterpret_cast<CComponent**>(&m_pColliderCom), &SphereCollDesc);
 
-	if (nullptr == pColliderCom)
+	if (nullptr == pColliderSphereCom)
 		return E_FAIL;
 
-	m_pGameInstance->Add_ColliderCom(pColliderCom, TEXT("Player_Body"), TEXT("Player"));
+	m_pGameInstance->Add_ColliderCom(pColliderSphereCom, TEXT("Player_Body"), TEXT("Player"));
+
+	//CBounding_OBB::BOUNDING_OBB_DESC		OBBCollDesc{};
+
+	//OBBCollDesc.vExtents = _float3(0.6f, 1.f, 0.6f);
+	//OBBCollDesc.vCenter = _float3(0.f, OBBCollDesc.vExtents.y, 0.f);
+	//OBBCollDesc.vRotation = _float3(0.f, /*XMConvertToRadians(0.f)*/ 0.f, 0.f);
+	//OBBCollDesc.pGameObject = this;
+	//OBBCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
+	//OBBCollDesc.pContainerObjAttacking = m_pContainerObjAttacking;
+
+	//CComponent* pColliderCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_OBB"),
+	//	TEXT("Com_Collider_OBB"), reinterpret_cast<CComponent**>(&m_pColliderCom), &OBBCollDesc);
+
+	//if (nullptr == pColliderCom)
+	//	return E_FAIL;
+
+	//m_pGameInstance->Add_ColliderCom(pColliderCom, TEXT("Player_Body"), TEXT("Player"));
 
 	return S_OK;
 }

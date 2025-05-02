@@ -74,7 +74,6 @@ HRESULT CWeapon_Glaive::Render()
 {
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
-		
 
 	_uint	iNumMeshes = m_pModelCom->Get_NumMeshes();
 

@@ -16,7 +16,7 @@ HRESULT CPlayer_GetHit::Init_State()
 void CPlayer_GetHit::State_Enter()
 {
 	// ¹Ù²ã¾ßµÅ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::GET_HIT_FRONT), false);
+	m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::GET_HIT_FRONT), false, 1.6f);
 }
 
 void CPlayer_GetHit::State_Priority_Update(_float fTimeDelta)
@@ -31,10 +31,13 @@ void CPlayer_GetHit::State_Update(_float fTimeDelta)
 
 	if (m_bAnimationFinished)
 	{
-		if (Change_State_To_Roll())
+		/*if (Change_State_To_Roll())
 			return;
 
 		if (Change_State_To_BowAction())
+			return;*/
+
+		if (Change_State_To_GlaiveCombo())
 			return;
 
 		if (Change_State_To_Walk())
