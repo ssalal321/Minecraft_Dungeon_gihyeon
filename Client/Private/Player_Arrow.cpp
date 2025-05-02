@@ -22,7 +22,7 @@ HRESULT CPlayer_Arrow::Initialize(void* pArg)
 {
 	const _wstring& arrowGameObjectTag = TEXT("GameObject_PlayerArrow_") + to_wstring(m_iArrowID++);
 
-	m_pArrowDesc = new GAMEOBJECT_DESC(arrowGameObjectTag, 0.f, 15.f);
+	m_pArrowDesc = new GAMEOBJECT_DESC(arrowGameObjectTag, 0.f, 22.f);
 
 	if (FAILED(__super::Initialize(m_pArrowDesc)))
 		return E_FAIL;
@@ -133,6 +133,7 @@ void CPlayer_Arrow::Shoot(_float4 startPos, _float4 lookPos)
 	m_pTransformCom->LookAt(XMLoadFloat4(&lookPos));
 	m_bAttacking = true;
 	m_bActive	 = true;
+	m_pColliderCom->Set_ColliderActive(true);
 }
 
 void CPlayer_Arrow::Reset()
@@ -145,6 +146,7 @@ void CPlayer_Arrow::Reset()
 	m_bAttacking = false;
 	m_bCollided  = false;
 	m_bActive	 = false;
+	m_pColliderCom->Set_ColliderActive(false);
 }
 
 void CPlayer_Arrow::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)
@@ -195,6 +197,9 @@ HRESULT CPlayer_Arrow::Ready_Components()
 		return E_FAIL;
 
 	m_pGameInstance->Add_ColliderCom(pColliderCom, TEXT("Player_Arrow"), TEXT("Player"));
+
+	CCollider* pArrowCollider = dynamic_cast<CCollider*>(pColliderCom);
+	pArrowCollider->Set_ColliderActive(false);
 
 	return S_OK;
 }

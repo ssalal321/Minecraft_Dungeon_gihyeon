@@ -21,7 +21,7 @@ HRESULT CZombie_Attack::Init_State()
 void CZombie_Attack::State_Enter()
 {
     m_fAnimTimer = 0.f;
-    m_bHitbox_Activated = false;
+    m_bHitMode_Activated = false;
 
 	m_pActorModelCom->Set_Animation(static_cast<_uint>(ZOMBIE_STATE::ATTACK), true);
 }
@@ -41,20 +41,21 @@ void CZombie_Attack::State_Update(_float fTimeDelta)
     CBounding_Sphere* pBoundingSphere = dynamic_cast<CBounding_Sphere*>(m_pColliderCom->Get_Bounding());
 
     // 0.5초 지났을 때 공격 콜라이더 활성화 (1회만)
-    if (!m_bHitbox_Activated && m_fAnimTimer > 0.5f)
+    if (!m_bHitMode_Activated && m_fAnimTimer > 0.5f)
     {
         m_pZombie->Set_Attacking(true);
-        pBoundingSphere->Edit_Bounding_Radius(0.5f);
-        pBoundingSphere->Edit_Bounding_Center({ 0.f, 0.f, 0.5f });
-        m_bHitbox_Activated = true;
+        m_bHitMode_Activated = true;
+        /*pBoundingSphere->Edit_Bounding_Radius(0.5f);
+        pBoundingSphere->Edit_Bounding_Center({ 0.f, 0.f, 0.5f });*/
+        
     }
 
     // 1.0초 쯤 다시 초기화
-    if (m_bHitbox_Activated && m_fAnimTimer > 1.0f)
+    if (m_bHitMode_Activated && m_fAnimTimer > 1.0f)
     {
-        pBoundingSphere->Edit_Bounding_Radius(-0.5f);
-        pBoundingSphere->Edit_Bounding_Center({ 0.f, 0.f, -0.5f });
-        m_bHitbox_Activated = false; // 다시 사용할 수 있게
+        /*pBoundingSphere->Edit_Bounding_Radius(-0.5f);
+        pBoundingSphere->Edit_Bounding_Center({ 0.f, 0.f, -0.5f });*/
+        m_bHitMode_Activated = false; // 다시 사용할 수 있게
         m_pZombie->Set_Attacking(false);
     }
 
@@ -68,7 +69,7 @@ void CZombie_Attack::State_Update(_float fTimeDelta)
             return;
 
         m_fAnimTimer = 0.f;
-        m_bHitbox_Activated = false;
+        m_bHitMode_Activated = false;
     }
 
     _float4 playerPos = m_pZombie->Get_Player_Position(TEXT("GameObject_Player"), LEVEL_GAMEPLAY);
@@ -92,7 +93,7 @@ void CZombie_Attack::Collision_Enter(CCollider* pOther)
 {
     __super::Collision_Enter(pOther);
 
-    Change_State_To_GetHit();
+    Change_State_To_GetHit(pOther);
 }
 
 void CZombie_Attack::Collision_Stay(CCollider* pOther)

@@ -1,4 +1,7 @@
 #include "Player_Glaive_Combo.h"
+
+#include <iostream>
+
 #include "Body_Player.h"
 
 #define GLAIVE_COMBO1_AttackOn  10.f
@@ -40,7 +43,7 @@ void CPlayer_Glaive_Combo::State_Enter()
 
 	if (m_bCombo1_Finished)  // 두 번째, 세 번째
 	{
-		m_pActorModelCom->Link_AnimationCombo(static_cast<_uint>(PLAYER_STATE::GLAIVE_COMBO), m_fPrevAnimTrackPosition, false, 1.1f);
+		m_pActorModelCom->Link_AnimationCombo(static_cast<_uint>(PLAYER_STATE::GLAIVE_COMBO), m_fPrevAnimTrackPosition, false, 1.3f);
 	}
 }
 
@@ -54,8 +57,10 @@ void CPlayer_Glaive_Combo::State_Update(_float fTimeDelta)
 {
 	__super::State_Update(fTimeDelta);
 
-	_float  fAnimCurTrackPos = m_pActorModelCom->Get_AnimCurrentTrackPosition();
+	m_pTransformCom->LookAt(XMLoadFloat4(&m_pPlayer->Get_MonsterPickedPosition()));
 
+	_float  fAnimCurTrackPos = m_pActorModelCom->Get_AnimCurrentTrackPosition();
+	
 
 	if (!m_bCombo1_ColliderOn && GLAIVE_COMBO1_AttackOn <= fAnimCurTrackPos)
 	{
@@ -103,46 +108,48 @@ void CPlayer_Glaive_Combo::State_Update(_float fTimeDelta)
 	{
 		m_fPrevAnimTrackPosition = GLAIVE_COMBO1_Finish;
 		m_bCombo1_Finished = true;
-
-		m_bComboInitiating = true;
-		m_fCombo_ElapsedTime = 0.f;
-
-		m_pPlayer->Change_State(PLAYER_STATE::IDLE);
-		return;
+		std::wcerr << "[콤보 1 끝]" << std::endl;
 	}
 
 	if (!m_bCombo2_Finished && GLAIVE_COMBO2_Finish <= fAnimCurTrackPos)  // GLAIVE_COMBO2까지만
 	{
 		m_fPrevAnimTrackPosition = GLAIVE_COMBO2_Finish;
 		m_bCombo2_Finished = true;
-
-		m_bComboInitiating = true;
-		m_fCombo_ElapsedTime = 0.f;
-		
-		m_pPlayer->Change_State(PLAYER_STATE::IDLE);
-		return;
+		std::wcerr << "[콤보 2 끝]" << std::endl;
 	}
 
 	if (!m_bCombo3_Finished && GLAIVE_COMBO3_Finish <= fAnimCurTrackPos)  // GLAIVE_COMBO3 끝나면
 	{
 		m_bCombo3_Finished = true;
+		std::wcerr << "[콤보 3 끝]" << std::endl;
 
 		m_pPlayer->Change_State(PLAYER_STATE::IDLE);
+		std::wcerr << "[안녕히 계세요 여러분]" << std::endl;
+
 		return;
 	}
 
-	//m_fAnimTimer += fTimeDelta;
 
-	//if (m_fAnimTimer <= 0.2f)
-	//{
+	if (false == m_pPlayer->Get_Chasing())
+	{
+		if (m_bCombo1_Finished && fAnimCurTrackPos < GLAIVE_COMBO1_Finish + 1.5f)
+		{
+			m_pPlayer->Change_State(PLAYER_STATE::IDLE);
+			std::wcerr << "[안녕히 계세요 여러분]" << std::endl;
 
-	//	CItem* pWeapon = dynamic_cast<CItem*>(m_pPlayer->Find_PartObject(TEXT("GameObject_Glaive_Player")));
-	//	CCollider* pWeaponCollider = dynamic_cast<CCollider*>(pWeapon->Find_Component(pWeapon->Get_CollidergGroupTag()));
-	//	pWeaponCollider->Set_ColliderActive(false);
+			m_bComboInitiating = true;
+			m_fCombo_ElapsedTime = 0.f;
+		}
 
+		if (m_bCombo2_Finished && fAnimCurTrackPos < GLAIVE_COMBO2_Finish + 1.5f)
+		{
+			m_pPlayer->Change_State(PLAYER_STATE::IDLE);
+			std::wcerr << "[안녕히 계세요 여러분]" << std::endl;
 
-	//	// 무기 콜라이더 꺼놨다가 켜야 하는데 무기 장착도 버거워서 좀 나중에 하자...ㅁ재더라니어리ㅓ맆ㄸㅉ컲ㅋㅁㄷ;	
-	//}
+			m_bComboInitiating = true;
+			m_fCombo_ElapsedTime = 0.f;
+		}
+	}
 }
 
 void CPlayer_Glaive_Combo::State_Late_Update(_float fTimeDelta)
@@ -152,9 +159,9 @@ void CPlayer_Glaive_Combo::State_Late_Update(_float fTimeDelta)
 
 void CPlayer_Glaive_Combo::State_Exit()
 {
+	m_pPlayer->Set_Chasing(false, nullptr);
 	m_pPlayer->Set_Attacking(false);
 	m_pGlaiveCollider->Set_ColliderActive(false);
-	m_pPlayer->Set_Chasing(false, nullptr);
 
 	if (m_bCombo3_Finished)
 	{
@@ -165,9 +172,6 @@ void CPlayer_Glaive_Combo::State_Exit()
 void CPlayer_Glaive_Combo::Collision_Enter(CCollider* pOther)
 {
 	__super::Collision_Enter(pOther);
-
-	/*if (m_bCombo3_Finished && false == m_pPlayer->Get_Chasing())
-		Change_State_To_GetHitFront();*/
 }
 
 void CPlayer_Glaive_Combo::Collision_Stay(CCollider* pOther)

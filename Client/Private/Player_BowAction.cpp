@@ -61,9 +61,6 @@ void CPlayer_BowAction::State_Exit()
 void CPlayer_BowAction::Collision_Enter(CCollider* pOther)
 {
 	__super::Collision_Enter(pOther);
-
-	/*if (m_bAnimationFinished)
-		Change_State_To_GetHitFront();*/
 }
 
 void CPlayer_BowAction::Collision_Stay(CCollider* pOther)

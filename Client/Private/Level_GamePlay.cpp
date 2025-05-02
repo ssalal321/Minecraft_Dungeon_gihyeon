@@ -100,11 +100,11 @@ void CLevel_GamePlay::Update(_float fTimeDelta)
         {
             Click_Chase_Monster(pCurrMonster);
         }
+    }
 
-        /*if (m_pGameInstance->Key_Up(VK_LBUTTON) && !bMouseClickLock)
-        {
-            m_pPlayer->Set_Chasing(false, nullptr);
-        }*/
+    if (m_pGameInstance->Key_Up(VK_LBUTTON) && !bMouseClickLock)
+    {
+        m_pPlayer->Set_Chasing(false);
     }
 }
 
@@ -146,11 +146,16 @@ CCollider* CLevel_GamePlay::Get_Closest_Collider(const _float4& mousePos, const 
 void CLevel_GamePlay::Click_Chase_Monster(CMonster* pMonster)
 {
     if (!pMonster) return;
-	
+
+    _float4 monsterPickedPos = { 0.f, 0.f, 0.f, 1.f };
+
     CTransform* pMonsterTransform = dynamic_cast<CTransform*>(pMonster->Find_Component(TEXT("Com_Transform")));
     if (!pMonsterTransform) return;
 
     m_pPlayer->Set_Chasing(true, pMonsterTransform);
+
+    XMStoreFloat4(&monsterPickedPos, pMonsterTransform->Get_State(CTransform::STATE_POSITION));
+    m_pPlayer->Set_MonsterPickedPos(monsterPickedPos);
 
     //m_pPlayer->Change_State(PLAYER_STATE::WALK);  // 무기 바꾸면 여기 상태도 수정해야 함
 }

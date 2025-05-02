@@ -1,4 +1,7 @@
 #include "State_Player.h"
+
+#include <iostream>
+
 #include "Player.h"
 #include "Body_Player.h"
 
@@ -30,7 +33,7 @@ HRESULT CState_Player::Init_State()
 	m_pPlayerInfo = dynamic_cast<CPlayer::PLAYER_DESC*>(m_pGameObjectInfo);
 
 	m_pActorModelCom	= m_pStatePlayerDesc->pActorModelCom;
-	m_pColliderOBBCom	= m_pStatePlayerDesc->pColliderOBBCom;
+	m_pColliderOBBCom	= m_pStatePlayerDesc->pColliderCom;
 	m_pTransformCom		= m_pStatePlayerDesc->pTransformCom;
 	m_pNavigationCom	= m_pStatePlayerDesc->pNavigationCom;
 
@@ -60,6 +63,8 @@ void CState_Player::State_Update(_float fTimeDelta)
 {
 	//if (m_pPlayerInfo->Get_CurrentHP() <= 0)
 	//	//die
+
+	// std::wcerr << "[플레이어 공격 상태 : " << m_pPlayer->Get_Attacking() << std::endl;
 
 	m_bAnimationFinished = m_pActorModelCom->Play_Animation(fTimeDelta);
 
@@ -138,29 +143,29 @@ _bool CState_Player::Change_State_To_Roll()
 
 _bool CState_Player::Change_State_To_GlaiveCombo()
 {
-	if (m_pPlayer->Get_Chasing()/* || m_pPlayerInfo->Get_AttackableRange()*/)
+	CTransform* pMonsterTransformCom = m_pPlayer->Get_MonsterTransformCom();
+
+	if (nullptr == pMonsterTransformCom)
+		return false;
+
+	_float4 pMonsterPos = {};
+	XMStoreFloat4(&pMonsterPos, pMonsterTransformCom->Get_State(CTransform::STATE_POSITION));
+
+	_vector  vPlayerPos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+	_vector  vMonsterPos = pMonsterTransformCom->Get_State(CTransform::STATE_POSITION);
+	_vector  vVecToMonster = vMonsterPos - vPlayerPos;
+
+	_float   fDistanceSq = XMVectorGetX(XMVector3LengthSq(vVecToMonster));
+	const _float& fAttackRangeSq = m_pPlayerInfo->Get_AttackableRange() * m_pPlayerInfo->Get_AttackableRange();
+	if (fDistanceSq < fAttackRangeSq)
 	{
-		CTransform* pMonsterTransformCom = m_pPlayer->Get_MonsterTransformCom();
-		_float4 pMonsterPos = {};
-		XMStoreFloat4(&pMonsterPos, pMonsterTransformCom->Get_State(CTransform::STATE_POSITION));
+		m_pPlayer->Change_State(PLAYER_STATE::GLAIVE_COMBO);
+		m_pPlayer->Set_Chasing(false, nullptr);
 
-		_vector  vPlayerPos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
-		_vector  vMonsterPos = pMonsterTransformCom->Get_State(CTransform::STATE_POSITION);
-		_vector  vVecToMonster = vMonsterPos - vPlayerPos;
-
-		_float fDistanceSq = XMVectorGetX(XMVector3LengthSq(vVecToMonster));
-		const _float& fAttackRangeSq = m_pPlayerInfo->Get_AttackableRange() * m_pPlayerInfo->Get_AttackableRange();
-		if (fDistanceSq < fAttackRangeSq) // 4.f * 4.f
-		{
-			m_pPlayer->Change_State(PLAYER_STATE::GLAIVE_COMBO);
-			m_pPlayer->Set_Chasing(false, nullptr);
-
-			return true;
-		}
+		return true;
 	}
 
 	return false;
-
 }
 
 _bool CState_Player::Change_State_To_BowAction()
@@ -249,7 +254,7 @@ void CState_Player::Reset_Combo()
 
 	//m_pPlayer->Set_Attacking(false);
 
-	//std::wcerr << "[콤보 초기화 딩딩딩딩딩~]" << std::endl;
+	std::wcerr << "[콤보 초기화 딩딩딩딩딩~]" << std::endl;
 }
 
 

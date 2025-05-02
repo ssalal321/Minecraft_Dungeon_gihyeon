@@ -49,9 +49,10 @@ void CState_Zombie::State_Exit()
 
 void CState_Zombie::Collision_Enter(CCollider* pOther)
 {
-	_wstring other = pOther->Get_ColliderTag();
-
-	std::wcerr << "[좀비와 " << other << " 충돌 Enter]" << std::endl;
+//#ifdef DEBUG
+//	_wstring other = pOther->Get_ColliderTag();
+//	std::wcerr << "[좀비와 " << other << " 충돌 Enter]" << std::endl;
+//#endif
 }
 
 void CState_Zombie::Collision_Stay(CCollider* pOther)
@@ -112,20 +113,16 @@ _bool CState_Zombie::Change_State_To_Idle()
 	return false;
 }
 
-_bool CState_Zombie::Change_State_To_GetHit()
-{
-	m_pZombie->Change_State(Make_SkeletonState(SKELETON_STATE::GET_HIT_FRONT));
-
-	return true;
-}
-
-void CState_Zombie::Modify_HP(CCollider* pOther)
+_bool CState_Zombie::Change_State_To_GetHit(CCollider* pOther)
 {
 	if (TEXT("Player_Weapon") == pOther->Get_ColliderTag()
 		&& pOther->Get_OtherAttacking())
 	{
 		CItem* pItem = dynamic_cast<CItem*>(pOther->Get_OwnerObject());
 		m_pMonsterInfo->Modify_CurrentHp(-pItem->Get_DealPoint());
+		m_pZombie->Change_State(Make_SkeletonState(SKELETON_STATE::GET_HIT_FRONT));
+
+		return true;
 	}
 
 	if (TEXT("Player_Arrow") == pOther->Get_ColliderTag()
@@ -133,8 +130,28 @@ void CState_Zombie::Modify_HP(CCollider* pOther)
 	{
 		CPlayer_Arrow* pPlayerArrow = dynamic_cast<CPlayer_Arrow*>(pOther->Get_OwnerObject());
 		m_pMonsterInfo->Modify_CurrentHp(-pPlayerArrow->Get_DealPoint());
+		m_pZombie->Change_State(Make_SkeletonState(SKELETON_STATE::GET_HIT_FRONT));
+
+		return true;
 	}
+
+	return false;
 }
+
+//void CState_Zombie::Modify_HP(CCollider* pOther)
+//{
+//	if (TEXT("Player_Weapon") == pOther->Get_ColliderTag())
+//	{
+//		CItem* pItem = dynamic_cast<CItem*>(pOther->Get_OwnerObject());
+//		m_pMonsterInfo->Modify_CurrentHp(-pItem->Get_DealPoint());
+//	}
+//
+//	if (TEXT("Player_Arrow") == pOther->Get_ColliderTag())
+//	{
+//		CPlayer_Arrow* pPlayerArrow = dynamic_cast<CPlayer_Arrow*>(pOther->Get_OwnerObject());
+//		m_pMonsterInfo->Modify_CurrentHp(-pPlayerArrow->Get_DealPoint());
+//	}
+//}
 
 void CState_Zombie::Free()
 {

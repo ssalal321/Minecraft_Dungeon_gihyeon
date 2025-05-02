@@ -76,6 +76,8 @@ public:
 	const  _float4&		Get_NextPosition()			const { return m_NextPosition; }
 	const  _bool&		Get_Chasing()				const { return m_bChasing; }
 	CTransform*			Get_MonsterTransformCom()	const { return m_pMonsterTransformCom; }
+	const  _float4&		Get_MonsterPickedPosition()	const { return m_MonsterPickedPos; }
+
 	const  _bool&		Get_ShootArrow()			const { return m_bShootArrow; }
 	const  _float4&		Get_PickedPosition()		const { return m_PickedPos; }
 	const  _bool&		Get_Attacking()				const { return m_bAttacking; }
@@ -91,6 +93,16 @@ public:
 	{
 		m_bChasing = bChasing;
 		m_pMonsterTransformCom = pMonsterTransformCom;
+	}
+
+	void	Set_Chasing(_bool bChasing)
+	{
+		m_bChasing = bChasing;
+	}
+
+	void	Set_MonsterPickedPos(_float4 monsterPickedPos)
+	{
+		m_MonsterPickedPos = monsterPickedPos;
 	}
 
 	void	Set_Shoot_Arrow(_bool bShootArrow, _float4 pickedPos)
@@ -134,6 +146,7 @@ private:
 	_bool				m_bAttacking	= { false };
 	_bool				m_bChasing		= { false };
 	CTransform*			m_pMonsterTransformCom = { nullptr };
+	_float4				m_MonsterPickedPos = { 0.f, 0.f, 0.f, 1.f };
 
 	_bool				m_bShootArrow	= { false };
 	_float4				m_PickedPos	= { 0.f, 0.f, 0.f, 1.f };

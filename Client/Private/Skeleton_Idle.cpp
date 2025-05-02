@@ -76,7 +76,7 @@ void CSkeleton_Idle::Collision_Enter(CCollider* pOther)
 {
 	__super::Collision_Enter(pOther);
 
-	Change_State_To_GetHit();
+	Change_State_To_GetHit(pOther);
 }
 
 void CSkeleton_Idle::Collision_Stay(CCollider* pOther)
