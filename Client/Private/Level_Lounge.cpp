@@ -1,28 +1,23 @@
-#include "Level_GamePlay.h"
+#include "Level_Lounge.h"
 
-#include <iostream>
-#include <ostream>
-#include <PartObject.h>
 #include <UI_Image.h>
 
 #include "GameInstance.h"
-
+#include "PartObject.h"
 #include "Level_Loading.h"
 #include "Camera_Free.h"
 #include "InventoryBase.h"
-#include "InventoryGearSlot.h"
-#include "InventoryArtifactSlot.h"
 #include "LoungeMap.h"
 #include "Player.h"
 #include "Zombie.h"
 #include "PlayerHP.h"
 
-CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CLevel_Lounge::CLevel_Lounge(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : CLevel { pDevice, pContext }
 {
 }
 
-HRESULT CLevel_GamePlay::Initialize()
+HRESULT CLevel_Lounge::Initialize()
 {
     if (FAILED(Ready_Lights()))
         return E_FAIL;
@@ -48,21 +43,8 @@ HRESULT CLevel_GamePlay::Initialize()
     return S_OK;
 }
 
-void CLevel_GamePlay::Update(_float fTimeDelta)
+void CLevel_Lounge::Update(_float fTimeDelta)
 {
-    /*if (m_pGameInstance->Key_Down('I'))
-    {
-        bShowInventory = !bShowInventory;
-        CGameObject* pInventoryBase = m_pGameInstance->Find_UIGameObject(TEXT("GameObject_InventoryBase"),
-            CUI_Manager::PERSISTENT);
-        CUIObject* pUIObject = dynamic_cast<CUIObject*>(pInventoryBase);
-        pUIObject->Set_Visible(bShowInventory);
-        CGameObject* pPlayer = m_pGameInstance->Find_GameObject(TEXT("GameObject_Player"),
-            LEVEL_GAMEPLAY, TEXT("Layer_Player"));
-        CPlayer* pPlayerHex = dynamic_cast<CPlayer*>(pPlayer);
-        pPlayerHex->Show_Player_Inventory(bShowInventory);
-    }*/
-
 #ifdef _DEBUG
     if (m_pGameInstance->Key_Down(VK_F1))  // 아예 전체 전역변수로 만들어야겠다
         bMouseClickLock = !bMouseClickLock;
@@ -108,7 +90,7 @@ void CLevel_GamePlay::Update(_float fTimeDelta)
     }
 }
 
-CCollider* CLevel_GamePlay::Get_Closest_Collider(const _float4& mousePos, const _float3& mouseRay)
+CCollider* CLevel_Lounge::Get_Closest_Collider(const _float4& mousePos, const _float3& mouseRay)
 {
     unordered_map<_wstring, vector<CCollider*>> colliders = *m_pGameInstance->Get_Colliders();
     auto it = colliders.find(TEXT("Monster"));
@@ -143,7 +125,7 @@ CCollider* CLevel_GamePlay::Get_Closest_Collider(const _float4& mousePos, const 
 }
 
 
-void CLevel_GamePlay::Click_Chase_Monster(CMonster* pMonster)
+void CLevel_Lounge::Click_Chase_Monster(CMonster* pMonster)
 {
     if (!pMonster) return;
 
@@ -160,7 +142,7 @@ void CLevel_GamePlay::Click_Chase_Monster(CMonster* pMonster)
     //m_pPlayer->Change_State(PLAYER_STATE::WALK);  // 무기 바꾸면 여기 상태도 수정해야 함
 }
 
-HRESULT CLevel_GamePlay::Render()
+HRESULT CLevel_Lounge::Render()
 {
 #ifdef _DEBUG
     SetWindowText(g_hWnd, TEXT("게임플레이레벨입니다."));
@@ -169,7 +151,7 @@ HRESULT CLevel_GamePlay::Render()
     return S_OK;
 }
 
-HRESULT CLevel_GamePlay::Ready_Lights()
+HRESULT CLevel_Lounge::Ready_Lights()
 {
     LIGHT_DESC          LightDesc{};
 
@@ -196,7 +178,7 @@ HRESULT CLevel_GamePlay::Ready_Lights()
     return S_OK;
 }
 
-HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& strLayerTag)
+HRESULT CLevel_Lounge::Ready_Layer_Camera(const _wstring& strLayerTag)
 {
     CCamera_Free::CAMERA_FREE_DESC            Desc{};
 
@@ -211,16 +193,16 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& strLayerTag)
     Desc.fRotationPerSec = XMConvertToRadians(180.f);
 
     CGameObject* pCameraObject = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Free"),
-        LEVEL_GAMEPLAY, strLayerTag, &Desc);
+        LEVEL_LOUNGE, strLayerTag, &Desc);
     if (nullptr == pCameraObject)     return E_FAIL;
 
     return S_OK;
 }
 
-HRESULT CLevel_GamePlay::Ready_Layer_Player(const _wstring& strLayerTag)
+HRESULT CLevel_Lounge::Ready_Layer_Player(const _wstring& strLayerTag)
 {
     CGameObject* pPlayerObject = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerHex"),
-        LEVEL_GAMEPLAY, strLayerTag);
+        LEVEL_LOUNGE, strLayerTag);
     if (nullptr == pPlayerObject)   return E_FAIL;
 
     m_pPlayer = dynamic_cast<CPlayer*>(pPlayerObject);
@@ -228,41 +210,41 @@ HRESULT CLevel_GamePlay::Ready_Layer_Player(const _wstring& strLayerTag)
     return S_OK;
 }
 
-HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& strLayerTag)
+HRESULT CLevel_Lounge::Ready_Layer_Monster(const _wstring& strLayerTag)
 {
-    CGameObject* pZombie = m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Zombie"),
-        LEVEL_GAMEPLAY, strLayerTag);
+    CGameObject* pZombie = m_pGameInstance->Add_GameObject(LEVEL_LOUNGE, TEXT("Prototype_GameObject_Zombie"),
+        LEVEL_LOUNGE, strLayerTag);
     if (nullptr == pZombie)     return E_FAIL;
 
-    CGameObject* pSkeleton = m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Skeleton"),
-        LEVEL_GAMEPLAY, strLayerTag);
+    CGameObject* pSkeleton = m_pGameInstance->Add_GameObject(LEVEL_LOUNGE, TEXT("Prototype_GameObject_Skeleton"),
+        LEVEL_LOUNGE, strLayerTag);
     if (nullptr == pSkeleton)     return E_FAIL;
 
     return S_OK;
 }
 
-HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _wstring& strLayerTag)
+HRESULT CLevel_Lounge::Ready_Layer_BackGround(const _wstring& strLayerTag)
 {
     CGameObject* pLoungeMap = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_LoungeMap"),
-        LEVEL_GAMEPLAY, strLayerTag);
+        LEVEL_LOUNGE, strLayerTag);
     if (nullptr == pLoungeMap)      return E_FAIL;
 
-    /*if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Sky"),
-        LEVEL_GAMEPLAY, strLayerTag)))
+    /*if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_LOUNGE, TEXT("Prototype_GameObject_Sky"),
+        LEVEL_LOUNGE, strLayerTag)))
         return E_FAIL;
     }*/
 
     return S_OK;
 }
 
-HRESULT CLevel_GamePlay::Ready_Layer_InventoryUI(const _wstring& strLayerTag)
+HRESULT CLevel_Lounge::Ready_Layer_InventoryUI(const _wstring& strLayerTag)
 {
     CInventoryBase::INVENTORY_BASE_DESC  InventoryBaseDesc
     (TEXT("GameObject_InventoryBase"), CUIObject::UNCLICKABLE,
         g_iWinSizeX * 0.5f, g_iWinSizeY * 0.5f, 0.6f, 1280.f, 720.f,
         L"Prototype_Component_Texture_InventoryBase");
 
-    CUIObject* pInventoryBase = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_GAMEPLAY,
+    CUIObject* pInventoryBase = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_LOUNGE,
         TEXT("Prototype_GameObject_InventoryBase"),
         CUI_Manager::PERSISTENT, &InventoryBaseDesc);
 
@@ -271,7 +253,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_InventoryUI(const _wstring& strLayerTag)
     return S_OK;
 }
 
-HRESULT CLevel_GamePlay::Ready_Layer_PlayerSlotUI(const _wstring& strLayerTag)
+HRESULT CLevel_Lounge::Ready_Layer_PlayerSlotUI(const _wstring& strLayerTag)
 {
     _float fPlayerStateSlotX = g_iWinSizeX * 0.5f;
     _float fPlayerStateSlotY = g_iWinSizeY - 105.f * 0.5f;
@@ -302,13 +284,13 @@ HRESULT CLevel_GamePlay::Ready_Layer_PlayerSlotUI(const _wstring& strLayerTag)
     return S_OK;
 }
 
-CLevel_GamePlay* CLevel_GamePlay::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CLevel_Lounge* CLevel_Lounge::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-    CLevel_GamePlay* pGameInstance = new CLevel_GamePlay(pDevice, pContext);
+    CLevel_Lounge* pGameInstance = new CLevel_Lounge(pDevice, pContext);
 
     if (FAILED(pGameInstance->Initialize()))
     {
-        MSG_BOX("Failed to Created : CLevel_GamePlay");
+        MSG_BOX("Failed to Created : CLevel_Lounge");
         Safe_Release(pGameInstance);
     }
 
@@ -316,7 +298,7 @@ CLevel_GamePlay* CLevel_GamePlay::Create(ID3D11Device* pDevice, ID3D11DeviceCont
 }
 
 
-void CLevel_GamePlay::Free()
+void CLevel_Lounge::Free()
 {
     __super::Free();
 }

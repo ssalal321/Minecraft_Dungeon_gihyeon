@@ -72,7 +72,7 @@ void CZombie_Attack::State_Update(_float fTimeDelta)
         m_bHitMode_Activated = false;
     }
 
-    _float4 playerPos = m_pZombie->Get_Player_Position(TEXT("GameObject_Player"), LEVEL_GAMEPLAY);
+    _float4 playerPos = m_pZombie->Get_Player_Position(TEXT("GameObject_Player"), LEVEL_LOUNGE);
     m_pTransformCom->LookAt(XMLoadFloat4(&playerPos));
 }
 

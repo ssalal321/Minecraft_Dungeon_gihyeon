@@ -114,9 +114,9 @@ _bool CState_Player::Change_State_To_Walk()
 	{
 		_float4 fWorldPickedPos = { 0.f, 0.f, 0.f, 1.f };
 
-		// 2. LoungeMap에 피킹 요청 (BoundingBox 충돌 체크)
+		// Map에 피킹(BoundingBox 충돌 체크)
 		if (m_pGameInstance->Picked_Model(fWorldPickedPos, TEXT("GameObject_LoungeMap"),
-			LEVEL_GAMEPLAY, TEXT("Layer_BackGround")))
+			m_pGameInstance->Get_CurrentLevelIndex(), TEXT("Layer_BackGround")))
 		{
 			m_pPlayer->Set_NextPosition(fWorldPickedPos);
 			m_pPlayer->Set_Chasing(false, nullptr);
@@ -176,7 +176,7 @@ _bool CState_Player::Change_State_To_BowAction()
 
 		// 2. LoungeMap에 피킹 요청 (BoundingBox 충돌 체크)
 		if (m_pGameInstance->Picked_Model(fWorldPickedPos, TEXT("GameObject_LoungeMap"),
-			LEVEL_GAMEPLAY, TEXT("Layer_BackGround")))
+			LEVEL_LOUNGE, TEXT("Layer_BackGround")))
 		{
 			m_pPlayer->Set_Shoot_Arrow(true, fWorldPickedPos);
 			m_pTransformCom->LookAt(XMLoadFloat4(&fWorldPickedPos));

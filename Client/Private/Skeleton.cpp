@@ -100,7 +100,7 @@ HRESULT CSkeleton::Ready_PartObjects()
 	if (nullptr == pBody)
 		return E_FAIL;
 
-	ItemDesc.strGameObjectTag = TEXT("GameObject_ShortBow_Skeleton");
+	ItemDesc.strGameObjectTag = TEXT("GameObject_ShortBow");
 	ItemDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	ItemDesc.pState = &m_iState;
 	ItemDesc.pSocketMatrix = pBody->Get_CombinedTransformationMatrix("J_L_Weapon");

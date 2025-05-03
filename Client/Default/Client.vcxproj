@@ -173,7 +173,7 @@
     <ClInclude Include="..\Public\InventoryStoreSlot.h" />
     <ClInclude Include="..\Public\MonsterState.h" />
     <ClInclude Include="..\Public\PlayerHP.h" />
-    <ClInclude Include="..\Public\Level_GamePlay.h" />
+    <ClInclude Include="..\Public\Level_Lounge.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
     <ClInclude Include="..\Public\Level_Title.h" />
     <ClInclude Include="..\Public\Loader.h" />
@@ -200,6 +200,7 @@
     <ClInclude Include="..\Public\State_Zombie.h" />
     <ClInclude Include="..\Public\UI_Image.h" />
     <ClInclude Include="..\Public\Item.h" />
+    <ClInclude Include="..\Public\Weapon_Bow.h" />
     <ClInclude Include="..\Public\Weapon_Glaive.h" />
     <ClInclude Include="..\Public\Weapon_ShortBow.h" />
     <ClInclude Include="..\Public\Zombie.h" />
@@ -234,7 +235,7 @@
     <ClCompile Include="..\Private\InventoryArtifactSlot.cpp" />
     <ClCompile Include="..\Private\InventoryStoreSlot.cpp" />
     <ClCompile Include="..\Private\PlayerHP.cpp" />
-    <ClCompile Include="..\Private\Level_GamePlay.cpp" />
+    <ClCompile Include="..\Private\Level_Lounge.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />
     <ClCompile Include="..\Private\Level_Title.cpp" />
     <ClCompile Include="..\Private\Loader.cpp" />
@@ -261,6 +262,7 @@
     <ClCompile Include="..\Private\State_Zombie.cpp" />
     <ClCompile Include="..\Private\UI_Image.cpp" />
     <ClCompile Include="..\Private\Item.cpp" />
+    <ClCompile Include="..\Private\Weapon_Bow.cpp" />
     <ClCompile Include="..\Private\Weapon_Glaive.cpp" />
     <ClCompile Include="..\Private\Weapon_ShortBow.cpp" />
     <ClCompile Include="..\Private\Zombie.cpp" />

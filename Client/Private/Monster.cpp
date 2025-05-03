@@ -121,15 +121,6 @@ HRESULT CMonster::Ready_Components()
 			return E_FAIL;
 		}
 		break;
-
-	case LEVEL_GAMEPLAY:
-		{
-		if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Navigation_LoungeMap"),
-			TEXT("Com_Navigation_LoungeMap"), reinterpret_cast<CComponent**>(&m_pNavigationCom)))
-			return E_FAIL;
-		}
-		break;
-
 	}
 
 	///* Com_Collider */

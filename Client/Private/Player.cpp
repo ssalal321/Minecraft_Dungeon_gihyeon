@@ -134,14 +134,6 @@ HRESULT CPlayer::Ready_Components()
 			return E_FAIL;
 		}
 		break;
-
-	case LEVEL_GAMEPLAY:
-		{
-		if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Navigation_LoungeMap"),
-			TEXT("Com_Navigation_LoungeMap"), reinterpret_cast<CComponent**>(&m_pNavigationCom)))
-			return E_FAIL;
-		}
-	break;
 	}
 
 	return S_OK;
@@ -172,6 +164,7 @@ HRESULT CPlayer::Ready_PartObjects()
 
 
 	/* 무기를 추가한다. */
+#pragma region MELEE
 	CItem::ITEM_DESC	ItemDesc{};
 
 	CModel* pBody = dynamic_cast<CModel*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Model")));
@@ -192,13 +185,35 @@ HRESULT CPlayer::Ready_PartObjects()
 		return E_FAIL;
 
 	// 처음엔 콜라이더 끄기
-	CItem* pWeapon = dynamic_cast<CItem*>(Find_PartObject(TEXT("Part_Weapon_Glaive")));
-	CCollider* pWeaponCollider = dynamic_cast<CCollider*>(pWeapon->Find_Component(TEXT("Com_Collider_Sphere")));
+	CItem* pGlaive = dynamic_cast<CItem*>(Find_PartObject(TEXT("Part_Weapon_Glaive")));
+	CCollider* pWeaponCollider = dynamic_cast<CCollider*>(pGlaive->Find_Component(TEXT("Com_Collider_Sphere")));
 	pWeaponCollider->Set_ColliderActive(false);
 
 	// 인벤토리에 넣기
 	//CItem* pGlaive = dynamic_cast<CItem*>(Find_PartObject(TEXT("Part_Weapon_Glaive")));
-	m_pInventoryData->Add_Item_To_StoreSlot(pWeapon);
+	m_pInventoryData->Add_Item_To_StoreSlot(pGlaive);
+#pragma endregion
+
+#pragma region RANGED
+	CItem::ITEM_DESC	BowDesc{};
+
+	BowDesc.strGameObjectTag = TEXT("GameObject_Bow");
+	BowDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
+	BowDesc.pState = &m_iState;
+	BowDesc.pSocketMatrix = pBody->Get_CombinedTransformationMatrix("J_L_Weapon");
+	BowDesc.pContainerObject = this;
+	BowDesc.pContainerObjAttacking = &m_bAttacking;
+	BowDesc.iDealPoint = 10;
+	BowDesc.strIconTexPrototypeTag = TEXT("Prototype_Component_Texture_Bow");
+	BowDesc.strIconGameObjectTag = TEXT("UIGameObject_Bow");
+
+	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Bow"), TEXT("Part_Weapon_Bow"), &BowDesc)))
+		return E_FAIL;
+
+	CItem* pBow = dynamic_cast<CItem*>(Find_PartObject(TEXT("Part_Weapon_Bow")));
+	m_pInventoryData->Add_Item_To_StoreSlot(pBow);
+
+#pragma endregion 
 
 	/* 이펙트를 추가한다. */
 

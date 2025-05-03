@@ -94,7 +94,7 @@ HRESULT CBody_Skeleton::Ready_Components()
 	CModel::MODEL_DESC	pModelDesc = {};
 	pModelDesc.bPickable = true;
 
-	if (nullptr == Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Skeleton"),
+	if (nullptr == Add_Component(LEVEL_LOUNGE, TEXT("Prototype_Component_Model_Skeleton"),
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom), &pModelDesc))
 		return E_FAIL;
 
