@@ -398,8 +398,8 @@ HRESULT CLoader::Ready_Prototype_GameObject_Static()
 		CCamera_Free::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_Glaive */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Glaive"),
+	/* For.Prototype_GameObject_Glaive_Steel */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Glaive_Steel"),
 		CWeapon_Glaive::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 

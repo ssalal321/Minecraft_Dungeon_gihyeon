@@ -7,6 +7,8 @@
 #include "Level_Loading.h"
 #include "Camera_Free.h"
 #include "InventoryBase.h"
+#include "InventoryData.h"
+#include "Item.h"
 #include "LoungeMap.h"
 #include "Player.h"
 #include "Zombie.h"
@@ -39,6 +41,46 @@ HRESULT CLevel_Lounge::Initialize()
 
     if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
         return E_FAIL;
+
+
+#pragma region MELEE
+    CItem::ITEM_DESC	ItemDesc{};
+
+    CModel* pBody = dynamic_cast<CModel*>(m_pPlayer->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Model")));
+    if (nullptr == pBody)
+        return E_FAIL;
+
+    _float4x4* pPlayerWorldMatrixPtr = dynamic_cast<CTransform*>(m_pPlayer->Find_Component(TEXT("Com_Transform")))->Get_WorldMatrix_Ptr();
+
+    ItemDesc.pParentWorldMatrix = pPlayerWorldMatrixPtr;
+    ItemDesc.pState = &m_pPlayer->Get_PlayerState();
+    ItemDesc.pSocketMatrix = pBody->Get_CombinedTransformationMatrix("J_R_Weapon");
+    ItemDesc.pContainerObject = m_pPlayer;
+    ItemDesc.pContainerObjAttacking = &m_pPlayer->Get_Attacking();
+
+    //// 처음엔 콜라이더 끄기
+    //CItem* pGlaive = dynamic_cast<CItem*>(Find_PartObject(TEXT("Part_Weapon_Glaive")));
+    //CCollider* pWeaponCollider = dynamic_cast<CCollider*>(pGlaive->Find_Component(TEXT("Com_Collider_Sphere")));
+    //pWeaponCollider->Set_ColliderActive(false);
+
+    // 인벤토리에 넣기
+    //CItem* pGlaive = dynamic_cast<CItem*>(Find_PartObject(TEXT("Part_Weapon_Glaive")));
+    m_pPlayer->Get_InventoryData()->Add_Item_To_StoreSlot(LEVEL_STATIC, TEXT("Prototype_GameObject_Glaive_Steel"), TEXT("Part_Weapon_Glaive"), &ItemDesc);
+#pragma endregion
+
+#pragma region RANGED
+    CItem::ITEM_DESC	BowDesc{};
+
+    BowDesc.pParentWorldMatrix = pPlayerWorldMatrixPtr;
+    BowDesc.pState = &m_pPlayer->Get_PlayerState();
+    BowDesc.pSocketMatrix = pBody->Get_CombinedTransformationMatrix("J_L_Weapon");
+    BowDesc.pContainerObject = m_pPlayer;
+    BowDesc.pContainerObjAttacking = &m_pPlayer->Get_Attacking();
+
+    m_pPlayer->Get_InventoryData()->Add_Item_To_StoreSlot(LEVEL_STATIC, TEXT("Prototype_GameObject_Bow"), TEXT("Part_Weapon_Bow"), &BowDesc);
+
+#pragma endregion 
+
 
     return S_OK;
 }

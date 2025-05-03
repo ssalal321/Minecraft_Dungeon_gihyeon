@@ -27,10 +27,20 @@ HRESULT CWeapon_Glaive::Initialize(void* pArg)
 	/* 추가적으로 필요한 데이터를 Arg로 받아와 실 사용하기위한 객체의 정보를 생성해준다. */	
 	ITEM_DESC* pDesc = static_cast<ITEM_DESC*>(pArg);
 
-	m_iDealPoint = pDesc->iDealPoint;
-	m_pTargetState = pDesc->pState;
-	m_pSocketMatrix = pDesc->pSocketMatrix;
+	if (nullptr != pArg)
+	{
+		m_pTargetState = pDesc->pState;
+		m_pSocketMatrix = pDesc->pSocketMatrix;
+	}
+
+	m_strGameObjectTag		= TEXT("GameObject_GlaiveSteel");
+	m_strObjectPrototypeTag = TEXT("Prototype_GameObject_Glaive_Steel");
+	m_strTexPrototypeTag	= TEXT("Prototype_Component_Texture_Glaive_Steel");
+	m_strIconGameObjectTag	= TEXT("UIGameObject_Glaive_Steel");
+	m_strPartObjectTag		= TEXT("Part_Weapon_Glaive_Steel");
 	m_eItemtype = ITEM_TYPE::MELEE;
+	m_iDealPoint = 10.f;
+	
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -140,6 +150,8 @@ HRESULT CWeapon_Glaive::Ready_Components()
 		return E_FAIL;
 
 	m_pGameInstance->Add_ColliderCom(pColliderSphereCom, TEXT("Player_Weapon"), TEXT("Player"));
+	CCollider* pWeaponCollider = dynamic_cast<CCollider*>(pColliderSphereCom);
+	pWeaponCollider->Set_ColliderActive(false);
 
 	return S_OK;
 }

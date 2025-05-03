@@ -72,16 +72,18 @@ private:
 
 public:
 	PLAYER_DESC*		Get_PlayerInfo() { return m_pPlayerInfo; }
+	CInventoryData*		Get_InventoryData() { return m_pInventoryData; }
 
+	const	_uint&		Get_PlayerState()			const { return m_iState; }
 	const  _float4&		Get_NextPosition()			const { return m_NextPosition; }
 	const  _bool&		Get_Chasing()				const { return m_bChasing; }
 	CTransform*			Get_MonsterTransformCom()	const { return m_pMonsterTransformCom; }
 	const  _float4&		Get_MonsterPickedPosition()	const { return m_MonsterPickedPos; }
-
+		
 	const  _bool&		Get_ShootArrow()			const { return m_bShootArrow; }
 	const  _float4&		Get_PickedPosition()		const { return m_PickedPos; }
-	const  _bool&		Get_Attacking()				const { return m_bAttacking; }
-
+	_bool&				Get_Attacking()	{ return m_bAttacking; }
+		
 	void	Set_Attacking(_bool bAttacking) { m_bAttacking = bAttacking; }
 
 	void	Set_NextPosition(const _float4& nextPosition)

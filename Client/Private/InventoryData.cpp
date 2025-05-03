@@ -1,6 +1,7 @@
 #include "InventoryData.h"
 #include "GameInstance.h"
 #include "Item.h"
+#include "Player.h"
 
 CInventoryData::CInventoryData()
 	: m_pGameInstance(CGameInstance::GetInstance())
@@ -8,8 +9,10 @@ CInventoryData::CInventoryData()
 	Safe_AddRef(m_pGameInstance);
 }
 
-HRESULT CInventoryData::Initialize()
+HRESULT CInventoryData::Initialize(CPlayer* pPlayer)
 {
+	m_pPlayer = pPlayer;
+
 	m_StoreSlots.resize(STORESLOTSIZE, nullptr);
 	m_GearSlots.resize(GEARSLOTSIZE, nullptr);
 	m_ArtifactSlots.resize(ARTIFACTSLOTSIZE, nullptr);
@@ -29,8 +32,17 @@ HRESULT CInventoryData::Initialize()
 	return S_OK;
 }
 
-void CInventoryData::Add_Item_To_StoreSlot(CItem* pItem)
+void CInventoryData::Add_Item_To_StoreSlot(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag,
+	const _wstring& strItemObjectTag, void* pItemDesc)
 {
+	for (const auto& pExistingItem : m_StoreSlots)  // 이미 있는 Item인지 검사
+	{
+		if (pExistingItem && pExistingItem->Get_ObjectTag() == strItemObjectTag)
+			return;
+	}
+
+	CItem* pItem = dynamic_cast<CItem*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTOTYPE_GAMEOBJECT, iPrototypeLevelIndex, strPrototypeTag, pItemDesc));
+
 	for (size_t i = 0; i < m_StoreSlots.size(); ++i)
 	{
 		if (nullptr == m_StoreSlots[i])
@@ -44,6 +56,7 @@ void CInventoryData::Add_Item_To_StoreSlot(CItem* pItem)
 		}
 	}
 }
+
 
 void CInventoryData::Equip_From_StoreSlot(const DoubleClicked_From_StoreSlot& event)  // 몇 번째 StoreSlot에서 아이템 가져올 것인가?
 {
@@ -81,6 +94,8 @@ void CInventoryData::Equip_From_StoreSlot(const DoubleClicked_From_StoreSlot& ev
 		{
 			m_GearSlots[gearIndex] = pStoreItem;
 			m_StoreSlots[event.iStoreSlotIndex] = nullptr;
+			if (FAILED(m_pPlayer->Add_PartObject(pStoreItem, pStoreItem->Get_PartObjectTag())))
+				return;
 
 			Equip_To_Gear  equipToGearEvent{ event.iStoreSlotIndex, gearIndex, m_GearSlots[gearIndex] };
 			m_pGameInstance->Publish(equipToGearEvent);
@@ -104,6 +119,8 @@ void CInventoryData::Equip_From_StoreSlot(const DoubleClicked_From_StoreSlot& ev
 		{
 			m_ArtifactSlots[emptyIndex] = pStoreItem;
 			m_StoreSlots[event.iStoreSlotIndex] = nullptr;
+			if (FAILED(m_pPlayer->Add_PartObject(pStoreItem, pStoreItem->Get_PartObjectTag())))
+				return;
 
 			Equip_To_Artifact  equipToArtifactEvent{ event.iStoreSlotIndex, emptyIndex, m_ArtifactSlots[emptyIndex] };
 			m_pGameInstance->Publish(equipToArtifactEvent);
@@ -129,6 +146,10 @@ void CInventoryData::Unequip_GearSlot(const DoubleClicked_From_GearSlot& event)
 	m_StoreSlots[emptyStoreIndex] = m_GearSlots[event.iGearSlotIndex];
 	m_GearSlots[event.iGearSlotIndex] = nullptr;
 
+	CItem* pSwappedStoreItem = m_StoreSlots[emptyStoreIndex];
+	if (FAILED(m_pPlayer->Delete_PartObject(pSwappedStoreItem->Get_PartObjectTag(), false)))
+		return;
+
 	Unequipped_To_StoreSlot  unequippedToStoreEvent{ emptyStoreIndex, event.iGearSlotIndex, m_StoreSlots[emptyStoreIndex] };
 	m_pGameInstance->Publish(unequippedToStoreEvent);
 }
@@ -145,6 +166,10 @@ void CInventoryData::Unequip_ArtifactSlot(const DoubleClicked_From_ArtifactSlot&
 
 	m_StoreSlots[emptyStoreIndex] = m_ArtifactSlots[event.iArtifactSlotIndex];
 	m_ArtifactSlots[event.iArtifactSlotIndex] = nullptr;
+
+	CItem* pSwappedStoreItem = m_StoreSlots[emptyStoreIndex];
+	if (FAILED(m_pPlayer->Delete_PartObject(pSwappedStoreItem->Get_PartObjectTag(), false)))
+		return;
 
 	Unequipped_To_StoreSlot  unequippedToStoreEvent{ emptyStoreIndex, event.iArtifactSlotIndex, m_StoreSlots[emptyStoreIndex] };
 	m_pGameInstance->Publish(unequippedToStoreEvent);
@@ -175,13 +200,25 @@ HRESULT CInventoryData::Swap_With_Gear(_int iStoreSlotIndex, _int iGearSlotIndex
 	if (iStoreSlotIndex < 0 || iStoreSlotIndex >= static_cast<_int>(m_StoreSlots.size())) return E_FAIL;
 	if (iGearSlotIndex < 0 || iGearSlotIndex >= static_cast<_int>(m_GearSlots.size())) return E_FAIL;
 
-	CItem* pStoreItem  = m_StoreSlots[iStoreSlotIndex];
+	/*CItem* pStoreItem  = m_StoreSlots[iStoreSlotIndex];
 	CItem* pGearItem   = m_GearSlots[iGearSlotIndex];
 
 	if (!pStoreItem || !pGearItem)
+		return E_FAIL;*/
+
+	if (!m_StoreSlots[iStoreSlotIndex] || !m_GearSlots[iGearSlotIndex])
 		return E_FAIL;
 
 	std::swap(m_StoreSlots[iStoreSlotIndex], m_GearSlots[iGearSlotIndex]);
+
+	CItem* pSwappedStoreItem = m_StoreSlots[iStoreSlotIndex];
+	CItem* pSwappedGear = m_GearSlots[iGearSlotIndex];
+
+	if (FAILED(m_pPlayer->Delete_PartObject(pSwappedStoreItem->Get_PartObjectTag(), false)))
+		return E_FAIL;
+
+	if (FAILED(m_pPlayer->Add_PartObject(pSwappedGear, pSwappedGear->Get_PartObjectTag())))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -191,22 +228,34 @@ HRESULT CInventoryData::Swap_With_Artifact(_int iStoreSlotIndex, _int iItemSlotI
 	if (iStoreSlotIndex < 0 || iStoreSlotIndex >= static_cast<_int>(m_StoreSlots.size())) return E_FAIL;
 	if (iItemSlotIndex < 0 || iItemSlotIndex >= static_cast<_int>(m_ArtifactSlots.size())) return E_FAIL;
 
-	CItem* pStoreItem	  = m_StoreSlots[iStoreSlotIndex];
+	/*CItem* pStoreItem	  = m_StoreSlots[iStoreSlotIndex];
 	CItem* pArtifactItem  = m_ArtifactSlots[iItemSlotIndex];
 
 	if (!pStoreItem || !pArtifactItem) 
+		return E_FAIL;*/
+
+	if (!m_StoreSlots[iStoreSlotIndex] || !m_ArtifactSlots[iItemSlotIndex])
 		return E_FAIL;
 
 	std::swap(m_StoreSlots[iStoreSlotIndex], m_ArtifactSlots[iItemSlotIndex]);
 
+	CItem* pSwappedStoreItem = m_StoreSlots[iStoreSlotIndex];
+	CItem* pSwappedArtifact = m_ArtifactSlots[iItemSlotIndex];
+
+	if (FAILED(m_pPlayer->Delete_PartObject(pSwappedStoreItem->Get_PartObjectTag(), false)))
+		return E_FAIL;
+
+	if (FAILED(m_pPlayer->Add_PartObject(pSwappedArtifact, pSwappedArtifact->Get_PartObjectTag())))
+		return E_FAIL;
+
 	return S_OK;
 }
 
-CInventoryData* CInventoryData::Create()
+CInventoryData* CInventoryData::Create(CPlayer* pPlayer)
 {
 	CInventoryData* pGameInstance = new CInventoryData();
 
-	if (FAILED(pGameInstance->Initialize()))
+	if (FAILED(pGameInstance->Initialize(pPlayer)))
 	{
 		MSG_BOX("Failed to Create : CInventoryData");
 		Safe_Release(pGameInstance);

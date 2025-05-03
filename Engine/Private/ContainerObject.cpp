@@ -94,6 +94,36 @@ HRESULT CContainerObject::Add_PartObject(_uint iPrototypeLevelIndex, const _wstr
 	return S_OK;
 }
 
+HRESULT CContainerObject::Add_PartObject(CPartObject* pPartObject, const _wstring& strPartObjectTag)
+{
+	if (nullptr != Find_PartObject(strPartObjectTag))
+		return E_FAIL;
+
+	if (nullptr == pPartObject)
+		return E_FAIL;
+
+	m_PartObjects.emplace(strPartObjectTag, pPartObject);
+
+	return S_OK;
+}
+
+
+HRESULT CContainerObject::Delete_PartObject(const _wstring& strPartObjectTag, _bool bReleaseMemory)
+{
+	auto iter = m_PartObjects.find(strPartObjectTag);
+
+	if (iter == m_PartObjects.end())
+		return E_FAIL; // 못 찾았으면 실패
+
+	if (bReleaseMemory)
+		Safe_Release(iter->second); // 메모리 해제
+
+	m_PartObjects.erase(iter);  // 맵에서 제거
+
+	return S_OK;
+}
+
+
 void CContainerObject::Free()
 {
 	__super::Free();

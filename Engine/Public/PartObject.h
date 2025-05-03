@@ -38,7 +38,7 @@ protected:
 
 	const _float4x4*	m_pParentWorldMatrix = { nullptr };
 	_float4x4			m_CombinedWorldMatrix = {};
-	_bool*		m_pContainerObjAttacking = { nullptr };
+	_bool*				m_pContainerObjAttacking = { nullptr };
 
 public:
 	CGameObject* Clone(void* pArg)	override = 0;

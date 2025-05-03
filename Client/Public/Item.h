@@ -32,12 +32,16 @@ protected:
 	~CItem() override = default;
 
 public:
-	const _uint&	Get_HealPoint() const { return m_uiHealPoint; }
-	const _int&		Get_DealPoint() const { return m_iDealPoint; }
+	const _uint&		Get_HealPoint() const { return m_uiHealPoint; }
+	const _int&			Get_DealPoint() const { return m_iDealPoint; }
 	const _wstring&		Get_IconTexPrototypeTag() { return m_strTexPrototypeTag; }
 	const _wstring&		Get_IconGameObjectTag() { return m_strIconGameObjectTag; }
+	const _wstring&		Get_ObjectPrototypeTag() { return m_strObjectPrototypeTag; }
+	const _wstring&		Get_PartObjectTag() { return m_strPartObjectTag; }
 	ITEM_TYPE			Get_ItemType() const { return m_eItemtype; }
 	const _wstring&		Get_ColliderTag() { return m_strColliderTag; }
+
+	const _wstring&		Get_ObjectTag() const { return m_strGameObjectTag; }
 
 public:
 	HRESULT		Initialize_Prototype()				override;
@@ -59,6 +63,8 @@ protected:
 	_int		m_iDealPoint = { 0 };
 	_wstring	m_strTexPrototypeTag = {};
 	_wstring	m_strIconGameObjectTag = {};
+	_wstring	m_strObjectPrototypeTag = {};
+	_wstring	m_strPartObjectTag = {};
 	ITEM_TYPE	m_eItemtype = { ITEM_TYPE::NONE };
 
 	_wstring	m_strColliderTag = {};
