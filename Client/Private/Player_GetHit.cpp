@@ -31,11 +31,11 @@ void CPlayer_GetHit::State_Update(_float fTimeDelta)
 
 	if (m_bAnimationFinished)
 	{
-		/*if (Change_State_To_Roll())
+		if (Change_State_To_Roll())
 			return;
 
 		if (Change_State_To_BowAction())
-			return;*/
+			return;
 
 		if (Change_State_To_GlaiveCombo())
 			return;

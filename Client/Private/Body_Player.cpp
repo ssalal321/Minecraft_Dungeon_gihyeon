@@ -82,7 +82,7 @@ HRESULT CBody_Player::Render()
 
 void CBody_Player::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)
 {
-	CPlayer* pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("GameObject_Player"), LEVEL_GAMEPLAY, TEXT("Layer_Player")));
+	CPlayer* pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("GameObject_Player"), LEVEL_LOUNGE, TEXT("Layer_Player")));
 	pPlayer->Collided_With(pOther, eCollisionState);
 }
 
@@ -104,7 +104,7 @@ HRESULT CBody_Player::Ready_Components()
 
 	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereCollDesc{};
 
-	SphereCollDesc.fRadius = 1.5f;
+	SphereCollDesc.fRadius = 1.6f;
 	SphereCollDesc.vCenter = _float3(0.f, SphereCollDesc.fRadius, 0.f);
 	SphereCollDesc.pGameObject = this;
 	SphereCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;

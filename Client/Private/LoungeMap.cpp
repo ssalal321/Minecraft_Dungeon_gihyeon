@@ -69,7 +69,7 @@ void CLoungeMap::Update(_float fTimeDelta)
 	//{
 	//	_float3		fLocalPickedVertex = {};
 
-	//	if (m_pGameInstance->Picked_Vertex(fLocalPickedVertex, TEXT("GameObject_LoungeMap"), LEVEL_GAMEPLAY, TEXT("Layer_BackGround")))
+	//	if (m_pGameInstance->Picked_Vertex(fLocalPickedVertex, TEXT("GameObject_LoungeMap"), LEVEL_LOUNGE, TEXT("Layer_BackGround")))
 	//	{
 	//		
 	//		_vector vWorldPickedVertex = {};
@@ -97,7 +97,7 @@ void CLoungeMap::Update(_float fTimeDelta)
 	//		}
 
 	//		/*CPlayer* pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("GameObject_Player"),
-	//						LEVEL_GAMEPLAY, TEXT("Layer_Player")));
+	//						LEVEL_LOUNGE, TEXT("Layer_Player")));
 	//					pPlayer->Set_NextPosition({ fWorldPickedPos.x, fWorldPickedPos.y, fWorldPickedPos.z, 1.f });
 	//					pPlayer->Change_State(PLAYER_STATE::WALK);*/
 	//	}

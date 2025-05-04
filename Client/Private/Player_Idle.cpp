@@ -15,14 +15,27 @@ HRESULT CPlayer_Idle::Init_State()
 
 void CPlayer_Idle::State_Enter()
 {
-	// ¹Ù²ã¾ßµÅ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::IDLE_GLAIVE), true);
+	/*CPartObject* pItem = m_pPlayer->Find_PartObject(TEXT("Part_Weapon_Melee"));
+
+	if (pItem && pItem->Get_GameObjectTag() == TEXT("GameObject_GlaiveSteel"))
+		m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::IDLE_GLAIVE), true);
+
+	else
+		m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::IDLE), true);*/
 }
 
 void CPlayer_Idle::State_Priority_Update(_float fTimeDelta)
 {
 	__super::State_Priority_Update(fTimeDelta);
-	
+
+	CPartObject* pItem = m_pPlayer->Find_PartObject(TEXT("Part_Weapon_Melee"));
+
+	if (pItem && pItem->Get_GameObjectTag() == TEXT("GameObject_GlaiveSteel"))
+		m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::IDLE_GLAIVE), true);
+
+	else
+		m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::IDLE), true);
+
 }
 
 void CPlayer_Idle::State_Update(_float fTimeDelta)

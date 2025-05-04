@@ -20,10 +20,13 @@ HRESULT CPartObject::Initialize(void* pArg)
 {
 	PARTOBJECT_DESC* pDesc = static_cast<PARTOBJECT_DESC*>(pArg);
 
-	m_pContainerObject = pDesc->pContainerObject;
-	m_pParentWorldMatrix = pDesc->pParentWorldMatrix;
+	if (nullptr != pDesc)
+	{
+		m_pContainerObject = pDesc->pContainerObject;
+		m_pParentWorldMatrix = pDesc->pParentWorldMatrix;
+		m_pContainerObjAttacking = pDesc->pContainerObjAttacking;
 
-	m_pContainerObjAttacking = pDesc->pContainerObjAttacking;
+	}
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;

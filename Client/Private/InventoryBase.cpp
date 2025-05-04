@@ -148,7 +148,7 @@ HRESULT CInventoryBase::Ready_UISlots()
 			fXPosition, fYPosition, 0.5f, fRightSlotWidth, fRightSlotWidth,
 			L"Prototype_Component_Texture_InventoryStoreSlot");
 
-		CUIObject* pInventoryStoreSlot = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_GAMEPLAY,
+		CUIObject* pInventoryStoreSlot = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_LOUNGE,
 			TEXT("Prototype_GameObject_InventoryStoreSlot"),
 			CUI_Manager::PERSISTENT, &InventoryStoreSlotDesc);
 
@@ -167,7 +167,7 @@ HRESULT CInventoryBase::Ready_UISlots()
 		92.f, 202.2f, 0.4f, fLeftSlotsWidth, fLeftSlotsWidth,
 		L"Prototype_Component_Texture_InventoryGearSlot");
 
-	CUIObject* pInventoryGearSlot = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_GAMEPLAY,
+	CUIObject* pInventoryGearSlot = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_LOUNGE,
 		TEXT("Prototype_GameObject_InventoryGearSlot"),
 		CUI_Manager::PERSISTENT, &InventoryMeleeSlot);
 
@@ -182,7 +182,7 @@ HRESULT CInventoryBase::Ready_UISlots()
 		237.7f, 174.7f, 0.4f, fLeftSlotsWidth, fLeftSlotsWidth,
 		L"Prototype_Component_Texture_InventoryGearSlot");
 
-	pInventoryGearSlot = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_GAMEPLAY,
+	pInventoryGearSlot = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_LOUNGE,
 		TEXT("Prototype_GameObject_InventoryGearSlot"),
 		CUI_Manager::PERSISTENT, &InventoryArmorSlotDesc);
 
@@ -198,7 +198,7 @@ HRESULT CInventoryBase::Ready_UISlots()
 		383.5f, 202.2f, 0.4f, fLeftSlotsWidth, fLeftSlotsWidth,
 		L"Prototype_Component_Texture_InventoryGearSlot");
 
-	pInventoryGearSlot = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_GAMEPLAY,
+	pInventoryGearSlot = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_LOUNGE,
 		TEXT("Prototype_GameObject_InventoryGearSlot"),
 		CUI_Manager::PERSISTENT, &InventoryRangedSlotDesc);
 
@@ -224,7 +224,7 @@ HRESULT CInventoryBase::Ready_UISlots()
 			fSlotX, 626.f, 0.4f, 80.f, 80.f,
 			L"Prototype_Component_Texture_InventoryArtifactSlot_Empty");
 
-		CUIObject* pInventoryArtifactSlot = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_GAMEPLAY,
+		CUIObject* pInventoryArtifactSlot = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_LOUNGE,
 			TEXT("Prototype_GameObject_InventoryArtifactSlot_Empty"),
 			CUI_Manager::PERSISTENT, &InventoryArtifactSlotDesc);
 

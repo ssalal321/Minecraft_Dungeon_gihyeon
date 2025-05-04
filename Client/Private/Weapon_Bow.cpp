@@ -1,75 +1,72 @@
-#include "Weapon_Glaive.h"
+#include "Weapon_Bow.h"
 #include "GameInstance.h"
 #include "Item.h"
 
-CWeapon_Glaive::CWeapon_Glaive(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CWeapon_Bow::CWeapon_Bow(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CItem(pDevice, pContext)
 {
 
 }
 
-CWeapon_Glaive::CWeapon_Glaive(const CWeapon_Glaive& Prototype)
+CWeapon_Bow::CWeapon_Bow(const CWeapon_Bow& Prototype)
 	: CItem(Prototype)
 {
 
 }
 
-HRESULT CWeapon_Glaive::Initialize_Prototype()
+HRESULT CWeapon_Bow::Initialize_Prototype()
 {
 	/* 외부 데이터베이스를 통해서 값을 채운다. */
 
 	return S_OK;
 }
 
-HRESULT CWeapon_Glaive::Initialize(void* pArg)
+HRESULT CWeapon_Bow::Initialize(void* pArg)
 {
 	/* 원형의 데이터를 복제하여 사본을 만들고. */
 	/* 추가적으로 필요한 데이터를 Arg로 받아와 실 사용하기위한 객체의 정보를 생성해준다. */	
-	/*ITEM_DESC* pDesc = static_cast<ITEM_DESC*>(pArg);
+	ITEM_DESC* pDesc = static_cast<ITEM_DESC*>(pArg);
 
 	if (nullptr != pArg)
 	{
 		m_pTargetState = pDesc->pState;
 		m_pSocketMatrix = pDesc->pSocketMatrix;
-	}*/
-	
-	m_eItemtype = ITEM_TYPE::MELEE;
-	m_iDealPoint = 10;
-	
-	m_bItemActive = true;
+	}
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
-	m_strGameObjectTag = TEXT("GameObject_GlaiveSteel");
-	m_strPartObjectTag = TEXT("Part_Weapon_Melee");
-	m_strObjectPrototypeTag = TEXT("Prototype_GameObject_Glaive_Steel");
-	m_strTexPrototypeTag = TEXT("Prototype_Component_Texture_Glaive_Steel");
-	m_strIconGameObjectTag = TEXT("UIGameObject_Glaive_Steel");
+	m_strGameObjectTag = TEXT("GameObject_Bow");
+	m_strObjectPrototypeTag = TEXT("Prototype_GameObject_Bow");
+	m_strTexPrototypeTag = TEXT("Prototype_Component_Texture_Bow");
+	m_strIconGameObjectTag = TEXT("UIGameObject_Bow");
+	m_strPartObjectTag = TEXT("Part_Weapon_Ranged");
+	m_eItemtype = ITEM_TYPE::RANGED;
+	m_iDealPoint = 10;
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	// Glaive 세팅
-	m_pTransformCom->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(100.f));
+
+	// ShortBow 세팅
 	m_pTransformCom->Rotation(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMConvertToRadians(90.f));
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMVectorSet(0.02f, -0.05f, 0.4f, 1.f));
+	m_pTransformCom->Rotation(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMConvertToRadians(90.f));
 	return S_OK;
 }
 
-void CWeapon_Glaive::Priority_Update(_float fTimeDelta)
+void CWeapon_Bow::Priority_Update(_float fTimeDelta)
 {
 	if (false == m_bItemActive)
 		return;
 }
 
-void CWeapon_Glaive::Update(_float fTimeDelta)
+void CWeapon_Bow::Update(_float fTimeDelta)
 {
 	if (false == m_bItemActive)
 		return;
 }
 
-void CWeapon_Glaive::Late_Update(_float fTimeDelta)
+void CWeapon_Bow::Late_Update(_float fTimeDelta)
 {
 	if (false == m_bItemActive)
 		return;
@@ -87,13 +84,14 @@ void CWeapon_Glaive::Late_Update(_float fTimeDelta)
 	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 }
 
-HRESULT CWeapon_Glaive::Render()
+HRESULT CWeapon_Bow::Render()
 {
 	if (false == m_bItemActive)
 		return S_OK;
 
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
+		
 
 	_uint	iNumMeshes = m_pModelCom->Get_NumMeshes();
 
@@ -102,7 +100,7 @@ HRESULT CWeapon_Glaive::Render()
 		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", static_cast<_uint>(i), aiTextureType_DIFFUSE, 0)))
 			return E_FAIL;	
 
-		if (FAILED(m_pShaderCom->Begin(static_cast<_uint>(0))))
+		if (FAILED(m_pShaderCom->Begin(0)))
 			return E_FAIL;
 
 		if (FAILED(m_pModelCom->Render(static_cast<_uint>(i))))
@@ -112,7 +110,7 @@ HRESULT CWeapon_Glaive::Render()
 	return S_OK;
 }
 
-HRESULT CWeapon_Glaive::Ready_Components()
+HRESULT CWeapon_Bow::Ready_Components()
 {
 	/* Com_Shader */
 	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxMesh"),
@@ -123,7 +121,7 @@ HRESULT CWeapon_Glaive::Ready_Components()
 	CModel::MODEL_DESC	pModelDesc = {};
 	pModelDesc.bPickable = false;
 
-	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Model_GlaiveSteel"),
+	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Model_Bow"),
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom), &pModelDesc))
 		return E_FAIL;
 
@@ -143,37 +141,19 @@ HRESULT CWeapon_Glaive::Ready_Components()
 	//if (nullptr == pColliderCom)
 	//	return E_FAIL;
 
-	//m_pGameInstance->Add_ColliderCom(pColliderCom, TEXT("Player_Weapon"), TEXT("Player"));
-
-	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereCollDesc{};
-
-	SphereCollDesc.fRadius = 0.8f;
-	SphereCollDesc.vCenter = _float3(0.f, SphereCollDesc.fRadius * 1.6f, 0.f);
-	SphereCollDesc.pGameObject = this;
-	SphereCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
-	SphereCollDesc.pContainerObjAttacking = m_pContainerObjAttacking;
-
-	CComponent* pColliderSphereCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
-		TEXT("Com_Collider_Sphere"), reinterpret_cast<CComponent**>(&m_pColliderCom), &SphereCollDesc);
-
-	if (nullptr == pColliderSphereCom)
-		return E_FAIL;
-
-	m_pGameInstance->Add_ColliderCom(pColliderSphereCom, TEXT("Player_Weapon"), TEXT("Player"));
-	CCollider* pWeaponCollider = dynamic_cast<CCollider*>(pColliderSphereCom);
-	pWeaponCollider->Set_ColliderActive(false);
+	//m_pGameInstance->Add_ColliderCom(pColliderCom, TEXT("SkeletonWeapon_OBB"), TEXT("Monster"));
 
 	return S_OK;
 }
 
 
-CWeapon_Glaive* CWeapon_Glaive::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CWeapon_Bow* CWeapon_Bow::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	CWeapon_Glaive* pGameInstance = new CWeapon_Glaive(pDevice, pContext);
+	CWeapon_Bow* pGameInstance = new CWeapon_Bow(pDevice, pContext);
 
 	if (FAILED(pGameInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Create : CWeapon_Glaive");
+		MSG_BOX("Failed to Create : CWeapon_Bow");
 		Safe_Release(pGameInstance);
 	}
 
@@ -181,21 +161,20 @@ CWeapon_Glaive* CWeapon_Glaive::Create(ID3D11Device* pDevice, ID3D11DeviceContex
 }
 
 
-CGameObject* CWeapon_Glaive::Clone(void* pArg)
+CGameObject* CWeapon_Bow::Clone(void* pArg)
 {
-	CWeapon_Glaive* pGameInstance = new CWeapon_Glaive(*this);
+	CWeapon_Bow* pGameInstance = new CWeapon_Bow(*this);
 
 	if (FAILED(pGameInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Clone : CWeapon_Glaive");
+		MSG_BOX("Failed to Clone : CWeapon_Bow");
 		Safe_Release(pGameInstance);
 	}
 
 	return pGameInstance;
 }
 
-void CWeapon_Glaive::Free()
+void CWeapon_Bow::Free()
 {
 	__super::Free();
-
 }

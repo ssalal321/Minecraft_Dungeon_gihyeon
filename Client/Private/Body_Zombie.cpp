@@ -94,7 +94,7 @@ HRESULT CBody_Zombie::Ready_Components()
 	CModel::MODEL_DESC	pModelDesc = {};
 	pModelDesc.bPickable = true;
 
-	if (nullptr == Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Zombie"),
+	if (nullptr == Add_Component(LEVEL_LOUNGE, TEXT("Prototype_Component_Model_Zombie"),
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom), &pModelDesc))
 		return E_FAIL;
 
@@ -119,7 +119,7 @@ HRESULT CBody_Zombie::Ready_Components()
 
 	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereCollDesc{};
 
-	SphereCollDesc.fRadius = 1.5f;
+	SphereCollDesc.fRadius = 1.6f;
 	SphereCollDesc.vCenter = _float3(0.f, SphereCollDesc.fRadius, 0.f);
 	SphereCollDesc.pGameObject = this;
 	SphereCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;

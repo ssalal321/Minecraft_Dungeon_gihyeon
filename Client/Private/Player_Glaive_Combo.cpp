@@ -23,8 +23,6 @@ HRESULT CPlayer_Glaive_Combo::Init_State()
 {
 	__super::Init_State();
 
-	m_pGlaiveCollider = dynamic_cast<CCollider*>(m_pPlayer->Find_Part_Component(TEXT("Part_Weapon_Glaive"),
-																	 TEXT("Com_Collider_Sphere")));
 
 	return S_OK;
 }
@@ -32,6 +30,10 @@ HRESULT CPlayer_Glaive_Combo::Init_State()
 void CPlayer_Glaive_Combo::State_Enter()
 {
 	//m_fAnimTimer = 0.f;
+
+	if (nullptr == m_pGlaiveCollider)
+		m_pGlaiveCollider = dynamic_cast<CCollider*>(m_pPlayer->Find_Part_Component(TEXT("Part_Weapon_Melee"),
+																		TEXT("Com_Collider_Sphere")));
 
 	m_pTransformCom->LookAt(m_pPlayer->Get_MonsterTransformCom()->Get_State(CTransform::STATE_POSITION));
 

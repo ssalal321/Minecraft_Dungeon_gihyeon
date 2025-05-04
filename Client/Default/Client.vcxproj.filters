@@ -73,9 +73,6 @@
     <Filter Include="02.GameObjects\Player\00. Body_Player">
       <UniqueIdentifier>{5373e998-8490-442b-bc63-474356c4fb92}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Player\01. Weapon">
-      <UniqueIdentifier>{e7e9d8fd-6248-4abe-9a63-c2fbf55b89dc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\Player\02. State">
       <UniqueIdentifier>{f9107163-f31d-4f6f-9fe1-b689765a2b57}</UniqueIdentifier>
     </Filter>
@@ -166,17 +163,29 @@
     <Filter Include="03. Inventory">
       <UniqueIdentifier>{141438c3-b8df-4b8c-b93f-a466fc15c1c1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Player\01. Weapon\Glaive">
-      <UniqueIdentifier>{eceafa73-f980-4124-9299-94b46878732a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Player\01. Weapon\ShortBow">
-      <UniqueIdentifier>{357aa7d7-963a-4187-9b68-1fb06e1baf3d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\Arrow">
       <UniqueIdentifier>{893bd376-3991-4702-af61-bf48a5e6ff93}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\Player\02. State\Player_Attack\Player_BowAction">
       <UniqueIdentifier>{ec22efd6-d6f8-4601-ac97-fcd8afe526e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Item\Melee_Weapon">
+      <UniqueIdentifier>{d3f7fb40-c485-4381-a9ed-568de920ebad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Item\Melee_Weapon\Glaive">
+      <UniqueIdentifier>{eceafa73-f980-4124-9299-94b46878732a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Item\Artifact">
+      <UniqueIdentifier>{95770eb8-e502-4964-90a4-7bf140a5d52f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Item\Ranged_Weapon">
+      <UniqueIdentifier>{63859ab4-7dc8-4ac3-91bb-25ebb96f4291}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Item\Ranged_Weapon\ShortBow">
+      <UniqueIdentifier>{357aa7d7-963a-4187-9b68-1fb06e1baf3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Item\Ranged_Weapon\Bow">
+      <UniqueIdentifier>{57d21c53-5f98-4859-ae85-c003d0ff863d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -204,7 +213,7 @@
     <ClInclude Include="..\Public\Loader.h">
       <Filter>01.Levels\00.Loading\Loader</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Level_GamePlay.h">
+    <ClInclude Include="..\Public\Level_Lounge.h">
       <Filter>01.Levels\02. Lounge</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Camera_Free.h">
@@ -346,10 +355,10 @@
       <Filter>99.Defines</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Weapon_Glaive.h">
-      <Filter>02.GameObjects\Player\01. Weapon\Glaive</Filter>
+      <Filter>02.GameObjects\Item\Melee_Weapon\Glaive</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Weapon_ShortBow.h">
-      <Filter>02.GameObjects\Player\01. Weapon\ShortBow</Filter>
+      <Filter>02.GameObjects\Item\Ranged_Weapon\ShortBow</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Player_Arrow.h">
       <Filter>02.GameObjects\Arrow</Filter>
@@ -365,6 +374,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\Monster_Arrow.h">
       <Filter>02.GameObjects\Arrow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Weapon_Bow.h">
+      <Filter>02.GameObjects\Item\Ranged_Weapon\Bow</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -393,7 +405,7 @@
     <ClCompile Include="..\Private\Loader.cpp">
       <Filter>01.Levels\00.Loading\Loader</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Level_GamePlay.cpp">
+    <ClCompile Include="..\Private\Level_Lounge.cpp">
       <Filter>01.Levels\02. Lounge</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Camera_Free.cpp">
@@ -529,10 +541,10 @@
       <Filter>99.Defines</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Weapon_Glaive.cpp">
-      <Filter>02.GameObjects\Player\01. Weapon\Glaive</Filter>
+      <Filter>02.GameObjects\Item\Melee_Weapon\Glaive</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Weapon_ShortBow.cpp">
-      <Filter>02.GameObjects\Player\01. Weapon\ShortBow</Filter>
+      <Filter>02.GameObjects\Item\Ranged_Weapon\ShortBow</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Player_Arrow.cpp">
       <Filter>02.GameObjects\Arrow</Filter>
@@ -548,6 +560,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Monster_Arrow.cpp">
       <Filter>02.GameObjects\Arrow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Weapon_Bow.cpp">
+      <Filter>02.GameObjects\Item\Ranged_Weapon\Bow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

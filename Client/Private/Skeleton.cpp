@@ -100,18 +100,20 @@ HRESULT CSkeleton::Ready_PartObjects()
 	if (nullptr == pBody)
 		return E_FAIL;
 
-	ItemDesc.strGameObjectTag = TEXT("GameObject_ShortBow_Skeleton");
+	//ItemDesc.strGameObjectTag = TEXT("GameObject_ShortBow");
 	ItemDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	ItemDesc.pState = &m_iState;
 	ItemDesc.pSocketMatrix = pBody->Get_CombinedTransformationMatrix("J_L_Weapon");
 	ItemDesc.pContainerObject = this;
 	ItemDesc.pContainerObjAttacking = &m_bAttacking;
-	ItemDesc.strIconTexPrototypeTag = TEXT("Prototype_Component_Texture_ShortBow");
-	ItemDesc.strIconGameObjectTag = TEXT("UIGameObject_ShortBow");
+	/*ItemDesc.strIconTexPrototypeTag = TEXT("Prototype_Component_Texture_ShortBow");
+	ItemDesc.strIconGameObjectTag = TEXT("UIGameObject_ShortBow");*/
 
 	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_ShortBow"), TEXT("Part_Weapon_ShortBow"), &ItemDesc)))
 		return E_FAIL;
 
+	CItem* pShortBow = dynamic_cast<CItem*>(Find_PartObject(TEXT("Part_Weapon_ShortBow")));
+	pShortBow->Set_ItemActive(true);
 
 	/* 이펙트를 추가한다. */
 

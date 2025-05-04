@@ -39,7 +39,7 @@ void CZombie_Walk::State_Update(_float fTimeDelta)
 	if (Change_State_To_Attack())
 		return;
 
-	_float4  playerPos = m_pZombie->Get_Player_Position(TEXT("GameObject_Player"), LEVEL_GAMEPLAY);
+	_float4  playerPos = m_pZombie->Get_Player_Position(TEXT("GameObject_Player"), LEVEL_LOUNGE);
 
 	m_pTransformCom->LookAt(XMLoadFloat4(&playerPos));
 
