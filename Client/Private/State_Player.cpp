@@ -143,6 +143,9 @@ _bool CState_Player::Change_State_To_Roll()
 
 _bool CState_Player::Change_State_To_GlaiveCombo()
 {
+	if (nullptr == m_pPlayer->Find_PartObject(TEXT("Part_Weapon_Melee")))
+		return false;
+
 	CTransform* pMonsterTransformCom = m_pPlayer->Get_MonsterTransformCom();
 
 	if (nullptr == pMonsterTransformCom)
@@ -170,6 +173,9 @@ _bool CState_Player::Change_State_To_GlaiveCombo()
 
 _bool CState_Player::Change_State_To_BowAction()
 {
+	if (nullptr == m_pPlayer->Find_PartObject(TEXT("Part_Weapon_Ranged")))
+		return false;
+
 	if (m_pGameInstance->Get_Key(VK_RBUTTON) && !bMouseClickLock)
 	{
 		_float4 fWorldPickedPos = { 0.f, 0.f, 0.f, 1.f };

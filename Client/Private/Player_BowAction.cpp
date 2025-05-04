@@ -3,6 +3,7 @@
 #include "Player_Arrow.h"
 #include "ArrowPool_Player.h"
 #include "Body_Player.h"
+#include "Item.h"
 
 #define SHOOT_ARROW  25.f
 
@@ -20,6 +21,13 @@ HRESULT CPlayer_BowAction::Init_State()
 
 void CPlayer_BowAction::State_Enter()
 {
+	CItem* pMelee = dynamic_cast<CItem*>(m_pPlayer->Find_PartObject(TEXT("Part_Weapon_Melee")));
+	if (pMelee)
+		pMelee->Set_ItemActive(false);
+
+	CItem* pRanged = dynamic_cast<CItem*>(m_pPlayer->Find_PartObject(TEXT("Part_Weapon_Ranged")));
+	pRanged->Set_ItemActive(true);
+
 	m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::BOW_ACTION), false, 2.f);
 }
 
@@ -53,6 +61,13 @@ void CPlayer_BowAction::State_Late_Update(_float fTimeDelta)
 
 void CPlayer_BowAction::State_Exit()
 {
+	CItem* pRanged = dynamic_cast<CItem*>(m_pPlayer->Find_PartObject(TEXT("Part_Weapon_Ranged")));
+	pRanged->Set_ItemActive(false);
+
+	CItem* pMelee = dynamic_cast<CItem*>(m_pPlayer->Find_PartObject(TEXT("Part_Weapon_Melee")));
+	if (pMelee)
+		pMelee->Set_ItemActive(true);
+
 	m_bShotArrow = false;
 
 	m_pPlayer->Set_Shoot_Arrow(false, { 0.f, 0.f, 0.f, 1.f });

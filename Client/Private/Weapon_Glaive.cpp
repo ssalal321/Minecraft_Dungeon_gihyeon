@@ -25,25 +25,27 @@ HRESULT CWeapon_Glaive::Initialize(void* pArg)
 {
 	/* 원형의 데이터를 복제하여 사본을 만들고. */
 	/* 추가적으로 필요한 데이터를 Arg로 받아와 실 사용하기위한 객체의 정보를 생성해준다. */	
-	ITEM_DESC* pDesc = static_cast<ITEM_DESC*>(pArg);
+	/*ITEM_DESC* pDesc = static_cast<ITEM_DESC*>(pArg);
 
 	if (nullptr != pArg)
 	{
 		m_pTargetState = pDesc->pState;
 		m_pSocketMatrix = pDesc->pSocketMatrix;
-	}
-
-	m_strGameObjectTag		= TEXT("GameObject_GlaiveSteel");
-	m_strObjectPrototypeTag = TEXT("Prototype_GameObject_Glaive_Steel");
-	m_strTexPrototypeTag	= TEXT("Prototype_Component_Texture_Glaive_Steel");
-	m_strIconGameObjectTag	= TEXT("UIGameObject_Glaive_Steel");
-	m_strPartObjectTag		= TEXT("Part_Weapon_Glaive_Steel");
-	m_eItemtype = ITEM_TYPE::MELEE;
-	m_iDealPoint = 10.f;
+	}*/
 	
+	m_eItemtype = ITEM_TYPE::MELEE;
+	m_iDealPoint = 10;
+	
+	m_bItemActive = true;
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
+
+	m_strGameObjectTag = TEXT("GameObject_GlaiveSteel");
+	m_strPartObjectTag = TEXT("Part_Weapon_Melee");
+	m_strObjectPrototypeTag = TEXT("Prototype_GameObject_Glaive_Steel");
+	m_strTexPrototypeTag = TEXT("Prototype_Component_Texture_Glaive_Steel");
+	m_strIconGameObjectTag = TEXT("UIGameObject_Glaive_Steel");
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
@@ -57,16 +59,21 @@ HRESULT CWeapon_Glaive::Initialize(void* pArg)
 
 void CWeapon_Glaive::Priority_Update(_float fTimeDelta)
 {
-
+	if (false == m_bItemActive)
+		return;
 }
 
 void CWeapon_Glaive::Update(_float fTimeDelta)
 {
-
+	if (false == m_bItemActive)
+		return;
 }
 
 void CWeapon_Glaive::Late_Update(_float fTimeDelta)
 {
+	if (false == m_bItemActive)
+		return;
+
 	_matrix		SocketMatrix = XMLoadFloat4x4(m_pSocketMatrix);
 
 	for (size_t i = 0; i < 3; i++)	
@@ -82,6 +89,9 @@ void CWeapon_Glaive::Late_Update(_float fTimeDelta)
 
 HRESULT CWeapon_Glaive::Render()
 {
+	if (false == m_bItemActive)
+		return S_OK;
+
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 

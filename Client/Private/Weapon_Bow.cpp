@@ -33,16 +33,16 @@ HRESULT CWeapon_Bow::Initialize(void* pArg)
 		m_pSocketMatrix = pDesc->pSocketMatrix;
 	}
 
+	if (FAILED(__super::Initialize(pArg)))
+		return E_FAIL;
+
 	m_strGameObjectTag = TEXT("GameObject_Bow");
 	m_strObjectPrototypeTag = TEXT("Prototype_GameObject_Bow");
 	m_strTexPrototypeTag = TEXT("Prototype_Component_Texture_Bow");
 	m_strIconGameObjectTag = TEXT("UIGameObject_Bow");
-	m_strPartObjectTag = TEXT("Part_Weapon_Bow");
+	m_strPartObjectTag = TEXT("Part_Weapon_Ranged");
 	m_eItemtype = ITEM_TYPE::RANGED;
-	m_iDealPoint = 10.f;
-
-	if (FAILED(__super::Initialize(pArg)))
-		return E_FAIL;
+	m_iDealPoint = 10;
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
@@ -50,22 +50,27 @@ HRESULT CWeapon_Bow::Initialize(void* pArg)
 
 	// ShortBow ¼¼ÆÃ
 	m_pTransformCom->Rotation(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMConvertToRadians(90.f));
-	m_pTransformCom->Rotation(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMConvertToRadians(270.f));
+	m_pTransformCom->Rotation(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMConvertToRadians(90.f));
 	return S_OK;
 }
 
 void CWeapon_Bow::Priority_Update(_float fTimeDelta)
 {
-
+	if (false == m_bItemActive)
+		return;
 }
 
 void CWeapon_Bow::Update(_float fTimeDelta)
 {
-
+	if (false == m_bItemActive)
+		return;
 }
 
 void CWeapon_Bow::Late_Update(_float fTimeDelta)
 {
+	if (false == m_bItemActive)
+		return;
+
 	_matrix		SocketMatrix = XMLoadFloat4x4(m_pSocketMatrix);
 
 	for (size_t i = 0; i < 3; i++)	
@@ -81,6 +86,9 @@ void CWeapon_Bow::Late_Update(_float fTimeDelta)
 
 HRESULT CWeapon_Bow::Render()
 {
+	if (false == m_bItemActive)
+		return S_OK;
+
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 		

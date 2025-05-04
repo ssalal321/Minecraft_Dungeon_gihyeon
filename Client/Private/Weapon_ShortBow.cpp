@@ -33,16 +33,16 @@ HRESULT CWeapon_ShortBow::Initialize(void* pArg)
 		m_pSocketMatrix = pDesc->pSocketMatrix;
 	}
 
-	m_strGameObjectTag		= TEXT("GameObject_ShortBow");
-	m_strObjectPrototypeTag = TEXT("Prototype_GameObject_ShortBow");
-	m_strTexPrototypeTag	= TEXT("Prototype_Component_Texture_ShortBow");
-	m_strIconGameObjectTag  = TEXT("UIGameObject_ShortBow");
-	m_strPartObjectTag		= TEXT("Part_Weapon_ShortBow");
-	m_eItemtype  = ITEM_TYPE::RANGED;
-	m_iDealPoint = 8.f;
-
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
+
+	m_strGameObjectTag = TEXT("GameObject_ShortBow");
+	m_strObjectPrototypeTag = TEXT("Prototype_GameObject_ShortBow");
+	m_strTexPrototypeTag = TEXT("Prototype_Component_Texture_ShortBow");
+	m_strIconGameObjectTag = TEXT("UIGameObject_ShortBow");
+	m_strPartObjectTag = TEXT("Part_Weapon_Ranged");
+	m_eItemtype = ITEM_TYPE::RANGED;
+	m_iDealPoint = 8;
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;

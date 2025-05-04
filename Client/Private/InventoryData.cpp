@@ -37,7 +37,7 @@ void CInventoryData::Add_Item_To_StoreSlot(_uint iPrototypeLevelIndex, const _ws
 {
 	for (const auto& pExistingItem : m_StoreSlots)  // 이미 있는 Item인지 검사
 	{
-		if (pExistingItem && pExistingItem->Get_ObjectTag() == strItemObjectTag)
+		if (pExistingItem && pExistingItem->Get_GameObjectTag() == strItemObjectTag)
 			return;
 	}
 
@@ -200,12 +200,6 @@ HRESULT CInventoryData::Swap_With_Gear(_int iStoreSlotIndex, _int iGearSlotIndex
 	if (iStoreSlotIndex < 0 || iStoreSlotIndex >= static_cast<_int>(m_StoreSlots.size())) return E_FAIL;
 	if (iGearSlotIndex < 0 || iGearSlotIndex >= static_cast<_int>(m_GearSlots.size())) return E_FAIL;
 
-	/*CItem* pStoreItem  = m_StoreSlots[iStoreSlotIndex];
-	CItem* pGearItem   = m_GearSlots[iGearSlotIndex];
-
-	if (!pStoreItem || !pGearItem)
-		return E_FAIL;*/
-
 	if (!m_StoreSlots[iStoreSlotIndex] || !m_GearSlots[iGearSlotIndex])
 		return E_FAIL;
 
@@ -227,12 +221,6 @@ HRESULT CInventoryData::Swap_With_Artifact(_int iStoreSlotIndex, _int iItemSlotI
 {
 	if (iStoreSlotIndex < 0 || iStoreSlotIndex >= static_cast<_int>(m_StoreSlots.size())) return E_FAIL;
 	if (iItemSlotIndex < 0 || iItemSlotIndex >= static_cast<_int>(m_ArtifactSlots.size())) return E_FAIL;
-
-	/*CItem* pStoreItem	  = m_StoreSlots[iStoreSlotIndex];
-	CItem* pArtifactItem  = m_ArtifactSlots[iItemSlotIndex];
-
-	if (!pStoreItem || !pArtifactItem) 
-		return E_FAIL;*/
 
 	if (!m_StoreSlots[iStoreSlotIndex] || !m_ArtifactSlots[iItemSlotIndex])
 		return E_FAIL;

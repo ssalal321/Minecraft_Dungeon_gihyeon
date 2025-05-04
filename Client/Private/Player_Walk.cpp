@@ -16,12 +16,25 @@ HRESULT CPlayer_Walk::Init_State()
 void CPlayer_Walk::State_Enter()
 {
 	// ¹Ù²ã¾ßµÅ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::WALK_GLAIVE), true, 1.6f);
+
+	/*CPartObject* pItem = m_pPlayer->Find_PartObject(TEXT("Part_Weapon_Melee"));
+
+	if (pItem && pItem->Get_GameObjectTag() == TEXT("GameObject_GlaiveSteel"))
+		m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::WALK_GLAIVE), true, 1.6f);
+	else
+		m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::WALK), true, 1.6f);*/
 }
 
 void CPlayer_Walk::State_Priority_Update(_float fTimeDelta)
 {
 	__super::State_Priority_Update(fTimeDelta);
+
+	CPartObject* pItem = m_pPlayer->Find_PartObject(TEXT("Part_Weapon_Melee"));
+
+	if (pItem && pItem->Get_GameObjectTag() == TEXT("GameObject_GlaiveSteel"))
+		m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::WALK_GLAIVE), true, 1.6f);
+	else
+		m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::WALK), true, 1.6f);
 }
 
 // Player_Walk

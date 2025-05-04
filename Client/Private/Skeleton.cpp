@@ -112,6 +112,8 @@ HRESULT CSkeleton::Ready_PartObjects()
 	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_ShortBow"), TEXT("Part_Weapon_ShortBow"), &ItemDesc)))
 		return E_FAIL;
 
+	CItem* pShortBow = dynamic_cast<CItem*>(Find_PartObject(TEXT("Part_Weapon_ShortBow")));
+	pShortBow->Set_ItemActive(true);
 
 	/* 이펙트를 추가한다. */
 

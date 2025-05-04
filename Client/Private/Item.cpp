@@ -42,7 +42,6 @@ HRESULT CItem::Initialize(void* pArg)
 
 void CItem::Priority_Update(_float fTimeDelta)
 {
-
 }
 
 void CItem::Update(_float fTimeDelta)

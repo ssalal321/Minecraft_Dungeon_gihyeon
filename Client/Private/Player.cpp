@@ -186,7 +186,7 @@ HRESULT CPlayer::Ready_PartObjects()
 //	pWeaponCollider->Set_ColliderActive(false);
 //
 //	// 인벤토리에 넣기
-//	//CItem* pGlaive = dynamic_cast<CItem*>(Find_PartObject(TEXT("Part_Weapon_Glaive")));
+//	//CItem* pGlaive = dynamic_cast<CItem*>(Find_PartObject(TEXT("Part_Weapon_Melee")));
 //	m_pInventoryData->Add_Item_To_StoreSlot(pGlaive);
 //#pragma endregion
 //
@@ -202,7 +202,7 @@ HRESULT CPlayer::Ready_PartObjects()
 //	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Bow"), TEXT("Part_Weapon_Bow"), &BowDesc)))
 //		return E_FAIL;
 //
-//	CItem* pBow = dynamic_cast<CItem*>(Find_PartObject(TEXT("Part_Weapon_Bow")));
+//	CItem* pBow = dynamic_cast<CItem*>(Find_PartObject(TEXT("Part_Weapon_Ranged")));
 //	m_pInventoryData->Add_Item_To_StoreSlot(pBow);
 //
 //#pragma endregion 
