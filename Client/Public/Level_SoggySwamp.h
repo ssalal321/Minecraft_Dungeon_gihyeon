@@ -9,11 +9,11 @@ BEGIN(Client)
 	class CPlayer;
 	class CMonster;
 
-class CLevel_Lounge final : public CLevel
+class CLevel_SoggySwamp final : public CLevel
 {
 private:
-	CLevel_Lounge(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	~CLevel_Lounge() override = default;
+	CLevel_SoggySwamp(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	~CLevel_SoggySwamp() override = default;
 
 public:
 	HRESULT		Initialize()						override;
@@ -41,7 +41,7 @@ private:
 	CMonster*	m_pPickedMonster = { nullptr };
 
 public:
-	static CLevel_Lounge* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CLevel_SoggySwamp* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual void Free() override;
 };
 

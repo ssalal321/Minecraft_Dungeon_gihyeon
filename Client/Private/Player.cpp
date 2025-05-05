@@ -157,7 +157,7 @@ HRESULT CPlayer::Ready_PartObjects()
 	BodyDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	BodyDesc.pState = &m_iState;
 	BodyDesc.pContainerObject = this;
-	BodyDesc.pContainerObjAttacking = &m_bAttacking;
+	BodyDesc.pCollisionActivating = &m_bAttacking;
 
 	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Body_Player"), TEXT("Part_Body"), &BodyDesc)))
 		return E_FAIL;
@@ -175,7 +175,7 @@ HRESULT CPlayer::Ready_PartObjects()
 //	ItemDesc.pState = &m_iState;
 //	ItemDesc.pSocketMatrix = pBody->Get_CombinedTransformationMatrix("J_R_Weapon");
 //	ItemDesc.pContainerObject = this;
-//	ItemDesc.pContainerObjAttacking = &m_bAttacking;
+//	ItemDesc.pCollisionActivated = &m_bAttacking;
 //
 //	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Glaive_Steel"), TEXT("Part_Weapon_Glaive"), &ItemDesc)))
 //		return E_FAIL;
@@ -197,7 +197,7 @@ HRESULT CPlayer::Ready_PartObjects()
 //	BowDesc.pState = &m_iState;
 //	BowDesc.pSocketMatrix = pBody->Get_CombinedTransformationMatrix("J_L_Weapon");
 //	BowDesc.pContainerObject = this;
-//	BowDesc.pContainerObjAttacking = &m_bAttacking;
+//	BowDesc.pCollisionActivated = &m_bAttacking;
 //
 //	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Bow"), TEXT("Part_Weapon_Bow"), &BowDesc)))
 //		return E_FAIL;

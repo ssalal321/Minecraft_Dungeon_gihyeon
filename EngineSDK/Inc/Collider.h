@@ -29,7 +29,7 @@ public:
 	CBounding*			Get_Bounding() const { return m_pBounding; }
 	_bool				Get_ColliderActive() const { return m_bColliderActive; }
 	_bool				Get_MouseCollider() const { return m_bMouseCollider; }
-	_bool				Get_OtherAttacking() const { return *m_bContainerObjAttacking; }
+	_bool				Get_OtherCollisionActivated() const { return *m_bCollisionActivated; }
 	CGameObject*		Get_OwnerObject() const { return m_pOwnerGameObject; }
 
 public:
@@ -60,7 +60,7 @@ private:
 
 	CGameObject*		m_pOwnerGameObject	= { nullptr };
 	_float4x4*			m_CombinedWorldMatrix = { nullptr };
-	_bool*				m_bContainerObjAttacking = { nullptr };
+	_bool*				m_bCollisionActivated = { nullptr };
 
 
 #ifdef _DEBUG

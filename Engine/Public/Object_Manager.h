@@ -22,7 +22,7 @@ public:
 	CComponent*		Get_Component(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strComponentTag, _uint iIndex);
 	CGameObject*	Find_GameObject(const _wstring& strGameObjectTag, _uint iLayerLevelIndex, const _wstring& strLayerTag);
 
-	unordered_map<_wstring, CGameObject*>*	Get_LayerObjects(_uint iLayerLevelIndex, const _wstring& strLayerTag);
+	//unordered_map<_wstring, CGameObject*>*	Get_LayerObjects(_uint iLayerLevelIndex, const _wstring& strLayerTag);
 
 public:
 	HRESULT		Initialize(_uint iNumLevels);

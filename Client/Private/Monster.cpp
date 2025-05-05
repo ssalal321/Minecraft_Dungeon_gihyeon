@@ -130,7 +130,7 @@ HRESULT CMonster::Ready_Components()
 	//SphereCollDesc.vCenter = _float3(0.f, SphereCollDesc.fRadius, 0.f);
 	//SphereCollDesc.pGameObject = this;
 	//SphereCollDesc.CombinedWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
-	//SphereCollDesc.pContainerObjAttacking = &m_bHoveringColl;  // 얜 다른 것과는 충돌할 필요 X
+	//SphereCollDesc.pCollisionActivated = &m_bHoveringColl;  // 얜 다른 것과는 충돌할 필요 X
 
 	//CComponent* pColliderSphereCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
 	//	TEXT("Com_Collider_Sphere"), reinterpret_cast<CComponent**>(&m_pColliderSphereCom), &SphereCollDesc);

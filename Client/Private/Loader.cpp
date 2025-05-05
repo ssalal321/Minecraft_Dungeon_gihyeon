@@ -82,7 +82,11 @@ HRESULT CLoader:: Loading()
 		break;
 
 	case LEVEL_LOUNGE:
-		hr = Loading_For_GamePlay();
+		hr = Loading_For_Lounge();
+		break;
+
+	case LEVEL_SOGGYSWAMP:
+		hr = Loading_For_SoggySwamp();
 		break;
 	}
 
@@ -110,11 +114,9 @@ HRESULT CLoader::Loading_For_Static()
 	if (FAILED(Ready_Prototype_TextureCom_Static()))
 		return E_FAIL;
 
-
 	lstrcpy(m_szLoadingText, TEXT("셰이더 로딩 중"));
 	if (FAILED(Ready_Prototype_ShaderCom_Static()))
 		return E_FAIL;
-
 
 	lstrcpy(m_szLoadingText, TEXT("버퍼 로딩 중"));
 	/* For.Prototype_Component_VIBuffer_Rect */
@@ -124,37 +126,7 @@ HRESULT CLoader::Loading_For_Static()
 
 
 	lstrcpy(m_szLoadingText, TEXT("모델 로딩 중"));
-	_matrix		PreTransformMatrix = XMMatrixIdentity();
-
-	/* For.Prototype_Component_Model_PlayerHex */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_PlayerHex"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Player/PlayerHex.fbx", PreTransformMatrix))))
-		return E_FAIL;
-
-	/* For.Prototype_Component_Model_GlaiveSteel */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_GlaiveSteel"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Weapon/Glaive/GlaiveSteel.fbx", PreTransformMatrix))))
-		return E_FAIL;
-
-	/* For.Prototype_Component_Model_ShortBow */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_ShortBow"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Weapon/ShortBow/ShortBow.fbx", PreTransformMatrix))))
-		return E_FAIL;
-
-	/* For.Prototype_Component_Model_Bow */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Bow"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Weapon/Bow/Bow.fbx", PreTransformMatrix))))
-		return E_FAIL;
-
-	/* For.Prototype_Component_Model_Arrow */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Arrow"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Weapon/Arrow.fbx", PreTransformMatrix))))
-		return E_FAIL;
-
-	/* For.Prototype_Component_Model_LoungeMap */
-	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(270.f));
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_LoungeMap"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Map/Lounge/LoungeMap.fbx", PreTransformMatrix))))
+	if (FAILED(Ready_Prototype_ModelCom_Static()))
 		return E_FAIL;
 
 
@@ -193,46 +165,8 @@ HRESULT CLoader::Loading_For_Title()
 	return S_OK;
 }
 
-HRESULT CLoader::Loading_For_GamePlay()
+HRESULT CLoader::Loading_For_Lounge()
 {
-	lstrcpy(m_szLoadingText, TEXT("모델 로딩 중"));
-	_matrix		PreTransformMatrix = XMMatrixIdentity();
-
-	/* For.Prototype_Component_Model_Zombie */
- 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOUNGE, TEXT("Prototype_Component_Model_Zombie"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Monster/Zombie/Zombie.fbx", PreTransformMatrix))))
-		return E_FAIL;
-
-	/* For.Prototype_Component_Model_Skeleton */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOUNGE, TEXT("Prototype_Component_Model_Skeleton"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Monster/Skeleton/Skeleton.fbx", PreTransformMatrix))))
-		return E_FAIL;
-
-
-	lstrcpy(m_szLoadingText, TEXT("객체원형 로딩 중"));
-	/* For.Prototype_GameObject_Body_Zombie */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOUNGE, TEXT("Prototype_GameObject_Body_Zombie"),
-		CBody_Zombie::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
-	/* For.Prototype_GameObject_Body_Skeleton */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOUNGE, TEXT("Prototype_GameObject_Body_Skeleton"),
-		CBody_Skeleton::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
-	/* For.Prototype_GameObject_Zombie */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOUNGE, TEXT("Prototype_GameObject_Zombie"),
-		CZombie::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
-	/* For.Prototype_GameObject_Skeleton */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOUNGE, TEXT("Prototype_GameObject_Skeleton"),
-		CSkeleton::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
-	
-
-
 	///* For.Prototype_GameObject_Sky */
 	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOUNGE, TEXT("Prototype_GameObject_Sky"),
 	//	CSky::Create(m_pDevice, m_pContext))))
@@ -242,6 +176,12 @@ HRESULT CLoader::Loading_For_GamePlay()
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
 	m_isFinished = true;
+
+	return S_OK;
+}
+
+HRESULT CLoader::Loading_For_SoggySwamp()
+{
 
 	return S_OK;
 }
@@ -326,6 +266,54 @@ HRESULT CLoader::Ready_Prototype_ShaderCom_Static()
 	return S_OK;
 }
 
+HRESULT CLoader::Ready_Prototype_ModelCom_Static()
+{
+	_matrix		PreTransformMatrix = XMMatrixIdentity();
+
+	/* For.Prototype_Component_Model_PlayerHex */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_PlayerHex"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Player/PlayerHex.fbx", PreTransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_Zombie */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Zombie"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Monster/Zombie/Zombie.fbx", PreTransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_Skeleton */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Skeleton"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Monster/Skeleton/Skeleton.fbx", PreTransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_GlaiveSteel */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_GlaiveSteel"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Weapon/Glaive/GlaiveSteel.fbx", PreTransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_ShortBow */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_ShortBow"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Weapon/ShortBow/ShortBow.fbx", PreTransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_Bow */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Bow"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Weapon/Bow/Bow.fbx", PreTransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_Arrow */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Arrow"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Weapon/Arrow.fbx", PreTransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_LoungeMap */
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(270.f));
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_LoungeMap"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Map/Lounge/LoungeMap.fbx", PreTransformMatrix))))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 HRESULT CLoader::Ready_Prototype_ColliderCom_Static()
 {
 	/* For.Prototype_Component_Collider_AABB */
@@ -392,6 +380,27 @@ HRESULT CLoader::Ready_Prototype_GameObject_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Body_Player"),
 		CBody_Player::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+	/* For.Prototype_GameObject_Body_Zombie */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Body_Zombie"),
+		CBody_Zombie::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Body_Skeleton */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Body_Skeleton"),
+		CBody_Skeleton::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Zombie */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Zombie"),
+		CZombie::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Skeleton */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Skeleton"),
+		CSkeleton::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 
 	/* For.Prototype_GameObject_Camera_Free */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Free"),

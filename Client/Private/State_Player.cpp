@@ -122,6 +122,8 @@ _bool CState_Player::Change_State_To_Walk()
 			m_pPlayer->Set_Chasing(false, nullptr);
 			m_pPlayer->Change_State(PLAYER_STATE::WALK);
 
+			std::cerr << fWorldPickedPos.x << ", " << fWorldPickedPos.y << ", " << fWorldPickedPos.z << std::endl;
+
 			return true;
 		}
 	}
@@ -181,15 +183,24 @@ _bool CState_Player::Change_State_To_BowAction()
 		_float4 fWorldPickedPos = { 0.f, 0.f, 0.f, 1.f };
 
 		// 2. LoungeMap에 피킹 요청 (BoundingBox 충돌 체크)
-		if (m_pGameInstance->Picked_Model(fWorldPickedPos, TEXT("GameObject_LoungeMap"),
-			LEVEL_LOUNGE, TEXT("Layer_BackGround")))
+		if (m_pGameInstance->Get_CurrentLevelIndex() == LEVEL_LOUNGE)
 		{
-			m_pPlayer->Set_Shoot_Arrow(true, fWorldPickedPos);
-			m_pTransformCom->LookAt(XMLoadFloat4(&fWorldPickedPos));
-			m_pPlayer->Change_State(PLAYER_STATE::BOW_ACTION);
+			if (m_pGameInstance->Picked_Model(fWorldPickedPos, TEXT("GameObject_LoungeMap"),
+				LEVEL_LOUNGE, TEXT("Layer_BackGround")))
+			{
+				m_pPlayer->Set_Shoot_Arrow(true, fWorldPickedPos);
+				m_pTransformCom->LookAt(XMLoadFloat4(&fWorldPickedPos));
+				m_pPlayer->Change_State(PLAYER_STATE::BOW_ACTION);
+
+				return true;
+			}
+		}
+		else if (m_pGameInstance->Get_CurrentLevelIndex() == LEVEL_SOGGYSWAMP)
+		{
 
 			return true;
 		}
+
 	}
 
 	return false;
@@ -205,21 +216,21 @@ _bool CState_Player::Change_State_To_GetHitFront()
 void CState_Player::Modify_HP(CCollider* pOther)
 {
 	if (TEXT("Monster_Arrow") == pOther->Get_ColliderTag()
-		&& pOther->Get_OtherAttacking())
+		&& pOther->Get_OtherCollisionActivated())
 	{
 		CMonster_Arrow* pMonsterArrow = dynamic_cast<CMonster_Arrow*>(pOther->Get_OwnerObject());
 		m_pPlayerInfo->Modify_CurrentHp(-pMonsterArrow->Get_DealPoint());
 	}
 
 	if (TEXT("Monster_Weapon") == pOther->Get_ColliderTag()
-		&& pOther->Get_OtherAttacking())
+		&& pOther->Get_OtherCollisionActivated())
 	{
 		CItem* pItem = dynamic_cast<CItem*>(pOther->Get_OwnerObject());
 		m_pPlayerInfo->Modify_CurrentHp(-pItem->Get_DealPoint());
 	}
 
 	if (TEXT("Monster_Body_Hit") == pOther->Get_ColliderTag()
-		&& pOther->Get_OtherAttacking())
+		&& pOther->Get_OtherCollisionActivated())
 	{
 		CPartObject* pMonsterBody = dynamic_cast<CPartObject*>(pOther->Get_OwnerObject());
 		CMonster* pMonster = dynamic_cast<CMonster*>(pMonsterBody->Get_ContainerObject());

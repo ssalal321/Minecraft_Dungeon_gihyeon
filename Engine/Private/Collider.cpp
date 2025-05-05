@@ -70,14 +70,14 @@ HRESULT CCollider::Initialize(void* pArg)
 
 	m_CombinedWorldMatrix	 = pDesc->CombinedWorldMatrix;
 	m_pOwnerGameObject		 = pDesc->pGameObject;
-	m_bContainerObjAttacking = pDesc->pContainerObjAttacking;
+	m_bCollisionActivated	 = pDesc->pCollisionActivated;
 
 	return S_OK;
 }
 
 _bool CCollider::Intersect(CCollider* pTargetCollider)
 {
-	if ((false == *m_bContainerObjAttacking && false == pTargetCollider->Get_OtherAttacking() || !m_bColliderActive))
+	if ((false == *m_bCollisionActivated && false == pTargetCollider->Get_OtherCollisionActivated() || !m_bColliderActive))
 	{
 		m_bIsCollision = false;
 		pTargetCollider->Set_IsCollision(false);

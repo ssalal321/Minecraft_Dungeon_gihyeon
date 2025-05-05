@@ -188,7 +188,7 @@ HRESULT CPlayer_Arrow::Ready_Components()
 	OBBCollDesc.vRotation = _float3(0.f, /*XMConvertToRadians(0.f)*/ 0.f, 0.f); 
 	OBBCollDesc.pGameObject = this;
 	OBBCollDesc.CombinedWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
-	OBBCollDesc.pContainerObjAttacking = &m_bAttacking;
+	OBBCollDesc.pCollisionActivated = &m_bAttacking;
 
 	CComponent* pColliderCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_OBB"),
 		TEXT("Com_Collider_OBB"), reinterpret_cast<CComponent**>(&m_pColliderCom), &OBBCollDesc);

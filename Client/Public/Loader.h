@@ -15,7 +15,7 @@ class CLoader final : public CBase
 {
 private:
 	CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual ~CLoader() = default;
+	~CLoader() override = default;
 
 public:
 	HRESULT		Initialize(LEVEL eNextLevelID);
@@ -42,11 +42,13 @@ private:
 private:
 	HRESULT		Loading_For_Static();
 	HRESULT		Loading_For_Title();
-	HRESULT		Loading_For_GamePlay();
+	HRESULT		Loading_For_Lounge();
+	HRESULT		Loading_For_SoggySwamp();
 
 
 	HRESULT		Ready_Prototype_TextureCom_Static();
 	HRESULT		Ready_Prototype_ShaderCom_Static();
+	HRESULT		Ready_Prototype_ModelCom_Static();
 	HRESULT		Ready_Prototype_ColliderCom_Static();
 	HRESULT		Ready_Prototype_GameObject_Static();
 

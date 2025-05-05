@@ -30,6 +30,7 @@ private:
 	CShader*		m_pShader_MeshCom	 = { nullptr };
 	CModel*			m_pModelCom		 = { nullptr };
 	CNavigation*	m_pNavigationCom = { nullptr };
+	CCollider*		m_pColliderCom	 = { nullptr };
 
 	_int			m_iPointNum		 = {};
 	_float3			m_fCellPoints[3] = {};
@@ -37,6 +38,9 @@ private:
 	static  _bool	m_bLineRender;
 	static	_uint	m_iShaderPass;  // ¼±¾ð
 	static	_bool	m_bClickActive;;
+
+	_bool	m_bSceneChange = { true };
+	_float4x4	m_IdentityWorldMatrix;
 
 private:
 	HRESULT		Ready_Components();
