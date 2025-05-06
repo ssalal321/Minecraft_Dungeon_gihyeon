@@ -5,6 +5,11 @@
 #include "Client_Defines.h"
 #include "Level.h"
 
+namespace Client
+{
+	class CLevel_Trigger;
+}
+
 BEGIN(Client)
 	class CPlayer;
 	class CMonster;
@@ -21,13 +26,16 @@ public:
 	HRESULT		Render()							override;
 
 public:
-	HRESULT Ready_Lights();
-	HRESULT Ready_Layer_Camera(const _wstring& strLayerTag);
-	HRESULT Ready_Layer_Player(const _wstring& strLayerTag);
-	HRESULT Ready_Layer_Monster(const _wstring& strLayerTag);
-	HRESULT Ready_Layer_BackGround(const _wstring& strLayerTag);
-	HRESULT Ready_Layer_InventoryUI(const _wstring& strLayerTag);
-	HRESULT Ready_Layer_PlayerSlotUI(const _wstring& strLayerTag);
+	HRESULT		Ready_Lights();
+	HRESULT		Ready_Layer_Camera(const _wstring& strLayerTag);
+	
+	HRESULT		Ready_Layer_Player(const _wstring& strLayerTag);
+	HRESULT		Ready_PlayerInfo(const _wstring& strLayerTag);
+	HRESULT		Ready_Layer_Inventory(const _wstring& strLayerTag);
+	HRESULT		Ready_Layer_Monster(const _wstring& strLayerTag);
+	HRESULT		Ready_Layer_BackGround(const _wstring& strLayerTag);
+	HRESULT		Ready_Layer_InventoryUI(const _wstring& strLayerTag);
+	HRESULT		Ready_Layer_PlayerSlotUI(const _wstring& strLayerTag);
 
 	CCollider*	Get_Closest_Collider(const _float4& mousePos, const _float3& mouseRay);
 	void		Click_Chase_Monster(CMonster* pMonster);
@@ -36,6 +44,8 @@ private:
 	_bool	bShowInventory = { false };
 	//_bool   m_bClickLock = { false };
 	_bool	m_bHoveringMonster = { false };
+
+	CLevel_Trigger*		m_pLevel_Trigger = { nullptr };
 
 	CPlayer*	m_pPlayer = { nullptr };
 	CMonster*	m_pPickedMonster = { nullptr };

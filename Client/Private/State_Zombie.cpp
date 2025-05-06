@@ -85,8 +85,6 @@ _bool CState_Zombie::Change_State_To_Attack()
 
 _bool CState_Zombie::Change_State_To_Walk()
 {
-	_uint  currentLevelIndex = m_pGameInstance->Get_CurrentLevelIndex();
-
 	_float lengthToPlayer = m_pZombie->Length_To_Player();
 
 	// 플레이어 인지 거리 && 스턴 X 상태
@@ -116,7 +114,7 @@ _bool CState_Zombie::Change_State_To_Idle()
 _bool CState_Zombie::Change_State_To_GetHit(CCollider* pOther)
 {
 	if (TEXT("Player_Weapon") == pOther->Get_ColliderTag()
-		&& pOther->Get_OtherAttacking())
+		&& pOther->Get_OtherCollisionActivated())
 	{
 		CItem* pItem = dynamic_cast<CItem*>(pOther->Get_OwnerObject());
 		m_pMonsterInfo->Modify_CurrentHp(-pItem->Get_DealPoint());
@@ -126,7 +124,7 @@ _bool CState_Zombie::Change_State_To_GetHit(CCollider* pOther)
 	}
 
 	if (TEXT("Player_Arrow") == pOther->Get_ColliderTag()
-		&& pOther->Get_OtherAttacking())
+		&& pOther->Get_OtherCollisionActivated())
 	{
 		CPlayer_Arrow* pPlayerArrow = dynamic_cast<CPlayer_Arrow*>(pOther->Get_OwnerObject());
 		m_pMonsterInfo->Modify_CurrentHp(-pPlayerArrow->Get_DealPoint());

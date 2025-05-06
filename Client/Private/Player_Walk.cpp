@@ -104,7 +104,8 @@ void CPlayer_Walk::Walk_Through_Destination(_float fTimeDelta)
 
 	m_pTransformCom->LookAt(vNextPos);
 
-	m_pTransformCom->Go_Straight(fTimeDelta, m_pNavigationCom);
+	CNavigation* pNavigationCom = dynamic_cast<CNavigation*>(m_pPlayer->Find_Component(TEXT("Com_Navigation_LoungeMap")));
+	m_pTransformCom->Go_Straight(fTimeDelta, pNavigationCom);
 }
 
 void CPlayer_Walk::Chase_Monster()

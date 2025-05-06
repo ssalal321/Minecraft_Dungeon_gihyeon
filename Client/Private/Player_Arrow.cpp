@@ -46,7 +46,7 @@ void CPlayer_Arrow::Update(_float fTimeDelta)
 	if (false == m_bActive)
 		return;
 
-	if (m_bAttacking)
+	if (m_bColliderActivating)
 	{
 		m_pTransformCom->Go_Straight(fTimeDelta);
 
@@ -131,7 +131,7 @@ void CPlayer_Arrow::Shoot(_float4 startPos, _float4 lookPos)
 
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&startPos));
 	m_pTransformCom->LookAt(XMLoadFloat4(&lookPos));
-	m_bAttacking = true;
+	m_bColliderActivating = true;
 	m_bActive	 = true;
 	m_pColliderCom->Set_ColliderActive(true);
 }
@@ -143,7 +143,7 @@ void CPlayer_Arrow::Reset()
 
 	m_fResetTimer = 0.f;
 	m_iDealPoint = 0;
-	m_bAttacking = false;
+	m_bColliderActivating = false;
 	m_bCollided  = false;
 	m_bActive	 = false;
 	m_pColliderCom->Set_ColliderActive(false);
@@ -188,7 +188,7 @@ HRESULT CPlayer_Arrow::Ready_Components()
 	OBBCollDesc.vRotation = _float3(0.f, /*XMConvertToRadians(0.f)*/ 0.f, 0.f); 
 	OBBCollDesc.pGameObject = this;
 	OBBCollDesc.CombinedWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
-	OBBCollDesc.pContainerObjAttacking = &m_bAttacking;
+	OBBCollDesc.pCollisionActivated = &m_bColliderActivating;
 
 	CComponent* pColliderCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_OBB"),
 		TEXT("Com_Collider_OBB"), reinterpret_cast<CComponent**>(&m_pColliderCom), &OBBCollDesc);
@@ -196,7 +196,7 @@ HRESULT CPlayer_Arrow::Ready_Components()
 	if (nullptr == pColliderCom)
 		return E_FAIL;
 
-	m_pGameInstance->Add_ColliderCom(pColliderCom, TEXT("Player_Arrow"), TEXT("Player"));
+	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), pColliderCom, TEXT("Player_Arrow"), TEXT("Player"), true);
 
 	CCollider* pArrowCollider = dynamic_cast<CCollider*>(pColliderCom);
 	pArrowCollider->Set_ColliderActive(false);

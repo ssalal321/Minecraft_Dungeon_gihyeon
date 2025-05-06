@@ -124,6 +124,8 @@ public:
 	HRESULT		Render()							override;
 
 public:
+	void	Delete_NavigationCom();
+
 	void	Change_State(PLAYER_STATE playerState);
 
 	void	Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState) override;

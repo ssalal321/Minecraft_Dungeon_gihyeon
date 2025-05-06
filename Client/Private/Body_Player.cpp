@@ -82,7 +82,7 @@ HRESULT CBody_Player::Render()
 
 void CBody_Player::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)
 {
-	CPlayer* pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("GameObject_Player"), LEVEL_LOUNGE, TEXT("Layer_Player")));
+	CPlayer* pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("GameObject_Player"), m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_Player")));
 	pPlayer->Collided_With(pOther, eCollisionState);
 }
 
@@ -102,13 +102,14 @@ HRESULT CBody_Player::Ready_Components()
 		return E_FAIL;
 
 
+	/* Com_Collider */
 	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereCollDesc{};
 
 	SphereCollDesc.fRadius = 1.6f;
 	SphereCollDesc.vCenter = _float3(0.f, SphereCollDesc.fRadius, 0.f);
 	SphereCollDesc.pGameObject = this;
 	SphereCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
-	SphereCollDesc.pContainerObjAttacking = m_pContainerObjAttacking;
+	SphereCollDesc.pCollisionActivated = m_pCollisionActivating;
 
 	CComponent* pColliderSphereCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
 		TEXT("Com_Collider_Sphere"), reinterpret_cast<CComponent**>(&m_pColliderCom), &SphereCollDesc);
@@ -116,7 +117,7 @@ HRESULT CBody_Player::Ready_Components()
 	if (nullptr == pColliderSphereCom)
 		return E_FAIL;
 
-	m_pGameInstance->Add_ColliderCom(pColliderSphereCom, TEXT("Player_Body"), TEXT("Player"));
+	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), pColliderSphereCom, TEXT("Player_Body"), TEXT("Player"), true);
 
 	//CBounding_OBB::BOUNDING_OBB_DESC		OBBCollDesc{};
 
@@ -125,7 +126,7 @@ HRESULT CBody_Player::Ready_Components()
 	//OBBCollDesc.vRotation = _float3(0.f, /*XMConvertToRadians(0.f)*/ 0.f, 0.f);
 	//OBBCollDesc.pGameObject = this;
 	//OBBCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
-	//OBBCollDesc.pContainerObjAttacking = m_pContainerObjAttacking;
+	//OBBCollDesc.pCollisionActivated = m_pCollisionActivating;
 
 	//CComponent* pColliderCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_OBB"),
 	//	TEXT("Com_Collider_OBB"), reinterpret_cast<CComponent**>(&m_pColliderCom), &OBBCollDesc);

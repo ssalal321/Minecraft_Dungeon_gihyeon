@@ -373,19 +373,19 @@ _bool CMesh::Picking_In_Mesh(const _float3& localMousePos, const _float3& localM
 		_float3 vB = m_pVertices[m_pIndices[i + 1]];
 		_float3 vC = m_pVertices[m_pIndices[i + 2]];
 
-		/*_float minX = min(vA.x, min(vB.x, vC.x));
-		_float maxX = max(vA.x, max(vB.x, vC.x));*/
-		if (vA.x < -40.f || vA.x > 40.f)
-			continue;
+		///*_float minX = min(vA.x, min(vB.x, vC.x));
+		//_float maxX = max(vA.x, max(vB.x, vC.x));*/
+		//if (vA.x < -40.f || vA.x > 40.f)
+		//	continue;
 
-		/*_float minZ = min(vA.z, min(vB.z, vC.z));
-		_float maxZ = max(vA.z, max(vB.z, vC.z));*/
-		if (vA.z < -50.f || vA.z > 55.f)
-			continue;
+		///*_float minZ = min(vA.z, min(vB.z, vC.z));
+		//_float maxZ = max(vA.z, max(vB.z, vC.z));*/
+		//if (vA.z < -50.f || vA.z > 55.f)
+		//	continue;
 
-		/*_float centerY = (vA.y + vB.y + vC.y) * 0.3333f;*/
-		if (vA.y < 45.f || vA.y > 65.f)
-			continue;	
+		///*_float centerY = (vA.y + vB.y + vC.y) * 0.3333f;*/
+		//if (vA.y < 45.f || vA.y > 65.f)
+		//	continue;	
 
 
 		_vector v0 = XMLoadFloat3(&vA);

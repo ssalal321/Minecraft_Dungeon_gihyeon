@@ -9,6 +9,7 @@ namespace Client
 		LEVEL_STATIC,
 		LEVEL_TITLE,
 		LEVEL_LOUNGE,
+		LEVEL_SOGGYSWAMP,
 		LEVEL_END
 	};
 	

@@ -15,7 +15,7 @@ class CLevel_Loading final : public CLevel
 {
 private:
 	CLevel_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual ~CLevel_Loading() = default;
+	~CLevel_Loading() override = default;
 
 public:
 	HRESULT		Initialize(LEVEL eNextLevelID);

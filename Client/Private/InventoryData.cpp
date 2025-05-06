@@ -33,7 +33,7 @@ HRESULT CInventoryData::Initialize(CPlayer* pPlayer)
 }
 
 void CInventoryData::Add_Item_To_StoreSlot(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag,
-	const _wstring& strItemObjectTag, void* pItemDesc)
+										   const _wstring& strItemObjectTag, void* pItemDesc)
 {
 	for (const auto& pExistingItem : m_StoreSlots)  // 이미 있는 Item인지 검사
 	{
@@ -256,7 +256,7 @@ void CInventoryData::Free()
 {
 	__super::Free();
 
-	/*for (auto& storeSlot : m_StoreSlots)
+	for (auto& storeSlot : m_StoreSlots)
 	{
 		Safe_Release(storeSlot);
 	}
@@ -272,7 +272,7 @@ void CInventoryData::Free()
 	{
 		Safe_Release(artifactSlot);
 	}
-	m_ArtifactSlots.clear();*/
+	m_ArtifactSlots.clear();
 
 	Safe_Release(m_pGameInstance);
 }

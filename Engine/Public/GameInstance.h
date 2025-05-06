@@ -10,6 +10,8 @@
 #include "EventBus.h"
 
 BEGIN(Engine)
+	class CLayer;
+
 	class ENGINE_DLL CGameInstance final : public CBase
 {
 	DECLARE_SINGLETON(CGameInstance)
@@ -48,7 +50,7 @@ public:
 #pragma region LEVEL_MANAGER
 	HRESULT		Open_Level(_uint iNextLevelIndex, class CLevel* pNewLevel);
 	_uint		Get_CurrentLevelIndex() const;
-	_uint		Get_NextLevelIndex() const;
+	_uint		Get_ChangedLevelIndex() const;
 	void		Set_NextLevelIndex(_uint iNextLevelIndex) const;
 #pragma endregion
 
@@ -61,7 +63,13 @@ public:
 	CGameObject* Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag,
 							   _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg = nullptr);
 	CGameObject* Find_GameObject(const _wstring& strGameObjectTag, _uint iLayerLevelIndex, const _wstring& strLayerTag);
-	CComponent*  Get_Component(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strComponentTag, _uint iIndex = 0);
+	//CComponent*  Get_Component(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strComponentTag, _uint iIndex = 0);
+
+	CLayer*		Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag);
+	HRESULT		Set_Layer_Persistent(_uint iLevelIndex, const wstring& strLayerTag);
+	CLayer*		Get_Persistent_Layer(const wstring& strLayerTag);
+	HRESULT		Attach_Persistent_Layer_To_Level(_uint iTargetLevelIndex, const wstring& strLayerTag);
+	HRESULT		Attach_Persistent_Layers_To_Level(_uint iLevelIndex);
 #pragma endregion
 
 #pragma region INPUT_MANAGER
@@ -104,8 +112,11 @@ public:
 #pragma endregion
 
 #pragma region COLLISION_MANAGER
-	HRESULT		Add_ColliderCom(CComponent* pColliderCom, const _wstring& PartObject_Tag, const _wstring& ObjectType) const;
-	unordered_map<_wstring, vector<CCollider*>>*	Get_Colliders();
+	HRESULT		Add_ColliderCom(_uint iLevelIndex, CComponent* pColliderCom, const _wstring& ColliderTag,
+								const _wstring& ObjectType, _bool bPersistent = false) const;
+	HRESULT		Attach_Persistent_Colliders_To_Level(_uint iLevelIndex, const wstring& targetTag);
+	unordered_map<_wstring, vector<CCollider*>>*	Get_Colliders(_uint iLevelIndex);
+
 #pragma endregion
 
 #pragma region EVENTBUS

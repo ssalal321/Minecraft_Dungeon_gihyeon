@@ -45,7 +45,8 @@ void CPlayer_Roll::State_Update(_float fTimeDelta)
 
 	m_fRollingTime += fTimeDelta;
 
-	m_pTransformCom->Go_Straight(fTimeDelta, m_pNavigationCom, 3.5f);
+	CNavigation* pNavigationCom = dynamic_cast<CNavigation*>(m_pPlayer->Find_Component(TEXT("Com_Navigation_LoungeMap")));
+	m_pTransformCom->Go_Straight(fTimeDelta, pNavigationCom, 3.5f);
 }
 
 

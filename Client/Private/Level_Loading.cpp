@@ -4,6 +4,7 @@
 
 #include "UI_Image.h"
 #include "Level_Lounge.h"
+#include "Level_SoggySwamp.h"
 #include "Level_Title.h"
 
 CLevel_Loading::CLevel_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -45,13 +46,16 @@ void CLevel_Loading::Update(_float fTimeDelta)
         case LEVEL_LOUNGE:
             pNewLevel = CLevel_Lounge::Create(m_pDevice, m_pContext);
             break;
-        
+
+        case LEVEL_SOGGYSWAMP:
+            pNewLevel = CLevel_SoggySwamp::Create(m_pDevice, m_pContext);
+            break;
         }
 
         if (nullptr == pNewLevel)
             return;
 
-        if (FAILED(m_pGameInstance->Open_Level(m_eNextLevelID, pNewLevel)))
+        if (SUCCEEDED(m_pGameInstance->Open_Level(m_eNextLevelID, pNewLevel)))
             return;
 
         return;

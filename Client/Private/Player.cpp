@@ -57,7 +57,8 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 	m_pTransformCom->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(180.f));
 
-	m_pNavigationCom->SetUp_CurrentCellIndex(0);
+	if (m_pNavigationCom)
+		m_pNavigationCom->SetUp_CurrentCellIndex(0);
 
 	return S_OK;
 }
@@ -71,7 +72,8 @@ void CPlayer::Priority_Update(_float fTimeDelta)
 
 void CPlayer::Update(_float fTimeDelta)
 {
-	m_pNavigationCom->SetUp_On_Navigation(m_pTransformCom);
+	if (m_pNavigationCom)
+		m_pNavigationCom->SetUp_On_Navigation(m_pTransformCom);
 
 	m_pPlayerFSM->Update_State(fTimeDelta);
 
@@ -89,11 +91,17 @@ void CPlayer::Late_Update(_float fTimeDelta)
 
 HRESULT CPlayer::Render()
 {
-#ifdef _DEBUG	
-	m_pNavigationCom->Render();
+#ifdef _DEBUG
+	if (m_pNavigationCom)
+		m_pNavigationCom->Render();
 #endif
 
 	return S_OK;
+}
+
+void CPlayer::Delete_NavigationCom()
+{
+	Safe_Release(m_pNavigationCom);
 }
 
 void CPlayer::Change_State(PLAYER_STATE playerState)
@@ -123,17 +131,23 @@ void CPlayer::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eColli
 HRESULT CPlayer::Ready_Components()
 {
 	/* Com_Navigation */
-	_uint	LevelIndex = m_pGameInstance->Get_NextLevelIndex();
+	_uint	LevelIndex = m_pGameInstance->Get_ChangedLevelIndex();
 
 	switch (LevelIndex)
 	{
 	case LEVEL_LOUNGE:
-		{
+	{
 		if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Navigation_LoungeMap"),
 			TEXT("Com_Navigation_LoungeMap"), reinterpret_cast<CComponent**>(&m_pNavigationCom)))
 			return E_FAIL;
-		}
-		break;
+	}
+	break;
+
+	//case LEVEL_SOGGYSWAMP:
+	//{
+	//	m_pNavigationCom = nullptr;
+	//}
+	break;
 	}
 
 	return S_OK;
@@ -157,7 +171,7 @@ HRESULT CPlayer::Ready_PartObjects()
 	BodyDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	BodyDesc.pState = &m_iState;
 	BodyDesc.pContainerObject = this;
-	BodyDesc.pContainerObjAttacking = &m_bAttacking;
+	BodyDesc.pCollisionActivating = &m_bAttacking;
 
 	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Body_Player"), TEXT("Part_Body"), &BodyDesc)))
 		return E_FAIL;
@@ -175,7 +189,7 @@ HRESULT CPlayer::Ready_PartObjects()
 //	ItemDesc.pState = &m_iState;
 //	ItemDesc.pSocketMatrix = pBody->Get_CombinedTransformationMatrix("J_R_Weapon");
 //	ItemDesc.pContainerObject = this;
-//	ItemDesc.pContainerObjAttacking = &m_bAttacking;
+//	ItemDesc.pCollisionActivated = &m_bAttacking;
 //
 //	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Glaive_Steel"), TEXT("Part_Weapon_Glaive"), &ItemDesc)))
 //		return E_FAIL;
@@ -197,7 +211,7 @@ HRESULT CPlayer::Ready_PartObjects()
 //	BowDesc.pState = &m_iState;
 //	BowDesc.pSocketMatrix = pBody->Get_CombinedTransformationMatrix("J_L_Weapon");
 //	BowDesc.pContainerObject = this;
-//	BowDesc.pContainerObjAttacking = &m_bAttacking;
+//	BowDesc.pCollisionActivated = &m_bAttacking;
 //
 //	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Bow"), TEXT("Part_Weapon_Bow"), &BowDesc)))
 //		return E_FAIL;
@@ -222,7 +236,7 @@ HRESULT CPlayer::Ready_States()
 	CState_Player::STATEPLAYER_DESC		pStatePlayerDesc = {};
 	pStatePlayerDesc.pColliderCom		= pCollider;
 	pStatePlayerDesc.pActorModelCom		= pPlayerModel;
-	pStatePlayerDesc.pNavigationCom		= m_pNavigationCom;
+	//pStatePlayerDesc.pNavigationCom		= m_pNavigationCom;
 	pStatePlayerDesc.pTransformCom		= m_pTransformCom;
 	pStatePlayerDesc.pArrowPool_Player	= m_pArrowPool_Player;
 

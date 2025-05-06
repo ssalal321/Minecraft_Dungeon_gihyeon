@@ -187,6 +187,15 @@
     <Filter Include="02.GameObjects\Item\Ranged_Weapon\Bow">
       <UniqueIdentifier>{57d21c53-5f98-4859-ae85-c003d0ff863d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Levels\03. SoggySwamp">
+      <UniqueIdentifier>{9c0a999c-4f62-4586-9481-02340adabd81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Level_Trigger">
+      <UniqueIdentifier>{1d042e17-86bc-427c-83ad-d4c6d8f4f3df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\SoggySwampMap">
+      <UniqueIdentifier>{2b962968-0e94-4a2e-ad56-4d850404631f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -378,6 +387,15 @@
     <ClInclude Include="..\Public\Weapon_Bow.h">
       <Filter>02.GameObjects\Item\Ranged_Weapon\Bow</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Level_SoggySwamp.h">
+      <Filter>01.Levels\03. SoggySwamp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SoggySwampMap.h">
+      <Filter>02.GameObjects\SoggySwampMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Trigger.h">
+      <Filter>02.GameObjects\Level_Trigger</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -563,6 +581,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\Weapon_Bow.cpp">
       <Filter>02.GameObjects\Item\Ranged_Weapon\Bow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_SoggySwamp.cpp">
+      <Filter>01.Levels\03. SoggySwamp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SoggySwampMap.cpp">
+      <Filter>02.GameObjects\SoggySwampMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Trigger.cpp">
+      <Filter>02.GameObjects\Level_Trigger</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

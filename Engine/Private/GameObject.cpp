@@ -79,6 +79,15 @@ CComponent* CGameObject::Find_Component(const _wstring& strComponentTag)
 	return iter->second;
 }
 
+void CGameObject::Erase_Component(const wstring& strComponentTag)
+{
+	auto iter = m_Components.find(strComponentTag);
+	if (iter != m_Components.end())
+	{
+		Safe_Release(iter->second);     // 참조 카운트 감소 및 메모리 해제
+		m_Components.erase(iter);       // map에서 제거
+	}
+}
 
 void CGameObject::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)
 {

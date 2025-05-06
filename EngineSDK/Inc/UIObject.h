@@ -66,7 +66,7 @@ protected:
 	_float			m_fX{}, m_fY{}, m_fZ{}, m_fSizeX{}, m_fSizeY{};
 	_wstring		m_strTexPrototypeTag = {};
 
-	bool			m_bVisible = false;
+	_bool			m_bVisible = false;
 
 	CUIObject*		m_pParent = { nullptr };
 

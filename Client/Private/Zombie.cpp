@@ -81,9 +81,9 @@ HRESULT CZombie::Ready_PartObjects()
 	BodyDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	BodyDesc.pState = &m_iState;
 	BodyDesc.pContainerObject = this;
-	BodyDesc.pContainerObjAttacking = &m_bAttacking;
+	BodyDesc.pCollisionActivating = &m_bAttacking;
 
-	if (FAILED(__super::Add_PartObject(m_pGameInstance->Get_NextLevelIndex(), TEXT("Prototype_GameObject_Body_Zombie"), TEXT("Part_Body"), &BodyDesc)))
+	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Body_Zombie"), TEXT("Part_Body"), &BodyDesc)))
 		return E_FAIL;
 
 	
@@ -97,12 +97,10 @@ HRESULT CZombie::Ready_States()
 	m_StatesVec.resize(static_cast<_uint>(ZOMBIE_STATE::STATE_END));	// state vector 자리 예약
 
 	CModel* pZombieModel = dynamic_cast<CModel*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Model")));
-	//CCollider* pColliderOBB = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_OBB")));
 	CCollider* pCollider = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_Sphere")));
 
 	CState_Monster::STATEMONSTER_DESC	pStateMonsterDesc = {};
 	pStateMonsterDesc.pColliderCom		= pCollider;
-	//pStateMonsterDesc.pColliderSphereCom	= pColliderSphere;
 	pStateMonsterDesc.pActorModelCom		= pZombieModel;
 	pStateMonsterDesc.pNavigationCom		= m_pNavigationCom;
 	pStateMonsterDesc.pTransformCom			= m_pTransformCom;

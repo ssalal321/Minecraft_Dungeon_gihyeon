@@ -87,9 +87,9 @@ HRESULT CSkeleton::Ready_PartObjects()
 	BodyDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	BodyDesc.pState = &m_iState;
 	BodyDesc.pContainerObject = this;
-	BodyDesc.pContainerObjAttacking = &m_bAttacking;
+	BodyDesc.pCollisionActivating = &m_bAttacking;
 
-	if (FAILED(__super::Add_PartObject(m_pGameInstance->Get_NextLevelIndex(), TEXT("Prototype_GameObject_Body_Skeleton"), TEXT("Part_Body"), &BodyDesc)))
+	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Body_Skeleton"), TEXT("Part_Body"), &BodyDesc)))
 		return E_FAIL;
 
 
@@ -100,14 +100,11 @@ HRESULT CSkeleton::Ready_PartObjects()
 	if (nullptr == pBody)
 		return E_FAIL;
 
-	//ItemDesc.strGameObjectTag = TEXT("GameObject_ShortBow");
 	ItemDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	ItemDesc.pState = &m_iState;
 	ItemDesc.pSocketMatrix = pBody->Get_CombinedTransformationMatrix("J_L_Weapon");
 	ItemDesc.pContainerObject = this;
-	ItemDesc.pContainerObjAttacking = &m_bAttacking;
-	/*ItemDesc.strIconTexPrototypeTag = TEXT("Prototype_Component_Texture_ShortBow");
-	ItemDesc.strIconGameObjectTag = TEXT("UIGameObject_ShortBow");*/
+	ItemDesc.pCollisionActivating = &m_bAttacking;
 
 	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_ShortBow"), TEXT("Part_Weapon_ShortBow"), &ItemDesc)))
 		return E_FAIL;
@@ -125,12 +122,10 @@ HRESULT CSkeleton::Ready_States()
 	m_StatesVec.resize(static_cast<_uint>(SKELETON_STATE::STATE_END));	// state vector 자리 예약
 
 	CModel* pSkeletonModel = dynamic_cast<CModel*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Model")));
-	//CCollider* pColliderOBB = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_OBB")));
 	CCollider* pColliderSphere = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_Sphere")));
 
 	CState_Skeleton::STATE_SKELETON_DESC	pStateSkeletonDesc = {};
 	pStateSkeletonDesc.pColliderCom			= pColliderSphere;
-	//pStateSkeletonDesc.pColliderSphereCom	= pColliderSphere;
 	pStateSkeletonDesc.pActorModelCom		= pSkeletonModel;
 	pStateSkeletonDesc.pNavigationCom		= m_pNavigationCom;
 	pStateSkeletonDesc.pTransformCom		= m_pTransformCom;

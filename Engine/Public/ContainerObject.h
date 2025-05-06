@@ -29,7 +29,7 @@ public:
 
 protected:
 	map<const _wstring, class CPartObject*>		m_PartObjects;
-	_bool*		m_pAttacking = { nullptr };
+	_bool*		m_pCollisionActivating = { nullptr };
 
 
 public:

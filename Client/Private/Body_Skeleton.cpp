@@ -94,7 +94,7 @@ HRESULT CBody_Skeleton::Ready_Components()
 	CModel::MODEL_DESC	pModelDesc = {};
 	pModelDesc.bPickable = true;
 
-	if (nullptr == Add_Component(LEVEL_LOUNGE, TEXT("Prototype_Component_Model_Skeleton"),
+	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Model_Skeleton"),
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom), &pModelDesc))
 		return E_FAIL;
 
@@ -107,7 +107,7 @@ HRESULT CBody_Skeleton::Ready_Components()
 	//OBBCollDesc.vRotation	= _float3(0.f, /*XMConvertToRadians(0.f)*/ 0.f, 0.f);
 	//OBBCollDesc.pGameObject = this;
 	//OBBCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
-	//OBBCollDesc.pContainerObjAttacking = m_pContainerObjAttacking;
+	//OBBCollDesc.pCollisionActivated = m_pCollisionActivating;
 	//
 	//CComponent* pColliderOBBCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_OBB"),
 	//	TEXT("Com_Collider_OBB"), reinterpret_cast<CComponent**>(&m_pColliderCom), &OBBCollDesc);
@@ -123,7 +123,7 @@ HRESULT CBody_Skeleton::Ready_Components()
 	SphereCollDesc.vCenter = _float3(0.f, SphereCollDesc.fRadius, 0.f);
 	SphereCollDesc.pGameObject = this;
 	SphereCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
-	SphereCollDesc.pContainerObjAttacking = m_pContainerObjAttacking;
+	SphereCollDesc.pCollisionActivated = m_pCollisionActivating;
 
 	CComponent* pColliderSphereCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
 		TEXT("Com_Collider_Sphere"), reinterpret_cast<CComponent**>(&m_pColliderCom), &SphereCollDesc);
@@ -131,7 +131,7 @@ HRESULT CBody_Skeleton::Ready_Components()
 	if (nullptr == pColliderSphereCom)
 		return E_FAIL;
 
-	m_pGameInstance->Add_ColliderCom(m_pColliderCom, TEXT("Monster_Body_NoHit"), TEXT("Monster"));
+	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), m_pColliderCom, TEXT("Monster_Body_NoHit"), TEXT("Monster"));
 
 	return S_OK;
 }

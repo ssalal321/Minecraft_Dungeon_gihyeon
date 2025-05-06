@@ -41,6 +41,7 @@ public:
 
 public:
 	class CComponent*	Find_Component(const _wstring& strComponentTag);
+	void				Erase_Component(const wstring& strComponentTag);
 	virtual  void		Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState);
 
 protected:

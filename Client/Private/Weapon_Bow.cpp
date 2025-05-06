@@ -133,7 +133,7 @@ HRESULT CWeapon_Bow::Ready_Components()
 	//OBBCollDesc.vRotation = _float3(0.f, /*XMConvertToRadians(0.f)*/ 0.f, 0.f);
 	//OBBCollDesc.pGameObject = this;
 	//OBBCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
-	//OBBCollDesc.pContainerObjAttacking = m_pContainerObjAttacking;
+	//OBBCollDesc.pCollisionActivated = m_pCollisionActivating;
 
 	//CComponent* pColliderCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_OBB"),
 	//	TEXT("Com_Collider_OBB"), reinterpret_cast<CComponent**>(&m_pColliderCom), &OBBCollDesc);

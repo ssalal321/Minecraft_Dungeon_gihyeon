@@ -20,7 +20,7 @@ HRESULT CMaterial::Initialize(const aiMaterial* pAIMaterial, const _char* pModel
 		{
 			aiString	strTexturePath;
 
-			if (FAILED(pAIMaterial->GetTexture(aiTextureType(i), j, &strTexturePath)))
+			if (FAILED(pAIMaterial->GetTexture(aiTextureType(static_cast<_uint>(i)), j, &strTexturePath)))
 				return E_FAIL;
 
 			_char		szDrive[MAX_PATH] = {};
