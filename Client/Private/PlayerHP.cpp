@@ -29,7 +29,7 @@ HRESULT CPlayerHP::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(m_pDesc)))
 		return E_FAIL;
 
-	m_pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("GameObject_Player"), m_pGameInstance->Get_NextLevelIndex(), TEXT("Layer_Player")));
+	m_pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("GameObject_Player"), m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_Player")));
 	if (nullptr == m_pPlayer)
 		return E_FAIL;
 

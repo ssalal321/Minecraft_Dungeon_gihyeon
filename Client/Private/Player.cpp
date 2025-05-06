@@ -57,7 +57,8 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 	m_pTransformCom->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(180.f));
 
-	m_pNavigationCom->SetUp_CurrentCellIndex(0);
+	if (m_pNavigationCom)
+		m_pNavigationCom->SetUp_CurrentCellIndex(0);
 
 	return S_OK;
 }
@@ -71,7 +72,8 @@ void CPlayer::Priority_Update(_float fTimeDelta)
 
 void CPlayer::Update(_float fTimeDelta)
 {
-	m_pNavigationCom->SetUp_On_Navigation(m_pTransformCom);
+	if (m_pNavigationCom)
+		m_pNavigationCom->SetUp_On_Navigation(m_pTransformCom);
 
 	m_pPlayerFSM->Update_State(fTimeDelta);
 
@@ -89,11 +91,17 @@ void CPlayer::Late_Update(_float fTimeDelta)
 
 HRESULT CPlayer::Render()
 {
-#ifdef _DEBUG	
-	m_pNavigationCom->Render();
+#ifdef _DEBUG
+	if (m_pNavigationCom)
+		m_pNavigationCom->Render();
 #endif
 
 	return S_OK;
+}
+
+void CPlayer::Delete_NavigationCom()
+{
+	Safe_Release(m_pNavigationCom);
 }
 
 void CPlayer::Change_State(PLAYER_STATE playerState)
@@ -123,17 +131,23 @@ void CPlayer::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eColli
 HRESULT CPlayer::Ready_Components()
 {
 	/* Com_Navigation */
-	_uint	LevelIndex = m_pGameInstance->Get_NextLevelIndex();
+	_uint	LevelIndex = m_pGameInstance->Get_ChangedLevelIndex();
 
 	switch (LevelIndex)
 	{
 	case LEVEL_LOUNGE:
-		{
+	{
 		if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Navigation_LoungeMap"),
 			TEXT("Com_Navigation_LoungeMap"), reinterpret_cast<CComponent**>(&m_pNavigationCom)))
 			return E_FAIL;
-		}
-		break;
+	}
+	break;
+
+	//case LEVEL_SOGGYSWAMP:
+	//{
+	//	m_pNavigationCom = nullptr;
+	//}
+	break;
 	}
 
 	return S_OK;
@@ -222,7 +236,7 @@ HRESULT CPlayer::Ready_States()
 	CState_Player::STATEPLAYER_DESC		pStatePlayerDesc = {};
 	pStatePlayerDesc.pColliderCom		= pCollider;
 	pStatePlayerDesc.pActorModelCom		= pPlayerModel;
-	pStatePlayerDesc.pNavigationCom		= m_pNavigationCom;
+	//pStatePlayerDesc.pNavigationCom		= m_pNavigationCom;
 	pStatePlayerDesc.pTransformCom		= m_pTransformCom;
 	pStatePlayerDesc.pArrowPool_Player	= m_pArrowPool_Player;
 

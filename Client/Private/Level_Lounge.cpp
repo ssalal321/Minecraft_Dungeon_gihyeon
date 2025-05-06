@@ -9,6 +9,7 @@
 #include "InventoryBase.h"
 #include "InventoryData.h"
 #include "Item.h"
+#include "Level_Trigger.h"
 #include "LoungeMap.h"
 #include "Player.h"
 #include "Zombie.h"
@@ -42,6 +43,11 @@ HRESULT CLevel_Lounge::Initialize()
     if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
         return E_FAIL;
 
+    CLevel_Trigger::LEVEL_TRIGGER_DESC pDesc = {};
+    pDesc.triggerPosition = { 2.5f, 5.5f, 15.f };
+    m_pLevel_Trigger = CLevel_Trigger::Create(m_pDevice, m_pContext, &pDesc);
+    if (nullptr == m_pLevel_Trigger)
+        return E_FAIL;
 
 #pragma region MELEE
     CItem::ITEM_DESC	ItemDesc{};
@@ -79,6 +85,14 @@ HRESULT CLevel_Lounge::Initialize()
 
 void CLevel_Lounge::Update(_float fTimeDelta)
 {
+    if (m_pLevel_Trigger->Get_Level_Change())
+    {
+        if (SUCCEEDED(m_pGameInstance->Open_Level(LEVEL_LOADING,
+            CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_SOGGYSWAMP))))
+            return;
+    }
+
+
 #ifdef _DEBUG
     if (m_pGameInstance->Key_Down(VK_F1))  // 아예 전체 전역변수로 만들어야겠다
         bMouseClickLock = !bMouseClickLock;
@@ -127,7 +141,7 @@ void CLevel_Lounge::Update(_float fTimeDelta)
 
 CCollider* CLevel_Lounge::Get_Closest_Collider(const _float4& mousePos, const _float3& mouseRay)
 {
-    unordered_map<_wstring, vector<CCollider*>> colliders = *m_pGameInstance->Get_Colliders();
+    unordered_map<_wstring, vector<CCollider*>> colliders = *m_pGameInstance->Get_Colliders(m_pGameInstance->Get_CurrentLevelIndex());
     auto it = colliders.find(TEXT("Monster"));
     if (it == colliders.end())
         return nullptr;
@@ -236,14 +250,43 @@ HRESULT CLevel_Lounge::Ready_Layer_Camera(const _wstring& strLayerTag)
 
 HRESULT CLevel_Lounge::Ready_Layer_Player(const _wstring& strLayerTag)
 {
-    CGameObject* pPlayerObject = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerHex"),
-        LEVEL_LOUNGE, strLayerTag);
-    if (nullptr == pPlayerObject)   return E_FAIL;
+    const _uint currentLevel = m_pGameInstance->Get_ChangedLevelIndex();
+
+    // 1. 현재 레벨에 이미 존재하면 바로 가져오기
+    CLayer* pExistingLayer = m_pGameInstance->Find_Layer(currentLevel, strLayerTag);
+    if (pExistingLayer != nullptr)
+    {
+        m_pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("GameObject_Player"), currentLevel, strLayerTag));
+        return S_OK;
+    }
+
+    // 2. Persistent에만 존재하는 경우 -> 현재 레벨에 붙이기
+    CLayer* pPersistentLayer = m_pGameInstance->Get_Persistent_Layer(strLayerTag);
+    if (pPersistentLayer != nullptr)
+    {
+        if (FAILED(m_pGameInstance->Attach_Persistent_Layer_To_Level(currentLevel, strLayerTag)))
+            return E_FAIL;
+
+        m_pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("GameObject_Player"), currentLevel, strLayerTag));
+        return S_OK;
+    }
+
+    // 3. 어디에도 없으면 생성
+    CGameObject* pPlayerObject = m_pGameInstance->Add_GameObject(LEVEL_STATIC,
+													TEXT("Prototype_GameObject_PlayerHex"),
+												LEVEL_LOUNGE, strLayerTag);
+    if (nullptr == pPlayerObject)
+        return E_FAIL;
 
     m_pPlayer = dynamic_cast<CPlayer*>(pPlayerObject);
 
+    // 생성 후 persistent 등록
+    if (FAILED(m_pGameInstance->Set_Layer_Persistent(LEVEL_LOUNGE, strLayerTag)))
+        return E_FAIL;
+
     return S_OK;
 }
+
 
 HRESULT CLevel_Lounge::Ready_Layer_Monster(const _wstring& strLayerTag)
 {
@@ -336,4 +379,6 @@ CLevel_Lounge* CLevel_Lounge::Create(ID3D11Device* pDevice, ID3D11DeviceContext*
 void CLevel_Lounge::Free()
 {
     __super::Free();
+
+    Safe_Release(m_pLevel_Trigger);
 }

@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "GameInstance.h"
+#include "Level_Loading.h"
 #include "Player.h"
 #include "Mesh.h"
 
@@ -61,10 +62,6 @@ void CLoungeMap::Priority_Update(_float fTimeDelta)
 void CLoungeMap::Update(_float fTimeDelta)
 {
 #ifdef _DEBUG
-
-	//if (m_pGameInstance->Key_Down(VK_F1))
-	//	m_bClickActive = !m_bClickActive;
-
 	//if (m_pGameInstance->Key_Down(VK_LBUTTON) && m_bClickActive)
 	//{
 	//	_float3		fLocalPickedVertex = {};
@@ -180,27 +177,6 @@ HRESULT CLoungeMap::Ready_Components()
 		TEXT("Com_Navigation"), reinterpret_cast<CComponent**>(&m_pNavigationCom)))
 		return E_FAIL;
 
-
-	/* Com_Collider */
-	XMStoreFloat4x4(&m_IdentityWorldMatrix, XMMatrixIdentity());
-
-	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereCollDesc{};
-
-	SphereCollDesc.fRadius = 1.6f;
-	SphereCollDesc.vCenter = _float3(2.5f, 5.5f, 55.f);
-	SphereCollDesc.pGameObject = this;
-	SphereCollDesc.CombinedWorldMatrix = &m_IdentityWorldMatrix;
-	SphereCollDesc.pCollisionActivated = &m_bSceneChange;
-
-
-	CComponent* pColliderSphereCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
-		TEXT("Com_Collider_Sphere"), reinterpret_cast<CComponent**>(&m_pColliderCom), &SphereCollDesc);
-
-	if (nullptr == pColliderSphereCom)
-		return E_FAIL;
-
-	m_pGameInstance->Add_ColliderCom(pColliderSphereCom, TEXT("LoungeMap_SceneChange"), TEXT("LoungeMap"));
-
 	return S_OK;
 }
 
@@ -263,7 +239,6 @@ void CLoungeMap::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pShader_MeshCom);
 	Safe_Release(m_pModelCom);
 	Safe_Release(m_pNavigationCom);

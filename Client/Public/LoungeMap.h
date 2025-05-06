@@ -39,9 +39,6 @@ private:
 	static	_uint	m_iShaderPass;  // ¼±¾ð
 	static	_bool	m_bClickActive;;
 
-	_bool	m_bSceneChange = { true };
-	_float4x4	m_IdentityWorldMatrix;
-
 private:
 	HRESULT		Ready_Components();
 	HRESULT		Bind_ShaderResources();

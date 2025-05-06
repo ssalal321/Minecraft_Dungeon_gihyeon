@@ -7,8 +7,8 @@ class  CGameInstance;
 END
 
 BEGIN(Client)
-	class CPlayer;
-	class  CInventoryStoreSlot;
+class CPlayer;
+class  CInventoryStoreSlot;
 class  CInventoryGearSlot;
 class  CInventoryArtifactSlot;
 

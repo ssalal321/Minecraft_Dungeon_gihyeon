@@ -36,7 +36,7 @@ void CInventoryIcon::Priority_Update(_float fTimeDelta)
 
 void CInventoryIcon::Update(_float fTimeDelta)
 {
-	if (m_pGameInstance->Key_Down(VK_LBUTTON) && Is_Hovering())
+	if (bMouseClickLock && m_pGameInstance->Key_Down(VK_LBUTTON) && Is_Hovering())
 	{
 		CInventorySlot* pInventorySlot = dynamic_cast<CInventorySlot*>(m_pParent);
 		_int  slotIndex = pInventorySlot->Get_Slot_Index();

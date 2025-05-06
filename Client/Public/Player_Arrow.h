@@ -15,7 +15,7 @@ private:
 	~CPlayer_Arrow() override = default;
 
 public:
-	_int		Get_DealPoint() const { return m_iDealPoint; }
+	_int		Get_DealPoint() const { return	m_iDealPoint; }
 
 	void		Set_DealPoint(_int iDealPoint) { m_iDealPoint = iDealPoint; }
 
@@ -39,11 +39,11 @@ private:
 	CCollider*	m_pColliderCom = { nullptr };
 
 	GAMEOBJECT_DESC*	m_pArrowDesc = { nullptr };;
-	_bool				m_bAttacking = { false };
+	_bool				m_bColliderActivating = { false };
 	_bool				m_bCollided  = { false };
 	_bool				m_bActive	 = { false };
 	_float				m_fResetTimer   = { 0.f };
-	_uint				m_iDealPoint = { 0 };
+	_int				m_iDealPoint = { 0 };
 
 	static _int		m_iArrowID;
 

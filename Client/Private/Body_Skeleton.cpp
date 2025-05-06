@@ -131,7 +131,7 @@ HRESULT CBody_Skeleton::Ready_Components()
 	if (nullptr == pColliderSphereCom)
 		return E_FAIL;
 
-	m_pGameInstance->Add_ColliderCom(m_pColliderCom, TEXT("Monster_Body_NoHit"), TEXT("Monster"));
+	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), m_pColliderCom, TEXT("Monster_Body_NoHit"), TEXT("Monster"));
 
 	return S_OK;
 }

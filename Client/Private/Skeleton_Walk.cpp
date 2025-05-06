@@ -66,7 +66,6 @@ void CSkeleton_Walk::State_Update(_float fTimeDelta)
 			m_vRetreatStartPos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
 		}
 
-		
 		_vector vCurPos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
 		_vector vTargetPos = vCurPos + m_vOppositeDir;
 

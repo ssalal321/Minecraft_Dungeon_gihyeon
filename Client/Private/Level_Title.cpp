@@ -21,7 +21,7 @@ void CLevel_Title::Update(_float fTimeDelta)
 {
     if (m_pGameInstance->Key_Down(VK_RETURN))
     {
-        if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING,
+        if (SUCCEEDED(m_pGameInstance->Open_Level(LEVEL_LOADING,
             CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_LOUNGE))))
             return;
     }

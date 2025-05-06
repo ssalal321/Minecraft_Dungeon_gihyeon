@@ -33,7 +33,8 @@ HRESULT CMonster::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_pNavigationCom->SetUp_CurrentCellIndex(0);
+	if (m_pNavigationCom)
+		m_pNavigationCom->SetUp_CurrentCellIndex(0);
 
 	return S_OK;
 }
@@ -47,7 +48,8 @@ void CMonster::Priority_Update(_float fTimeDelta)
 
 void CMonster::Update(_float fTimeDelta)
 {
-	m_pNavigationCom->SetUp_On_Navigation(m_pTransformCom);
+	if (m_pNavigationCom)
+		m_pNavigationCom->SetUp_On_Navigation(m_pTransformCom);
 
 	m_pMonsterFSM->Update_State(fTimeDelta);
 
@@ -110,7 +112,7 @@ void CMonster::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eColl
 HRESULT CMonster::Ready_Components()
 {
 	/* Com_Navigation */
-	_uint	LevelIndex = m_pGameInstance->Get_NextLevelIndex();
+	_uint	LevelIndex = m_pGameInstance->Get_ChangedLevelIndex();
 
 	switch (LevelIndex)
 	{
@@ -121,6 +123,11 @@ HRESULT CMonster::Ready_Components()
 			return E_FAIL;
 		}
 		break;
+
+	/*case LEVEL_SOGGYSWAMP:
+	{
+		m_pNavigationCom = nullptr;
+	}*/
 	}
 
 	///* Com_Collider */

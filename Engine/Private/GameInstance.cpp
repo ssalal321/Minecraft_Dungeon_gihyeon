@@ -123,6 +123,8 @@ void CGameInstance::Clear(_uint iCurrentLevelIndex, _uint iNextLevelIndex)
 	/* 지정한 레벨용 자원을 파괴한다. */
 	m_pObject_Manager->Clear(iCurrentLevelIndex);
 
+	m_pCollision_Manager->Clear(iCurrentLevelIndex);
+
 	m_pUI_Manager->Clear(iCurrentLevelIndex, iNextLevelIndex);
 
 	m_pPrototype_Manager->Clear(iCurrentLevelIndex);
@@ -211,9 +213,9 @@ _uint CGameInstance::Get_CurrentLevelIndex() const
 	return m_pLevel_Manager->Get_CurrentLevelIndex();
 }
 
-_uint CGameInstance::Get_NextLevelIndex() const
+_uint CGameInstance::Get_ChangedLevelIndex() const
 {
-	return m_pLevel_Manager->Get_NextLevelIndex();
+	return m_pLevel_Manager->Get_ChangedLevelIndex();
 }
 
 void CGameInstance::Set_NextLevelIndex(_uint iNextLevelIndex) const
@@ -248,10 +250,31 @@ CGameObject* CGameInstance::Find_GameObject(const _wstring& strGameObjectTag, _u
 	return m_pObject_Manager->Find_GameObject(strGameObjectTag, iLayerLevelIndex, strLayerTag);
 }
 
-CComponent* CGameInstance::Get_Component(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strComponentTag, _uint iIndex)
+CLayer* CGameInstance::Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag)
 {
-	return m_pObject_Manager->Get_Component(iLevelIndex, strLayerTag, strComponentTag, iIndex);
+	return m_pObject_Manager->Find_Layer(iLevelIndex, strLayerTag);
 }
+
+HRESULT CGameInstance::Set_Layer_Persistent(_uint iLevelIndex, const wstring& strLayerTag)
+{
+	return m_pObject_Manager->Set_Layer_Persistent(iLevelIndex, strLayerTag);
+}
+
+CLayer* CGameInstance::Get_Persistent_Layer(const wstring& strLayerTag)
+{
+	return m_pObject_Manager->Get_Persistent_Layer(strLayerTag);
+}
+
+HRESULT CGameInstance::Attach_Persistent_Layer_To_Level(_uint iTargetLevelIndex, const wstring& strLayerTag)
+{
+	return m_pObject_Manager->Attach_Persistent_Layer_To_Level(iTargetLevelIndex, strLayerTag);
+}
+
+HRESULT CGameInstance::Attach_Persistent_Layers_To_Level(_uint iLevelIndex)
+{
+	return m_pObject_Manager->Attach_Persistent_Layers_To_Level(iLevelIndex);
+}
+#pragma endregion
 
 #pragma region INPUT_MANAGER
 _bool CGameInstance::Get_Key(_int _iKey) const
@@ -374,14 +397,19 @@ void CGameInstance::Request_Delete_UIObject(const _wstring& strGameObjectTag, CU
 
 
 #pragma region COLLISION_MANAGER
-HRESULT CGameInstance::Add_ColliderCom(CComponent* pColliderCom, const _wstring& PartObject_Tag, const _wstring& ObjectType) const
+HRESULT CGameInstance::Add_ColliderCom(_uint iLevelIndex, CComponent* pColliderCom, const _wstring& ColliderTag, const _wstring& ObjectType, _bool bPersistent) const
 {
-	return m_pCollision_Manager->Add_ColliderCom(pColliderCom, PartObject_Tag, ObjectType);
+	return m_pCollision_Manager->Add_ColliderCom(iLevelIndex, pColliderCom, ColliderTag, ObjectType, bPersistent);
 }
 
-unordered_map<_wstring, vector<CCollider*>>* CGameInstance::Get_Colliders()
+HRESULT CGameInstance::Attach_Persistent_Colliders_To_Level(_uint iLevelIndex, const wstring& targetTag)
 {
-	return m_pCollision_Manager->Get_Colliders();
+	return m_pCollision_Manager->Attach_Persistent_Colliders_To_Level(iLevelIndex, targetTag);
+}
+
+unordered_map<_wstring, vector<CCollider*>>* CGameInstance::Get_Colliders(_uint iLevelIndex)
+{
+	return m_pCollision_Manager->Get_Colliders(iLevelIndex);
 }
 #pragma endregion
 

@@ -85,8 +85,6 @@ _bool CState_Zombie::Change_State_To_Attack()
 
 _bool CState_Zombie::Change_State_To_Walk()
 {
-	_uint  currentLevelIndex = m_pGameInstance->Get_CurrentLevelIndex();
-
 	_float lengthToPlayer = m_pZombie->Length_To_Player();
 
 	// 플레이어 인지 거리 && 스턴 X 상태

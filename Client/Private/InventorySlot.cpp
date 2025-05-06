@@ -30,7 +30,7 @@ HRESULT CInventorySlot::Add_Icon_Image(const _wstring& strGameObjectTag, const _
                                                             m_fSizeX * 0.8f, m_fSizeY * 0.8f,
                                                             strIconTexPrototypeTag, eItemType);
 
-    CUIObject* pIconObject = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_LOUNGE,
+    CUIObject* pIconObject = m_pGameInstance->Add_UIObject(LEVEL_STATIC, m_pGameInstance->Get_ChangedLevelIndex(),
 														TEXT("Prototype_GameObject_InventoryIcon"),
 														CUI_Manager::PERSISTENT, &InventoryIconDesc);
 

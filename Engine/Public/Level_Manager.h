@@ -16,9 +16,9 @@ private:
 
 public:
 	_uint		Get_CurrentLevelIndex() const { return m_iLevelIndex; }
-	_uint		Get_NextLevelIndex() const { return m_iNextLevelIndex; }
+	_uint		Get_ChangedLevelIndex() const { return m_iChangedLevelIndex; }
 
-	void		Set_NextLevelIndex(_uint iNextLevelIndex) { m_iNextLevelIndex = iNextLevelIndex; }
+	void		Set_NextLevelIndex(_uint iNextLevelIndex) { m_iChangedLevelIndex = iNextLevelIndex; }
 
 public:
 	HRESULT		Initialize();
@@ -28,7 +28,7 @@ public:
 
 private:
 	_uint					m_iLevelIndex = {};
-	_uint					m_iNextLevelIndex = {};
+	_uint					m_iChangedLevelIndex = {};
 	class CLevel*			m_pCurrentLevel = { nullptr };
 	class CGameInstance*	m_pGameInstance = { nullptr };
 

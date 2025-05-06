@@ -9,7 +9,6 @@
 #include "InventoryBase.h"
 #include "InventoryData.h"
 #include "Item.h"
-#include "LoungeMap.h"
 #include "Player.h"
 #include "Zombie.h"
 #include "PlayerHP.h"
@@ -30,49 +29,18 @@ HRESULT CLevel_SoggySwamp::Initialize()
     if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
         return E_FAIL;
 
-    if (FAILED(Ready_Layer_InventoryUI(TEXT("Layer_InventoryUI"))))
-        return E_FAIL;
+    /*if (FAILED(Ready_Layer_InventoryUI(TEXT("Layer_InventoryUI"))))
+        return E_FAIL;*/
 
     if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
         return E_FAIL;
 
-    if (FAILED(Ready_Layer_PlayerSlotUI(TEXT("Layer_PlayerSlotUI"))))
-        return E_FAIL;
+    /*if (FAILED(Ready_Layer_PlayerSlotUI(TEXT("Layer_PlayerSlotUI"))))
+        return E_FAIL;*/
 
     if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
         return E_FAIL;
 
-
-#pragma region MELEE
-    CItem::ITEM_DESC	ItemDesc{};
-
-    CModel* pBody = dynamic_cast<CModel*>(m_pPlayer->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Model")));
-    if (nullptr == pBody)
-        return E_FAIL;
-
-    _float4x4* pPlayerWorldMatrixPtr = dynamic_cast<CTransform*>(m_pPlayer->Find_Component(TEXT("Com_Transform")))->Get_WorldMatrix_Ptr();
-
-    ItemDesc.pParentWorldMatrix = pPlayerWorldMatrixPtr;
-    ItemDesc.pState = &m_pPlayer->Get_PlayerState();
-    ItemDesc.pSocketMatrix = pBody->Get_CombinedTransformationMatrix("J_R_Weapon");
-    ItemDesc.pContainerObject = m_pPlayer;
-    ItemDesc.pCollisionActivating = &m_pPlayer->Get_Attacking();
-
-    m_pPlayer->Get_InventoryData()->Add_Item_To_StoreSlot(LEVEL_STATIC, TEXT("Prototype_GameObject_Glaive_Steel"), TEXT("Part_Weapon_Glaive"), &ItemDesc);
-#pragma endregion
-
-#pragma region RANGED
-    CItem::ITEM_DESC	BowDesc{};
-
-    BowDesc.pParentWorldMatrix = pPlayerWorldMatrixPtr;
-    BowDesc.pState = &m_pPlayer->Get_PlayerState();
-    BowDesc.pSocketMatrix = pBody->Get_CombinedTransformationMatrix("J_L_Weapon");
-    BowDesc.pContainerObject = m_pPlayer;
-    BowDesc.pCollisionActivating = &m_pPlayer->Get_Attacking();
-
-    m_pPlayer->Get_InventoryData()->Add_Item_To_StoreSlot(LEVEL_STATIC, TEXT("Prototype_GameObject_Bow"), TEXT("Part_Weapon_Bow"), &BowDesc);
-
-#pragma endregion 
 
     return S_OK;
 }
@@ -127,7 +95,7 @@ void CLevel_SoggySwamp::Update(_float fTimeDelta)
 
 CCollider* CLevel_SoggySwamp::Get_Closest_Collider(const _float4& mousePos, const _float3& mouseRay)
 {
-    unordered_map<_wstring, vector<CCollider*>> colliders = *m_pGameInstance->Get_Colliders();
+    unordered_map<_wstring, vector<CCollider*>> colliders = *m_pGameInstance->Get_Colliders(m_pGameInstance->Get_CurrentLevelIndex());
     auto it = colliders.find(TEXT("Monster"));
     if (it == colliders.end())
         return nullptr;
@@ -199,7 +167,7 @@ HRESULT CLevel_SoggySwamp::Ready_Lights()
     if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
         return E_FAIL;
 
-    /*LightDesc.eType = LIGHT_DESC::TYPE_POINT;
+    LightDesc.eType = LIGHT_DESC::TYPE_POINT;
     LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
     LightDesc.vPosition = _float4(20.f, 5.f, 20.f, 1.f);
     LightDesc.fRange = 20.f;
@@ -208,7 +176,7 @@ HRESULT CLevel_SoggySwamp::Ready_Lights()
     LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
 
     if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
-        return E_FAIL;*/
+        return E_FAIL;
 
     return S_OK;
 }
@@ -236,22 +204,40 @@ HRESULT CLevel_SoggySwamp::Ready_Layer_Camera(const _wstring& strLayerTag)
 
 HRESULT CLevel_SoggySwamp::Ready_Layer_Player(const _wstring& strLayerTag)
 {
-    CGameObject* pPlayerObject = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerHex"),
-        LEVEL_SOGGYSWAMP, strLayerTag);
-    if (nullptr == pPlayerObject)   return E_FAIL;
+    // 이전 Level의 Layer_Player 가져옴
+    CLayer* pPersistentPlayerLayer = m_pGameInstance->Get_Persistent_Layer(TEXT("Layer_Player"));
+    if (nullptr == pPersistentPlayerLayer)
+        return E_FAIL;
 
-    m_pPlayer = dynamic_cast<CPlayer*>(pPlayerObject);
+    // Level_SoggySwamp의 m_pLayers에 붙여줌
+    if (FAILED(m_pGameInstance->Attach_Persistent_Layer_To_Level(m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_Player"))))
+        return E_FAIL;
+
+    m_pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("GameObject_Player"), m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_Player")));
+
+    // 이전 Level에서의 Collider도 보존
+    m_pGameInstance->Attach_Persistent_Colliders_To_Level(m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Player"));
+
+    m_pPlayer->Erase_Component(TEXT("Com_Navigation_LoungeMap"));
+
+    CComponent* pNavigationCom = m_pPlayer->Find_Component(TEXT("Com_Navigation_LoungeMap"));
+    // ☆☆☆☆☆ navigationCom 재정비해줘야 할 듯 ☆☆☆☆☆
+
+    m_pPlayer->Delete_NavigationCom();
+
+    CTransform* pTransformCom = dynamic_cast<CTransform*>(m_pPlayer->Find_Component(TEXT("Com_Transform")));
+    pTransformCom->Set_State(CTransform::STATE_POSITION, { 0.f, 0.f, 0.f , 1.f });
 
     return S_OK;
 }
 
 HRESULT CLevel_SoggySwamp::Ready_Layer_Monster(const _wstring& strLayerTag)
 {
-    CGameObject* pZombie = m_pGameInstance->Add_GameObject(LEVEL_LOUNGE, TEXT("Prototype_GameObject_Zombie"),
+    CGameObject* pZombie = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Zombie"),
         LEVEL_SOGGYSWAMP, strLayerTag);
     if (nullptr == pZombie)     return E_FAIL;
 
-    CGameObject* pSkeleton = m_pGameInstance->Add_GameObject(LEVEL_LOUNGE, TEXT("Prototype_GameObject_Skeleton"),
+    CGameObject* pSkeleton = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Skeleton"),
         LEVEL_SOGGYSWAMP, strLayerTag);
     if (nullptr == pSkeleton)     return E_FAIL;
 
@@ -260,9 +246,9 @@ HRESULT CLevel_SoggySwamp::Ready_Layer_Monster(const _wstring& strLayerTag)
 
 HRESULT CLevel_SoggySwamp::Ready_Layer_BackGround(const _wstring& strLayerTag)
 {
-    CGameObject* pLoungeMap = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_LoungeMap"),
+    CGameObject* pSoggySwampMap = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_SoggySwampMap"),
         LEVEL_SOGGYSWAMP, strLayerTag);
-    if (nullptr == pLoungeMap)      return E_FAIL;
+    if (nullptr == pSoggySwampMap)      return E_FAIL;
 
     /*if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_SOGGYSWAMP, TEXT("Prototype_GameObject_Sky"),
         LEVEL_LOUNGE, strLayerTag)))

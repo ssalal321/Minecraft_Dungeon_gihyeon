@@ -45,6 +45,7 @@ public:
 	_bool	Intersect(CCollider* pTargetCollider);
 	void	Collided_With(CCollider* pOther);
 	void	Process_Collisions();
+	void	Clear_Collision_State();
 
 private:
 	COLLIDER			m_eColliderType = { COLLIDER::TYPE_END };

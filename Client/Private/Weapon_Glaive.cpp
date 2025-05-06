@@ -159,7 +159,9 @@ HRESULT CWeapon_Glaive::Ready_Components()
 	if (nullptr == pColliderSphereCom)
 		return E_FAIL;
 
-	m_pGameInstance->Add_ColliderCom(pColliderSphereCom, TEXT("Player_Weapon"), TEXT("Player"));
+
+	// ¾ê ¾ðÁ¦ »ý¼ºµÇ³Ä¿¡ µû¶ó LEVEL ¹Ù²ãÁà¾ß ÇÒ µí..?
+	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), pColliderSphereCom, TEXT("Player_Weapon"), TEXT("Player"), true);
 	CCollider* pWeaponCollider = dynamic_cast<CCollider*>(pColliderSphereCom);
 	pWeaponCollider->Set_ColliderActive(false);
 

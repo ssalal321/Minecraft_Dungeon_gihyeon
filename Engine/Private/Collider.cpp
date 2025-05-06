@@ -103,6 +103,9 @@ void CCollider::Process_Collisions()
 	{
 		if (m_prevCollisions.find(pOther) != m_prevCollisions.end())
 		{
+			if (nullptr == m_pOwnerGameObject)
+				return;
+
 			m_pOwnerGameObject->Collided_With(pOther, STAY);
 
 			/*std::wcerr << "[" << m_pOwnerGameObject->Get_GameObjectTag() << "]¿Í ["
@@ -111,6 +114,9 @@ void CCollider::Process_Collisions()
 
 		else
 		{
+			if (nullptr == m_pOwnerGameObject)
+				return;
+
 			m_pOwnerGameObject->Collided_With(pOther, ENTER);
 
 			/*std::wcerr << "[" << m_pOwnerGameObject->Get_GameObjectTag() << "]¿Í ["
@@ -164,6 +170,12 @@ HRESULT CCollider::Render()
 	return S_OK;
 }
 #endif
+
+void CCollider::Clear_Collision_State()
+{
+	m_prevCollisions.clear();
+	m_currCollisions.clear();
+}
 
 CCollider* CCollider::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, COLLIDER eColliderType)
 {

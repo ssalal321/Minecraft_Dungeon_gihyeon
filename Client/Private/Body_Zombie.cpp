@@ -131,7 +131,7 @@ HRESULT CBody_Zombie::Ready_Components()
 	if (nullptr == pColliderSphereCom)
 		return E_FAIL;
 
-	m_pGameInstance->Add_ColliderCom(m_pColliderCom, TEXT("Monster_Body_Hit"), TEXT("Monster"));
+	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), m_pColliderCom, TEXT("Monster_Body_Hit"), TEXT("Monster"));
 
 	return S_OK;
 }

@@ -18,7 +18,7 @@ HRESULT CLevel_Manager::Initialize()
     return S_OK;
 }
 
-HRESULT CLevel_Manager::Open_Level(_uint iNextLevelIndex, class CLevel* pNewLevel)
+HRESULT CLevel_Manager::Open_Level(_uint iNextLevelIndex, CLevel* pNewLevel)
 {
     if (nullptr == pNewLevel)
         return E_FAIL;

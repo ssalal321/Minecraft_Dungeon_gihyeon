@@ -82,7 +82,6 @@ _bool CState_Skeleton::Change_State_To_Attack()  // 얘도 Walk 내부에서만 호출해�
 
 _bool CState_Skeleton::Change_State_To_Walk()
 {
-	_uint  currentLevelIndex = m_pGameInstance->Get_CurrentLevelIndex();
 	_float lengthToPlayer = m_pSkeleton->Length_To_Player();
 
 	// 플레이어 인지 거리
@@ -100,8 +99,6 @@ _bool CState_Skeleton::Change_State_To_Walk()
 
 _bool CState_Skeleton::Change_State_To_Idle()
 {
-	_uint  currentLevelIndex = m_pGameInstance->Get_CurrentLevelIndex();
-
 	_bool	playerInRange = m_pSkeleton->Player_In_DetectRange();
 
 	if (!playerInRange)

@@ -19,6 +19,7 @@
 #include "UI_Image.h"
 #include "PlayerHP.h"
 #include "Skeleton.h"
+#include "SoggySwampMap.h"
 #include "Weapon_Bow.h"
 #include "Weapon_Glaive.h"
 #include "Weapon_ShortBow.h"
@@ -182,6 +183,9 @@ HRESULT CLoader::Loading_For_Lounge()
 
 HRESULT CLoader::Loading_For_SoggySwamp()
 {
+	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
+
+	m_isFinished = true;
 
 	return S_OK;
 }
@@ -311,6 +315,12 @@ HRESULT CLoader::Ready_Prototype_ModelCom_Static()
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Map/Lounge/LoungeMap.fbx", PreTransformMatrix))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Model_LoungeMap */
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(270.f));
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_SoggySwampMap"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Map/SoggySwamp/SoggySwamp.fbx", PreTransformMatrix))))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -435,6 +445,11 @@ HRESULT CLoader::Ready_Prototype_GameObject_Static()
 	/* For.Prototype_GameObject_LoungeMap */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_LoungeMap"),
 		CLoungeMap::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_SoggySwampMap */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_SoggySwampMap"),
+		CSoggySwampMap::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	return S_OK;

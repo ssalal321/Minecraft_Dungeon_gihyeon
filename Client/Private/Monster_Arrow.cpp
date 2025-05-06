@@ -195,7 +195,7 @@ HRESULT CMonster_Arrow::Ready_Components()
 	if (nullptr == pColliderCom)
 		return E_FAIL;
 
-	m_pGameInstance->Add_ColliderCom(pColliderCom, TEXT("Monster_Arrow"), TEXT("Monster"));
+	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), pColliderCom, TEXT("Monster_Arrow"), TEXT("Monster"));
 
 	CCollider* pArrowCollider = dynamic_cast<CCollider*>(pColliderCom);
 	pArrowCollider->Set_ColliderActive(false);
