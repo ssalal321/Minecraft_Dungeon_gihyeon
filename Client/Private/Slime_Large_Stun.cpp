@@ -36,8 +36,8 @@ void CZombie_GetHit::State_Update(_float fTimeDelta)
 
 	if (m_bAnimationFinished)
 	{
-		/*if (Change_State_To_Idle())
-			return;*/
+		if (Change_State_To_Idle())
+			return;
 
 		if (Change_State_To_Attack())
 			return;

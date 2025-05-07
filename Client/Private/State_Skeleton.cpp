@@ -65,8 +65,6 @@ _bool CState_Skeleton::Change_State_To_Attack()  // 얘도 Walk 내부에서만 호출해�
 {
 	// 공격 가능 거리
 	// 너무 멀지도, 너무 가깝지도 않을 때.
-	_uint  currentLevelIndex = m_pGameInstance->Get_CurrentLevelIndex();
-
 	_float lengthToPlayer = m_pSkeleton->Length_To_Player();
 
 	if ((m_pMonsterInfo->fAttackableRange - 1.f < lengthToPlayer) &&
@@ -149,23 +147,6 @@ _bool CState_Skeleton::Change_State_To_GetHit(CCollider* pOther)
 
 	return false;
 }
-
-//void CState_Skeleton::Modify_HP(CCollider* pOther)
-//{
-//	if (TEXT("Player_Weapon") == pOther->Get_ColliderTag()
-//		&& pOther->Get_OtherCollisionActivated())
-//	{
-//		CItem* pItem = dynamic_cast<CItem*>(pOther->Get_OwnerObject());
-//		m_pMonsterInfo->Modify_CurrentHp(-pItem->Get_DealPoint());
-//	}
-//
-//	if (TEXT("Player_Arrow") == pOther->Get_ColliderTag()
-//		&& pOther->Get_OtherCollisionActivated())
-//	{
-//		CPlayer_Arrow* pPlayerArrow = dynamic_cast<CPlayer_Arrow*>(pOther->Get_OwnerObject());
-//		m_pMonsterInfo->Modify_CurrentHp(-pPlayerArrow->Get_DealPoint());
-//	}
-//}
 
 void CState_Skeleton::Free()
 {

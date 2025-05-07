@@ -298,6 +298,10 @@ HRESULT CLevel_Lounge::Ready_Layer_Monster(const _wstring& strLayerTag)
         LEVEL_LOUNGE, strLayerTag);
     if (nullptr == pSkeleton)     return E_FAIL;
 
+    CGameObject* pBabyZombie = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_BabyZombie"),
+        LEVEL_LOUNGE, strLayerTag);
+    if (nullptr == pBabyZombie)     return E_FAIL;
+
     return S_OK;
 }
 

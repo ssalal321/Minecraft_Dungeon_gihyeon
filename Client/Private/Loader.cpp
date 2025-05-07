@@ -1,5 +1,7 @@
 #include "Loader.h"
 
+#include "BabyZombie.h"
+#include "Body_BabyZombie.h"
 #include "Player_Arrow.h"
 #include "GameInstance.h"
 
@@ -284,10 +286,32 @@ HRESULT CLoader::Ready_Prototype_ModelCom_Static()
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Monster/Zombie/Zombie.fbx", PreTransformMatrix))))
 		return E_FAIL;
 
+	PreTransformMatrix = XMMatrixScaling(0.5f, 0.5f, 0.5f);
+	/* For.Prototype_Component_Model_BabyZombie */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_BabyZombie"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Monster/Zombie/BabyZombie.fbx", PreTransformMatrix))))
+		return E_FAIL;
+
+	PreTransformMatrix = XMMatrixIdentity();
 	/* For.Prototype_Component_Model_Skeleton */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Skeleton"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Monster/Skeleton/Skeleton.fbx", PreTransformMatrix))))
 		return E_FAIL;
+
+	///* For.Prototype_Component_Model_Slime_Large */
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Slime_Large"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Monster/Slime/Slime_Large.fbx", PreTransformMatrix))))
+	//	return E_FAIL;
+
+	///* For.Prototype_Component_Model_Slime_Medium */
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Slime_Medium"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Monster/Slime/Slime_Medium.fbx", PreTransformMatrix))))
+	//	return E_FAIL;
+
+	///* For.Prototype_Component_Model_Slime_Small */
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Slime_Small"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Monster/Slime/Slime_Small.fbx", PreTransformMatrix))))
+	//	return E_FAIL;
 
 	/* For.Prototype_Component_Model_GlaiveSteel */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_GlaiveSteel"),
@@ -396,14 +420,40 @@ HRESULT CLoader::Ready_Prototype_GameObject_Static()
 		CBody_Zombie::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_Body_BabyZombie */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Body_BabyZombie"),
+		CBody_BabyZombie::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	/* For.Prototype_GameObject_Body_Skeleton */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Body_Skeleton"),
 		CBody_Skeleton::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	///* For.Prototype_GameObject_Body_Slime_Large */
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Body_Slime_Large"),
+	//	CBody_Slime_Large::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
+
+	///* For.Prototype_GameObject_Body_Slime_Medium */
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Body_Slime_Medium"),
+	//	CBody_Slime_Medium::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
+
+	///* For.Prototype_GameObject_Body_Slime_Small */
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Body_Slime_Small"),
+	//	CBody_Slime_Small::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
+
+
 	/* For.Prototype_GameObject_Zombie */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Zombie"),
 		CZombie::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_BabyZombie */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_BabyZombie"),
+		CBabyZombie::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Skeleton */
@@ -411,6 +461,20 @@ HRESULT CLoader::Ready_Prototype_GameObject_Static()
 		CSkeleton::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	///* For.Prototype_GameObject_Slime_Large */
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Slime_Large"),
+	//	CSlime_Large::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
+
+	///* For.Prototype_GameObject_Slime_Large */
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Slime_Medium"),
+	//	CSlime_Medium::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
+
+	///* For.Prototype_GameObject_Slime_Large */
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Slime_Small"),
+	//	CSlime_Small::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
 
 	/* For.Prototype_GameObject_Camera_Free */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Free"),

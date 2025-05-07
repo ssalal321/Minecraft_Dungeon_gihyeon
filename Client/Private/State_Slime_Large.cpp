@@ -88,7 +88,7 @@ _bool CState_Zombie::Change_State_To_Walk()
 	return false;
 }
 
-_bool CState_Zombie:: Change_State_To_Idle()
+_bool CState_Zombie::Change_State_To_Idle()
 {
 	_bool	playerInRange = m_pZombie->Player_In_DetectRange();
 
