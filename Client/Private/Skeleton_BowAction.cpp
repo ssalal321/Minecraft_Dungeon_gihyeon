@@ -43,8 +43,8 @@ void CSkeleton_BowAction::State_Update(_float fTimeDelta)
    
     if (m_bAnimationFinished)
     {
-        if (Change_State_To_Idle())
-            return;
+        /*if (Change_State_To_Idle())
+            return;*/
 
         if (Change_State_To_Walk())
             return;

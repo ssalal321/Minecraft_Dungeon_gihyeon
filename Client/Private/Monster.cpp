@@ -82,9 +82,14 @@ void CMonster::Change_State(const MonsterState& state)
 		m_iState = static_cast<_uint>(state.ZombieState);
 		break;
 
+	case MONSTER_TYPE::BABYZOMBIE:
+		m_iState = static_cast<_uint>(state.BabyZombieState);
+		break;
+
 	case MONSTER_TYPE::SKELETON:
 		m_iState = static_cast<_uint>(state.SkeletonState);
 		break;
+
 	}
 
 	m_pMonsterFSM->Change_State(m_StatesVec[m_iState]);

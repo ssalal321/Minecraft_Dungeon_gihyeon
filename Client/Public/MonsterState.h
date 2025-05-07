@@ -9,6 +9,7 @@ namespace Client
 	enum class MONSTER_TYPE
 	{
 		ZOMBIE,
+		BABYZOMBIE,
 		SKELETON,
 		TYPE_END
 	};
@@ -19,8 +20,9 @@ namespace Client
 
 		union
 		{
-			ZOMBIE_STATE	ZombieState;
-			SKELETON_STATE	SkeletonState;
+			ZOMBIE_STATE		ZombieState;
+			BABYZOMBIE_STATE	BabyZombieState;
+			SKELETON_STATE		SkeletonState;
 		};
 
 		MonsterState() = default;
@@ -32,6 +34,14 @@ namespace Client
 		MonsterState monsterState;
 		monsterState.monsterType = MONSTER_TYPE::ZOMBIE;
 		monsterState.ZombieState = state;
+		return monsterState;
+	}
+
+	inline MonsterState Make_BabyZombieState(BABYZOMBIE_STATE state)
+	{
+		MonsterState monsterState;
+		monsterState.monsterType = MONSTER_TYPE::BABYZOMBIE;
+		monsterState.BabyZombieState = state;
 		return monsterState;
 	}
 

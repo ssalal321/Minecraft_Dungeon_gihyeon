@@ -2,6 +2,7 @@
 
 #include <Windows.h>
 #include <process.h>
+#include <vector>
 
 extern bool	bMouseClickLock;  // 전역 변수 선언
 

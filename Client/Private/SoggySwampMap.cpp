@@ -68,7 +68,7 @@ void CSoggySwampMap::Update(_float fTimeDelta)
 	//{
 	//	_float3		fLocalPickedVertex = {};
 
-	//	if (m_pGameInstance->Picked_Vertex(fLocalPickedVertex, TEXT("GameObject_SoggySwampMap"), LEVEL_LOUNGE, TEXT("Layer_BackGround")))
+	//	if (m_pGameInstance->Picked_Vertex(fLocalPickedVertex, TEXT("GameObject_SoggySwampMap"), LEVEL_SOGGYSWAMP, TEXT("Layer_BackGround")))
 	//	{
 	//		
 	//		_vector vWorldPickedVertex = {};

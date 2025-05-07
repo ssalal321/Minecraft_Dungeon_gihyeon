@@ -196,6 +196,30 @@
     <Filter Include="02.GameObjects\SoggySwampMap">
       <UniqueIdentifier>{2b962968-0e94-4a2e-ad56-4d850404631f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster\BabyZombie">
+      <UniqueIdentifier>{3bf345ce-a23d-43b0-abfe-954a13f6aa4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\BabyZombie\00. Body_BabyZombie">
+      <UniqueIdentifier>{88dfeff6-640c-43ec-9814-1f1e3abffd06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\BabyZombie\01. State">
+      <UniqueIdentifier>{3d89ef3d-a690-4596-be5e-5ce6aae1e1a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Idle">
+      <UniqueIdentifier>{76e92df8-fa7f-4785-8567-93a869c1e8f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Walk">
+      <UniqueIdentifier>{476667f2-4050-4e7f-acd1-8cc05247e0a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Attack">
+      <UniqueIdentifier>{f98e1a97-ac04-4daa-a169-e17debae4034}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Novelty">
+      <UniqueIdentifier>{f5799798-5a46-45fc-a7d7-821b6dfd5ad3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_GetHit">
+      <UniqueIdentifier>{fc9e17c7-700f-41b4-a7a6-b92619c399f2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -396,6 +420,30 @@
     <ClInclude Include="..\Public\Level_Trigger.h">
       <Filter>02.GameObjects\Level_Trigger</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\BabyZombie.h">
+      <Filter>02.GameObjects\Monster\BabyZombie</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Body_BabyZombie.h">
+      <Filter>02.GameObjects\Monster\BabyZombie\00. Body_BabyZombie</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BabyZombie_GetHit.h">
+      <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_GetHit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BabyZombie_Idle.h">
+      <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BabyZombie_Walk.h">
+      <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Walk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BabyZombie_Novelty.h">
+      <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Novelty</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BabyZombie_Attack.h">
+      <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_BabyZombie.h">
+      <Filter>02.GameObjects\Monster\BabyZombie\01. State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -590,6 +638,30 @@
     </ClCompile>
     <ClCompile Include="..\Private\Level_Trigger.cpp">
       <Filter>02.GameObjects\Level_Trigger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BabyZombie.cpp">
+      <Filter>02.GameObjects\Monster\BabyZombie</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Body_BabyZombie.cpp">
+      <Filter>02.GameObjects\Monster\BabyZombie\00. Body_BabyZombie</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BabyZombie_Attack.cpp">
+      <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BabyZombie_GetHit.cpp">
+      <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_GetHit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BabyZombie_Idle.cpp">
+      <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BabyZombie_Walk.cpp">
+      <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Walk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BabyZombie_Novelty.cpp">
+      <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Novelty</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_BabyZombie.cpp">
+      <Filter>02.GameObjects\Monster\BabyZombie\01. State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

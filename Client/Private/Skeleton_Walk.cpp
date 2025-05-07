@@ -77,7 +77,7 @@ void CSkeleton_Walk::State_Update(_float fTimeDelta)
 		_float  fMovedDist = {};
 		XMStoreFloat(&fMovedDist, XMVector3Length(vMoved));
 
-		if (fMovedDist > 5.f)
+		if (fMovedDist > 4.f)
 		{
 			m_pSkeleton->Change_State(Make_SkeletonState(SKELETON_STATE::BOW_ACTION));
 			return;

@@ -1,14 +1,14 @@
 #pragma once
 #include "Client_Defines.h"
-#include "State_Zombie.h"
+#include "State_BabyZombie.h"
 
 BEGIN(Client)
 
-class CZombie_Walk final: public CState_Zombie
+class CBabyZombie_Walk final: public CState_BabyZombie
 {
 private:
-    CZombie_Walk(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
-	~CZombie_Walk() override = default;
+    CBabyZombie_Walk(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
+	~CBabyZombie_Walk() override = default;
 
 public:
     HRESULT     Init_State()                                override;
@@ -22,16 +22,12 @@ public:
     void        Collision_Enter(CCollider* pOther)        override;
     void        Collision_Stay(CCollider* pOther)         override;
     void        Collision_Exit(CCollider* pOther)         override;
-    
+
 
 private:
-    _vector     m_vWalkStartPos = XMVectorZero();
-    _vector     m_vRandomWalkDir = XMVectorZero();
-    _bool       m_bLostPlayer = { false };
-    _float      m_fDistance = {};
-
-private:
-    void    Direction_Setting();
+    //_bool       m_bRetreatingState = { false };
+    _vector     m_vRetreatDir = { 0,0,0,0 };
+    _float4     m_vRetreatStartPos = { 0.f,0.f,0.f,1.f };
 
 public:
     static CState_Monster*  Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);

@@ -45,30 +45,23 @@ void CZombie_Idle::State_Update(_float fTimeDelta)
 
 	m_fLoopTime += fTimeDelta;
 
-	if (m_fLoopTime >= 1.f)
+	if (m_fLoopTime >= 3.5f)
 	{
+		// 난수 생성기 및 분포 정의 (정적: 최초 1회만 생성됨)
 		static std::random_device rd;
 		static std::mt19937 gen(rd());
-		static std::uniform_real_distribution<_float> dist(0.0f, 1.0f); // 0.0 ~ 1.0
+		static std::uniform_real_distribution<float> dist(0.0f, 1.0f); // 0.0 ~ 1.0 float 확률
 
-		_float  chance = dist(gen);
-
-		if (chance < 0.25f) // 0.0 ~ 0.4 (40%)
+		if (dist(gen) < 0.4f) // 40% 확률
 		{
 			m_pZombie->Change_State(Make_ZombieState(ZOMBIE_STATE::NOVELTY_SLEEP));
 			return;
 		}
-		else if (chance < 0.7f) // 0.4 ~ 0.7 (30%)
+		else
 		{
-			m_pZombie->Change_State(Make_ZombieState(ZOMBIE_STATE::WALK));
-			return;
-		}
-		else // 0.7 ~ 1.0 (30%)
-		{
-			m_fLoopTime = 0.f; // 아무 상태 변화 없이 시간 초기화
+			m_fLoopTime = 0.f;
 		}
 	}
-
 }
 
 void CZombie_Idle::State_Late_Update(_float fTimeDelta)

@@ -37,7 +37,7 @@ HRESULT CSkeleton::Initialize(void* pArg)
 {
 	const _wstring& skeletonGameObjectTag = TEXT("GameObject_Skeleton") + to_wstring(m_iSkeletonID++);
 
-	m_pMonsterInfo = new MONSTER_DESC(skeletonGameObjectTag, 30, 30, 3, 10.f, 14.f, false, 90.f, 1.5f);
+	m_pMonsterInfo = new MONSTER_DESC(skeletonGameObjectTag, 30, 30, 3, 8.f, 12.f, false, 90.f, 1.5f);
 
 	if (FAILED(__super::Initialize(m_pMonsterInfo)))
 		return E_FAIL;

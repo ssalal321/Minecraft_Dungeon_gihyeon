@@ -40,7 +40,7 @@ HRESULT CMaterial::Initialize(const aiMaterial* pAIMaterial, const _char* pModel
 
 			_tchar		szFullPath[MAX_PATH] = {};
 
-			MultiByteToWideChar(CP_ACP, 0, szTextureFilePath, strlen(szTextureFilePath),
+			MultiByteToWideChar(CP_ACP, 0, szTextureFilePath, static_cast<_int>(strlen(szTextureFilePath)),
 				szFullPath, MAX_PATH);
 
 			ID3D11ShaderResourceView* pSRV = { nullptr };

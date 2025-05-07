@@ -152,6 +152,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\ArrowPool_Monster.h" />
+    <ClInclude Include="..\Public\BabyZombie.h" />
+    <ClInclude Include="..\Public\BabyZombie_Attack.h" />
+    <ClInclude Include="..\Public\BabyZombie_GetHit.h" />
+    <ClInclude Include="..\Public\BabyZombie_Idle.h" />
+    <ClInclude Include="..\Public\BabyZombie_Novelty.h" />
+    <ClInclude Include="..\Public\BabyZombie_Walk.h" />
+    <ClInclude Include="..\Public\Body_BabyZombie.h" />
     <ClInclude Include="..\Public\Level_SoggySwamp.h" />
     <ClInclude Include="..\Public\Level_Trigger.h" />
     <ClInclude Include="..\Public\Monster_Arrow.h" />
@@ -197,6 +204,7 @@
     <ClInclude Include="..\Public\Sky.h" />
     <ClInclude Include="..\Public\SoggySwampMap.h" />
     <ClInclude Include="..\Public\State.h" />
+    <ClInclude Include="..\Public\State_BabyZombie.h" />
     <ClInclude Include="..\Public\State_Monster.h" />
     <ClInclude Include="..\Public\State_Player.h" />
     <ClInclude Include="..\Public\State_Skeleton.h" />
@@ -220,6 +228,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\ArrowPool_Monster.cpp" />
+    <ClCompile Include="..\Private\BabyZombie.cpp" />
+    <ClCompile Include="..\Private\BabyZombie_Attack.cpp" />
+    <ClCompile Include="..\Private\BabyZombie_GetHit.cpp" />
+    <ClCompile Include="..\Private\BabyZombie_Idle.cpp" />
+    <ClCompile Include="..\Private\BabyZombie_Novelty.cpp" />
+    <ClCompile Include="..\Private\BabyZombie_Walk.cpp" />
+    <ClCompile Include="..\Private\Body_BabyZombie.cpp" />
     <ClCompile Include="..\Private\Level_SoggySwamp.cpp" />
     <ClCompile Include="..\Private\Level_Trigger.cpp" />
     <ClCompile Include="..\Private\Monster_Arrow.cpp" />
@@ -262,6 +277,7 @@
     <ClCompile Include="..\Private\Sky.cpp" />
     <ClCompile Include="..\Private\SoggySwampMap.cpp" />
     <ClCompile Include="..\Private\State.cpp" />
+    <ClCompile Include="..\Private\State_BabyZombie.cpp" />
     <ClCompile Include="..\Private\State_Monster.cpp" />
     <ClCompile Include="..\Private\State_Player.cpp" />
     <ClCompile Include="..\Private\State_Skeleton.cpp" />

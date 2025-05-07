@@ -35,7 +35,7 @@ HRESULT CPlayer::Initialize_Prototype()
 
 HRESULT CPlayer::Initialize(void* pArg)
 {
-	m_pPlayerInfo = new PLAYER_DESC(TEXT("GameObject_Player"), 100, 100, 5, 3.f, 40, false, 90.f, 3.f);
+	m_pPlayerInfo = new PLAYER_DESC(TEXT("GameObject_Player"), 100, 100, 5, 3.5f, 40, false, 90.f, 3.f);
 
 	if (FAILED(__super::Initialize(m_pPlayerInfo)))
 		return E_FAIL;
