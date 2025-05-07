@@ -102,22 +102,19 @@ void CZombie_Walk::Collision_Exit(CCollider* pOther)
 
 void CZombie_Walk::Direction_Setting()
 {
-    std::random_device random;  // 진정한 난수 생성기
-    std::mt19937 gen(random()); // Mersenne Twister 엔진에 rd()로 시드 설정
-    std::uniform_int_distribution<int> dist(0, 7); // 0부터 4까지의 균일 분포
+    std::random_device random;
+    std::mt19937 gen(random());
+    std::uniform_int_distribution<_int> angleDist(0, 7);
+    std::uniform_int_distribution<_int> distIndex(0, 2);
 
-    _int    randomNum = dist(gen);   // 0부터 7 사이의 난수
-    _float  angle = randomNum * 45.f; // 0º, 45º, 90º, 135º, 180º, 225º, 270º, 315º
+    _int randomNum = angleDist(gen);
+    _float angle = randomNum * 45.f;
 
-    // 3. 이동할 거리 선택
-    _float   distances[] = { 3.f, 3.5f, 4.f };
-    m_fDistance = distances[rand() % 3];  // 0 ~ 2 -> 3, 4, 5
+    _float distances[] = { 2.f, 2.5f, 3.f };
+    m_fDistance = distances[distIndex(gen)];
 
-    // 4. 방향 벡터 계산 및 정규화
-    m_vRandomWalkDir.m128_f32[0] = cosf(XMConvertToRadians(angle));  // x
-    m_vRandomWalkDir.m128_f32[2] = sinf(XMConvertToRadians(angle));  // z
-    m_vRandomWalkDir.m128_f32[1] = 0.f;  // y
-    XMVector3Normalize(m_vRandomWalkDir);
+    m_vRandomWalkDir = XMVectorSet(cosf(XMConvertToRadians(angle)), 0.f, sinf(XMConvertToRadians(angle)), 0.f );
+    m_vRandomWalkDir = XMVector3Normalize(m_vRandomWalkDir);
 
     m_vWalkStartPos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
 }
