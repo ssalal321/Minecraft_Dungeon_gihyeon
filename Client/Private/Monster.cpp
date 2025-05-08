@@ -1,8 +1,7 @@
 #include "Monster.h"
+#include "MonsterState.h"
 
-#include "ArrowPool_Monster.h"
 #include "GameInstance.h"
-
 #include "FSM.h"
 #include "Player.h"
 
@@ -48,8 +47,14 @@ void CMonster::Priority_Update(_float fTimeDelta)
 
 void CMonster::Update(_float fTimeDelta)
 {
-	if (m_pNavigationCom)
+	if (m_pNavigationCom && false == m_pTransformCom->Get_Is_Jumping())
+	{
 		m_pNavigationCom->SetUp_On_Navigation(m_pTransformCom);
+	}
+	else
+	{
+		int i = 0;
+	}
 
 	m_pMonsterFSM->Update_State(fTimeDelta);
 
@@ -72,7 +77,7 @@ HRESULT CMonster::Render()
 	return S_OK;
 }
 
-#include "MonsterState.h"
+
 
 void CMonster::Change_State(const MonsterState& state)
 {
@@ -90,6 +95,17 @@ void CMonster::Change_State(const MonsterState& state)
 		m_iState = static_cast<_uint>(state.SkeletonState);
 		break;
 
+	case MONSTER_TYPE::SLIME_LARGE:
+		m_iState = static_cast<_uint>(state.SlimeLargeState);
+		break;
+
+	case MONSTER_TYPE::SLIME_MEDIUM:
+		m_iState = static_cast<_uint>(state.SlimeMediumState);
+		break;
+
+	case MONSTER_TYPE::SLIME_SMALL:
+		m_iState = static_cast<_uint>(state.SlimeSmallState);
+		break;
 	}
 
 	m_pMonsterFSM->Change_State(m_StatesVec[m_iState]);
@@ -134,25 +150,6 @@ HRESULT CMonster::Ready_Components()
 		m_pNavigationCom = nullptr;
 	}*/
 	}
-
-	///* Com_Collider */
-	//CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereCollDesc{};
-
-	//SphereCollDesc.fRadius = 1.5f;
-	//SphereCollDesc.vCenter = _float3(0.f, SphereCollDesc.fRadius, 0.f);
-	//SphereCollDesc.pGameObject = this;
-	//SphereCollDesc.CombinedWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
-	//SphereCollDesc.pCollisionActivated = &m_bHoveringColl;  // 얜 다른 것과는 충돌할 필요 X
-
-	//CComponent* pColliderSphereCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
-	//	TEXT("Com_Collider_Sphere"), reinterpret_cast<CComponent**>(&m_pColliderSphereCom), &SphereCollDesc);
-
-	//if (nullptr == pColliderSphereCom)
-	//	return E_FAIL;
-
-	////dynamic_cast<CCollider*>(pColliderSphereCom)->Set_MouseCollider(true);
-
-	//m_pGameInstance->Add_ColliderCom(pColliderSphereCom, TEXT("Monster_Sphere"), TEXT("Monster"));
 
 	return S_OK;
 }

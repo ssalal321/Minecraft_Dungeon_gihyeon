@@ -3,13 +3,13 @@
 #include "State_Monster.h"
 
 BEGIN(Client)
-class CZombie;
+class CSlime_Large;
 
-class CState_Zombie abstract: public CState_Monster
+class CState_Slime_Large abstract: public CState_Monster
 {
 protected:
-    CState_Zombie(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
-	~CState_Zombie() override = default;
+    CState_Slime_Large(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
+	~CState_Slime_Large() override = default;
 
 public:
     HRESULT   Init_State()                              override;
@@ -25,13 +25,13 @@ public:
     void      Collision_Exit(CCollider* pOther)       override;
 
 protected:
-    CZombie*    m_pZombie = { nullptr };
+    CSlime_Large*    m_pSlime_Large = { nullptr };
 
 protected:
     _bool     Change_State_To_Attack();
     _bool     Change_State_To_Walk();
     _bool     Change_State_To_Idle();
-    _bool     Change_State_To_GetHit(CCollider* pOther);
+    _bool     Change_State_To_Stun(CCollider* pOther);
     //void      Modify_HP(CCollider* pOther);
 
 public:

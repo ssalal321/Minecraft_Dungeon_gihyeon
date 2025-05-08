@@ -35,9 +35,12 @@ public:
 	HRESULT		Read_Cell(const _tchar* pNavigationDataFilePath);
 	void		Resave_Files();
 	void		Sort_Clockwise(const _float3* pInPoints, _float3* pOutSorted);
+
 	_bool		Can_Move(_fvector vWorldPos/*, _float& fOutY*/);
 	HRESULT		SetUp_Neighbors();
 	void		SetUp_On_Navigation(CTransform* pTransform);
+	_bool		Check_If_Grounded(CTransform* pObjectTransformCom);
+
 
 #ifdef _DEBUG
 public:

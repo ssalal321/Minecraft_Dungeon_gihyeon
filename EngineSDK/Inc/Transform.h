@@ -58,6 +58,8 @@ public:
 		return &m_WorldMatrix;
 	}
 
+	_bool		Get_Is_Jumping() const { return m_bIsJumping; }
+
 	void Set_State(STATE eState, _fvector vState)
 	{
 		XMStoreFloat4(reinterpret_cast<_float4*>(&m_WorldMatrix.m[eState][0]), vState);
@@ -79,6 +81,8 @@ public:
 	void	Go_Left(_float fTimeDelta);
 	void	Go_Right(_float fTimeDelta);
 	void	Go_Backward(_float fTimeDelta);
+	void	Jump_Start(_float fJumpVelocity);
+	void	Jump(_float fTimeDelta, CNavigation* pNavigation = nullptr);
 
 	void	Turn(_fvector vAxis, _float fTimeDelta);
 	void	Rotation(_fvector vAxis, _float fRadian);
@@ -86,10 +90,16 @@ public:
 
 private:
 	/* row_major = Right, Up, Look, Position */
-	_float4x4				m_WorldMatrix = {};
+	_float4x4	m_WorldMatrix = {};
 
-	_float					m_fSpeedPerSec = { };
-	_float					m_fRotationPerSec = { };
+	_float		m_fSpeedPerSec = { };
+	_float		m_fRotationPerSec = { };
+
+	_bool		m_bIsJumping	= { false };    // 점프 중인지 여부
+	_float		m_fJumpVelocity = {};			// 현재 y축 속도(점프 속도)
+	_float		m_fGravity		= { -3.8f };    // 중력 가속도 (m/s²)
+	_float		m_fCurrentY		= {};			// 현재 Y 위치
+
 
 public:
 	static	  CTransform*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

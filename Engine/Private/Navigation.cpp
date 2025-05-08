@@ -424,6 +424,27 @@ void CNavigation::SetUp_On_Navigation(CTransform* pTransform)
 	pTransform->Set_State(CTransform::STATE_POSITION, XMVector3TransformCoord(vPosition, XMLoadFloat4x4(m_pWorldMatrix)));
 }
 
+_bool CNavigation::Check_If_Grounded(CTransform* pObjectTransformCom)
+{
+	if (m_iCurrentCellIndex < 0 || m_iCurrentCellIndex >= m_Cells.size())
+		return 0.0f;
+
+	_vector		vWorldPos = pObjectTransformCom->Get_State(CTransform::STATE_POSITION);
+	_matrix		WorldMatrixInv = XMMatrixInverse(nullptr, XMLoadFloat4x4(m_pWorldMatrix));
+
+	_vector		vObjectPosition = XMVector3TransformCoord(vWorldPos, WorldMatrixInv);
+	_float4		fObjectPosition;
+	XMStoreFloat4(&fObjectPosition, vObjectPosition);
+
+	_float		fCellLocalHeight = m_Cells[m_iCurrentCellIndex]->Compute_Height(vObjectPosition); // Map 기준 Cell 로컬 높이
+
+	if (fObjectPosition.y <= fCellLocalHeight)
+		return true;
+
+	return false;
+}
+
+
 #ifdef _DEBUG
 HRESULT CNavigation::Render()
 {

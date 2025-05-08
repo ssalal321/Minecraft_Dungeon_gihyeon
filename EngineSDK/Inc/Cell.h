@@ -13,7 +13,7 @@ public:
 private:
 	CCell(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	~CCell() override = default;
-
+	
 public:
 	_vector		Get_Point(POINT ePoint) { return XMLoadFloat3(&m_vPoints[ePoint]); }
 

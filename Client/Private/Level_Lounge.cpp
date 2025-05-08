@@ -302,6 +302,10 @@ HRESULT CLevel_Lounge::Ready_Layer_Monster(const _wstring& strLayerTag)
         LEVEL_LOUNGE, strLayerTag);
     if (nullptr == pBabyZombie)     return E_FAIL;
 
+    CGameObject* pSlimeLarge = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Slime_Large"),
+        LEVEL_LOUNGE, strLayerTag);
+    if (nullptr == pSlimeLarge)     return E_FAIL;
+
     return S_OK;
 }
 

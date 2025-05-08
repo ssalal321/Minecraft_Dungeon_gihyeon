@@ -39,14 +39,12 @@ void CBabyZombie_Attack::State_Update(_float fTimeDelta)
 
     _float  fAnimCurTrackPos = m_pActorModelCom->Get_AnimCurrentTrackPosition();
 
-    // 0.5초 지났을 때 공격 콜라이더 활성화 (1회만)
     if (!m_bHitMode_Activated && BABYZOMBIE_ATTACKSTART <= fAnimCurTrackPos)
     {
         m_pBabyZombie->Set_Attacking(true);
         m_bHitMode_Activated = true;
     }
 
-    // 1.0초 쯤 다시 초기화
     if (m_bHitMode_Activated && fAnimCurTrackPos >= BABYZOMBIE_ATTACKFINISH)
     {
         m_bHitMode_Activated = false; // 다시 사용할 수 있게
