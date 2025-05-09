@@ -240,14 +240,14 @@ void CCollision_Manager::Free()
     }
 
     // Persistent Collider ÇØÁ¦
-    if (m_pPersistentColliderGroups)
+    /*if (m_pPersistentColliderGroups)
     {
         for (auto& pair : *m_pPersistentColliderGroups)
             for (auto* pCol : pair.second)
                 Safe_Release(pCol);
 
         m_pPersistentColliderGroups->clear();
-    }
+    }*/
 
     Safe_Delete_Array(m_pColliderGroups);
     Safe_Delete(m_pPersistentColliderGroups);

@@ -11,6 +11,9 @@ namespace Client
 		ZOMBIE,
 		BABYZOMBIE,
 		SKELETON,
+		SLIME_LARGE,
+		SLIME_MEDIUM,
+		SLIME_SMALL,
 		TYPE_END
 	};
 
@@ -23,6 +26,9 @@ namespace Client
 			ZOMBIE_STATE		ZombieState;
 			BABYZOMBIE_STATE	BabyZombieState;
 			SKELETON_STATE		SkeletonState;
+			SLIME_LARGE_STATE	SlimeLargeState;
+			SLIME_MEDIUM_STATE	SlimeMediumState;
+			SLIME_SMALL_STATE	SlimeSmallState;
 		};
 
 		MonsterState() = default;
@@ -48,9 +54,33 @@ namespace Client
 	// 팩토리 함수: 해골 상태 생성
 	inline MonsterState Make_SkeletonState(SKELETON_STATE state)
 	{
-		MonsterState result;
-		result.monsterType = MONSTER_TYPE::SKELETON;
-		result.SkeletonState = state;
-		return result;
+		MonsterState monsterState;
+		monsterState.monsterType = MONSTER_TYPE::SKELETON;
+		monsterState.SkeletonState = state;
+		return monsterState;
+	}
+
+	inline MonsterState Make_Slime_LargeState(SLIME_LARGE_STATE state)
+	{
+		MonsterState monsterState;
+		monsterState.monsterType = MONSTER_TYPE::SLIME_LARGE;
+		monsterState.SlimeLargeState = state;
+		return monsterState;
+	}
+
+	inline MonsterState Make_Slime_MediumState(SLIME_MEDIUM_STATE state)
+	{
+		MonsterState monsterState;
+		monsterState.monsterType = MONSTER_TYPE::SLIME_MEDIUM;
+		monsterState.SlimeMediumState = state;
+		return monsterState;
+	}
+
+	inline MonsterState Make_Slime_SmallState(SLIME_SMALL_STATE state)
+	{
+		MonsterState monsterState;
+		monsterState.monsterType = MONSTER_TYPE::SLIME_SMALL;
+		monsterState.SlimeSmallState = state;
+		return monsterState;
 	}
 }

@@ -77,7 +77,7 @@ HRESULT CCollider::Initialize(void* pArg)
 
 _bool CCollider::Intersect(CCollider* pTargetCollider)
 {
-	if ((false == *m_bCollisionActivated && false == pTargetCollider->Get_OtherCollisionActivated() || !m_bColliderActive))
+	if ((false == *m_bCollisionActivated && false == pTargetCollider->Get_Other_Collision_Activated() || !m_bColliderActive))
 	{
 		m_bIsCollision = false;
 		pTargetCollider->Set_IsCollision(false);

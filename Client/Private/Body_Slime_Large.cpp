@@ -1,31 +1,31 @@
-#include "Body_Skeleton.h"
+#include "Body_Slime_Large.h"
+#include "Slime_Large.h"
+
 #include "GameInstance.h"
 #include "Mesh.h"
 
-#include "Skeleton.h"
-
-CBody_Skeleton::CBody_Skeleton(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CBody_Slime_Large::CBody_Slime_Large(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CPartObject(pDevice, pContext)
 {
 
 }
 
-CBody_Skeleton::CBody_Skeleton(const CBody_Skeleton& Prototype)
+CBody_Slime_Large::CBody_Slime_Large(const CBody_Slime_Large& Prototype)
 	: CPartObject(Prototype)
 {
 
 }
 
-HRESULT CBody_Skeleton::Initialize_Prototype()
+HRESULT CBody_Slime_Large::Initialize_Prototype()
 {
 	/* 외부 데이터베이스를 통해서 값을 채운다. */
 
 	return S_OK;
 }
 
-HRESULT CBody_Skeleton::Initialize(void* pArg)
+HRESULT CBody_Slime_Large::Initialize(void* pArg)
 {
-	BODY_SKELETON_DESC* pDesc = static_cast<BODY_SKELETON_DESC*>(pArg);
+	BODY_SLIME_LARGE_DESC* pDesc = static_cast<BODY_SLIME_LARGE_DESC*>(pArg);
 
 	m_pTargetState = pDesc->pState;
 
@@ -38,22 +38,22 @@ HRESULT CBody_Skeleton::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CBody_Skeleton::Priority_Update(_float fTimeDelta)
+void CBody_Slime_Large::Priority_Update(_float fTimeDelta)
 {
 }
 
-void CBody_Skeleton::Update(_float fTimeDelta)
+void CBody_Slime_Large::Update(_float fTimeDelta)
 {
 }
 
-void CBody_Skeleton::Late_Update(_float fTimeDelta)
+void CBody_Slime_Large::Late_Update(_float fTimeDelta)
 {
 	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()) * XMLoadFloat4x4(m_pParentWorldMatrix));
 
 	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 }
 
-HRESULT CBody_Skeleton::Render()
+HRESULT CBody_Slime_Large::Render()
 {
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
@@ -68,8 +68,14 @@ HRESULT CBody_Skeleton::Render()
 		if (FAILED(m_pModelCom->Bind_BoneMatrices(m_pShaderCom, "g_BoneMatrices", static_cast<_uint>(i))))
 			return E_FAIL;
 
-		if (FAILED(m_pShaderCom->Begin(2)))
-			return E_FAIL;
+		/*if (FAILED(m_pShaderCom->Begin(1)))
+			return E_FAIL;*/
+		if (i == 0) // 내부 메시
+			m_pShaderCom->Begin(0); // Default
+		else         // 외부 메시
+			m_pShaderCom->Begin(1); // Blend
+
+
 
 		if (FAILED(m_pModelCom->Render(static_cast<_uint>(i))))
 			return E_FAIL;
@@ -78,12 +84,12 @@ HRESULT CBody_Skeleton::Render()
 	return S_OK;
 }
 
-void CBody_Skeleton::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)
+void CBody_Slime_Large::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)
 {
-	dynamic_cast<CSkeleton*>(m_pContainerObject)->Collided_With(pOther, eCollisionState);
+	dynamic_cast<CSlime_Large*>(m_pContainerObject)->Collided_With(pOther, eCollisionState);
 }
 
-HRESULT CBody_Skeleton::Ready_Components()
+HRESULT CBody_Slime_Large::Ready_Components()
 {
 	/* Com_Shader */
 	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxAnimMesh"),
@@ -94,32 +100,14 @@ HRESULT CBody_Skeleton::Ready_Components()
 	CModel::MODEL_DESC	pModelDesc = {};
 	pModelDesc.bPickable = true;
 
-	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Model_Skeleton"),
+	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Model_Slime_Large"),
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom), &pModelDesc))
 		return E_FAIL;
 
-
-	///* Com_Collider */
-	//CBounding_OBB::BOUNDING_OBB_DESC		OBBCollDesc{};
-
-	//OBBCollDesc.vExtents	= _float3(0.6f, 1.f, 0.6f);
-	//OBBCollDesc.vCenter		= _float3(0.f, OBBCollDesc.vExtents.y, 0.f);
-	//OBBCollDesc.vRotation	= _float3(0.f, /*XMConvertToRadians(0.f)*/ 0.f, 0.f);
-	//OBBCollDesc.pGameObject = this;
-	//OBBCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
-	//OBBCollDesc.pCollisionActivated = m_pCollisionActivating;
-	//
-	//CComponent* pColliderOBBCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_OBB"),
-	//	TEXT("Com_Collider_OBB"), reinterpret_cast<CComponent**>(&m_pColliderCom), &OBBCollDesc);
-
-	//if (nullptr == pColliderOBBCom)
-	//	return E_FAIL;
-
-	//m_pGameInstance->Add_ColliderCom(pColliderOBBCom, TEXT("Monster_Body_NoHit"), TEXT("Monster"));
-
+	/* Com_Collider */
 	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereCollDesc{};
 
-	SphereCollDesc.fRadius = 1.6f;
+	SphereCollDesc.fRadius = 1.8f;
 	SphereCollDesc.vCenter = _float3(0.f, SphereCollDesc.fRadius, 0.f);
 	SphereCollDesc.pGameObject = this;
 	SphereCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
@@ -131,12 +119,12 @@ HRESULT CBody_Skeleton::Ready_Components()
 	if (nullptr == pColliderSphereCom)
 		return E_FAIL;
 
-	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), m_pColliderCom, TEXT("Monster_Body_NoHit"), TEXT("Monster"));
+	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), m_pColliderCom, TEXT("Monster_Body_Hit"), TEXT("Monster"));
 
 	return S_OK;
 }
 
-HRESULT CBody_Skeleton::Bind_ShaderResources()
+HRESULT CBody_Slime_Large::Bind_ShaderResources()
 {
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix)))
 		return E_FAIL;	
@@ -180,13 +168,13 @@ HRESULT CBody_Skeleton::Bind_ShaderResources()
 	return S_OK;
 }
 
-CBody_Skeleton* CBody_Skeleton::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CBody_Slime_Large* CBody_Slime_Large::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	CBody_Skeleton* pGameInstance = new CBody_Skeleton(pDevice, pContext);
+	CBody_Slime_Large* pGameInstance = new CBody_Slime_Large(pDevice, pContext);
 
 	if (FAILED(pGameInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Create : CBody_Skeleton");
+		MSG_BOX("Failed to Create : CBody_Slime_Large");
 		Safe_Release(pGameInstance);
 	}
 
@@ -194,20 +182,20 @@ CBody_Skeleton* CBody_Skeleton::Create(ID3D11Device* pDevice, ID3D11DeviceContex
 }
 
 
-CGameObject* CBody_Skeleton::Clone(void* pArg)
+CGameObject* CBody_Slime_Large::Clone(void* pArg)
 {
-	CBody_Skeleton* pGameInstance = new CBody_Skeleton(*this);
+	CBody_Slime_Large* pGameInstance = new CBody_Slime_Large(*this);
 
 	if (FAILED(pGameInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Clone : CBody_Skeleton");
+		MSG_BOX("Failed to Clone : CBody_Slime_Large");
 		Safe_Release(pGameInstance);
 	}
 
 	return pGameInstance;
 }
 
-void CBody_Skeleton::Free()
+void CBody_Slime_Large::Free()
 {
 	__super::Free();
 

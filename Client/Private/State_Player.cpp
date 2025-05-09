@@ -83,8 +83,6 @@ void CState_Player::State_Exit()
 
 void CState_Player::Collision_Enter(CCollider* pOther)
 {
-
-
 	Modify_HP(pOther);
 
 	/*_wstring other = pOther->Get_CollidergGroupTag();
@@ -139,7 +137,7 @@ _bool CState_Player::Change_State_To_Walk()
 			m_pPlayer->Set_Chasing(false, nullptr);
 			m_pPlayer->Change_State(PLAYER_STATE::WALK);
 
-			std::cerr << fWorldPickedPos.x << ", " << fWorldPickedPos.y << ", " << fWorldPickedPos.z << std::endl;
+			//std::cerr << fWorldPickedPos.x << ", " << fWorldPickedPos.y << ", " << fWorldPickedPos.z << std::endl;
 
 			return true;
 		}
@@ -237,21 +235,21 @@ _bool CState_Player::Change_State_To_GetHitFront()
 void CState_Player::Modify_HP(CCollider* pOther)
 {
 	if (TEXT("Monster_Arrow") == pOther->Get_ColliderTag()
-		&& pOther->Get_OtherCollisionActivated())
+		&& pOther->Get_Other_Collision_Activated())
 	{
 		CMonster_Arrow* pMonsterArrow = dynamic_cast<CMonster_Arrow*>(pOther->Get_OwnerObject());
 		m_pPlayerInfo->Modify_CurrentHp(-pMonsterArrow->Get_DealPoint());
 	}
 
 	if (TEXT("Monster_Weapon") == pOther->Get_ColliderTag()
-		&& pOther->Get_OtherCollisionActivated())
+		&& pOther->Get_Other_Collision_Activated())
 	{
 		CItem* pItem = dynamic_cast<CItem*>(pOther->Get_OwnerObject());
 		m_pPlayerInfo->Modify_CurrentHp(-pItem->Get_DealPoint());
 	}
 
 	if (TEXT("Monster_Body_Hit") == pOther->Get_ColliderTag()
-		&& pOther->Get_OtherCollisionActivated())
+		&& pOther->Get_Other_Collision_Activated())
 	{
 		CPartObject* pMonsterBody = dynamic_cast<CPartObject*>(pOther->Get_OwnerObject());
 		CMonster* pMonster = dynamic_cast<CMonster*>(pMonsterBody->Get_ContainerObject());

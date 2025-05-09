@@ -1,14 +1,14 @@
 #pragma once
 #include "Client_Defines.h"
-#include "State_Zombie.h"
+#include "State_Slime_Large.h"
 
 BEGIN(Client)
 
-class CZombie_Idle final: public CState_Zombie
+class CSlime_Large_Idle final: public CState_Slime_Large
 {
 private:
-	CZombie_Idle(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
-	~CZombie_Idle() override = default;
+	CSlime_Large_Idle(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
+	~CSlime_Large_Idle() override = default;
 
 public:
     HRESULT     Init_State()                                override;

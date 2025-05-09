@@ -199,9 +199,6 @@
     <Filter Include="02.GameObjects\Monster\BabyZombie">
       <UniqueIdentifier>{3bf345ce-a23d-43b0-abfe-954a13f6aa4d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Monster\BabyZombie\00. Body_BabyZombie">
-      <UniqueIdentifier>{88dfeff6-640c-43ec-9814-1f1e3abffd06}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\Monster\BabyZombie\01. State">
       <UniqueIdentifier>{3d89ef3d-a690-4596-be5e-5ce6aae1e1a8}</UniqueIdentifier>
     </Filter>
@@ -219,6 +216,33 @@
     </Filter>
     <Filter Include="02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_GetHit">
       <UniqueIdentifier>{fc9e17c7-700f-41b4-a7a6-b92619c399f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime">
+      <UniqueIdentifier>{05d750de-dea8-41b1-9a75-2df07c71f62f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Large">
+      <UniqueIdentifier>{2109de68-956e-4d7e-8518-80714c4cf38a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Large\00. Body">
+      <UniqueIdentifier>{929d2a3e-2aa3-4331-a698-43c4d79bb3a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Large\01. State">
+      <UniqueIdentifier>{31b45a82-0337-48fc-8451-ebeda7a9a767}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Large\01. State\Slime_Large_Idle">
+      <UniqueIdentifier>{573b4b6b-88a8-4249-99a1-2a24853756dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Large\01. State\Slime_Large_Attack">
+      <UniqueIdentifier>{5e75937a-3657-4925-8759-c98568e9aa10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Large\01. State\Slime_Large_Walk">
+      <UniqueIdentifier>{1629eb93-249b-4c4b-b385-31ee71ba5eb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Large\01. State\Slime_Large_Stun">
+      <UniqueIdentifier>{4408f859-a94e-4709-8c07-e35ca5789585}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\BabyZombie\01. State\00. Body_BabyZombie">
+      <UniqueIdentifier>{88dfeff6-640c-43ec-9814-1f1e3abffd06}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -424,7 +448,7 @@
       <Filter>02.GameObjects\Monster\BabyZombie</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Body_BabyZombie.h">
-      <Filter>02.GameObjects\Monster\BabyZombie\00. Body_BabyZombie</Filter>
+      <Filter>02.GameObjects\Monster\BabyZombie\01. State\00. Body_BabyZombie</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\BabyZombie_GetHit.h">
       <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_GetHit</Filter>
@@ -443,6 +467,27 @@
     </ClInclude>
     <ClInclude Include="..\Public\State_BabyZombie.h">
       <Filter>02.GameObjects\Monster\BabyZombie\01. State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Slime_Large.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Large</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Body_Slime_Large.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Large\00. Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Slime_Large_Attack.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Large\01. State\Slime_Large_Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Slime_Large_Idle.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Large\01. State\Slime_Large_Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Slime_Large_Stun.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Large\01. State\Slime_Large_Stun</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Slime_Large.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Large\01. State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Slime_Large_Walk.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Large\01. State\Slime_Large_Walk</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -643,7 +688,7 @@
       <Filter>02.GameObjects\Monster\BabyZombie</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Body_BabyZombie.cpp">
-      <Filter>02.GameObjects\Monster\BabyZombie\00. Body_BabyZombie</Filter>
+      <Filter>02.GameObjects\Monster\BabyZombie\01. State\00. Body_BabyZombie</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BabyZombie_Attack.cpp">
       <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Attack</Filter>
@@ -662,6 +707,27 @@
     </ClCompile>
     <ClCompile Include="..\Private\State_BabyZombie.cpp">
       <Filter>02.GameObjects\Monster\BabyZombie\01. State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Slime_Large.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Large</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Body_Slime_Large.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Large\00. Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Slime_Large_Attack.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Large\01. State\Slime_Large_Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Slime_Large_Idle.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Large\01. State\Slime_Large_Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Slime_Large_Stun.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Large\01. State\Slime_Large_Stun</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Slime_Large.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Large\01. State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Slime_Large_Walk.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Large\01. State\Slime_Large_Walk</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

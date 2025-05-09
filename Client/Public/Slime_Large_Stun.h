@@ -1,14 +1,14 @@
 #pragma once
 #include "Client_Defines.h"
-#include "State_Zombie.h"
+#include "State_Slime_Large.h"
 
 BEGIN(Client)
 
-class CZombie_GetHit final: public CState_Zombie
+class CSlime_Large_Stun final: public CState_Slime_Large
 {
 private:
-    CZombie_GetHit(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
-	~CZombie_GetHit() override = default;
+    CSlime_Large_Stun(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
+	~CSlime_Large_Stun() override = default;
 
 public:
     HRESULT     Init_State()                                override;
@@ -22,8 +22,6 @@ public:
     void        Collision_Enter(CCollider* pOther)        override;
     void        Collision_Stay(CCollider* pOther)         override;
     void        Collision_Exit(CCollider* pOther)         override;
-
-private:
 
 
 public:

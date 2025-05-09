@@ -109,7 +109,7 @@ _bool CState_BabyZombie::Change_State_To_Idle()
 _bool CState_BabyZombie::Change_State_To_GetHit(CCollider* pOther)
 {
 	if (TEXT("Player_Weapon") == pOther->Get_ColliderTag()
-		&& pOther->Get_OtherCollisionActivated())
+		&& pOther->Get_Other_Collision_Activated())
 	{
 		CItem* pItem = dynamic_cast<CItem*>(pOther->Get_OwnerObject());
 		m_pMonsterInfo->Modify_CurrentHp(-pItem->Get_DealPoint());
@@ -119,7 +119,7 @@ _bool CState_BabyZombie::Change_State_To_GetHit(CCollider* pOther)
 	}
 
 	if (TEXT("Player_Arrow") == pOther->Get_ColliderTag()
-		&& pOther->Get_OtherCollisionActivated())
+		&& pOther->Get_Other_Collision_Activated())
 	{
 		CPlayer_Arrow* pPlayerArrow = dynamic_cast<CPlayer_Arrow*>(pOther->Get_OwnerObject());
 		m_pMonsterInfo->Modify_CurrentHp(-pPlayerArrow->Get_DealPoint());

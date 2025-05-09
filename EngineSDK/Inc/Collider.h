@@ -29,7 +29,7 @@ public:
 	CBounding*			Get_Bounding() const { return m_pBounding; }
 	_bool				Get_ColliderActive() const { return m_bColliderActive; }
 	_bool				Get_MouseCollider() const { return m_bMouseCollider; }
-	_bool				Get_OtherCollisionActivated() const { return *m_bCollisionActivated; }
+	_bool				Get_Other_Collision_Activated() const { return *m_bCollisionActivated; }
 	CGameObject*		Get_OwnerObject() const { return m_pOwnerGameObject; }
 
 public:

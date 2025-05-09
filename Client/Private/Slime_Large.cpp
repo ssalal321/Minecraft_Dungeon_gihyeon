@@ -1,40 +1,38 @@
-#include "Zombie.h"
+#include "Slime_Large.h"
 #include "GameInstance.h"
 
-#include "Body_Zombie.h"
+#include "Body_Slime_Large.h"
 
 #include "FSM.h"
-#include "Zombie_Attack.h"
-#include "Zombie_GetHit.h"
-#include "Zombie_Idle.h"
-#include "Zombie_Sleep.h"
-#include "Zombie_Stun.h"
-#include "Zombie_Walk.h"
+#include "Slime_Large_Attack.h"
+#include "Slime_Large_Idle.h"
+#include "Slime_Large_Stun.h"
+#include "Slime_Large_Walk.h"
 
-_int  CZombie::m_iZombieID = 0;
+_int  CSlime_Large::m_iSlime_LargeID = 0;
 
-CZombie::CZombie(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CSlime_Large::CSlime_Large(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CMonster(pDevice, pContext)
 {
 }
 
-CZombie::CZombie(const CZombie& Prototype)
+CSlime_Large::CSlime_Large(const CSlime_Large& Prototype)
 	: CMonster(Prototype)
 {
 }
 
-HRESULT CZombie::Initialize_Prototype()
+HRESULT CSlime_Large::Initialize_Prototype()
 {
 	/* 외부 데이터베이스를 통해서 값을 채운다. */
 
 	return S_OK;
 }
 
-HRESULT CZombie::Initialize(void* pArg)
+HRESULT CSlime_Large::Initialize(void* pArg)
 {
-	const _wstring& zombieGameObjectTag = TEXT("GameObject_Zombie_") + to_wstring(m_iZombieID++);
+	const _wstring& Slime_LargeGameObjectTag = TEXT("GameObject_Slime_Large_") + to_wstring(m_iSlime_LargeID++);
 
-	m_pMonsterInfo = new MONSTER_DESC(zombieGameObjectTag, 20, 20, 3, 3.f, 10.f, false, 90.f, 1.5f);
+	m_pMonsterInfo = new MONSTER_DESC(Slime_LargeGameObjectTag, 20, 20, 2, 3.f, 10.f, false, 90.f, 0.7f);
 
 	if (FAILED(__super::Initialize(m_pMonsterInfo)))
 		return E_FAIL;
@@ -46,44 +44,44 @@ HRESULT CZombie::Initialize(void* pArg)
 		return E_FAIL;
 
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
-								XMVectorSet(0.f, 0.f, -10.f, 1.f));
+								XMVectorSet(3.f, 0.f, -7.f, 1.f));
 
 	return S_OK;
 }
 
-void CZombie::Priority_Update(_float fTimeDelta)
+void CSlime_Large::Priority_Update(_float fTimeDelta)
 {
 	__super::Priority_Update(fTimeDelta);
 }
 
-void CZombie::Update(_float fTimeDelta)
+void CSlime_Large::Update(_float fTimeDelta)
 {
 	__super::Update(fTimeDelta);
 }
 
-void CZombie::Late_Update(_float fTimeDelta)
+void CSlime_Large::Late_Update(_float fTimeDelta)
 {
 	__super::Late_Update(fTimeDelta);
 }
 
-HRESULT CZombie::Render()
+HRESULT CSlime_Large::Render()
 {
 	return S_OK;
 }
 
 
-HRESULT CZombie::Ready_PartObjects()
+HRESULT CSlime_Large::Ready_PartObjects()
 {
 	/* 몸통을 추가한다. */
-	CBody_Zombie::BODY_ZOMBIE_DESC		BodyDesc{};
+	CBody_Slime_Large::BODY_SLIME_LARGE_DESC		BodyDesc{};
 
-	BodyDesc.strGameObjectTag = TEXT("GameObject_Body_Zombie");
+	BodyDesc.strGameObjectTag = TEXT("GameObject_Body_Slime_Large");
 	BodyDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	BodyDesc.pState = &m_iState;
 	BodyDesc.pContainerObject = this;
 	BodyDesc.pCollisionActivating = &m_bAttacking;
 
-	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Body_Zombie"), TEXT("Part_Body"), &BodyDesc)))
+	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Body_Slime_Large"), TEXT("Part_Body"), &BodyDesc)))
 		return E_FAIL;
 
 	
@@ -92,40 +90,38 @@ HRESULT CZombie::Ready_PartObjects()
 	return S_OK;
 }
 
-HRESULT CZombie::Ready_States()
+HRESULT CSlime_Large::Ready_States()
 {
-	m_StatesVec.resize(static_cast<_uint>(ZOMBIE_STATE::STATE_END));	// state vector 자리 예약
+	m_StatesVec.resize(static_cast<_uint>(SLIME_LARGE_STATE::STATE_END));	// state vector 자리 예약
 
-	CModel* pZombieModel = dynamic_cast<CModel*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Model")));
+	CModel* pSlime_LargeModel = dynamic_cast<CModel*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Model")));
 	CCollider* pCollider = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_Sphere")));
 
 	CState_Monster::STATEMONSTER_DESC	pStateMonsterDesc = {};
 	pStateMonsterDesc.pColliderCom		= pCollider;
-	pStateMonsterDesc.pActorModelCom		= pZombieModel;
-	pStateMonsterDesc.pNavigationCom		= m_pNavigationCom;
-	pStateMonsterDesc.pTransformCom			= m_pTransformCom;
+	pStateMonsterDesc.pActorModelCom	= pSlime_LargeModel;
+	pStateMonsterDesc.pNavigationCom	= m_pNavigationCom;
+	pStateMonsterDesc.pTransformCom		= m_pTransformCom;
 
-	m_StatesVec[static_cast<_uint>(ZOMBIE_STATE::IDLE)]			 = CZombie_Idle::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
-	m_StatesVec[static_cast<_uint>(ZOMBIE_STATE::WALK)]			 = CZombie_Walk::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
-	m_StatesVec[static_cast<_uint>(ZOMBIE_STATE::ATTACK)]		 = CZombie_Attack::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
-	m_StatesVec[static_cast<_uint>(ZOMBIE_STATE::GET_HIT_FRONT)] = CZombie_GetHit::Create(this, m_pMonsterInfo, &pStateMonsterDesc);  // Get_Hit_Left/Right도 포함
-	m_StatesVec[static_cast<_uint>(ZOMBIE_STATE::STUN)]			 = CZombie_Stun::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
-	m_StatesVec[static_cast<_uint>(ZOMBIE_STATE::NOVELTY_SLEEP)] = CZombie_Sleep::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
+	m_StatesVec[static_cast<_uint>(SLIME_LARGE_STATE::IDLE)]	= CSlime_Large_Idle::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
+	m_StatesVec[static_cast<_uint>(SLIME_LARGE_STATE::WALK)]	= CSlime_Large_Walk::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
+	m_StatesVec[static_cast<_uint>(SLIME_LARGE_STATE::ATTACK)]	= CSlime_Large_Attack::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
+	m_StatesVec[static_cast<_uint>(SLIME_LARGE_STATE::STUN)]	= CSlime_Large_Stun::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
 
 	m_pMonsterFSM = FSM::Create();
 
-	m_pMonsterFSM->Init_State(m_StatesVec[static_cast<_uint>(ZOMBIE_STATE::IDLE)]);
+	m_pMonsterFSM->Init_State(m_StatesVec[static_cast<_uint>(SLIME_LARGE_STATE::IDLE)]);
 
 	return S_OK;
 }
 
-CZombie* CZombie::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CSlime_Large* CSlime_Large::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	CZombie* pGameInstance = new CZombie(pDevice, pContext);
+	CSlime_Large* pGameInstance = new CSlime_Large(pDevice, pContext);
 
 	if (FAILED(pGameInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Create : CZombie");
+		MSG_BOX("Failed to Create : CSlime_Large");
 		Safe_Release(pGameInstance);
 	}
 
@@ -133,20 +129,20 @@ CZombie* CZombie::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 }
 
 
-CGameObject* CZombie::Clone(void* pArg)
+CGameObject* CSlime_Large::Clone(void* pArg)
 {
-	CZombie* pGameInstance = new CZombie(*this);
+	CSlime_Large* pGameInstance = new CSlime_Large(*this);
 
 	if (FAILED(pGameInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Clone : CZombie");
+		MSG_BOX("Failed to Clone : CSlime_Large");
 		Safe_Release(pGameInstance);
 	}
 
 	return pGameInstance;
 }
 
-void CZombie::Free()
+void CSlime_Large::Free()
 {
 	__super::Free();
 

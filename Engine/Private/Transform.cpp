@@ -1,5 +1,7 @@
 #include "Transform.h"
 
+#include <iostream>
+
 #include "Navigation.h"
 #include "Shader.h"
 
@@ -97,6 +99,63 @@ void CTransform::Go_Backward(_float fTimeDelta)
 
 	Set_State(STATE_POSITION, vPosition);
 }
+
+void CTransform::Jump_Start(_float fJumpVelocity)
+{
+	if (!m_bIsJumping)
+	{
+		m_bIsJumping = true;
+		m_fJumpVelocity = fJumpVelocity;
+
+		// 슬라임의 현재 y 위치를 기준으로 점프 시작 위치 초기화
+		_vector vPos = Get_State(STATE_POSITION);
+		m_fCurrentY = XMVectorGetY(vPos);
+
+		std::cerr << "[점프]" << endl;
+	}
+}
+
+void CTransform::Jump(_float fTimeDelta, CNavigation* pNavigation)
+{
+    if (!m_bIsJumping)
+        return;
+
+    // 현재 위치 정보
+    _vector vPosition = Get_State(STATE_POSITION);  // 슬라임 현재 위치 정보
+    _float4 position = {};
+    XMStoreFloat4(&position, vPosition);
+
+    // 중력 반영: 점프 높이 증가 → 속도 감소
+    m_fCurrentY		+= m_fJumpVelocity * fTimeDelta;
+
+    m_fJumpVelocity += m_fGravity * fTimeDelta;
+
+    position.y = m_fCurrentY;
+    vPosition = XMLoadFloat4(&position);
+
+	std::cerr << "[높이 :" << position.y << "]" << std::endl;
+
+	Set_State(STATE_POSITION, vPosition);
+
+    // 네비게이션 상태 복원 여부 확인
+    if (nullptr != pNavigation)
+    {
+    	if (pNavigation->Check_If_Grounded(this))
+    	{
+            // 착지 처리
+            pNavigation->SetUp_On_Navigation(this);
+            m_bIsJumping = false;
+
+            std::cerr << "[착지]" << std::endl;
+            return;
+        }
+    }
+
+    // 점프 중 위치 갱신
+
+}
+
+
 
 void CTransform::Turn(_fvector vAxis, _float fTimeDelta)
 {
