@@ -417,7 +417,7 @@ void CNavigation::SetUp_On_Navigation(CTransform* pTransform)
 
 	_vector		vPosition = XMVector3TransformCoord(vWorldPos, WorldMatrixInv);
 
-	_float		fHeight = m_Cells[m_iCurrentCellIndex]->Compute_Height(vPosition);
+	_float		fHeight   = m_Cells[m_iCurrentCellIndex]->Compute_Height(vPosition);
 
 	vPosition = XMVectorSetY(vPosition, fHeight);
 
@@ -429,16 +429,16 @@ _bool CNavigation::Check_If_Grounded(CTransform* pObjectTransformCom)
 	if (m_iCurrentCellIndex < 0 || m_iCurrentCellIndex >= m_Cells.size())
 		return 0.0f;
 
-	_vector		vWorldPos = pObjectTransformCom->Get_State(CTransform::STATE_POSITION);
-	_matrix		WorldMatrixInv = XMMatrixInverse(nullptr, XMLoadFloat4x4(m_pWorldMatrix));
+	_vector		vWorldPos = pObjectTransformCom->Get_State(CTransform::STATE_POSITION);  // 오브젝트 현재 월드 위치
+	_matrix		WorldMatrixInv = XMMatrixInverse(nullptr, XMLoadFloat4x4(m_pWorldMatrix));  // 맵의 월드 역행렬
 
-	_vector		vObjectPosition = XMVector3TransformCoord(vWorldPos, WorldMatrixInv);
-	_float4		fObjectPosition;
-	XMStoreFloat4(&fObjectPosition, vObjectPosition);
+	_vector		vObjectLocalPosition = XMVector3TransformCoord(vWorldPos, WorldMatrixInv);  // 오브젝트의 맵상 로컬 위치
+	_float4		fObjectLocalPosition;
+	XMStoreFloat4(&fObjectLocalPosition, vObjectLocalPosition);
 
-	_float		fCellLocalHeight = m_Cells[m_iCurrentCellIndex]->Compute_Height(vObjectPosition); // Map 기준 Cell 로컬 높이
+	_float		fCellLocalHeight = m_Cells[m_iCurrentCellIndex]->Compute_Height(vObjectLocalPosition); // Map 기준 Cell 로컬 높이
 
-	if (fObjectPosition.y <= fCellLocalHeight)
+	if (fObjectLocalPosition.y <= fCellLocalHeight)
 		return true;
 
 	return false;

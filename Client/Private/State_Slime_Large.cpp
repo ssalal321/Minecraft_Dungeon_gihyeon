@@ -72,17 +72,17 @@ _bool CState_Slime_Large::Change_State_To_Attack()
 
 _bool CState_Slime_Large::Change_State_To_Walk()
 {
-	//_float lengthToPlayer = m_pSlime_Large->Length_To_Player();
+	_float lengthToPlayer = m_pSlime_Large->Length_To_Player();
 
-	//// 플레이어 인지 거리 && 스턴 X 상태
-	//if (m_pSlime_Large->Player_In_DetectRange() &&
-	//	lengthToPlayer > m_pMonsterInfo->fAttackableRange)
-	//{
+	// 플레이어 인지 거리 && 스턴 X 상태
+	if (m_pSlime_Large->Player_In_DetectRange() &&
+		lengthToPlayer > m_pMonsterInfo->fAttackableRange)
+	{
 		m_pSlime_Large->Change_State(Make_Slime_LargeState(SLIME_LARGE_STATE::WALK));
 		return true;
-	/*}
+	}
 
-	return false;*/
+	return false;
 }
 
 _bool CState_Slime_Large::Change_State_To_Idle()

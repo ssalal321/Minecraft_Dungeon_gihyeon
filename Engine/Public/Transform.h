@@ -97,7 +97,7 @@ private:
 
 	_bool		m_bIsJumping	= { false };    // 점프 중인지 여부
 	_float		m_fJumpVelocity = {};			// 현재 y축 속도(점프 속도)
-	_float		m_fGravity		= { -3.8f };    // 중력 가속도 (m/s²)
+	_float		m_fGravity		= { -9.8f };    // 중력 가속도 (m/s²)
 	_float		m_fCurrentY		= {};			// 현재 Y 위치
 
 

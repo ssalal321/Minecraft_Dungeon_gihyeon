@@ -122,17 +122,20 @@ void CTransform::Jump(_float fTimeDelta, CNavigation* pNavigation)
 
     // 현재 위치 정보
     _vector vPosition = Get_State(STATE_POSITION);  // 슬라임 현재 위치 정보
-    _float3 position = {};
-    XMStoreFloat3(&position, vPosition);
+    _float4 position = {};
+    XMStoreFloat4(&position, vPosition);
 
     // 중력 반영: 점프 높이 증가 → 속도 감소
     m_fCurrentY		+= m_fJumpVelocity * fTimeDelta;
+
     m_fJumpVelocity += m_fGravity * fTimeDelta;
 
     position.y = m_fCurrentY;
-    vPosition = XMLoadFloat3(&position);
+    vPosition = XMLoadFloat4(&position);
 
 	std::cerr << "[높이 :" << position.y << "]" << std::endl;
+
+	Set_State(STATE_POSITION, vPosition);
 
     // 네비게이션 상태 복원 여부 확인
     if (nullptr != pNavigation)
@@ -149,7 +152,7 @@ void CTransform::Jump(_float fTimeDelta, CNavigation* pNavigation)
     }
 
     // 점프 중 위치 갱신
-    Set_State(STATE_POSITION, vPosition);
+
 }
 
 
