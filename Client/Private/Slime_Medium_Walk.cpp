@@ -24,8 +24,8 @@ void CSlime_Large_Walk::State_Enter()
 {
     m_bLostPlayer = false;
 
-    m_pTransformCom->Jump_Start(4.f);
-	m_pActorModelCom->Set_Animation(static_cast<_uint>(SLIME_LARGE_STATE::WALK), true, 0.2f);
+    m_pTransformCom->Jump_Start(7.f);
+	m_pActorModelCom->Set_Animation(static_cast<_uint>(SLIME_LARGE_STATE::WALK), true, 0.7f);
 }
 
 void CSlime_Large_Walk::State_Priority_Update(_float fTimeDelta)
@@ -43,7 +43,7 @@ void CSlime_Large_Walk::State_Update(_float fTimeDelta)
     // 항상 점프
     if (!m_pTransformCom->Get_Is_Jumping())
     {
-        m_pTransformCom->Jump_Start(4.f); // 또는 원하는 점프 초기 속도
+        m_pTransformCom->Jump_Start(7.f); // 또는 원하는 점프 초기 속도
     }
 
     m_pTransformCom->Jump(fTimeDelta, m_pNavigationCom);
@@ -67,8 +67,6 @@ void CSlime_Large_Walk::State_Update(_float fTimeDelta)
 
         if (fMovedDist >= m_fDistance)
         {
-            m_pNavigationCom->SetUp_On_Navigation(m_pTransformCom);
-            m_pTransformCom->Set_Is_Jumping(false);
             m_pSlime_Large->Change_State(Make_Slime_LargeState(SLIME_LARGE_STATE::IDLE));
         }
     }

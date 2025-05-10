@@ -58,9 +58,11 @@ public:
 		return &m_WorldMatrix;
 	}
 
-	_bool		Get_Is_Jumping() const { return m_bIsJumping; }
+	_bool	Get_Is_Jumping() const { return m_bIsJumping; }
 
-	void Set_State(STATE eState, _fvector vState)
+	void	Set_Is_Jumping(_bool bJumping) { m_bIsJumping = bJumping; }
+
+	void	Set_State(STATE eState, _fvector vState)
 	{
 		XMStoreFloat4(reinterpret_cast<_float4*>(&m_WorldMatrix.m[eState][0]), vState);
 	}
@@ -85,6 +87,7 @@ public:
 	void	Jump(_float fTimeDelta, CNavigation* pNavigation = nullptr);
 
 	void	Turn(_fvector vAxis, _float fTimeDelta);
+	void	Turn_Around_Offset(_fvector vAxis, _float fRadian, _float fOffsetDistance);
 	void	Rotation(_fvector vAxis, _float fRadian);
 	void	LookAt(_fvector vAt);
 
