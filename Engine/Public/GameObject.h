@@ -31,6 +31,10 @@ protected:
 public:
 	const _wstring&		Get_GameObjectTag() { return m_strGameObjectTag; }
 
+	_bool	Get_GameObject_Active() const { return m_bActive; }
+
+	void	Set_GameObject_Active(_bool bActive) { m_bActive = bActive; }
+
 public:
 	virtual   HRESULT	Initialize_Prototype();
 	virtual   HRESULT	Initialize(void* pArg);
@@ -54,7 +58,7 @@ protected:
 	_wstring	m_strGameObjectTag = {};
 	map<const _wstring, class CComponent*>	m_Components;
 
-	_bool		m_bActive = { false };
+	_bool		m_bActive = { true };
 
 protected:
 	CComponent*		Add_Component(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag,

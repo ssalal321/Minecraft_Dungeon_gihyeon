@@ -1,8 +1,8 @@
 #include "Slime_Medium_Attack.h"
 #include "Slime_Medium.h"
 
-#define ATTACKSTART 5.f
-#define ATTACKFINISH 8.f
+#define ATTACKSTART 7.f
+#define ATTACKFINISH 13.f
 
 CSlime_Medium_Attack::CSlime_Medium_Attack(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
 	: CState_Slime_Medium(pActor, pGameObjectDesc, pDesc)
@@ -62,7 +62,7 @@ void CSlime_Medium_Attack::State_Update(_float fTimeDelta)
         m_fCoolTime = 0.f;
     }
 
-    if (m_fCoolTime > 1.5f)
+    if (m_fCoolTime > 0.5f)
     {
         if (Change_State_To_Walk())
             return;

@@ -14,44 +14,47 @@ class CPlayer final : public CContainerObject
 public:
 	struct PLAYER_DESC : public GAMEOBJECT_DESC
 	{
-		_uint     uiCurrentHP;
-		_uint     uiMaxHP;
+		_int      iCurrentHP;
+		_int      iMaxHP;
 		_int      iArrowDealPoint;
 		_float    fAttackableRange;
 		_bool     bStunned;
 
 		_uint	 iArrowNum;
 
-		PLAYER_DESC(const _wstring& GameObjectTag, _uint currentHP, const _uint& maxHP, _int arrowDealPoint,
+		PLAYER_DESC(const _wstring& GameObjectTag, _int currentHP, const _int& maxHP, _int arrowDealPoint,
 			const _float&  attackableRange, _uint arrowNum, _bool stunned = false,
 			_float rotationPerSec = 0.f, _float speedPerSec = 0.f)
-			: GAMEOBJECT_DESC(GameObjectTag, rotationPerSec, speedPerSec), uiCurrentHP(currentHP), uiMaxHP(maxHP), iArrowDealPoint(arrowDealPoint),
+			: GAMEOBJECT_DESC(GameObjectTag, rotationPerSec, speedPerSec), iCurrentHP(currentHP), iMaxHP(maxHP), iArrowDealPoint(arrowDealPoint),
 			fAttackableRange(attackableRange), bStunned(stunned), iArrowNum(arrowNum) {
 		}
 
 		~PLAYER_DESC() override = default;
 
-		const _uint&	Get_CurrentHP() const { return uiCurrentHP; }
-		const _uint&	Get_MaxHP()		const { return uiMaxHP; }
+		const _int&	Get_CurrentHP() const { return iCurrentHP; }
+		const _int&	Get_MaxHP()		const { return iMaxHP; }
 		const _int&		Get_Arrow_DealPoint() const { return iArrowDealPoint; }
 		const _float&	Get_AttackableRange() const { return fAttackableRange; }
 
-		void	Modify_CurrentHp(_int iDamageOrHeal)
+		void Modify_CurrentHp(_int iDamageOrHeal)
 		{
-			if (0 >= uiCurrentHP + iDamageOrHeal)
+			_int iModifiedHP = iCurrentHP + iDamageOrHeal;
+
+			if (iModifiedHP <= 0)
 			{
-				uiCurrentHP = 0;
+				iCurrentHP = 0;
 				return;
 			}
 
-			if (uiMaxHP <= uiCurrentHP + iDamageOrHeal)
+			if (iModifiedHP >= iMaxHP)
 			{
-				uiCurrentHP = uiMaxHP;
+				iCurrentHP = iMaxHP;
 				return;
 			}
 
-			uiCurrentHP += iDamageOrHeal;
+			iCurrentHP = iModifiedHP;
 		}
+
 	};
 
 	/*enum PLAYERSTATE

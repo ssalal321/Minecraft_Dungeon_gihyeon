@@ -44,28 +44,40 @@ HRESULT CSlime_Large::Initialize(void* pArg)
 		return E_FAIL;
 
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
-								XMVectorSet(3.f, 0.f, -7.f, 1.f));
+								XMVectorSet(3.f, 0.f, -10.f, 1.f));
 
 	return S_OK;
 }
 
 void CSlime_Large::Priority_Update(_float fTimeDelta)
 {
+	if (!m_bActive)
+		return;
+
 	__super::Priority_Update(fTimeDelta);
 }
 
 void CSlime_Large::Update(_float fTimeDelta)
 {
+	if (!m_bActive)
+		return;
+
 	__super::Update(fTimeDelta);
 }
 
 void CSlime_Large::Late_Update(_float fTimeDelta)
 {
+	if (!m_bActive)
+		return;
+
 	__super::Late_Update(fTimeDelta);
 }
 
 HRESULT CSlime_Large::Render()
 {
+	if (!m_bActive)
+		return S_OK;
+
 	return S_OK;
 }
 

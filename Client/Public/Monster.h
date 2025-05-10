@@ -16,14 +16,14 @@ class CMonster abstract : public CContainerObject
 public:
 	struct MONSTER_DESC : public GAMEOBJECT_DESC
 	{
-		_uint     iCurrentHP;
-		_uint     iMaxHP;
+		_int     iCurrentHP;
+		_int     iMaxHP;
 		_int      iDealPoint;
 		_float    fAttackableRange;
 		_float	  fDetectableRange;
 		_bool     bStunned;
 
-		MONSTER_DESC(const _wstring& gameObjectTag, _uint currentHP, const _uint& maxHP, _int dealPoint,
+		MONSTER_DESC(const _wstring& gameObjectTag, _int currentHP, const _int& maxHP, _int dealPoint,
 			_float attackableRange, _float detectRange, _bool stunned = false,
 			_float rotationPerSec = 0.f, _float speedPerSec = 0.f)
 			: GAMEOBJECT_DESC(gameObjectTag, rotationPerSec, speedPerSec), iCurrentHP(currentHP), iMaxHP(maxHP), iDealPoint(dealPoint),
@@ -32,28 +32,31 @@ public:
 
 		~MONSTER_DESC() override = default;
 
-		const _uint&	Get_CurrentHP()   const { return iCurrentHP; }
-		const _uint&	Get_MaxHP()		  const { return iMaxHP; }
-		const _int&		Get_DealPoint()		  const { return iDealPoint; }
-		const _float&	Get_AttackRange() const { return fAttackableRange; }
-		const _float&	Get_DetectRange() const { return fDetectableRange; }
+		const _int&	Get_CurrentHP()			const { return iCurrentHP; }
+		const _int&	Get_MaxHP()				const { return iMaxHP; }
+		const _int&		Get_DealPoint()		const { return iDealPoint; }
+		const _float&	Get_AttackRange()	const { return fAttackableRange; }
+		const _float&	Get_DetectRange()	const { return fDetectableRange; }
 
-		void	Modify_CurrentHp(_int iDamageOrHeal)
+		void Modify_CurrentHp(_int iDamageOrHeal)
 		{
-			if (0 >= iCurrentHP + iDamageOrHeal)
+			_int iModifiedHP = iCurrentHP + iDamageOrHeal;
+
+			if (iModifiedHP <= 0)
 			{
 				iCurrentHP = 0;
 				return;
 			}
 
-			if (iMaxHP <= iCurrentHP + iDamageOrHeal)
+			if (iModifiedHP >= iMaxHP)
 			{
 				iCurrentHP = iMaxHP;
 				return;
 			}
 
-			iCurrentHP += iDamageOrHeal;
+			iCurrentHP = iModifiedHP;
 		}
+
 	};
 
 protected:

@@ -59,21 +59,33 @@ HRESULT CSkeleton::Initialize(void* pArg)
 
 void CSkeleton::Priority_Update(_float fTimeDelta)
 {
+	if (!m_bActive)
+		return;
+
 	__super::Priority_Update(fTimeDelta);
 }
 
 void CSkeleton::Update(_float fTimeDelta)
 {
+	if (!m_bActive)
+		return;
+
 	__super::Update(fTimeDelta);
 }
 
 void CSkeleton::Late_Update(_float fTimeDelta)
 {
+	if (!m_bActive)
+		return;
+
 	__super::Late_Update(fTimeDelta);
 }
 
 HRESULT CSkeleton::Render()
 {
+	if (!m_bActive)
+		return S_OK;
+
 	return S_OK;
 }
 

@@ -309,10 +309,10 @@ HRESULT CLoader::Ready_Prototype_ModelCom_Static()
 		return E_FAIL;
 
 
-	///* For.Prototype_Component_Model_Slime_Medium */
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Slime_Medium"),
-	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Monster/Slime/Slime_Medium.fbx", PreTransformMatrix))))
-	//	return E_FAIL;
+	/* For.Prototype_Component_Model_Slime_Medium */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Slime_Medium"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Monster/Slime/Slime_Medium.fbx", PreTransformMatrix))))
+		return E_FAIL;
 
 	///* For.Prototype_Component_Model_Slime_Small */
 	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Slime_Small"),
@@ -342,7 +342,7 @@ HRESULT CLoader::Ready_Prototype_ModelCom_Static()
 	/* For.Prototype_Component_Model_LoungeMap */
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(270.f));
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_LoungeMap"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Map/Lounge/LoungeMap.fbx", PreTransformMatrix))))
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Map/Lounge/Lobby_NoGrass_Split.fbx", PreTransformMatrix))))
 		return E_FAIL;
 
 	///* For.Prototype_Component_Model_LoungeMap */

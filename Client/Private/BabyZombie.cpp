@@ -52,21 +52,33 @@ HRESULT CBabyZombie::Initialize(void* pArg)
 
 void CBabyZombie::Priority_Update(_float fTimeDelta)
 {
+	if (!m_bActive)
+		return;
+
 	__super::Priority_Update(fTimeDelta);
 }
 
 void CBabyZombie::Update(_float fTimeDelta)
 {
+	if (!m_bActive)
+		return;
+
 	__super::Update(fTimeDelta);
 }
 
 void CBabyZombie::Late_Update(_float fTimeDelta)
 {
+	if (!m_bActive)
+		return;
+
 	__super::Late_Update(fTimeDelta);
 }
 
 HRESULT CBabyZombie::Render()
 {
+	if (!m_bActive)
+		return S_OK;
+
 	return S_OK;
 }
 

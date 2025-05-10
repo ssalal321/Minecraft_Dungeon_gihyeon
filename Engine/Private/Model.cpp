@@ -289,7 +289,7 @@ HRESULT CModel::Ready_Bones(const aiNode* pAINode, _int iParentBoneIndex)
 
 	m_Bones.push_back(pBone);
 
-	_int iParentIndex = m_Bones.size() - 1;
+	_int iParentIndex = static_cast<_int>(m_Bones.size()) - 1;
 
 	for (size_t i = 0; i < pAINode->mNumChildren; i++)
 	{
