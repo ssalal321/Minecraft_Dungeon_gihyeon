@@ -54,18 +54,27 @@ HRESULT CGameObject::Initialize(void* pArg)
 
 void CGameObject::Priority_Update(_float fTimeDelta)
 {
+	if (!m_bActive)
+		return;
 }
 
 void CGameObject::Update(_float fTimeDelta)
 {
+	if (!m_bActive)
+		return;
 }
 
 void CGameObject::Late_Update(_float fTimeDelta)
 {
+	if (!m_bActive)
+		return;
 }
 
 HRESULT CGameObject::Render()
 {
+	if (!m_bActive)
+		return S_OK;
+
 	return S_OK;
 }
 

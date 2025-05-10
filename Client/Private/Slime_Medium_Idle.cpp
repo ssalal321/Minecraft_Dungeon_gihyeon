@@ -1,39 +1,39 @@
-#include "Slime_Large_Idle.h"
-#include "State_Slime_Large.h"
-#include "Slime_Large.h"
+#include "Slime_Medium_Idle.h"
+#include "State_Slime_Medium.h"
+#include "Slime_Medium.h"
 
 #include <random>
 
-CSlime_Large_Idle::CSlime_Large_Idle(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
-	: CState_Slime_Large(pActor, pGameObjectDesc, pDesc)
+CSlime_Medium_Idle::CSlime_Medium_Idle(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
+	: CState_Slime_Medium(pActor, pGameObjectDesc, pDesc)
 {
 }
 
-HRESULT CSlime_Large_Idle::Init_State()
+HRESULT CSlime_Medium_Idle::Init_State()
 {
 	__super::Init_State();
 
-	m_pSlime_Large = dynamic_cast<CSlime_Large*>(m_pActor);
-	if (nullptr == m_pSlime_Large)
+	m_pSlime_Medium = dynamic_cast<CSlime_Medium*>(m_pActor);
+	if (nullptr == m_pSlime_Medium)
 		return E_FAIL;
 
 	return S_OK;
 }
 
-void CSlime_Large_Idle::State_Enter()
+void CSlime_Medium_Idle::State_Enter()
 {
 	m_fLoopTime = 0.f;
 
-	m_pActorModelCom->Set_Animation(static_cast<_uint>(SLIME_LARGE_STATE::IDLE), true);
+	m_pActorModelCom->Set_Animation(static_cast<_uint>(SLIME_MEDIUM_STATE::IDLE), true);
 }
 
-void CSlime_Large_Idle::State_Priority_Update(_float fTimeDelta)
+void CSlime_Medium_Idle::State_Priority_Update(_float fTimeDelta)
 {
 	__super::State_Priority_Update(fTimeDelta);
 	
 }
 
-void CSlime_Large_Idle::State_Update(_float fTimeDelta)
+void CSlime_Medium_Idle::State_Update(_float fTimeDelta)
 {
 	__super::State_Update(fTimeDelta);
 
@@ -54,7 +54,7 @@ void CSlime_Large_Idle::State_Update(_float fTimeDelta)
 
 		if (dist(gen) < 0.7f) // 70% È®·ü
 		{
-			m_pSlime_Large->Change_State(Make_Slime_LargeState(SLIME_LARGE_STATE::WALK));
+			m_pSlime_Medium->Change_State(Make_Slime_MediumState(SLIME_MEDIUM_STATE::WALK));
 			return;
 		}
 		else
@@ -64,46 +64,46 @@ void CSlime_Large_Idle::State_Update(_float fTimeDelta)
 	}
 }
 
-void CSlime_Large_Idle::State_Late_Update(_float fTimeDelta)
+void CSlime_Medium_Idle::State_Late_Update(_float fTimeDelta)
 {
 	__super::State_Late_Update(fTimeDelta);
 }
 
-void CSlime_Large_Idle::State_Exit()
+void CSlime_Medium_Idle::State_Exit()
 {
 }
 
-void CSlime_Large_Idle::Collision_Enter(CCollider* pOther)
+void CSlime_Medium_Idle::Collision_Enter(CCollider* pOther)
 {
 	__super::Collision_Enter(pOther);
 
 	Change_State_To_Stun(pOther);
 }
 
-void CSlime_Large_Idle::Collision_Stay(CCollider* pOther)
+void CSlime_Medium_Idle::Collision_Stay(CCollider* pOther)
 {
 	__super::Collision_Stay(pOther);
 }
 
-void CSlime_Large_Idle::Collision_Exit(CCollider* pOther)
+void CSlime_Medium_Idle::Collision_Exit(CCollider* pOther)
 {
 	__super::Collision_Exit(pOther);
 }
 
-CState_Monster* CSlime_Large_Idle::Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
+CState_Monster* CSlime_Medium_Idle::Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
 {
-	CSlime_Large_Idle* pGameInstance = new CSlime_Large_Idle(pActor, pGameObjectDesc, pDesc);
+	CSlime_Medium_Idle* pGameInstance = new CSlime_Medium_Idle(pActor, pGameObjectDesc, pDesc);
 
 	if (FAILED(pGameInstance->Init_State()))
 	{
-		MSG_BOX("Failed to Create : CSlime_Large_Idle");
+		MSG_BOX("Failed to Create : CSlime_Medium_Idle");
 		Safe_Release(pGameInstance);
 	}
 
 	return pGameInstance;
 }
 
-void CSlime_Large_Idle::Free()
+void CSlime_Medium_Idle::Free()
 {
 	__super::Free();
 }

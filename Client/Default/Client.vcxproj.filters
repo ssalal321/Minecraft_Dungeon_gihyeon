@@ -244,6 +244,30 @@
     <Filter Include="02.GameObjects\Monster\BabyZombie\01. State\00. Body_BabyZombie">
       <UniqueIdentifier>{88dfeff6-640c-43ec-9814-1f1e3abffd06}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Medium">
+      <UniqueIdentifier>{c788c731-7759-4598-80d6-1846c1b70d6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Medium\00. Body">
+      <UniqueIdentifier>{5dc8c2fc-d513-47bc-83de-646a923e3b21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Medium\01. State">
+      <UniqueIdentifier>{fafafdbd-0a5b-4e13-bc8d-72ca0ec0f241}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Medium\01. State\Slime_Medium_Idle">
+      <UniqueIdentifier>{2d93dcf3-66d7-4851-8cdd-94b3faaa1ef3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Medium\01. State\Slime_Medium_Attack">
+      <UniqueIdentifier>{57efaaa9-4097-4b0d-babd-82259a5d5712}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Medium\01. State\Slime_Medium_Novelty">
+      <UniqueIdentifier>{1579c07d-a7c9-44ac-b141-a7a48f02ba35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Medium\01. State\Slime_Medium_Walk">
+      <UniqueIdentifier>{cd16d7a4-6dd4-46a2-b330-91724c16eeff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Medium\01. State\Slime_Medium_Stun">
+      <UniqueIdentifier>{675e2077-3d4c-4a43-930f-0d8742b33e95}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -489,6 +513,30 @@
     <ClInclude Include="..\Public\Slime_Large_Walk.h">
       <Filter>02.GameObjects\Monster\Slime\Slime_Large\01. State\Slime_Large_Walk</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Body_Slime_Medium.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Medium\00. Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Slime_Medium.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Medium</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Slime_Medium_Attack.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Medium\01. State\Slime_Medium_Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Slime_Medium_Idle.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Medium\01. State\Slime_Medium_Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Slime_Medium_Stun.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Medium\01. State\Slime_Medium_Stun</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Slime_Medium_Novelty.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Medium\01. State\Slime_Medium_Novelty</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Slime_Medium_Walk.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Medium\01. State\Slime_Medium_Walk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Slime_Medium.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Medium\01. State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -728,6 +776,30 @@
     </ClCompile>
     <ClCompile Include="..\Private\Slime_Large_Walk.cpp">
       <Filter>02.GameObjects\Monster\Slime\Slime_Large\01. State\Slime_Large_Walk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Slime_Medium.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Medium</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Body_Slime_Medium.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Medium\00. Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Slime_Medium_Attack.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Medium\01. State\Slime_Medium_Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Slime_Medium_Idle.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Medium\01. State\Slime_Medium_Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Slime_Medium_Stun.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Medium\01. State\Slime_Medium_Stun</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Slime_Medium_Novelty.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Medium\01. State\Slime_Medium_Novelty</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Slime_Medium_Walk.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Medium\01. State\Slime_Medium_Walk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Slime_Medium.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Medium\01. State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

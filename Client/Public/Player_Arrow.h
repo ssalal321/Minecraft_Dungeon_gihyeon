@@ -41,7 +41,6 @@ private:
 	GAMEOBJECT_DESC*	m_pArrowDesc = { nullptr };;
 	_bool				m_bColliderActivating = { false };
 	_bool				m_bCollided  = { false };
-	_bool				m_bActive	 = { false };
 	_float				m_fResetTimer   = { 0.f };
 	_int				m_iDealPoint = { 0 };
 

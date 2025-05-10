@@ -1,39 +1,39 @@
-#include "Slime_Large_Walk.h"
-#include "Slime_Large.h"
+#include "Slime_Medium_Walk.h"
+#include "Slime_Medium.h"
 
 #include <random>
 #include "Player.h"
 
-CSlime_Large_Walk::CSlime_Large_Walk(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
-	: CState_Slime_Large(pActor, pGameObjectDesc, pDesc)
+CSlime_Medium_Walk::CSlime_Medium_Walk(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
+	: CState_Slime_Medium(pActor, pGameObjectDesc, pDesc)
 {
 }
 
-HRESULT CSlime_Large_Walk::Init_State()
+HRESULT CSlime_Medium_Walk::Init_State()
 {
 	__super::Init_State();
 
-	m_pSlime_Large = dynamic_cast<CSlime_Large*>(m_pActor);
-	if (nullptr == m_pSlime_Large)
+	m_pSlime_Medium = dynamic_cast<CSlime_Medium*>(m_pActor);
+	if (nullptr == m_pSlime_Medium)
 		return E_FAIL;
 
 	return S_OK;
 }
 
-void CSlime_Large_Walk::State_Enter()
+void CSlime_Medium_Walk::State_Enter()
 {
     m_bLostPlayer = false;
 
     m_pTransformCom->Jump_Start(7.f);
-	m_pActorModelCom->Set_Animation(static_cast<_uint>(SLIME_LARGE_STATE::WALK), true, 0.7f);
+	m_pActorModelCom->Set_Animation(static_cast<_uint>(SLIME_MEDIUM_STATE::WALK), true, 0.7f);
 }
 
-void CSlime_Large_Walk::State_Priority_Update(_float fTimeDelta)
+void CSlime_Medium_Walk::State_Priority_Update(_float fTimeDelta)
 {
 	__super::State_Priority_Update(fTimeDelta);
 }
 
-void CSlime_Large_Walk::State_Update(_float fTimeDelta)
+void CSlime_Medium_Walk::State_Update(_float fTimeDelta)
 {
     __super::State_Update(fTimeDelta);
 
@@ -51,7 +51,7 @@ void CSlime_Large_Walk::State_Update(_float fTimeDelta)
 
     
     // 분기 1: 플레이어를 탐지하지 못한 경우 랜덤 방향으로 걷기
-    if (!m_pSlime_Large->Player_In_DetectRange())
+    if (!m_pSlime_Medium->Player_In_DetectRange())
     {
         if (!m_bLostPlayer)
         {
@@ -67,7 +67,7 @@ void CSlime_Large_Walk::State_Update(_float fTimeDelta)
 
         if (fMovedDist >= m_fDistance)
         {
-            m_pSlime_Large->Change_State(Make_Slime_LargeState(SLIME_LARGE_STATE::IDLE));
+            m_pSlime_Medium->Change_State(Make_Slime_MediumState(SLIME_MEDIUM_STATE::IDLE));
         }
     }
     else
@@ -76,7 +76,7 @@ void CSlime_Large_Walk::State_Update(_float fTimeDelta)
 
         m_bLostPlayer = false;
 
-        _float4 playerPos = m_pSlime_Large->Get_Player_Position(TEXT("GameObject_Player"), m_pGameInstance->Get_CurrentLevelIndex());
+        _float4 playerPos = m_pSlime_Medium->Get_Player_Position(TEXT("GameObject_Player"), m_pGameInstance->Get_CurrentLevelIndex());
         m_pTransformCom->LookAt(XMLoadFloat4(&playerPos));
 
     }
@@ -84,33 +84,33 @@ void CSlime_Large_Walk::State_Update(_float fTimeDelta)
 }
 
 
-void CSlime_Large_Walk::State_Late_Update(_float fTimeDelta)
+void CSlime_Medium_Walk::State_Late_Update(_float fTimeDelta)
 {
 	__super::State_Late_Update(fTimeDelta);
 }
 
-void CSlime_Large_Walk::State_Exit()
+void CSlime_Medium_Walk::State_Exit()
 {
 }
 
-void CSlime_Large_Walk::Collision_Enter(CCollider* pOther)
+void CSlime_Medium_Walk::Collision_Enter(CCollider* pOther)
 {
 	__super::Collision_Enter(pOther);
 
 	Change_State_To_Stun(pOther);
 }
 
-void CSlime_Large_Walk::Collision_Stay(CCollider* pOther)
+void CSlime_Medium_Walk::Collision_Stay(CCollider* pOther)
 {
 	__super::Collision_Stay(pOther);
 }
 
-void CSlime_Large_Walk::Collision_Exit(CCollider* pOther)
+void CSlime_Medium_Walk::Collision_Exit(CCollider* pOther)
 {
 	__super::Collision_Exit(pOther);
 }
 
-void CSlime_Large_Walk::Direction_Setting()
+void CSlime_Medium_Walk::Direction_Setting()
 {
     std::random_device random;
     std::mt19937 gen(random());
@@ -130,20 +130,20 @@ void CSlime_Large_Walk::Direction_Setting()
     m_vWalkStartPos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
 }
 
-CState_Monster* CSlime_Large_Walk::Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
+CState_Monster* CSlime_Medium_Walk::Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
 {
-	CSlime_Large_Walk* pGameInstance = new CSlime_Large_Walk(pActor, pGameObjectDesc, pDesc);
+	CSlime_Medium_Walk* pGameInstance = new CSlime_Medium_Walk(pActor, pGameObjectDesc, pDesc);
 
 	if (FAILED(pGameInstance->Init_State()))
 	{
-		MSG_BOX("Failed to Create : CSlime_Large_Walk");
+		MSG_BOX("Failed to Create : CSlime_Medium_Walk");
 		Safe_Release(pGameInstance);
 	}
 
 	return pGameInstance;
 }
 
-void CSlime_Large_Walk::Free()
+void CSlime_Medium_Walk::Free()
 {
 	__super::Free();
 }

@@ -25,7 +25,7 @@ void CSlime_Large_Walk::State_Enter()
     m_bLostPlayer = false;
 
     m_pTransformCom->Jump_Start(4.f);
-	m_pActorModelCom->Set_Animation(static_cast<_uint>(SLIME_LARGE_STATE::WALK), true, 0.2f);
+	m_pActorModelCom->Set_Animation(static_cast<_uint>(SLIME_LARGE_STATE::IDLE), true, 1.f);
 }
 
 void CSlime_Large_Walk::State_Priority_Update(_float fTimeDelta)

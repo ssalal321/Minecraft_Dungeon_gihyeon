@@ -37,14 +37,12 @@ HRESULT CMonster_Arrow::Initialize(void* pArg)
 
 void CMonster_Arrow::Priority_Update(_float fTimeDelta)
 {
-	if (false == m_bActive)
-		return;
+	__super::Priority_Update(fTimeDelta);
 }
 
 void CMonster_Arrow::Update(_float fTimeDelta)
 {
-	if (false == m_bActive)
-		return;
+	__super::Update(fTimeDelta);
 
 	if (m_bAttacking)
 	{
@@ -66,15 +64,14 @@ void CMonster_Arrow::Update(_float fTimeDelta)
 
 void CMonster_Arrow::Late_Update(_float fTimeDelta)
 {
-	if (false == m_bActive)
-		return;
+	__super::Late_Update(fTimeDelta);
 
 	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 }
 
 HRESULT CMonster_Arrow::Render()
 {
-	if (false == m_bActive)
+	if (__super::Render())
 		return S_OK;
 
 	if (FAILED(Bind_ShaderResources()))

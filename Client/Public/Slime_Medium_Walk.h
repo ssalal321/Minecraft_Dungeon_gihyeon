@@ -1,14 +1,14 @@
 #pragma once
 #include "Client_Defines.h"
-#include "State_Slime_Large.h"
+#include "State_Slime_Medium.h"
 
 BEGIN(Client)
 
-class CSlime_Large_Walk final: public CState_Slime_Large
+class CSlime_Medium_Walk final: public CState_Slime_Medium
 {
 private:
-    CSlime_Large_Walk(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
-	~CSlime_Large_Walk() override = default;
+    CSlime_Medium_Walk(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
+	~CSlime_Medium_Walk() override = default;
 
 public:
     HRESULT     Init_State()                                override;

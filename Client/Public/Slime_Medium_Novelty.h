@@ -1,13 +1,13 @@
 #pragma once
 #include "Client_Defines.h"
-#include "State_BabyZombie.h"
+#include "State_Slime_Medium.h"
 
 BEGIN(Client)
-class CBabyZombie_Novelty final: public CState_BabyZombie
+class CSlime_Medium_Novelty final: public CState_Slime_Medium
 {
 private:
-    CBabyZombie_Novelty(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
-	~CBabyZombie_Novelty() override = default;
+    CSlime_Medium_Novelty(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
+	~CSlime_Medium_Novelty() override = default;
 
 public:
     HRESULT     Init_State()                                override;

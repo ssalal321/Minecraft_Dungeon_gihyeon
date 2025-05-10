@@ -35,7 +35,6 @@ private:
 	CShader*		m_pShaderCom = { nullptr };
 	CCollider*		m_pColliderCom = { nullptr };
 
-	_bool			m_bActive = { false };
 	_bool			m_bActivated = { true };
 	_bool			m_bSceneChanged = { false };
 	_float4x4		m_IdentityWorldMatrix = {};

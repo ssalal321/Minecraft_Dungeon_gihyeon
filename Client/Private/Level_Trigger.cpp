@@ -32,28 +32,25 @@ HRESULT CLevel_Trigger::Initialize(void* pArg)
 
 void CLevel_Trigger::Priority_Update(_float fTimeDelta)
 {
-	if (false == m_bActive)
-		return;
+	__super::Priority_Update(fTimeDelta);
 }
 
 void CLevel_Trigger::Update(_float fTimeDelta)
 {
-	if (false == m_bActive)
-		return;
+	__super::Update(fTimeDelta);
 
 }
 
 void CLevel_Trigger::Late_Update(_float fTimeDelta)
 {
-	if (false == m_bActive)
-		return;
+	__super::Late_Update(fTimeDelta);
 
 	//m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 }
 
 HRESULT CLevel_Trigger::Render()
 {
-	if (false == m_bActive)
+	if (__super::Render())
 		return S_OK;
 
 	if (FAILED(Bind_ShaderResources()))

@@ -54,6 +54,8 @@ protected:
 	_wstring	m_strGameObjectTag = {};
 	map<const _wstring, class CComponent*>	m_Components;
 
+	_bool		m_bActive = { false };
+
 protected:
 	CComponent*		Add_Component(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag,
 								  const _wstring& strComponentTag, CComponent** ppOut, void* pArg = nullptr);

@@ -9,6 +9,7 @@
 #include "Body_Player.h"
 #include "Body_Skeleton.h"
 #include "Body_Slime_Large.h"
+#include "Body_Slime_Medium.h"
 #include "Body_Zombie.h"
 #include "InventoryBase.h"
 #include "InventoryGearSlot.h"
@@ -23,6 +24,7 @@
 #include "PlayerHP.h"
 #include "Skeleton.h"
 #include "Slime_Large.h"
+#include "Slime_Medium.h"
 #include "SoggySwampMap.h"
 #include "Weapon_Bow.h"
 #include "Weapon_Glaive.h"
@@ -439,10 +441,10 @@ HRESULT CLoader::Ready_Prototype_GameObject_Static()
 		CBody_Slime_Large::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	///* For.Prototype_GameObject_Body_Slime_Medium */
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Body_Slime_Medium"),
-	//	CBody_Slime_Medium::Create(m_pDevice, m_pContext))))
-	//	return E_FAIL;
+	/* For.Prototype_GameObject_Body_Slime_Medium */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Body_Slime_Medium"),
+		CBody_Slime_Medium::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	///* For.Prototype_GameObject_Body_Slime_Small */
 	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Body_Slime_Small"),
@@ -470,10 +472,10 @@ HRESULT CLoader::Ready_Prototype_GameObject_Static()
 		CSlime_Large::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	///* For.Prototype_GameObject_Slime_Large */
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Slime_Medium"),
-	//	CSlime_Medium::Create(m_pDevice, m_pContext))))
-	//	return E_FAIL;
+	/* For.Prototype_GameObject_Slime_Large */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Slime_Medium"),
+		CSlime_Medium::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	///* For.Prototype_GameObject_Slime_Large */
 	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Slime_Small"),

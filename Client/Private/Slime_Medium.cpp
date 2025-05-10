@@ -1,38 +1,38 @@
-#include "Slime_Large.h"
+#include "Slime_Medium.h"
 #include "GameInstance.h"
 
-#include "Body_Slime_Large.h"
+#include "Body_Slime_Medium.h"
 
 #include "FSM.h"
-#include "Slime_Large_Attack.h"
-#include "Slime_Large_Idle.h"
-#include "Slime_Large_Stun.h"
-#include "Slime_Large_Walk.h"
+#include "Slime_Medium_Attack.h"
+#include "Slime_Medium_Idle.h"
+#include "Slime_Medium_Stun.h"
+#include "Slime_Medium_Walk.h"
 
-_int  CSlime_Large::m_iSlime_LargeID = 0;
+_int  CSlime_Medium::m_iSlime_MediumID = 0;
 
-CSlime_Large::CSlime_Large(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CSlime_Medium::CSlime_Medium(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CMonster(pDevice, pContext)
 {
 }
 
-CSlime_Large::CSlime_Large(const CSlime_Large& Prototype)
+CSlime_Medium::CSlime_Medium(const CSlime_Medium& Prototype)
 	: CMonster(Prototype)
 {
 }
 
-HRESULT CSlime_Large::Initialize_Prototype()
+HRESULT CSlime_Medium::Initialize_Prototype()
 {
 	/* 외부 데이터베이스를 통해서 값을 채운다. */
 
 	return S_OK;
 }
 
-HRESULT CSlime_Large::Initialize(void* pArg)
+HRESULT CSlime_Medium::Initialize(void* pArg)
 {
-	const _wstring& Slime_LargeGameObjectTag = TEXT("GameObject_Slime_Large_") + to_wstring(m_iSlime_LargeID++);
+	const _wstring& Slime_MediumGameObjectTag = TEXT("GameObject_Slime_Medium_") + to_wstring(m_iSlime_MediumID++);
 
-	m_pMonsterInfo = new MONSTER_DESC(Slime_LargeGameObjectTag, 20, 20, 2, 3.f, 10.f, false, 90.f, 0.7f);
+	m_pMonsterInfo = new MONSTER_DESC(Slime_MediumGameObjectTag, 20, 20, 2, 3.f, 10.f, false, 90.f, 0.7f);
 
 	if (FAILED(__super::Initialize(m_pMonsterInfo)))
 		return E_FAIL;
@@ -49,39 +49,39 @@ HRESULT CSlime_Large::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CSlime_Large::Priority_Update(_float fTimeDelta)
+void CSlime_Medium::Priority_Update(_float fTimeDelta)
 {
 	__super::Priority_Update(fTimeDelta);
 }
 
-void CSlime_Large::Update(_float fTimeDelta)
+void CSlime_Medium::Update(_float fTimeDelta)
 {
 	__super::Update(fTimeDelta);
 }
 
-void CSlime_Large::Late_Update(_float fTimeDelta)
+void CSlime_Medium::Late_Update(_float fTimeDelta)
 {
 	__super::Late_Update(fTimeDelta);
 }
 
-HRESULT CSlime_Large::Render()
+HRESULT CSlime_Medium::Render()
 {
 	return S_OK;
 }
 
 
-HRESULT CSlime_Large::Ready_PartObjects()
+HRESULT CSlime_Medium::Ready_PartObjects()
 {
 	/* 몸통을 추가한다. */
-	CBody_Slime_Large::BODY_SLIME_LARGE_DESC		BodyDesc{};
+	CBody_Slime_Medium::BODY_SLIME_MEDIUM_DESC		BodyDesc{};
 
-	BodyDesc.strGameObjectTag = TEXT("GameObject_Body_Slime_Large");
+	BodyDesc.strGameObjectTag = TEXT("GameObject_Body_Slime_Medium");
 	BodyDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	BodyDesc.pState = &m_iState;
 	BodyDesc.pContainerObject = this;
 	BodyDesc.pCollisionActivating = &m_bAttacking;
 
-	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Body_Slime_Large"), TEXT("Part_Body"), &BodyDesc)))
+	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Body_Slime_Medium"), TEXT("Part_Body"), &BodyDesc)))
 		return E_FAIL;
 
 	
@@ -90,38 +90,38 @@ HRESULT CSlime_Large::Ready_PartObjects()
 	return S_OK;
 }
 
-HRESULT CSlime_Large::Ready_States()
+HRESULT CSlime_Medium::Ready_States()
 {
-	m_StatesVec.resize(static_cast<_uint>(SLIME_LARGE_STATE::STATE_END));	// state vector 자리 예약
+	m_StatesVec.resize(static_cast<_uint>(SLIME_MEDIUM_STATE::STATE_END));	// state vector 자리 예약
 
-	CModel* pSlime_LargeModel = dynamic_cast<CModel*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Model")));
+	CModel* pSlime_MediumModel = dynamic_cast<CModel*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Model")));
 	CCollider* pCollider = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_Sphere")));
 
 	CState_Monster::STATEMONSTER_DESC	pStateMonsterDesc = {};
 	pStateMonsterDesc.pColliderCom		= pCollider;
-	pStateMonsterDesc.pActorModelCom	= pSlime_LargeModel;
+	pStateMonsterDesc.pActorModelCom	= pSlime_MediumModel;
 	pStateMonsterDesc.pNavigationCom	= m_pNavigationCom;
 	pStateMonsterDesc.pTransformCom		= m_pTransformCom;
 
-	m_StatesVec[static_cast<_uint>(SLIME_LARGE_STATE::IDLE)]	= CSlime_Large_Idle::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
-	m_StatesVec[static_cast<_uint>(SLIME_LARGE_STATE::WALK)]	= CSlime_Large_Walk::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
-	m_StatesVec[static_cast<_uint>(SLIME_LARGE_STATE::ATTACK)]	= CSlime_Large_Attack::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
-	m_StatesVec[static_cast<_uint>(SLIME_LARGE_STATE::STUN)]	= CSlime_Large_Stun::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
+	m_StatesVec[static_cast<_uint>(SLIME_MEDIUM_STATE::IDLE)]	= CSlime_Medium_Idle::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
+	m_StatesVec[static_cast<_uint>(SLIME_MEDIUM_STATE::WALK)]	= CSlime_Medium_Walk::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
+	m_StatesVec[static_cast<_uint>(SLIME_MEDIUM_STATE::ATTACK)]	= CSlime_Medium_Attack::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
+	m_StatesVec[static_cast<_uint>(SLIME_MEDIUM_STATE::STUN)]	= CSlime_Medium_Stun::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
 
 	m_pMonsterFSM = FSM::Create();
 
-	m_pMonsterFSM->Init_State(m_StatesVec[static_cast<_uint>(SLIME_LARGE_STATE::IDLE)]);
+	m_pMonsterFSM->Init_State(m_StatesVec[static_cast<_uint>(SLIME_MEDIUM_STATE::IDLE)]);
 
 	return S_OK;
 }
 
-CSlime_Large* CSlime_Large::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CSlime_Medium* CSlime_Medium::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	CSlime_Large* pGameInstance = new CSlime_Large(pDevice, pContext);
+	CSlime_Medium* pGameInstance = new CSlime_Medium(pDevice, pContext);
 
 	if (FAILED(pGameInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Create : CSlime_Large");
+		MSG_BOX("Failed to Create : CSlime_Medium");
 		Safe_Release(pGameInstance);
 	}
 
@@ -129,20 +129,20 @@ CSlime_Large* CSlime_Large::Create(ID3D11Device* pDevice, ID3D11DeviceContext* p
 }
 
 
-CGameObject* CSlime_Large::Clone(void* pArg)
+CGameObject* CSlime_Medium::Clone(void* pArg)
 {
-	CSlime_Large* pGameInstance = new CSlime_Large(*this);
+	CSlime_Medium* pGameInstance = new CSlime_Medium(*this);
 
 	if (FAILED(pGameInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Clone : CSlime_Large");
+		MSG_BOX("Failed to Clone : CSlime_Medium");
 		Safe_Release(pGameInstance);
 	}
 
 	return pGameInstance;
 }
 
-void CSlime_Large::Free()
+void CSlime_Medium::Free()
 {
 	__super::Free();
 

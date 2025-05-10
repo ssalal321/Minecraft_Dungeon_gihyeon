@@ -7,10 +7,10 @@
 BEGIN(Client)
 class CState;
 
-class CSlime_Large final : public CMonster
+class CSlime_Medium final : public CMonster
 {
 public:
-	/*struct SLIME_LARGE_DESC : public GAMEOBJECT_DESC
+	/*struct SLIME_MEDIUM_DESC : public GAMEOBJECT_DESC
 	{
 		_int     uiCurrentHP;
 		_int     uiMaxHP;
@@ -18,20 +18,20 @@ public:
 		_float   fAttackableRange;
 		_bool    bStunned;
 
-		SLIME_LARGE_DESC(const _tchar* GameObjectTag, _int currentHP, _int maxHP, _int attackPoint,
+		SLIME_MEDIUM_DESC(const _tchar* GameObjectTag, _int currentHP, _int maxHP, _int attackPoint,
 			_float effectiveRange, _bool stunned = false,
 			_float rotationPerSec = 0.f, _float speedPerSec = 0.f)
 			: GAMEOBJECT_DESC(GameObjectTag, rotationPerSec, speedPerSec), uiCurrentHP(currentHP), uiMaxHP(maxHP), iArrowDealPoint(attackPoint),
 			fAttackableRange(effectiveRange), bStunned(stunned) {
 		}
 
-		~SLIME_LARGE_DESC() override = default;
+		~SLIME_MEDIUM_DESC() override = default;
 	};*/
 
 private:
-	CSlime_Large(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CSlime_Large(const CSlime_Large& Prototype);
-	~CSlime_Large() override = default;
+	CSlime_Medium(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CSlime_Medium(const CSlime_Medium& Prototype);
+	~CSlime_Medium() override = default;
 
 public:
 	HRESULT		Initialize_Prototype()				override;
@@ -42,16 +42,16 @@ public:
 	HRESULT		Render()							override;
 	
 private:
-	_uint			m_iState = { static_cast<_uint>(SLIME_LARGE_STATE::STATE_END) };
+	_uint			m_iState = { static_cast<_uint>(SLIME_MEDIUM_STATE::STATE_END) };
 
-	static _int		m_iSlime_LargeID;
+	static _int		m_iSlime_MediumID;
 
 private:
 	HRESULT		Ready_PartObjects()  override;
 	HRESULT		Ready_States()		 override;
 
 public:
-	static CSlime_Large* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CSlime_Medium* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CGameObject*	Clone(void* pArg)	override;
 	void	Free()						override;
 };
