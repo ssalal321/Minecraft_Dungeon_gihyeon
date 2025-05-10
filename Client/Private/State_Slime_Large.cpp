@@ -63,6 +63,9 @@ _bool CState_Slime_Large::Change_State_To_Attack()
 
 	if (lengthToPlayer < m_pMonsterInfo->fAttackableRange)
 	{
+		m_pNavigationCom->SetUp_On_Navigation(m_pTransformCom);
+		m_pTransformCom->Set_Is_Jumping(false);
+
 		m_pSlime_Large->Change_State(Make_Slime_LargeState(SLIME_LARGE_STATE::ATTACK));
 		return true;
 	}

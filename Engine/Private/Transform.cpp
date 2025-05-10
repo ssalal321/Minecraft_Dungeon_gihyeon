@@ -156,12 +156,11 @@ void CTransform::Jump(_float fTimeDelta, CNavigation* pNavigation)
 }
 
 
-
 void CTransform::Turn(_fvector vAxis, _float fTimeDelta)
 {
 	_vector		vRight = Get_State(STATE_RIGHT);
-	_vector		vUp = Get_State(STATE_UP);
-	_vector		vLook = Get_State(STATE_LOOK);
+	_vector		vUp    = Get_State(STATE_UP);
+	_vector		vLook  = Get_State(STATE_LOOK);
 
 	_matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, m_fRotationPerSec * fTimeDelta);
 
@@ -171,6 +170,42 @@ void CTransform::Turn(_fvector vAxis, _float fTimeDelta)
 	Set_State(STATE_UP, XMVector3TransformNormal(vUp, RotationMatrix));
 	Set_State(STATE_LOOK, XMVector3TransformNormal(vLook, RotationMatrix));
 }
+
+void CTransform::Turn_Around_Offset(_fvector vAxis, _float fRadian, _float fOffsetDistance)
+{
+	// 1. 현재 상태 가져오기
+	_vector vRight = Get_State(STATE_RIGHT);
+	_vector vUp = Get_State(STATE_UP);
+	_vector vLook = Get_State(STATE_LOOK);
+	_vector vPosition = Get_State(STATE_POSITION);
+
+	// 2. 오프셋 계산 (바라보는 방향 기준 앞쪽)
+	_vector vOffset = XMVector3Normalize(vLook) * fOffsetDistance;
+
+	// 3. 위치를 임시로 앞쪽으로 이동
+	_vector vTempPos = vPosition + vOffset;
+
+	// 4. 회전 행렬 생성
+	_matrix RotationMatrix = XMMatrixRotationAxis(vAxis, fRadian);
+
+	// 5. 방향 벡터 회전
+	vRight = XMVector3TransformNormal(vRight, RotationMatrix);
+	vUp = XMVector3TransformNormal(vUp, RotationMatrix);
+	vLook = XMVector3TransformNormal(vLook, RotationMatrix);
+
+	// 6. 위치 회전 (오프셋 위치 기준 회전된 위치로 계산)
+	vTempPos = XMVector3TransformCoord(vTempPos, RotationMatrix);
+
+	// 7. 최종 위치 = 회전된 오프셋 위치 - 오프셋
+	vPosition = vTempPos - XMVector3Normalize(vLook) * fOffsetDistance;
+
+	// 8. 저장
+	Set_State(STATE_RIGHT, vRight);
+	Set_State(STATE_UP, vUp);
+	Set_State(STATE_LOOK, vLook);
+	Set_State(STATE_POSITION, vPosition);
+}
+
 
 void CTransform::Rotation(_fvector vAxis, _float fRadian)
 {

@@ -343,11 +343,11 @@ HRESULT CLoader::Ready_Prototype_ModelCom_Static()
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Map/Lounge/LoungeMap.fbx", PreTransformMatrix))))
 		return E_FAIL;
 
-	/* For.Prototype_Component_Model_LoungeMap */
-	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(270.f));
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_SoggySwampMap"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Map/SoggySwamp/SoggySwamp.fbx", PreTransformMatrix))))
-		return E_FAIL;
+	///* For.Prototype_Component_Model_LoungeMap */
+	//PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(270.f));
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_SoggySwampMap"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Map/SoggySwamp/SoggySwamp.fbx", PreTransformMatrix))))
+	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -515,10 +515,10 @@ HRESULT CLoader::Ready_Prototype_GameObject_Static()
 		CLoungeMap::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_SoggySwampMap */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_SoggySwampMap"),
-		CSoggySwampMap::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
+	///* For.Prototype_GameObject_SoggySwampMap */
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_SoggySwampMap"),
+	//	CSoggySwampMap::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
 
 	return S_OK;
 }

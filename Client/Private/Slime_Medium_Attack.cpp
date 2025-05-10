@@ -25,10 +25,7 @@ void CSlime_Large_Attack::State_Enter()
     m_fCoolTime = 0.f;
     m_bHitMode_Activated = false;
 
-    _float4  playerPos = m_pSlime_Large->Get_Player_Position(TEXT("GameObject_Player"), m_pGameInstance->Get_CurrentLevelIndex());
-    m_pTransformCom->LookAt(XMLoadFloat4(&playerPos));
-
-	m_pActorModelCom->Set_Animation(static_cast<_uint>(SLIME_LARGE_STATE::ATTACK), false, 1.2f);
+	m_pActorModelCom->Set_Animation(static_cast<_uint>(SLIME_LARGE_STATE::ATTACK), false, 1.f);
 }
 
 void CSlime_Large_Attack::State_Priority_Update(_float fTimeDelta)
@@ -57,20 +54,6 @@ void CSlime_Large_Attack::State_Update(_float fTimeDelta)
         m_pSlime_Large->Set_Attacking(false);
     }
 
-    if (fAnimCurTrackPos >= ATTACKSTART && fAnimCurTrackPos < 7.5f)
-    {
-        _vector vRight = m_pTransformCom->Get_State(CTransform::STATE_RIGHT);
-        m_pTransformCom->Turn_Around_Offset(vRight, 0.06f, 1.0f); // 빠른 회전
-    }
-    else if (fAnimCurTrackPos >= 7.5f && fAnimCurTrackPos < ATTACKFINISH + 2.5f)
-    {
-        _vector vRight = m_pTransformCom->Get_State(CTransform::STATE_RIGHT);
-        m_pTransformCom->Turn_Around_Offset(vRight, -0.06f, 1.0f); // 천천히 복원
-    }
-
-
-
-
     // 애니메이션 끝나면 상태 전환
     if (m_bAnimationFinished && !m_bAttackFinished)
     {
@@ -79,11 +62,14 @@ void CSlime_Large_Attack::State_Update(_float fTimeDelta)
         m_fCoolTime = 0.f;
     }
 
-    if (m_fCoolTime > 1.2f)
+    if (m_fCoolTime > 1.5f)
     {
-        m_pSlime_Large->Change_State(Make_Slime_LargeState(SLIME_LARGE_STATE::WALK));
-    	return;
+        if (Change_State_To_Walk())
+            return;
     }
+
+    _float4  playerPos = m_pSlime_Large->Get_Player_Position(TEXT("GameObject_Player"), m_pGameInstance->Get_CurrentLevelIndex());
+    m_pTransformCom->LookAt(XMLoadFloat4(&playerPos));
 }
 
 
