@@ -53,21 +53,33 @@ HRESULT CZombie::Initialize(void* pArg)
 
 void CZombie::Priority_Update(_float fTimeDelta)
 {
+	if (!m_bActive)
+		return;
+
 	__super::Priority_Update(fTimeDelta);
 }
 
 void CZombie::Update(_float fTimeDelta)
 {
+	if (!m_bActive)
+		return;
+
 	__super::Update(fTimeDelta);
 }
 
 void CZombie::Late_Update(_float fTimeDelta)
 {
+	if (!m_bActive)
+		return;
+
 	__super::Late_Update(fTimeDelta);
 }
 
 HRESULT CZombie::Render()
 {
+	if (!m_bActive)
+		return S_OK;
+
 	return S_OK;
 }
 

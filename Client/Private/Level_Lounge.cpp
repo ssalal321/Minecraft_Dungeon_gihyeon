@@ -1,5 +1,6 @@
 #include "Level_Lounge.h"
 
+#include <iostream>
 #include <UI_Image.h>
 
 #include "GameInstance.h"
@@ -105,7 +106,7 @@ void CLevel_Lounge::Update(_float fTimeDelta)
 
     // 1. 현재 가장 가까운 Monster collider 찾기
     CCollider* pClosestCollider = Get_Closest_Collider(fWorldMousePos, fWorldMouseRay);
-    if (nullptr == pClosestCollider)  // 아래에 다른 코드 없기도 하고 나중에 함수로 뺄 생각 하고 넣은 것
+    if (nullptr == pClosestCollider || false == pClosestCollider->Get_ColliderActive())  // 아래에 다른 코드 없기도 하고 나중에 함수로 뺄 생각 하고 넣은 것
         return;
 
     CMonster* pPrevMonster = m_pPickedMonster;

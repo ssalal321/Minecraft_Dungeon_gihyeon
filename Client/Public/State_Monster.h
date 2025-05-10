@@ -40,8 +40,6 @@ protected:
     STATEMONSTER_DESC*          m_pStateMonsterDesc = { nullptr };
     CCollider*                  m_pColliderCom = { nullptr };
 
-    CCollider*  m_pColliderSphereCom = { nullptr };
-
     _bool	m_bAnimationFinished = { false };
 
 public:

@@ -37,12 +37,14 @@ HRESULT CPlayer_Arrow::Initialize(void* pArg)
 
 void CPlayer_Arrow::Priority_Update(_float fTimeDelta)
 {
-	__super::Priority_Update(fTimeDelta);
+	if (!m_bActive)
+		return;
 }
 
 void CPlayer_Arrow::Update(_float fTimeDelta)
 {
-	__super::Update(fTimeDelta);
+	if (!m_bActive)
+		return;
 
 	if (m_bColliderActivating)
 	{
@@ -64,14 +66,15 @@ void CPlayer_Arrow::Update(_float fTimeDelta)
 
 void CPlayer_Arrow::Late_Update(_float fTimeDelta)
 {
-	__super::Late_Update(fTimeDelta);
+	if (!m_bActive)
+		return;
 
 	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 }
 
 HRESULT CPlayer_Arrow::Render()
 {
-	if (__super::Render())
+	if (!m_bActive)
 		return S_OK;
 
 	if (FAILED(Bind_ShaderResources()))

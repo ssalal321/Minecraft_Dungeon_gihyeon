@@ -32,7 +32,7 @@ HRESULT CSlime_Medium::Initialize(void* pArg)
 {
 	const _wstring& Slime_MediumGameObjectTag = TEXT("GameObject_Slime_Medium_") + to_wstring(m_iSlime_MediumID++);
 
-	m_pMonsterInfo = new MONSTER_DESC(Slime_MediumGameObjectTag, 20, 20, 2, 3.f, 10.f, false, 90.f, 0.7f);
+	m_pMonsterInfo = new MONSTER_DESC(Slime_MediumGameObjectTag, 30, 30, 3, 2.5f, 6.f, false, 90.f, 2.f);
 
 	if (FAILED(__super::Initialize(m_pMonsterInfo)))
 		return E_FAIL;
@@ -43,29 +43,43 @@ HRESULT CSlime_Medium::Initialize(void* pArg)
 	if (FAILED(Ready_States()))
 		return E_FAIL;
 
+	SLIME_MEDIUM_DESC* pDesc = static_cast<SLIME_MEDIUM_DESC*>(pArg);
+
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
-								XMVectorSet(3.f, 0.f, -7.f, 1.f));
+								XMLoadFloat4(&pDesc->slimeMediumPosition));
 
 	return S_OK;
 }
 
 void CSlime_Medium::Priority_Update(_float fTimeDelta)
 {
+	if (!m_bActive)
+		return;
+
 	__super::Priority_Update(fTimeDelta);
 }
 
 void CSlime_Medium::Update(_float fTimeDelta)
 {
+	if (!m_bActive)
+		return;
+
 	__super::Update(fTimeDelta);
 }
 
 void CSlime_Medium::Late_Update(_float fTimeDelta)
 {
+	if (!m_bActive)
+		return;
+
 	__super::Late_Update(fTimeDelta);
 }
 
 HRESULT CSlime_Medium::Render()
 {
+	if (!m_bActive)
+		return S_OK;
+
 	return S_OK;
 }
 

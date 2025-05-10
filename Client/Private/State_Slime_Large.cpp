@@ -3,6 +3,7 @@
 
 #include "Player_Arrow.h"
 #include "Item.h"
+#include "Slime_Medium.h"
 
 
 CState_Slime_Large::CState_Slime_Large(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
@@ -32,7 +33,31 @@ void CState_Slime_Large::State_Update(_float fTimeDelta)
 {
 	__super::State_Update(fTimeDelta);
 
-	// 공격 받았을 때 스턴 걸리기
+	if (false == m_pActor->Get_GameObject_Active())
+	{
+		_vector vPosition = m_pTransformCom->Get_State(CTransform::STATE_POSITION);  // 죽은 위치
+
+		
+		_vector vRight = m_pTransformCom->Get_State(CTransform::STATE_RIGHT);
+		vRight = XMVector3Normalize(vRight);  // 정규화
+		_vector vOffset = vRight * 0.9f;      // 0.9f 만큼 양옆으로 떨어지게
+
+		// Slime_Medium 생성할 두 위치 계산
+		_vector  vLeftPos  = vPosition - vOffset;
+		_vector  vRightPos = vPosition + vOffset;
+
+		// 4. float4로 변환해서 desc에 넣기
+		CSlime_Medium::SLIME_MEDIUM_DESC  leftDesc{};
+		XMStoreFloat4(&leftDesc.slimeMediumPosition, vLeftPos);
+
+		m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Slime_Medium"), m_pGameInstance->Get_CurrentLevelIndex(), TEXT("Layer_Monster"), &leftDesc);
+
+		CSlime_Medium::SLIME_MEDIUM_DESC  rightDesc{};
+		XMStoreFloat4(&rightDesc.slimeMediumPosition, vRightPos);
+
+		m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Slime_Medium"), m_pGameInstance->Get_CurrentLevelIndex(), TEXT("Layer_Monster"), &rightDesc);
+	}
+
 }
 
 void CState_Slime_Large::State_Late_Update(_float fTimeDelta)
