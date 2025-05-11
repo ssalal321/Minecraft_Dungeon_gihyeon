@@ -21,6 +21,8 @@ public:
 
 	const _float3& Get_PlaneNormal() { return m_vPlaneNormal; }
 
+	const _vector&  Get_EdgeNormal(_int iIndex) { return XMVector3Normalize(XMLoadFloat3(&m_vNormals[iIndex])); }
+
 	std::string		Get_CellKey() { return m_CellKey; }
 
 	void	SetUp_Neighbor(LINE eLine, CCell* pNeighbor) {
@@ -31,7 +33,7 @@ public:
 	HRESULT		Initialize(const _float3* pPoints, _int iIndex, std::string cellKey);
 	HRESULT		Render();
 
-	_bool		Is_In(_fvector vPosition, _int* pNeighborIndex);
+	_bool		Is_In(_fvector vPosition, _int* pNeighborIndex, _int* pHitEdgeIndex);
 	_bool		Compare_Points(_fvector vSourPoint, _fvector vDestPoint);
 
 	_float		Compute_Height(_fvector vPosition);

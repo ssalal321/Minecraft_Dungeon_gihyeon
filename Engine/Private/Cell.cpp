@@ -59,7 +59,7 @@ HRESULT CCell::Render()
     return m_pVIBuffer->Render();    
 }
 
-_bool CCell::Is_In(_fvector vPosition, _int* pNeighborIndex)
+_bool CCell::Is_In(_fvector vPosition, _int* pNeighborIndex, _int* pHitEdgeIndex)
 {
     for (size_t i = 0; i < LINE_END; i++)
     {
@@ -68,8 +68,11 @@ _bool CCell::Is_In(_fvector vPosition, _int* pNeighborIndex)
         if (0 < XMVectorGetX(XMVector3Dot(XMVector3Normalize(vDir), XMLoadFloat3(&m_vNormals[i]))))
         {
             *pNeighborIndex = m_iNeighborCellIndices[i];
+            if (pHitEdgeIndex)
+                *pHitEdgeIndex = static_cast<_int>(i);
+
             return false;
-        }    
+        }
     }
     return true;
 }
