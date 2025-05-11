@@ -23,6 +23,7 @@ public:
 	void	Set_ColliderTag(const _wstring& strColliderTag) { m_strColliderTag = strColliderTag; }
 	void	Set_ColliderActive(_bool ColliderActive) { m_bColliderActive = ColliderActive; }
 	void	Set_MouseCollider(_bool ColliderForMouse) { m_bMouseCollider = ColliderForMouse; }
+	void	Set_AllowSameGroupCollision(_bool bAllowCollision) { m_bAllowInGroupCollision = bAllowCollision; }
 
 	const _wstring&		Get_ColliderTag() { return m_strColliderTag; }
 	COLLIDER			Get_ColliderType() const { return m_eColliderType; }
@@ -31,6 +32,7 @@ public:
 	_bool				Get_MouseCollider() const { return m_bMouseCollider; }
 	_bool				Get_Other_Collision_Activated() const { return *m_bCollisionActivated; }
 	CGameObject*		Get_OwnerObject() const { return m_pOwnerGameObject; }
+	_bool				Get_AllowSameGroupCollision() const { return m_bAllowInGroupCollision; }
 
 public:
 	virtual HRESULT Initialize_Prototype(COLLIDER eColliderType);
@@ -63,6 +65,7 @@ private:
 	_float4x4*			m_CombinedWorldMatrix = { nullptr };
 	_bool*				m_bCollisionActivated = { nullptr };
 
+	_bool				m_bAllowInGroupCollision = { false };
 
 #ifdef _DEBUG
 	PrimitiveBatch<VertexPositionColor>*	m_pBatch = { nullptr };

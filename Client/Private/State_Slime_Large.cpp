@@ -71,10 +71,12 @@ void CState_Slime_Large::State_Exit()
 
 void CState_Slime_Large::Collision_Enter(CCollider* pOther)
 {
+	__super::Collision_Enter(pOther);
 }
 
 void CState_Slime_Large::Collision_Stay(CCollider* pOther)
 {
+	__super::Collision_Stay(pOther);
 }
 
 void CState_Slime_Large::Collision_Exit(CCollider* pOther)

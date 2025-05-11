@@ -60,12 +60,12 @@ void CSlime_Large_Attack::State_Update(_float fTimeDelta)
     if (fAnimCurTrackPos >= ATTACKSTART && fAnimCurTrackPos < 7.5f)
     {
         _vector vRight = m_pTransformCom->Get_State(CTransform::STATE_RIGHT);
-        m_pTransformCom->Turn_Around_Offset(vRight, 0.06f, 1.0f); // 빠른 회전
+        m_pTransformCom->Turn_Around_Offset(vRight, 0.06f, 1.5f); // 빠른 회전
     }
     else if (fAnimCurTrackPos >= 7.5f && fAnimCurTrackPos < ATTACKFINISH + 2.5f)
     {
         _vector vRight = m_pTransformCom->Get_State(CTransform::STATE_RIGHT);
-        m_pTransformCom->Turn_Around_Offset(vRight, -0.06f, 1.0f); // 천천히 복원
+        m_pTransformCom->Turn_Around_Offset(vRight, -0.03f, 1.5f); // 천천히 복원
     }
 
 

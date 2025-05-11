@@ -57,15 +57,29 @@ void CTransform::SetUp_Scale(_float fScaleX, _float fScaleY, _float fScaleZ)
 
 void CTransform::Go_Straight(_float fTimeDelta, CNavigation* pNavigation, _float fSpeedFactor)
 {
-	_vector		vLook = Get_State(STATE::STATE_LOOK);
-	/*vLook = XMVectorSetY(vLook, 0.f);
-	vLook = XMVector3Normalize(vLook);*/
-	_vector		vPosition = Get_State(STATE::STATE_POSITION);
+	_vector  vLook			 = Get_State(STATE_LOOK);
+	_vector  vPrevPosition	 = Get_State(STATE_POSITION);
+	_vector  vMovingPosition = vPrevPosition + XMVector3Normalize(vLook) * m_fSpeedPerSec * fTimeDelta * fSpeedFactor;
 
-	vPosition += XMVector3Normalize(vLook) * m_fSpeedPerSec * fTimeDelta * fSpeedFactor;
+	_vector  vSlidingPosition = vPrevPosition;
 
-	if (nullptr == pNavigation || true == pNavigation->Can_Move(vPosition))
-		Set_State(STATE_POSITION, vPosition);
+	if (nullptr != pNavigation)
+	{
+		if (pNavigation->Can_Move(vMovingPosition))
+		{
+			Set_State(STATE_POSITION, vMovingPosition);
+			std::cerr << "이동 중" << std::endl;
+		}
+		else if (pNavigation->Can_Slide(vPrevPosition, vMovingPosition, vSlidingPosition))
+		{
+			Set_State(STATE_POSITION, vSlidingPosition);
+			std::cerr << "슬라이딩" << std::endl;
+		}
+	}
+	else
+	{
+		Set_State(STATE_POSITION, vMovingPosition);
+	}
 }
 
 
@@ -133,7 +147,7 @@ void CTransform::Jump(_float fTimeDelta, CNavigation* pNavigation)
     position.y = m_fCurrentY;
     vPosition = XMLoadFloat4(&position);
 
-	std::cerr << "[높이 :" << position.y << "]" << std::endl;
+	//std::cerr << "[높이 :" << position.y << "]" << std::endl;
 
 	Set_State(STATE_POSITION, vPosition);
 

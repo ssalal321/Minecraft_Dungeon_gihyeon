@@ -124,6 +124,30 @@ HRESULT CContainerObject::Delete_PartObject(const _wstring& strPartObjectTag, _b
 }
 
 
+void CContainerObject::Apply_PushBack(const _float4& vFromPosition, _float fForce, CNavigation* pNavigation)
+{
+	_vector vMyPos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+	_vector vPushDir = vMyPos - XMLoadFloat4(&vFromPosition);
+
+	if (XMVector3Equal(vPushDir, XMVectorZero()))
+	{
+		_float randX = static_cast<_float>((rand() % 200 - 100) / 100.0f); // -1.0f ~ 1.0f
+		_float randZ = static_cast<_float>((rand() % 200 - 100) / 100.0f);
+		vPushDir = XMVectorSet(randX, 0.f, randZ, 0.f);
+		vPushDir = XMVector3Normalize(vPushDir);
+	}
+
+	vPushDir = XMVector3Normalize(vPushDir);
+
+	_vector vNewPos = vMyPos + vPushDir * fForce;
+
+	// NavMesh 위에 있을 경우만 이동
+	if (pNavigation == nullptr || pNavigation->Can_Move(vNewPos))
+		m_pTransformCom->Set_State(CTransform::STATE_POSITION, vNewPos);
+}
+
+
+
 void CContainerObject::Free()
 {
 	__super::Free();

@@ -25,7 +25,7 @@ void CSlime_Medium_Attack::State_Enter()
     m_fCoolTime = 0.f;
     m_bHitMode_Activated = false;
 
-	m_pActorModelCom->Set_Animation(static_cast<_uint>(SLIME_MEDIUM_STATE::ATTACK), false, 1.f);
+	m_pActorModelCom->Set_Animation(static_cast<_uint>(SLIME_MEDIUM_STATE::ATTACK), false, 0.6f);
 }
 
 void CSlime_Medium_Attack::State_Priority_Update(_float fTimeDelta)
@@ -62,10 +62,10 @@ void CSlime_Medium_Attack::State_Update(_float fTimeDelta)
         m_fCoolTime = 0.f;
     }
 
-    if (m_fCoolTime > 0.5f)
+    if (m_fCoolTime > 1.2f)
     {
-        if (Change_State_To_Walk())
-            return;
+        m_pSlime_Medium->Change_State(Make_Slime_MediumState(SLIME_MEDIUM_STATE::WALK));
+        return;
     }
 
     _float4  playerPos = m_pSlime_Medium->Get_Player_Position(TEXT("GameObject_Player"), m_pGameInstance->Get_CurrentLevelIndex());

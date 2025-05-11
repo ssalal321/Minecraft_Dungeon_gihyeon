@@ -19,6 +19,7 @@ public:
 	HRESULT		Initialize_Prototype()		override;
 	HRESULT		Initialize(void* pArg)		override;
 	void		Update(const _float4x4* pWorldMatrix);
+	
 
 	void	SetUp_CurrentCellIndex(_int iCellIndex)
 	{
@@ -36,7 +37,8 @@ public:
 	void		Resave_Files();
 	void		Sort_Clockwise(const _float3* pInPoints, _float3* pOutSorted);
 
-	_bool		Can_Move(_fvector vWorldPos/*, _float& fOutY*/);
+	_bool		Can_Move(_fvector vMovingWorldPos);
+	_bool		Can_Slide(_fvector vPrevWorldPos, _fvector vMovingWorldPos, _vector& vSlidingPosition);
 	HRESULT		SetUp_Neighbors();
 	void		SetUp_On_Navigation(CTransform* pTransform);
 	_bool		Check_If_Grounded(CTransform* pObjectTransformCom);

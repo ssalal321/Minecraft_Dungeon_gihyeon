@@ -58,10 +58,35 @@ void CState_Monster::State_Exit()
 
 void CState_Monster::Collision_Enter(CCollider* pOther)
 {
+	if (/*pOther->Get_ColliderTag() == TEXT("Player_Body") ||*/
+		pOther->Get_ColliderTag() == TEXT("Monster_Body_Hit") || 
+		pOther->Get_ColliderTag() == TEXT("Monster_Body_NoHit"))
+	{
+		CTransform* pTransformcom = dynamic_cast<CTransform*>(pOther->Get_OwnerObject()->Find_Component(TEXT("Com_Transform")));
+		if (nullptr != pTransformcom)
+		{
+			_float4  otherPosition;
+			XMStoreFloat4(&otherPosition, pTransformcom->Get_State(CTransform::STATE_POSITION));
+			dynamic_cast<CMonster*>(m_pActor)->Apply_PushBack(otherPosition, 0.02f, m_pNavigationCom);
+		}
+	}
+
 }
 
 void CState_Monster::Collision_Stay(CCollider* pOther)
 {
+	if (/*pOther->Get_ColliderTag() == TEXT("Player_Body") ||*/
+		pOther->Get_ColliderTag() == TEXT("Monster_Body_Hit") ||
+		pOther->Get_ColliderTag() == TEXT("Monster_Body_NoHit"))
+	{
+		CTransform* pTransformcom = dynamic_cast<CTransform*>(pOther->Get_OwnerObject()->Find_Component(TEXT("Com_Transform")));
+		if (nullptr != pTransformcom)
+		{
+			_float4  otherPosition;
+			XMStoreFloat4(&otherPosition, pTransformcom->Get_State(CTransform::STATE_POSITION));
+			dynamic_cast<CMonster*>(m_pActor)->Apply_PushBack(otherPosition, 0.001f, m_pNavigationCom);
+		}
+	}
 }
 
 void CState_Monster::Collision_Exit(CCollider* pOther)

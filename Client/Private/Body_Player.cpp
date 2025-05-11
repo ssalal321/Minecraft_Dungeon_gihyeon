@@ -105,7 +105,7 @@ HRESULT CBody_Player::Ready_Components()
 	/* Com_Collider */
 	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereCollDesc{};
 
-	SphereCollDesc.fRadius = 1.6f;
+	SphereCollDesc.fRadius = 1.4f;
 	SphereCollDesc.vCenter = _float3(0.f, SphereCollDesc.fRadius, 0.f);
 	SphereCollDesc.pGameObject = this;
 	SphereCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
@@ -118,23 +118,6 @@ HRESULT CBody_Player::Ready_Components()
 		return E_FAIL;
 
 	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), pColliderSphereCom, TEXT("Player_Body"), TEXT("Player"), true);
-
-	//CBounding_OBB::BOUNDING_OBB_DESC		OBBCollDesc{};
-
-	//OBBCollDesc.vExtents = _float3(0.6f, 1.f, 0.6f);
-	//OBBCollDesc.vCenter = _float3(0.f, OBBCollDesc.vExtents.y, 0.f);
-	//OBBCollDesc.vRotation = _float3(0.f, /*XMConvertToRadians(0.f)*/ 0.f, 0.f);
-	//OBBCollDesc.pGameObject = this;
-	//OBBCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
-	//OBBCollDesc.pCollisionActivated = m_pCollisionActivating;
-
-	//CComponent* pColliderCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_OBB"),
-	//	TEXT("Com_Collider_OBB"), reinterpret_cast<CComponent**>(&m_pColliderCom), &OBBCollDesc);
-
-	//if (nullptr == pColliderCom)
-	//	return E_FAIL;
-
-	//m_pGameInstance->Add_ColliderCom(pColliderCom, TEXT("Player_Body"), TEXT("Player"));
 
 	return S_OK;
 }

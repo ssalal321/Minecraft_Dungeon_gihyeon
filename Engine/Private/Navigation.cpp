@@ -341,11 +341,11 @@ _bool CNavigation::Can_Move(_fvector vWorldPos)
 	_int iCellIndex = m_iCurrentCellIndex;
 	_int iNextNeighbor = -1;
 
-	for (int depth = 0; depth < 8; ++depth)
+	for (_int depth = 0; depth < 8; ++depth)
 	{
 		CCell* pCurrent = m_Cells[iCellIndex];
 
-		if (pCurrent->Is_In(vLocalPos, &iNextNeighbor))
+		if (pCurrent->Is_In(vLocalPos, &iNextNeighbor, nullptr))
 		{
 			_vector vNormal = XMLoadFloat3(&pCurrent->Get_PlaneNormal());
 
@@ -359,7 +359,7 @@ _bool CNavigation::Can_Move(_fvector vWorldPos)
 					CCell* pNext = m_Cells[iNextNeighbor];
 					_vector vNextNormal = XMLoadFloat3(&pNext->Get_PlaneNormal());
 
-					if (XMVectorGetY(vNextNormal) >= 0.4f)
+					if (XMVectorGetY(vNextNormal) >= 0.5f)
 					{
 						m_iCurrentCellIndex = iNextNeighbor;
 						return true;
@@ -372,7 +372,7 @@ _bool CNavigation::Can_Move(_fvector vWorldPos)
 			{
 				m_iCurrentCellIndex = iCellIndex;
 				return true;
-			}
+			}			
 		}
 		else
 		{
@@ -380,6 +380,116 @@ _bool CNavigation::Can_Move(_fvector vWorldPos)
 				break;
 
 			iCellIndex = iNextNeighbor;
+		}
+	}
+
+	return false;
+}
+
+//_bool CNavigation::Can_Slide(_fvector vPrevWorldPos, _fvector vMovingWorldPos, _vector& vSlidingPosition)
+//{
+//	_matrix		WorldMatrixInv = XMMatrixInverse(nullptr, XMLoadFloat4x4(m_pWorldMatrix));
+//	_vector		vMovingLocalPos = XMVector3TransformCoord(vMovingWorldPos, WorldMatrixInv);
+//	_vector		vPrevLocalPos = XMVector3TransformCoord(vPrevWorldPos, WorldMatrixInv);
+//
+//	_int  iCellIndex = m_iCurrentCellIndex;
+//	_int  iNextNeighbor = -1;
+//	_int  iHitEdgeIndex = -1;
+//
+//	CCell* pCurrent = m_Cells[iCellIndex];
+//
+//	if (false == pCurrent->Is_In(vMovingLocalPos, &iNextNeighbor, &iHitEdgeIndex))
+//	{
+//		// == 슬라이딩 처리 ==
+//		if (iNextNeighbor == -1)
+//		{
+//			_vector vMoveDir = vMovingLocalPos - vPrevLocalPos;
+//			_vector vEdgeNormal = pCurrent->Get_EdgeNormal(iHitEdgeIndex);
+//
+//			_vector vSlideDir = vMoveDir - XMVector3Dot(vMoveDir, vEdgeNormal) * vEdgeNormal;
+//
+//			_vector vWorldSlideDir = XMVector3TransformNormal(vSlideDir, XMLoadFloat4x4(m_pWorldMatrix));
+//			_float3 testDir;
+//			XMStoreFloat3(&testDir, vWorldSlideDir);
+//			std::cerr << "X : " << testDir.x << " , Y : " << testDir.y << " , Z : " << testDir.z << std::endl;
+//
+//
+//			_vector vSlideTargetWorld = vPrevWorldPos + vWorldSlideDir ;
+//
+//			if (pCurrent->Is_In(vSlideTargetWorld, &iNextNeighbor, &iHitEdgeIndex))
+//			{
+//				vSlidingPosition = vSlideTargetWorld;
+//
+//				m_iCurrentCellIndex = iCellIndex;  // Is_In이 true면 현재 셀 안에 있는 거임
+//				return true;
+//			}
+//			else if (-1 != iNextNeighbor)
+//			{
+//				iCellIndex = iNextNeighbor;  // false면 다음 셀로 가야 하는 거임 (iNextNeighbor != -1이면)
+//				if (pCurrent->Is_In(vSlideTargetWorld, &iNextNeighbor, &iHitEdgeIndex))
+//				{
+//					vSlidingPosition = vSlideTargetWorld;
+//
+//					m_iCurrentCellIndex = iCellIndex;  // Is_In이 true면 현재 셀 안에 있는 거임
+//					return true;
+//				}
+//			}
+//		}
+//
+//	}
+//
+//	return false;
+//}
+
+_bool CNavigation::Can_Slide(_fvector vPrevWorldPos, _fvector vMovingWorldPos, _vector& vSlidingPosition)
+{
+	_matrix		WorldMatrixInv = XMMatrixInverse(nullptr, XMLoadFloat4x4(m_pWorldMatrix));
+	_vector		vMovingLocalPos = XMVector3TransformCoord(vMovingWorldPos, WorldMatrixInv);
+	_vector		vPrevLocalPos = XMVector3TransformCoord(vPrevWorldPos, WorldMatrixInv);
+
+	_int  iCellIndex = m_iCurrentCellIndex;
+	_int  iNextNeighbor = -1;
+	_int  iHitEdgeIndex = -1;
+
+	CCell* pCurrent = m_Cells[iCellIndex];
+
+	if (false == pCurrent->Is_In(vMovingLocalPos, &iNextNeighbor, &iHitEdgeIndex))
+	{
+		if (iNextNeighbor == -1)
+		{
+			_vector vMoveDir = XMVector3Normalize(vMovingLocalPos - vPrevLocalPos);
+			_vector vEdgeNormal = pCurrent->Get_EdgeNormal(iHitEdgeIndex);
+
+			// 슬라이딩 벡터 계산
+			_vector vSlideDir = vMoveDir - XMVector3Dot(vMoveDir, vEdgeNormal) * vEdgeNormal;
+			vSlideDir = XMVector3Normalize(vSlideDir);  // ← 항상 정규화
+
+			// 속도 보정
+			const _float fSlideSpeed = 0.05f;  // 슬라이딩 이동 거리 (작게 조절)
+
+			// 월드 기준으로 변환 + 이동 적용
+			_vector vWorldSlideDir = XMVector3TransformNormal(vSlideDir, XMLoadFloat4x4(m_pWorldMatrix));
+			_vector vSlideTargetWorld = vPrevWorldPos + vWorldSlideDir * fSlideSpeed;
+
+			// 최대 5회 Is_In 재시도
+			for (_int i = 0; i < 5; ++i)
+			{
+				_vector vSlideTargetLocal = XMVector3TransformCoord(vSlideTargetWorld, WorldMatrixInv);
+				if (m_Cells[iCellIndex]->Is_In(vSlideTargetLocal, &iNextNeighbor, &iHitEdgeIndex))
+				{
+					vSlidingPosition = vSlideTargetWorld;
+					m_iCurrentCellIndex = iCellIndex;
+					return true;
+				}
+				else if (iNextNeighbor != -1)
+				{
+					iCellIndex = iNextNeighbor;
+				}
+				else
+				{
+					break;
+				}
+			}
 		}
 	}
 

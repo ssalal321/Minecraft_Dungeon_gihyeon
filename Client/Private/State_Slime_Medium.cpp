@@ -46,10 +46,12 @@ void CState_Slime_Medium::State_Exit()
 
 void CState_Slime_Medium::Collision_Enter(CCollider* pOther)
 {
+	__super::Collision_Enter(pOther);
 }
 
 void CState_Slime_Medium::Collision_Stay(CCollider* pOther)
 {
+	__super::Collision_Stay(pOther);
 }
 
 void CState_Slime_Medium::Collision_Exit(CCollider* pOther)

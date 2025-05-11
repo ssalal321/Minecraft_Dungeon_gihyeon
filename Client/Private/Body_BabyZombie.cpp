@@ -115,6 +115,7 @@ HRESULT CBody_BabyZombie::Ready_Components()
 		return E_FAIL;
 
 	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), m_pColliderCom, TEXT("Monster_Body_Hit"), TEXT("Monster"));
+	dynamic_cast<CCollider*>(pColliderSphereCom)->Set_AllowSameGroupCollision(true);
 
 	return S_OK;
 }

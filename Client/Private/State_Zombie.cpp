@@ -49,10 +49,12 @@ void CState_Zombie::State_Exit()
 
 void CState_Zombie::Collision_Enter(CCollider* pOther)
 {
+	__super::Collision_Enter(pOther);
 }
 
 void CState_Zombie::Collision_Stay(CCollider* pOther)
 {
+	__super::Collision_Stay(pOther);
 }
 
 void CState_Zombie::Collision_Exit(CCollider* pOther)

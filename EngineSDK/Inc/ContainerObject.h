@@ -27,6 +27,8 @@ public:
 	HRESULT			Add_PartObject(CPartObject* pPartObject, const _wstring& strPartObjectTag);
 	HRESULT			Delete_PartObject(const _wstring& strPartObjectTag, _bool bReleaseMemory);
 
+	void			Apply_PushBack(const _float4& vFromPosition, _float fForce, CNavigation* pNavigation);
+
 protected:
 	map<const _wstring, class CPartObject*>		m_PartObjects;
 	_bool*		m_pCollisionActivating = { nullptr };
