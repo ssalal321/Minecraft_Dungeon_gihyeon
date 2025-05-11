@@ -49,15 +49,17 @@ void CState_Skeleton::State_Exit()
 
 void CState_Skeleton::Collision_Enter(CCollider* pOther)
 {
-	
+	__super::Collision_Enter(pOther);
 }
 
 void CState_Skeleton::Collision_Stay(CCollider* pOther)
 {
+	__super::Collision_Stay(pOther);
 }
 
 void CState_Skeleton::Collision_Exit(CCollider* pOther)
 {
+	__super::Collision_Exit(pOther);
 }
 
 

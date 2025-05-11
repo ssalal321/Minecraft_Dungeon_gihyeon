@@ -44,6 +44,8 @@ void CState_BabyZombie::State_Exit()
 
 void CState_BabyZombie::Collision_Enter(CCollider* pOther)
 {
+	__super::Collision_Enter(pOther);
+
 //#ifdef DEBUG
 //	_wstring other = pOther->Get_ColliderTag();
 //	std::wcerr << "[좀비와 " << other << " 충돌 Enter]" << std::endl;
@@ -52,6 +54,8 @@ void CState_BabyZombie::Collision_Enter(CCollider* pOther)
 
 void CState_BabyZombie::Collision_Stay(CCollider* pOther)
 {
+	__super::Collision_Stay(pOther);
+
 	/*_wstring other = pOther->Get_CollidergGroupTag();
 
 	std::wcerr << "[좀비와 " << other << " 충돌 Stay]" << std::endl;*/

@@ -34,7 +34,7 @@ HRESULT CZombie::Initialize(void* pArg)
 {
 	const _wstring& zombieGameObjectTag = TEXT("GameObject_Zombie_") + to_wstring(m_iZombieID++);
 
-	m_pMonsterInfo = new MONSTER_DESC(zombieGameObjectTag, 20, 20, 3, 3.f, 10.f, false, 90.f, 1.5f);
+	m_pMonsterInfo = new MONSTER_DESC(zombieGameObjectTag, 20, 20, 3, 3.5f, 10.f, false, 90.f, 1.5f);
 
 	if (FAILED(__super::Initialize(m_pMonsterInfo)))
 		return E_FAIL;

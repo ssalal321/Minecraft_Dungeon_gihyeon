@@ -76,7 +76,6 @@ HRESULT CBody_Slime_Large::Render()
 			m_pShaderCom->Begin(1); // Blend
 
 
-
 		if (FAILED(m_pModelCom->Render(static_cast<_uint>(i))))
 			return E_FAIL;
 	}
@@ -120,6 +119,7 @@ HRESULT CBody_Slime_Large::Ready_Components()
 		return E_FAIL;
 
 	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), m_pColliderCom, TEXT("Monster_Body_Hit"), TEXT("Monster"));
+	dynamic_cast<CCollider*>(pColliderSphereCom)->Set_AllowSameGroupCollision(true);
 
 	return S_OK;
 }

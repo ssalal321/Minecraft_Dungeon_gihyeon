@@ -33,7 +33,7 @@ HRESULT CBabyZombie::Initialize(void* pArg)
 {
 	const _wstring& zombieGameObjectTag = TEXT("GameObject_BabyZombie_") + to_wstring(m_iBabyZombieID++);
 
-	m_pMonsterInfo = new MONSTER_DESC(zombieGameObjectTag, 20, 20, 5, 2.0f, 12.f, false, 90.f, 3.5f);
+	m_pMonsterInfo = new MONSTER_DESC(zombieGameObjectTag, 20, 20, 5, 2.5f, 12.f, false, 90.f, 3.5f);
 
 	if (FAILED(__super::Initialize(m_pMonsterInfo)))
 		return E_FAIL;

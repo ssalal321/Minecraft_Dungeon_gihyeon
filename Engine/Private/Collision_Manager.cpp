@@ -91,7 +91,7 @@ void CCollision_Manager::Update()
     _uint currentLevel = m_pGameInstance->Get_CurrentLevelIndex();
     auto& colliderGroups = m_pColliderGroups[currentLevel];
 
-    // 1. 각 Collider의 Update 호출 (월드 행렬 등 갱신용)
+    // 1. Collider Update
     for (auto& group : colliderGroups)
     {
         for (auto* collider : group.second)
@@ -101,41 +101,61 @@ void CCollision_Manager::Update()
         }
     }
 
-    // 2. 그룹 간 충돌 검사 (중복 제거)
-    for (auto ownerTypeA_iter = colliderGroups.begin(); ownerTypeA_iter != colliderGroups.end(); ++ownerTypeA_iter)
+    // 2. 서로 다른 그룹 간 충돌 검사
+    for (auto iterA = colliderGroups.begin(); iterA != colliderGroups.end(); ++iterA)
     {
-        vector<CCollider*>& collidersInGroupA = ownerTypeA_iter->second;
+        auto& groupA = iterA->second;
 
-        auto ownerTypeB_iter = ownerTypeA_iter;
-        ++ownerTypeB_iter;
+        auto iterB = iterA;
+        ++iterB;
 
-        for (; ownerTypeB_iter != colliderGroups.end(); ++ownerTypeB_iter)
+        for (; iterB != colliderGroups.end(); ++iterB)
         {
-            vector<CCollider*>& collidersInGroupB = ownerTypeB_iter->second;
+            auto& groupB = iterB->second;
 
-            for (auto* colliderA : collidersInGroupA)
+            for (auto* colliderA : groupA)
             {
-                if (!colliderA || colliderA->Get_MouseCollider()) continue;   // null 검사
+                if (!colliderA || colliderA->Get_MouseCollider()) continue;
 
-                for (auto* colliderB : collidersInGroupB)
+                for (auto* colliderB : groupB)
                 {
-                    if (!colliderB || colliderB->Get_MouseCollider()) continue;  // null 검사
+                    if (!colliderB || colliderB->Get_MouseCollider()) continue;
 
                     if (colliderA->Intersect(colliderB))
                     {
-                        // 충돌 쌍을 서로에게 기록
                         colliderA->Collided_With(colliderB);
                         colliderB->Collided_With(colliderA);
-
-                        /*std::wcerr << "[" << colliderA->Get_OwnerObject()->Get_GameObjectTag() << "]와 ["
-                    	<< colliderB->Get_OwnerObject()->Get_GameObjectTag() << "] 충돌" << std::endl;*/
                     }
                 }
             }
         }
     }
 
-    // 3. 모든 Collider의 충돌 상태 정리 (Enter, Stay, Exit 판단)
+    // 3. 동일 그룹 내 조건부 충돌 검사 (AllowInGroupCollision 활성화된 경우만)
+    for (auto& group : colliderGroups)
+    {
+        auto& colliders = group.second;
+
+        for (size_t i = 0; i < colliders.size(); ++i)
+        {
+            CCollider* pA = colliders[i];
+            if (!pA || !pA->Get_AllowSameGroupCollision() || pA->Get_MouseCollider()) continue;
+
+            for (size_t j = i + 1; j < colliders.size(); ++j)
+            {
+                CCollider* pB = colliders[j];
+                if (!pB || !pB->Get_AllowSameGroupCollision() || pB->Get_MouseCollider()) continue;
+
+                if (pA->Intersect(pB))
+                {
+                    pA->Collided_With(pB);
+                    pB->Collided_With(pA);
+                }
+            }
+        }
+    }
+
+    // 4. 충돌 상태 정리 (Enter / Stay / Exit 처리)
     for (auto& group : colliderGroups)
     {
         for (auto* collider : group.second)
@@ -145,6 +165,7 @@ void CCollision_Manager::Update()
         }
     }
 }
+
 
 
 #ifdef _DEBUG
