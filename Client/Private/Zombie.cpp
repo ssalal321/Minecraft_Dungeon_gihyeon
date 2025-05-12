@@ -34,7 +34,7 @@ HRESULT CZombie::Initialize(void* pArg)
 {
 	const _wstring& zombieGameObjectTag = TEXT("GameObject_Zombie_") + to_wstring(m_iZombieID++);
 
-	m_pMonsterInfo = new MONSTER_DESC(zombieGameObjectTag, 20, 20, 3, 3.5f, 10.f, false, 90.f, 1.5f);
+	m_pMonsterInfo = new MONSTER_DESC(zombieGameObjectTag, 20, 20, 2, 3.f, 10.f, false, 90.f, 1.5f);
 
 	if (FAILED(__super::Initialize(m_pMonsterInfo)))
 		return E_FAIL;
@@ -89,11 +89,12 @@ HRESULT CZombie::Ready_PartObjects()
 	/* 몸통을 추가한다. */
 	CBody_Zombie::BODY_ZOMBIE_DESC		BodyDesc{};
 
-	BodyDesc.strGameObjectTag = TEXT("GameObject_Body_Zombie");
-	BodyDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
-	BodyDesc.pState = &m_iState;
-	BodyDesc.pContainerObject = this;
-	BodyDesc.pCollisionActivating = &m_bAttacking;
+	BodyDesc.strGameObjectTag			= TEXT("GameObject_Body_Zombie");
+	BodyDesc.pParentWorldMatrix			= m_pTransformCom->Get_WorldMatrix_Ptr();
+	BodyDesc.pState						= &m_iState;
+	BodyDesc.pContainerObject			= this;
+	BodyDesc.pBigCollisionActivating	= &m_bAttacking;
+	BodyDesc.pSmallCollisionActivating	= &m_bAlwaysActivated;
 
 	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Body_Zombie"), TEXT("Part_Body"), &BodyDesc)))
 		return E_FAIL;
@@ -109,13 +110,15 @@ HRESULT CZombie::Ready_States()
 	m_StatesVec.resize(static_cast<_uint>(ZOMBIE_STATE::STATE_END));	// state vector 자리 예약
 
 	CModel* pZombieModel = dynamic_cast<CModel*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Model")));
-	CCollider* pCollider = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_Sphere")));
+	CCollider* pBigCollider = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_BigSphere")));
+	CCollider* pSmallCollider = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_SmallSphere")));
 
 	CState_Monster::STATEMONSTER_DESC	pStateMonsterDesc = {};
-	pStateMonsterDesc.pColliderCom		= pCollider;
-	pStateMonsterDesc.pActorModelCom		= pZombieModel;
-	pStateMonsterDesc.pNavigationCom		= m_pNavigationCom;
-	pStateMonsterDesc.pTransformCom			= m_pTransformCom;
+	pStateMonsterDesc.pBigColliderCom	= pBigCollider;
+	pStateMonsterDesc.pSmallColliderCom = pSmallCollider;
+	pStateMonsterDesc.pActorModelCom	= pZombieModel;
+	pStateMonsterDesc.pNavigationCom	= m_pNavigationCom;
+	pStateMonsterDesc.pTransformCom		= m_pTransformCom;
 
 	m_StatesVec[static_cast<_uint>(ZOMBIE_STATE::IDLE)]			 = CZombie_Idle::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
 	m_StatesVec[static_cast<_uint>(ZOMBIE_STATE::WALK)]			 = CZombie_Walk::Create(this, m_pMonsterInfo, &pStateMonsterDesc);

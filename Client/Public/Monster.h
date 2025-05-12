@@ -103,10 +103,10 @@ protected:
 	vector<CState*>     m_StatesVec;
 
 	CNavigation*		m_pNavigationCom = { nullptr };
-	//CCollider*			m_pColliderSphereCom = { nullptr };
 
 	_float4				m_NextPosition = { 0.f, 0.f, 0.f, 1.f };
 	_bool				m_bAttacking = { false };
+	_bool				m_bAlwaysActivated = { true };
 	//_bool				m_bHoveringColl = { false };
 	_bool				m_bHovered = { false };
 

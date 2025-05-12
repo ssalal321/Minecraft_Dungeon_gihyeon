@@ -25,13 +25,6 @@ HRESULT CWeapon_Glaive::Initialize(void* pArg)
 {
 	/* 원형의 데이터를 복제하여 사본을 만들고. */
 	/* 추가적으로 필요한 데이터를 Arg로 받아와 실 사용하기위한 객체의 정보를 생성해준다. */	
-	/*ITEM_DESC* pDesc = static_cast<ITEM_DESC*>(pArg);
-
-	if (nullptr != pArg)
-	{
-		m_pTargetState = pDesc->pState;
-		m_pSocketMatrix = pDesc->pSocketMatrix;
-	}*/
 	
 	m_eItemtype = ITEM_TYPE::MELEE;
 	m_iDealPoint = 10;
@@ -127,31 +120,14 @@ HRESULT CWeapon_Glaive::Ready_Components()
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom), &pModelDesc))
 		return E_FAIL;
 
-	///* Com_Collider */
-	//CBounding_OBB::BOUNDING_OBB_DESC		OBBCollDesc{};
-
-	//OBBCollDesc.vExtents = _float3(0.2f, 1.f, 0.2f);
-	//OBBCollDesc.vCenter = _float3(0.f, OBBCollDesc.vExtents.y - 0.2f, 0.f);
-	//OBBCollDesc.vRotation = _float3(0.f, /*XMConvertToRadians(0.f)*/ 0.f, 0.f);
-	//OBBCollDesc.pGameObject = this;
-	//OBBCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
-	//OBBCollDesc.pCollisionActivated = m_pCollisionActivating;
-
-	//CComponent* pColliderCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_OBB"),
-	//	TEXT("Com_Collider_OBB"), reinterpret_cast<CComponent**>(&m_pColliderCom), &OBBCollDesc);
-
-	//if (nullptr == pColliderCom)
-	//	return E_FAIL;
-
-	//m_pGameInstance->Add_ColliderCom(pColliderCom, TEXT("Player_Weapon"), TEXT("Player"));
 
 	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereCollDesc{};
 
-	SphereCollDesc.fRadius = 0.8f;
-	SphereCollDesc.vCenter = _float3(0.f, SphereCollDesc.fRadius * 1.6f, 0.f);
+	SphereCollDesc.fRadius = 1.f;
+	SphereCollDesc.vCenter = _float3(0.f, SphereCollDesc.fRadius * 1.4f, 0.f);
 	SphereCollDesc.pGameObject = this;
 	SphereCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
-	SphereCollDesc.pCollisionActivated = m_pCollisionActivating;
+	SphereCollDesc.pCollisionActivated = m_pBigCollisionActivating;
 
 	CComponent* pColliderSphereCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
 		TEXT("Com_Collider_Sphere"), reinterpret_cast<CComponent**>(&m_pColliderCom), &SphereCollDesc);

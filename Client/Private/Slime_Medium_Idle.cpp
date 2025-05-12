@@ -52,7 +52,7 @@ void CSlime_Medium_Idle::State_Update(_float fTimeDelta)
 		static std::mt19937 gen(rd());
 		static std::uniform_real_distribution<_float> dist(0.0f, 1.0f); // 0.0 ~ 1.0 float È®·ü
 
-		if (dist(gen) < 0.7f) // 70% È®·ü
+		if (dist(gen) < 0.8f) // 70% È®·ü
 		{
 			m_pSlime_Medium->Change_State(Make_Slime_MediumState(SLIME_MEDIUM_STATE::WALK));
 			return;

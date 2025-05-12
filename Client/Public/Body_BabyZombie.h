@@ -39,7 +39,8 @@ private:
 	CShader*			m_pShaderCom = { nullptr };
 	CModel*				m_pModelCom = { nullptr };
 
-	CCollider*			m_pColliderCom = { nullptr };
+	CCollider*			m_pBigColliderCom = { nullptr };
+	CCollider*			m_pSmallColliderCom = { nullptr };
 
 	_uint				m_iPassIndex = {};
 

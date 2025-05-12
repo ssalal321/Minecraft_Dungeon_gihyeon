@@ -80,9 +80,9 @@ void CZombie_Attack::State_Late_Update(_float fTimeDelta)
 
 void CZombie_Attack::State_Exit()
 {
-    CBounding_Sphere* pBoundingSphere = dynamic_cast<CBounding_Sphere*>(m_pColliderCom->Get_Bounding());
+    /*CBounding_Sphere* pBoundingSphere = dynamic_cast<CBounding_Sphere*>(m_pBigColliderCom->Get_Bounding());
     pBoundingSphere->ReSet_Bounding_Radius(1.5f);
-    pBoundingSphere->ReSet_Bounding_Center({ 0.f, 1.5f, 0.f });
+    pBoundingSphere->ReSet_Bounding_Center({ 0.f, 1.5f, 0.f });*/
 }
 
 void CZombie_Attack::Collision_Enter(CCollider* pOther)

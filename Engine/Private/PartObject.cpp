@@ -24,7 +24,8 @@ HRESULT CPartObject::Initialize(void* pArg)
 	{
 		m_pContainerObject = pDesc->pContainerObject;
 		m_pParentWorldMatrix = pDesc->pParentWorldMatrix;
-		m_pCollisionActivating = pDesc->pCollisionActivating;
+		m_pBigCollisionActivating = pDesc->pBigCollisionActivating;
+		m_pSmallCollisionActivating = pDesc->pSmallCollisionActivating;
 	}
 
 	if (FAILED(__super::Initialize(pArg)))

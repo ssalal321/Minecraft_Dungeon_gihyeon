@@ -241,9 +241,6 @@
     <Filter Include="02.GameObjects\Monster\Slime\Slime_Large\01. State\Slime_Large_Stun">
       <UniqueIdentifier>{4408f859-a94e-4709-8c07-e35ca5789585}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Monster\BabyZombie\01. State\00. Body_BabyZombie">
-      <UniqueIdentifier>{88dfeff6-640c-43ec-9814-1f1e3abffd06}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\Monster\Slime\Slime_Medium">
       <UniqueIdentifier>{c788c731-7759-4598-80d6-1846c1b70d6e}</UniqueIdentifier>
     </Filter>
@@ -267,6 +264,15 @@
     </Filter>
     <Filter Include="02.GameObjects\Monster\Slime\Slime_Medium\01. State\Slime_Medium_Stun">
       <UniqueIdentifier>{675e2077-3d4c-4a43-930f-0d8742b33e95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Item\Armor">
+      <UniqueIdentifier>{34388724-7958-45d4-a88a-b7b07cd66698}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\BabyZombie\00. Body_BabyZombie">
+      <UniqueIdentifier>{88dfeff6-640c-43ec-9814-1f1e3abffd06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Item\Armor\Wolf_Armor">
+      <UniqueIdentifier>{5398ece9-bbb2-4d11-a507-ae8dede8243b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -472,7 +478,7 @@
       <Filter>02.GameObjects\Monster\BabyZombie</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Body_BabyZombie.h">
-      <Filter>02.GameObjects\Monster\BabyZombie\01. State\00. Body_BabyZombie</Filter>
+      <Filter>02.GameObjects\Monster\BabyZombie\00. Body_BabyZombie</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\BabyZombie_GetHit.h">
       <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_GetHit</Filter>
@@ -536,6 +542,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\State_Slime_Medium.h">
       <Filter>02.GameObjects\Monster\Slime\Slime_Medium\01. State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Armor.h">
+      <Filter>02.GameObjects\Item\Armor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Wolf_Armor.h">
+      <Filter>02.GameObjects\Item\Armor\Wolf_Armor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -736,7 +748,7 @@
       <Filter>02.GameObjects\Monster\BabyZombie</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Body_BabyZombie.cpp">
-      <Filter>02.GameObjects\Monster\BabyZombie\01. State\00. Body_BabyZombie</Filter>
+      <Filter>02.GameObjects\Monster\BabyZombie\00. Body_BabyZombie</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BabyZombie_Attack.cpp">
       <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Attack</Filter>
@@ -800,6 +812,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\State_Slime_Medium.cpp">
       <Filter>02.GameObjects\Monster\Slime\Slime_Medium\01. State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Armor.cpp">
+      <Filter>02.GameObjects\Item\Armor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Wolf_Armor.cpp">
+      <Filter>02.GameObjects\Item\Armor\Wolf_Armor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

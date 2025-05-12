@@ -206,7 +206,6 @@ void CMonster::Free()
 {
 	__super::Free();
 
-	//Safe_Release(m_pColliderSphereCom);
 	Safe_Release(m_pNavigationCom);
 	Safe_Delete(m_pMonsterInfo);
 	Safe_Delete(m_pMonsterFSM);

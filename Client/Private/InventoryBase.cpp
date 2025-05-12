@@ -94,7 +94,7 @@ HRESULT CInventoryBase::Render()
 
 HRESULT CInventoryBase::Ready_Subscribe_Events()
 {
-	if (FAILED(m_pGameInstance->Subscribe<Item_Added_To_StoreSlot>(
+ 	if (FAILED(m_pGameInstance->Subscribe<Item_Added_To_StoreSlot>(
 		[this](const Item_Added_To_StoreSlot& item_AddedEvent) { this->Add_Icon_To_StoreSlot(item_AddedEvent); })))
 		return E_FAIL;
 

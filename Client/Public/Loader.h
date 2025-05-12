@@ -53,6 +53,8 @@ private:
 	HRESULT		Ready_Prototype_GameObject_Static();
 
 
+	HRESULT		Ready_Prototype_Armors_Static();
+
 public:
 	static	 CLoader*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevelID);
 	void	Free()	override;

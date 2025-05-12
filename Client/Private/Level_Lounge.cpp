@@ -3,6 +3,7 @@
 #include <iostream>
 #include <UI_Image.h>
 
+#include "Armor.h"
 #include "GameInstance.h"
 #include "PartObject.h"
 #include "Level_Loading.h"
@@ -41,8 +42,8 @@ HRESULT CLevel_Lounge::Initialize()
     if (FAILED(Ready_Layer_PlayerSlotUI(TEXT("Layer_PlayerSlotUI"))))
         return E_FAIL;
 
-    /*if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
-        return E_FAIL;*/
+    if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
+        return E_FAIL;
 
     CLevel_Trigger::LEVEL_TRIGGER_DESC pDesc = {};
     pDesc.triggerPosition = { 2.5f, 5.5f, 15.f };
@@ -63,7 +64,7 @@ HRESULT CLevel_Lounge::Initialize()
     ItemDesc.pState = &m_pPlayer->Get_PlayerState();
     ItemDesc.pSocketMatrix = pBody->Get_CombinedTransformationMatrix("J_R_Weapon");
     ItemDesc.pContainerObject = m_pPlayer;
-    ItemDesc.pCollisionActivating = &m_pPlayer->Get_Attacking();
+    ItemDesc.pBigCollisionActivating = &m_pPlayer->Get_Attacking();
 
     m_pPlayer->Get_InventoryData()->Add_Item_To_StoreSlot(LEVEL_STATIC, TEXT("Prototype_GameObject_Glaive_Steel"), TEXT("Part_Weapon_Glaive"), &ItemDesc);
 #pragma endregion
@@ -75,11 +76,28 @@ HRESULT CLevel_Lounge::Initialize()
     BowDesc.pState = &m_pPlayer->Get_PlayerState();
     BowDesc.pSocketMatrix = pBody->Get_CombinedTransformationMatrix("J_L_Weapon");
     BowDesc.pContainerObject = m_pPlayer;
-    BowDesc.pCollisionActivating = &m_pPlayer->Get_Attacking();
+    BowDesc.pBigCollisionActivating = &m_pPlayer->Get_Attacking();
 
     m_pPlayer->Get_InventoryData()->Add_Item_To_StoreSlot(LEVEL_STATIC, TEXT("Prototype_GameObject_Bow"), TEXT("Part_Weapon_Bow"), &BowDesc);
 
-#pragma endregion 
+#pragma endregion
+
+//    #pragma region ARMOR
+//	CArmor::ARMOR_DESC	ArmorDesc{};
+//
+//	ArmorDesc.pParentWorldMatrix = pPlayerWorldMatrixPtr;
+//	ArmorDesc.pState = &m_pPlayer->Get_PlayerState();
+//	ArmorDesc.pMaskSocketMatrix  = pBody->Get_CombinedTransformationMatrix("Head_Armor");
+//	ArmorDesc.pBodySocketMatrix  = pBody->Get_CombinedTransformationMatrix("Body_Armor");
+//	ArmorDesc.pL_ArmSocketMatrix = pBody->Get_CombinedTransformationMatrix("L_Arm_Armor");
+//	ArmorDesc.pR_ArmSocketMatrix = pBody->Get_CombinedTransformationMatrix("R_Arm_Armor");
+//	ArmorDesc.pL_LegSocketMatrix = pBody->Get_CombinedTransformationMatrix("L_Leg_Armor");
+//	ArmorDesc.pR_LegSocketMatrix = pBody->Get_CombinedTransformationMatrix("R_Leg_Armor");
+//	ArmorDesc.pContainerObject = m_pPlayer;
+//
+//	// 인벤토리에 넣기
+//    m_pPlayer->Get_InventoryData()->Add_Item_To_StoreSlot(LEVEL_STATIC, TEXT("Prototype_GameObject_Wolf_Armor"), TEXT("Part_Armor"), &ArmorDesc);
+//#pragma endregion
 
     return S_OK;
 }
@@ -93,103 +111,10 @@ void CLevel_Lounge::Update(_float fTimeDelta)
             return;
     }
 
-
 #ifdef _DEBUG
     if (m_pGameInstance->Key_Down(VK_F1))  // 아예 전체 전역변수로 만들어야겠다
         bMouseClickLock = !bMouseClickLock;
 #endif
-
-    // 얘네도 여러 level에서 써야 하니까 state_monster로 빼는 게 나을지도..
-    _float4     fWorldMousePos = {};
-    _float3     fWorldMouseRay = {};
-    m_pGameInstance->Compute_MouseRay(fWorldMousePos, fWorldMouseRay);
-
-    // 1. 현재 가장 가까운 Monster collider 찾기
-    CCollider* pClosestCollider = Get_Closest_Collider(fWorldMousePos, fWorldMouseRay);
-    if (nullptr == pClosestCollider || false == pClosestCollider->Get_ColliderActive())  // 아래에 다른 코드 없기도 하고 나중에 함수로 뺄 생각 하고 넣은 것
-        return;
-
-    CMonster* pPrevMonster = m_pPickedMonster;
-    CMonster* pCurrMonster = dynamic_cast<CMonster*>(dynamic_cast<CPartObject*>(pClosestCollider->Get_OwnerObject())->Get_ContainerObject());
-
-    // 2. 이전 Hovered 상태 해제
-    if (pPrevMonster && pPrevMonster != pCurrMonster)
-    {
-        pPrevMonster->Set_Hovered(false);
-
-        //std::wcerr << "[휘바 끝XXXXXXXXXXX]" << std::endl;
-    }
-
-    // 3. 현재 Hovered 상태 설정 및 클릭 처리
-    if (pCurrMonster)
-    {
-        pCurrMonster->Set_Hovered(true);
-        m_pPickedMonster = pCurrMonster;
-
-        //std::wcerr << "[휘바휘바]" << std::endl;
-
-        if (m_pGameInstance->Get_Key(VK_LBUTTON) && !bMouseClickLock)
-        {
-            Click_Chase_Monster(pCurrMonster);
-        }
-    }
-
-    if (m_pGameInstance->Key_Up(VK_LBUTTON) && !bMouseClickLock)
-    {
-        m_pPlayer->Set_Chasing(false);
-    }
-}
-
-CCollider* CLevel_Lounge::Get_Closest_Collider(const _float4& mousePos, const _float3& mouseRay)
-{
-    unordered_map<_wstring, vector<CCollider*>> colliders = *m_pGameInstance->Get_Colliders(m_pGameInstance->Get_CurrentLevelIndex());
-    auto it = colliders.find(TEXT("Monster"));
-    if (it == colliders.end())
-        return nullptr;
-
-    CCollider* pClosest = nullptr;
-    _float minDist = FLT_MAX;
-
-    for (auto& pCollider : it->second)
-    {
-        if (pCollider->Get_ColliderType() != COLLIDER::TYPE_SPHERE)
-            continue;
-
-        _float fDist = 0.f;
-        CBounding_Sphere::RayDesc rayDesc = {};
-        rayDesc.MousePos = { mousePos.x, mousePos.y, mousePos.z };
-        rayDesc.MouseRay = mouseRay;
-        rayDesc.fDist = &fDist;
-
-        if (pCollider->Get_Bounding()->Intersect(COLLIDER::TYPE_RAY, nullptr, &rayDesc))
-        {
-            if (fDist < minDist)
-            {
-                minDist = fDist;
-                pClosest = pCollider;
-            }
-        }
-    }
-
-    return pClosest;
-}
-
-
-void CLevel_Lounge::Click_Chase_Monster(CMonster* pMonster)
-{
-    if (!pMonster) return;
-
-    _float4 monsterPickedPos = { 0.f, 0.f, 0.f, 1.f };
-
-    CTransform* pMonsterTransform = dynamic_cast<CTransform*>(pMonster->Find_Component(TEXT("Com_Transform")));
-    if (!pMonsterTransform) return;
-
-    m_pPlayer->Set_Chasing(true, pMonsterTransform);
-
-    XMStoreFloat4(&monsterPickedPos, pMonsterTransform->Get_State(CTransform::STATE_POSITION));
-    m_pPlayer->Set_MonsterPickedPos(monsterPickedPos);
-
-    //m_pPlayer->Change_State(PLAYER_STATE::WALK);  // 무기 바꾸면 여기 상태도 수정해야 함
 }
 
 HRESULT CLevel_Lounge::Render()

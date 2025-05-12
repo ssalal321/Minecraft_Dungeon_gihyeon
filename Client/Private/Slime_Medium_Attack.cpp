@@ -25,7 +25,7 @@ void CSlime_Medium_Attack::State_Enter()
     m_fCoolTime = 0.f;
     m_bHitMode_Activated = false;
 
-	m_pActorModelCom->Set_Animation(static_cast<_uint>(SLIME_MEDIUM_STATE::ATTACK), false, 0.6f);
+	m_pActorModelCom->Set_Animation(static_cast<_uint>(SLIME_MEDIUM_STATE::ATTACK), false, 0.7f);
 }
 
 void CSlime_Medium_Attack::State_Priority_Update(_float fTimeDelta)

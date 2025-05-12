@@ -10,10 +10,11 @@ class ENGINE_DLL CPartObject abstract : public CGameObject
 public:
 	typedef struct tagPartObject : public CGameObject::GAMEOBJECT_DESC
 	{
-		CContainerObject*	pContainerObject = {nullptr};
-		const _float4x4*	pParentWorldMatrix = {nullptr};
+		CContainerObject*	pContainerObject	= {nullptr};
+		const _float4x4*	pParentWorldMatrix	= {nullptr};
 
-		_bool*		pCollisionActivating = { nullptr };
+		_bool*		pBigCollisionActivating		= { nullptr };
+		_bool*		pSmallCollisionActivating	= { nullptr };
 
 	}PARTOBJECT_DESC;
 
@@ -36,9 +37,11 @@ public:
 protected:
 	class CContainerObject*		m_pContainerObject = { nullptr };
 
-	const _float4x4*	m_pParentWorldMatrix = { nullptr };
-	_float4x4			m_CombinedWorldMatrix = {};
-	_bool*				m_pCollisionActivating = { nullptr };
+	const _float4x4*	m_pParentWorldMatrix		= { nullptr };
+	_float4x4			m_CombinedWorldMatrix		= {};
+
+	_bool*				m_pBigCollisionActivating	= { nullptr };
+	_bool*				m_pSmallCollisionActivating = { nullptr };
 
 public:
 	CGameObject* Clone(void* pArg)	override = 0;

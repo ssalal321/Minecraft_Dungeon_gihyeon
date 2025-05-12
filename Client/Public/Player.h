@@ -5,7 +5,8 @@
 /* 플레이어라는 객체를 구성하기위한 파츠들을 모아서 쥐고 있는 객체. */
 
 BEGIN(Client)
-class CState;
+	class CMonster;
+	class CState;
 class CInventoryData;
 class CArrowPool_Player;
 
@@ -31,8 +32,8 @@ public:
 
 		~PLAYER_DESC() override = default;
 
-		const _int&	Get_CurrentHP() const { return iCurrentHP; }
-		const _int&	Get_MaxHP()		const { return iMaxHP; }
+		const _int&		Get_CurrentHP() const { return iCurrentHP; }
+		const _int&		Get_MaxHP()		const { return iMaxHP; }
 		const _int&		Get_Arrow_DealPoint() const { return iArrowDealPoint; }
 		const _float&	Get_AttackableRange() const { return fAttackableRange; }
 
@@ -84,7 +85,7 @@ public:
 	const  _float4&		Get_MonsterPickedPosition()	const { return m_MonsterPickedPos; }
 		
 	const  _bool&		Get_ShootArrow()			const { return m_bShootArrow; }
-	const  _float4&		Get_PickedPosition()		const { return m_PickedPos; }
+	const  _float4&		Get_PickedPosition()		const { return m_ClickPickedPos; }
 	_bool&				Get_Attacking()	{ return m_bAttacking; }
 		
 	void	Set_Attacking(_bool bAttacking) { m_bAttacking = bAttacking; }
@@ -113,7 +114,7 @@ public:
 	void	Set_Shoot_Arrow(_bool bShootArrow, _float4 pickedPos)
 	{
 		m_bShootArrow = bShootArrow;
-		m_PickedPos = pickedPos;
+		m_ClickPickedPos = pickedPos;
 	}
 
 	void	Set_Shoot_Arrow(_bool bShootArrow) { m_bShootArrow = bShootArrow; }
@@ -127,6 +128,8 @@ public:
 	HRESULT		Render()							override;
 
 public:
+	void	Hover_and_Chase_Monster();
+
 	void	Delete_NavigationCom();
 
 	void	Change_State(PLAYER_STATE playerState);
@@ -150,13 +153,19 @@ private:
 #pragma endregion
 
 #pragma region MONSTER
-	_bool				m_bAttacking	= { false };
-	_bool				m_bChasing		= { false };
+	_bool				m_bHoveringMonster	= { false };
+	CMonster*			m_pPickedMonster	= { nullptr };
+
+	_bool				m_bAttacking		= { false };
+	_bool				m_bAlwaysActivated	= { true };
+
+	_bool				m_bChasing			= { false };
 	CTransform*			m_pMonsterTransformCom = { nullptr };
+
 	_float4				m_MonsterPickedPos = { 0.f, 0.f, 0.f, 1.f };
 
 	_bool				m_bShootArrow	= { false };
-	_float4				m_PickedPos	= { 0.f, 0.f, 0.f, 1.f };
+	_float4				m_ClickPickedPos	= { 0.f, 0.f, 0.f, 1.f };
 #pragma endregion
 
 private:
@@ -165,6 +174,8 @@ private:
 	HRESULT		Ready_PartObjects();
 	HRESULT		Ready_States();
 
+	CCollider*  Get_Closest_Collider(const _float4& mousePos, const _float3& mouseRay);
+	void		Click_Chase_Monster(CMonster* pMonster);
 
 public:
 	static CPlayer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
