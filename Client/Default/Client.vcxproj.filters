@@ -274,6 +274,9 @@
     <Filter Include="02.GameObjects\Item\Armor\Wolf_Armor">
       <UniqueIdentifier>{5398ece9-bbb2-4d11-a507-ae8dede8243b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Item\Armor\Wolf_Armor\Mask">
+      <UniqueIdentifier>{404765d5-b382-4cfb-a40c-1a2cd2d9595e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -547,7 +550,10 @@
       <Filter>02.GameObjects\Item\Armor</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Wolf_Armor.h">
-      <Filter>02.GameObjects\Item\Armor\Wolf_Armor</Filter>
+      <Filter>02.GameObjects\Item\Armor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\WolfArmor_Mask.h">
+      <Filter>02.GameObjects\Item\Armor\Wolf_Armor\Mask</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -817,7 +823,10 @@
       <Filter>02.GameObjects\Item\Armor</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Wolf_Armor.cpp">
-      <Filter>02.GameObjects\Item\Armor\Wolf_Armor</Filter>
+      <Filter>02.GameObjects\Item\Armor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\WolfArmor_Mask.cpp">
+      <Filter>02.GameObjects\Item\Armor\Wolf_Armor\Mask</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

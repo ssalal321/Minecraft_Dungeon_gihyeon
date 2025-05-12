@@ -224,9 +224,6 @@ HRESULT CPlayer::Ready_PartObjects()
 		return E_FAIL;
 
 
-	
-
-
 	/* 무기를 추가한다. */
 //#pragma region MELEE
 //	CItem::ITEM_DESC	ItemDesc{};

@@ -230,6 +230,7 @@
     <ClInclude Include="..\Public\Weapon_Bow.h" />
     <ClInclude Include="..\Public\Weapon_Glaive.h" />
     <ClInclude Include="..\Public\Weapon_ShortBow.h" />
+    <ClInclude Include="..\Public\WolfArmor_Mask.h" />
     <ClInclude Include="..\Public\Wolf_Armor.h" />
     <ClInclude Include="..\Public\Zombie.h" />
     <ClInclude Include="..\Public\Zombie_Attack.h" />
@@ -320,6 +321,7 @@
     <ClCompile Include="..\Private\Weapon_Bow.cpp" />
     <ClCompile Include="..\Private\Weapon_Glaive.cpp" />
     <ClCompile Include="..\Private\Weapon_ShortBow.cpp" />
+    <ClCompile Include="..\Private\WolfArmor_Mask.cpp" />
     <ClCompile Include="..\Private\Wolf_Armor.cpp" />
     <ClCompile Include="..\Private\Zombie.cpp" />
     <ClCompile Include="..\Private\Zombie_Attack.cpp" />

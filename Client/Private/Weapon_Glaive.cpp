@@ -27,8 +27,7 @@ HRESULT CWeapon_Glaive::Initialize(void* pArg)
 	/* 추가적으로 필요한 데이터를 Arg로 받아와 실 사용하기위한 객체의 정보를 생성해준다. */	
 	
 	m_eItemtype = ITEM_TYPE::MELEE;
-	m_iDealPoint = 10;
-	
+	m_iDealPoint = 5;
 	m_bItemActive = true;
 
 	if (FAILED(__super::Initialize(pArg)))

@@ -29,6 +29,7 @@
 #include "Weapon_Bow.h"
 #include "Weapon_Glaive.h"
 #include "Weapon_ShortBow.h"
+#include "WolfArmor_Mask.h"
 #include "Wolf_Armor.h"
 #include "Zombie.h"
 
@@ -245,7 +246,7 @@ HRESULT CLoader::Ready_Prototype_TextureCom_Static()
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_Bow */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Wolf_Armor"),
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_WolfArmor"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Inventory/T_WolfArmor_Icon_inventory.dds"), 1))))
 		return E_FAIL;
 
@@ -513,8 +514,13 @@ HRESULT CLoader::Ready_Prototype_GameObject_Static()
 		CWeapon_Bow::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_WolfArmor_Mask */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_WolfArmor_Mask"),
+		CWolfArmor_Mask::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	/* For.Prototype_GameObject_WolfArmor */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Wolf_Armor"),
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_WolfArmor"),
 		CWolf_Armor::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
@@ -548,35 +554,36 @@ HRESULT CLoader::Ready_Prototype_Armors_Static()
 	_matrix		PreTransformMatrix = XMMatrixIdentity();
 
 	/* For.Prototype_Component_Model_WolfArmor_Mask */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Wolf_Armor_Mask"),
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_WolfArmor_Mask"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Armor/WolfArmor/WolfArmor_Mask.fbx", PreTransformMatrix))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Model_WolfArmor_FurArmor */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Wolf_Armor_FurArmor"),
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_WolfArmor_FurArmor"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Armor/WolfArmor/WolfArmor_FurArmor.fbx", PreTransformMatrix))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Model_WolfArmor_L_Arm */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Wolf_Armor_L_Arm"),
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_WolfArmor_L_Arm"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Armor/WolfArmor/WolfArmor_L_Arm.fbx", PreTransformMatrix))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Model_WolfArmor_R_Arm */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Wolf_Armor_R_Arm"),
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_WolfArmor_R_Arm"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Armor/WolfArmor/WolfArmor_R_Arm.fbx", PreTransformMatrix))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Model_WolfArmor_L_Leg */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Wolf_Armor_L_Leg"),
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_WolfArmor_L_Leg"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Armor/WolfArmor/WolfArmor_L_Leg.fbx", PreTransformMatrix))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Model_WolfArmor_R_Leg */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Wolf_Armor_R_Leg"),
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_WolfArmor_R_Leg"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Armor/WolfArmor/WolfArmor_R_Leg.fbx", PreTransformMatrix))))
 		return E_FAIL;
 
+	return S_OK;
 }
 
 
