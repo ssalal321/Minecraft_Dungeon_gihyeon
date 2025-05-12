@@ -1,5 +1,6 @@
 #include "Player.h"
 
+#include "Armor.h"
 #include "ArrowPool_Player.h"
 #include "GameInstance.h"
 
@@ -8,6 +9,7 @@
 
 #include "FSM.h"
 #include "InventoryData.h"
+#include "Monster.h"
 #include "Player_BowAction.h"
 #include "Player_GetHit.h"
 #include "Player_Glaive_Combo.h"
@@ -84,6 +86,8 @@ void CPlayer::Late_Update(_float fTimeDelta)
 {
 	m_pPlayerFSM->Late_Update_State(fTimeDelta);
 
+	Hover_and_Chase_Monster();
+
 	__super::Late_Update(fTimeDelta);
 
 	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
@@ -97,6 +101,48 @@ HRESULT CPlayer::Render()
 #endif
 
 	return S_OK;
+}
+
+void CPlayer::Hover_and_Chase_Monster()
+{
+	_float4     fWorldMousePos = {};
+	_float3     fWorldMouseRay = {};
+	m_pGameInstance->Compute_MouseRay(fWorldMousePos, fWorldMouseRay);
+
+	// 1. 현재 가장 가까운 Monster collider 찾기
+	CCollider* pClosestCollider = Get_Closest_Collider(fWorldMousePos, fWorldMouseRay);
+	if (nullptr == pClosestCollider || false == pClosestCollider->Get_ColliderActive())  // 아래에 다른 코드 없기도 하고 나중에 함수로 뺄 생각 하고 넣은 것
+		return;
+
+	CMonster* pPrevMonster = m_pPickedMonster;
+	CMonster* pCurrMonster = dynamic_cast<CMonster*>(dynamic_cast<CPartObject*>(pClosestCollider->Get_OwnerObject())->Get_ContainerObject());
+
+	// 2. 이전 Hovered 상태 해제
+	if (pPrevMonster && pPrevMonster != pCurrMonster)
+	{
+		pPrevMonster->Set_Hovered(false);
+
+		//std::wcerr << "[휘바 끝XXXXXXXXXXX]" << std::endl;
+	}
+
+	// 3. 현재 Hovered 상태 설정 및 클릭 처리
+	if (pCurrMonster)
+	{
+		pCurrMonster->Set_Hovered(true);
+		m_pPickedMonster = pCurrMonster;
+
+		//std::wcerr << "[휘바휘바]" << std::endl;
+
+		if (m_pGameInstance->Get_Key(VK_LBUTTON) && !bMouseClickLock)
+		{
+			Click_Chase_Monster(pCurrMonster);
+		}
+	}
+
+	if (m_pGameInstance->Key_Up(VK_LBUTTON) && !bMouseClickLock)
+	{
+		Set_Chasing(false);
+	}
 }
 
 void CPlayer::Delete_NavigationCom()
@@ -168,13 +214,17 @@ HRESULT CPlayer::Ready_PartObjects()
 	/* 몸통을 추가한다. */
 	CBody_Player::BODY_PLAYER_DESC		BodyDesc{};
 
-	BodyDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
-	BodyDesc.pState = &m_iState;
-	BodyDesc.pContainerObject = this;
-	BodyDesc.pCollisionActivating = &m_bAttacking;
+	BodyDesc.pParentWorldMatrix			= m_pTransformCom->Get_WorldMatrix_Ptr();
+	BodyDesc.pState						= &m_iState;
+	BodyDesc.pContainerObject			= this;
+	BodyDesc.pBigCollisionActivating	= &m_bAttacking;
+	BodyDesc.pSmallCollisionActivating	= &m_bAlwaysActivated;
 
 	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Body_Player"), TEXT("Part_Body"), &BodyDesc)))
 		return E_FAIL;
+
+
+	
 
 
 	/* 무기를 추가한다. */
@@ -252,6 +302,55 @@ HRESULT CPlayer::Ready_States()
 	m_pPlayerFSM->Init_State(m_StatesVec[static_cast<_uint>(PLAYER_STATE::IDLE)]);
 
 	return S_OK;
+}
+
+CCollider* CPlayer::Get_Closest_Collider(const _float4& mousePos, const _float3& mouseRay)
+{
+	unordered_map<_wstring, vector<CCollider*>> colliders = *m_pGameInstance->Get_Colliders(m_pGameInstance->Get_CurrentLevelIndex());
+	auto it = colliders.find(TEXT("Monster"));
+	if (it == colliders.end())
+		return nullptr;
+
+	CCollider* pClosest = nullptr;
+	_float minDist = FLT_MAX;
+
+	for (auto& pCollider : it->second)
+	{
+		if (pCollider->Get_ColliderType() != COLLIDER::TYPE_SPHERE)
+			continue;
+
+		_float fDist = 0.f;
+		CBounding_Sphere::RayDesc rayDesc = {};
+		rayDesc.MousePos = { mousePos.x, mousePos.y, mousePos.z };
+		rayDesc.MouseRay = mouseRay;
+		rayDesc.fDist = &fDist;
+
+		if (pCollider->Get_Bounding()->Intersect(COLLIDER::TYPE_RAY, nullptr, &rayDesc))
+		{
+			if (fDist < minDist)
+			{
+				minDist = fDist;
+				pClosest = pCollider;
+			}
+		}
+	}
+
+	return pClosest;
+}
+
+void CPlayer::Click_Chase_Monster(CMonster* pMonster)
+{
+	if (!pMonster) return;
+
+	_float4 monsterPickedPos = { 0.f, 0.f, 0.f, 1.f };
+
+	CTransform* pMonsterTransform = dynamic_cast<CTransform*>(pMonster->Find_Component(TEXT("Com_Transform")));
+	if (!pMonsterTransform) return;
+
+	Set_Chasing(true, pMonsterTransform);
+
+	XMStoreFloat4(&monsterPickedPos, pMonsterTransform->Get_State(CTransform::STATE_POSITION));
+	Set_MonsterPickedPos(monsterPickedPos);
 }
 
 

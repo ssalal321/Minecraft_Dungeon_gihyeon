@@ -99,40 +99,41 @@ HRESULT CBody_Skeleton::Ready_Components()
 		return E_FAIL;
 
 
-	///* Com_Collider */
-	//CBounding_OBB::BOUNDING_OBB_DESC		OBBCollDesc{};
+	/* Com_Collider Big*/
+	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereBigCollDesc{};
 
-	//OBBCollDesc.vExtents	= _float3(0.6f, 1.f, 0.6f);
-	//OBBCollDesc.vCenter		= _float3(0.f, OBBCollDesc.vExtents.y, 0.f);
-	//OBBCollDesc.vRotation	= _float3(0.f, /*XMConvertToRadians(0.f)*/ 0.f, 0.f);
-	//OBBCollDesc.pGameObject = this;
-	//OBBCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
-	//OBBCollDesc.pCollisionActivated = m_pCollisionActivating;
-	//
-	//CComponent* pColliderOBBCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_OBB"),
-	//	TEXT("Com_Collider_OBB"), reinterpret_cast<CComponent**>(&m_pColliderCom), &OBBCollDesc);
+	SphereBigCollDesc.fRadius = 1.6f;
+	SphereBigCollDesc.vCenter = _float3(0.f, SphereBigCollDesc.fRadius - 0.2f, 0.f);
+	SphereBigCollDesc.pGameObject = this;
+	SphereBigCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
+	SphereBigCollDesc.pCollisionActivated = m_pBigCollisionActivating;
 
-	//if (nullptr == pColliderOBBCom)
-	//	return E_FAIL;
+	CComponent* pColliderBigSphereCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
+		TEXT("Com_Collider_BigSphere"), reinterpret_cast<CComponent**>(&m_pBigColliderCom), &SphereBigCollDesc);
 
-	//m_pGameInstance->Add_ColliderCom(pColliderOBBCom, TEXT("Monster_Body_NoHit"), TEXT("Monster"));
-
-	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereCollDesc{};
-
-	SphereCollDesc.fRadius = 1.6f;
-	SphereCollDesc.vCenter = _float3(0.f, SphereCollDesc.fRadius, 0.f);
-	SphereCollDesc.pGameObject = this;
-	SphereCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
-	SphereCollDesc.pCollisionActivated = m_pCollisionActivating;
-
-	CComponent* pColliderSphereCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
-		TEXT("Com_Collider_Sphere"), reinterpret_cast<CComponent**>(&m_pColliderCom), &SphereCollDesc);
-
-	if (nullptr == pColliderSphereCom)
+	if (nullptr == pColliderBigSphereCom)
 		return E_FAIL;
 
-	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), m_pColliderCom, TEXT("Monster_Body_NoHit"), TEXT("Monster"));
-	dynamic_cast<CCollider*>(pColliderSphereCom)->Set_AllowSameGroupCollision(true);
+	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), m_pBigColliderCom, TEXT("Monster_Body_NoHit"), TEXT("Monster"));
+	
+
+	/* Com_Collider Small*/
+	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereSmallCollDesc{};
+
+	SphereSmallCollDesc.fRadius = 0.8f;
+	SphereSmallCollDesc.vCenter = _float3(0.f, SphereSmallCollDesc.fRadius + 0.2f, 0.f);
+	SphereSmallCollDesc.pGameObject = this;
+	SphereSmallCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
+	SphereSmallCollDesc.pCollisionActivated = m_pSmallCollisionActivating;
+
+	CComponent* pColliderSmallSphereCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
+		TEXT("Com_Collider_SmallSphere"), reinterpret_cast<CComponent**>(&m_pSmallColliderCom), &SphereSmallCollDesc);
+
+	if (nullptr == pColliderSmallSphereCom)
+		return E_FAIL;
+
+	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), m_pSmallColliderCom, TEXT("Monster_Body_Small"), TEXT("Monster"));
+	dynamic_cast<CCollider*>(pColliderSmallSphereCom)->Set_AllowSameGroupCollision(true);
 
 	return S_OK;
 }
@@ -212,7 +213,8 @@ void CBody_Skeleton::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pColliderCom);
+	Safe_Release(m_pBigColliderCom);
+	Safe_Release(m_pSmallColliderCom);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pModelCom);
 }

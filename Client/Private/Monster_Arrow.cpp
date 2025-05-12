@@ -151,7 +151,8 @@ void CMonster_Arrow::Reset()
 
 void CMonster_Arrow::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)
 {
-	if (CCollider::COLLISION_STATE::ENTER == eCollisionState &&
+	if (pOther->Get_ColliderActive() &&
+		CCollider::COLLISION_STATE::ENTER == eCollisionState &&
 		TEXT("Player_Body") == pOther->Get_ColliderTag())
 	{
 		m_bCollided = true;

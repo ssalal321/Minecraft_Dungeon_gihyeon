@@ -105,19 +105,38 @@ HRESULT CBody_Player::Ready_Components()
 	/* Com_Collider */
 	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereCollDesc{};
 
-	SphereCollDesc.fRadius = 1.4f;
-	SphereCollDesc.vCenter = _float3(0.f, SphereCollDesc.fRadius, 0.f);
+	SphereCollDesc.fRadius = 1.6f;
+	SphereCollDesc.vCenter = _float3(0.f, SphereCollDesc.fRadius - 0.2f, 0.f);
 	SphereCollDesc.pGameObject = this;
 	SphereCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
-	SphereCollDesc.pCollisionActivated = m_pCollisionActivating;
+	SphereCollDesc.pCollisionActivated = m_pBigCollisionActivating;
 
 	CComponent* pColliderSphereCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
-		TEXT("Com_Collider_Sphere"), reinterpret_cast<CComponent**>(&m_pColliderCom), &SphereCollDesc);
+		TEXT("Com_Collider_Sphere"), reinterpret_cast<CComponent**>(&m_pBigColliderCom), &SphereCollDesc);
 
 	if (nullptr == pColliderSphereCom)
 		return E_FAIL;
 
 	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), pColliderSphereCom, TEXT("Player_Body"), TEXT("Player"), true);
+
+
+	/* Com_Collider Small*/
+	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereSmallCollDesc{};
+
+	SphereSmallCollDesc.fRadius = 0.8f;
+	SphereSmallCollDesc.vCenter = _float3(0.f, SphereSmallCollDesc.fRadius + 0.2f, 0.f);
+	SphereSmallCollDesc.pGameObject = this;
+	SphereSmallCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
+	SphereSmallCollDesc.pCollisionActivated = m_pSmallCollisionActivating;
+
+	CComponent* pColliderSmallSphereCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
+		TEXT("Com_Collider_SmallSphere"), reinterpret_cast<CComponent**>(&m_pSmallColliderCom), &SphereSmallCollDesc);
+
+	if (nullptr == pColliderSmallSphereCom)
+		return E_FAIL;
+
+	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), m_pSmallColliderCom, TEXT("Player_Body_Small"), TEXT("Player"));
+	dynamic_cast<CCollider*>(pColliderSmallSphereCom)->Set_AllowSameGroupCollision(true);
 
 	return S_OK;
 }
@@ -200,7 +219,8 @@ void CBody_Player::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pColliderCom);
+	Safe_Release(m_pBigColliderCom);
+	Safe_Release(m_pSmallColliderCom);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pModelCom);
 }

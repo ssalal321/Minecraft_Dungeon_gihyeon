@@ -37,7 +37,7 @@ HRESULT CSkeleton::Initialize(void* pArg)
 {
 	const _wstring& skeletonGameObjectTag = TEXT("GameObject_Skeleton") + to_wstring(m_iSkeletonID++);
 
-	m_pMonsterInfo = new MONSTER_DESC(skeletonGameObjectTag, 30, 30, 3, 8.f, 12.f, false, 90.f, 1.5f);
+	m_pMonsterInfo = new MONSTER_DESC(skeletonGameObjectTag, 30, 30, 2, 8.f, 12.f, false, 90.f, 1.5f);
 
 	if (FAILED(__super::Initialize(m_pMonsterInfo)))
 		return E_FAIL;
@@ -95,11 +95,12 @@ HRESULT CSkeleton::Ready_PartObjects()
 	/* 몸통을 추가한다. */
 	CBody_Skeleton::BODY_SKELETON_DESC		BodyDesc{};
 
-	BodyDesc.strGameObjectTag = TEXT("GameObject_Body_Skeleton");
-	BodyDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
-	BodyDesc.pState = &m_iState;
-	BodyDesc.pContainerObject = this;
-	BodyDesc.pCollisionActivating = &m_bAttacking;
+	BodyDesc.strGameObjectTag			= TEXT("GameObject_Body_Skeleton");
+	BodyDesc.pParentWorldMatrix			= m_pTransformCom->Get_WorldMatrix_Ptr();
+	BodyDesc.pState						= &m_iState;
+	BodyDesc.pContainerObject			= this;
+	BodyDesc.pBigCollisionActivating	= &m_bAttacking;
+	BodyDesc.pSmallCollisionActivating	= &m_bAlwaysActivated;
 
 	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Body_Skeleton"), TEXT("Part_Body"), &BodyDesc)))
 		return E_FAIL;
@@ -112,11 +113,11 @@ HRESULT CSkeleton::Ready_PartObjects()
 	if (nullptr == pBody)
 		return E_FAIL;
 
-	ItemDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
-	ItemDesc.pState = &m_iState;
-	ItemDesc.pSocketMatrix = pBody->Get_CombinedTransformationMatrix("J_L_Weapon");
-	ItemDesc.pContainerObject = this;
-	ItemDesc.pCollisionActivating = &m_bAttacking;
+	ItemDesc.pParentWorldMatrix		 = m_pTransformCom->Get_WorldMatrix_Ptr();
+	ItemDesc.pState					 = &m_iState;
+	ItemDesc.pSocketMatrix			 = pBody->Get_CombinedTransformationMatrix("J_L_Weapon");
+	ItemDesc.pContainerObject		 = this;
+	ItemDesc.pBigCollisionActivating = &m_bAttacking;
 
 	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_ShortBow"), TEXT("Part_Weapon_ShortBow"), &ItemDesc)))
 		return E_FAIL;
@@ -134,10 +135,12 @@ HRESULT CSkeleton::Ready_States()
 	m_StatesVec.resize(static_cast<_uint>(SKELETON_STATE::STATE_END));	// state vector 자리 예약
 
 	CModel* pSkeletonModel = dynamic_cast<CModel*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Model")));
-	CCollider* pColliderSphere = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_Sphere")));
+	CCollider* pBigCollider = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_BigSphere")));
+	CCollider* pSmallCollider = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_SmallSphere")));
 
 	CState_Skeleton::STATE_SKELETON_DESC	pStateSkeletonDesc = {};
-	pStateSkeletonDesc.pColliderCom			= pColliderSphere;
+	pStateSkeletonDesc.pBigColliderCom		= pBigCollider;
+	pStateSkeletonDesc.pSmallColliderCom = pSmallCollider;
 	pStateSkeletonDesc.pActorModelCom		= pSkeletonModel;
 	pStateSkeletonDesc.pNavigationCom		= m_pNavigationCom;
 	pStateSkeletonDesc.pTransformCom		= m_pTransformCom;

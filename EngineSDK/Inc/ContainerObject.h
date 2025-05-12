@@ -26,8 +26,10 @@ public:
 	HRESULT			Add_PartObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, const _wstring& strPartObjectTag, void* pArg = nullptr);
 	HRESULT			Add_PartObject(CPartObject* pPartObject, const _wstring& strPartObjectTag);
 	HRESULT			Delete_PartObject(const _wstring& strPartObjectTag, _bool bReleaseMemory);
+	void			Resolve_Penetration_And_Slide(CCollider* pOther, _float fForce);
+	
 
-	void			Apply_PushBack(const _float4& vFromPosition, _float fForce, CNavigation* pNavigation);
+	//void			Apply_PushBack(const _float4& vFromPosition, _float fForce, CNavigation* pNavigation);
 
 protected:
 	map<const _wstring, class CPartObject*>		m_PartObjects;

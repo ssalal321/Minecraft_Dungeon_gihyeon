@@ -124,28 +124,63 @@ HRESULT CContainerObject::Delete_PartObject(const _wstring& strPartObjectTag, _b
 }
 
 
-void CContainerObject::Apply_PushBack(const _float4& vFromPosition, _float fForce, CNavigation* pNavigation)
+// 겹침 해소 + 슬라이딩 처리
+void CContainerObject::Resolve_Penetration_And_Slide(CCollider* pOther, _float fForce)
 {
-	_vector vMyPos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
-	_vector vPushDir = vMyPos - XMLoadFloat4(&vFromPosition);
+	if (pOther == nullptr)
+		return;
 
-	if (XMVector3Equal(vPushDir, XMVectorZero()))
+	CTransform* pOtherTransform = dynamic_cast<CTransform*>(pOther->Get_OwnerObject()->Find_Component(TEXT("Com_Transform")));
+	if (!pOtherTransform)
+		return;
+
+	_vector vMyPos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+	_vector vOtherPos = pOtherTransform->Get_State(CTransform::STATE_POSITION);
+
+	_vector vToOther = vMyPos - vOtherPos;
+	_float fDist = XMVectorGetX(XMVector3Length(vToOther));
+
+	// 구체 반지름 (필요 시 파라미터로)
+	const _float fRadiusSelf = 0.8f;
+	const _float fRadiusOther = 0.8f;
+	const _float fMinDistance = fRadiusSelf + fRadiusOther;
+
+	if (fDist < fMinDistance && fDist > 0.001f)
 	{
-		_float randX = static_cast<_float>((rand() % 200 - 100) / 100.0f); // -1.0f ~ 1.0f
-		_float randZ = static_cast<_float>((rand() % 200 - 100) / 100.0f);
-		vPushDir = XMVectorSet(randX, 0.f, randZ, 0.f);
-		vPushDir = XMVector3Normalize(vPushDir);
+		_vector vDir = XMVector3Normalize(vToOther);
+		_vector vSeparation = vDir * (fMinDistance - fDist + 0.001f);
+
+		// 나만 밀림
+		_vector vNewPos = vMyPos + vSeparation;
+		m_pTransformCom->Set_State(CTransform::STATE_POSITION, vNewPos);
+	}
+	else if (fDist < 0.001f)
+	{
+		// 같은 위치일 경우 랜덤 또는 고정 방향으로 약간 밀기
+		_vector vPush = XMVectorSet(0.01f, 0.f, 0.01f, 0.f);
+		m_pTransformCom->Set_State(CTransform::STATE_POSITION, vMyPos + vPush);
 	}
 
-	vPushDir = XMVector3Normalize(vPushDir);
+	// 슬라이딩 처리 (Look 방향 기준)
+	_vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+	_vector vSlideDir = XMVector3Normalize(vLook - XMVector3Dot(vLook, XMVector3Normalize(vToOther)) * XMVector3Normalize(vToOther));
 
-	_vector vNewPos = vMyPos + vPushDir * fForce;
+	_vector vSlideTarget = m_pTransformCom->Get_State(CTransform::STATE_POSITION) + vSlideDir * fForce;
 
-	// NavMesh 위에 있을 경우만 이동
-	if (pNavigation == nullptr || pNavigation->Can_Move(vNewPos))
-		m_pTransformCom->Set_State(CTransform::STATE_POSITION, vNewPos);
+	CNavigation* pNav = dynamic_cast<CNavigation*>(Find_Component(TEXT("Com_Navigation")));
+	if (pNav)
+	{
+		_vector vResult;
+		if (pNav->Can_Move(vSlideTarget))
+			m_pTransformCom->Set_State(CTransform::STATE_POSITION, vSlideTarget);
+		else if (pNav->Can_Slide(vMyPos, vSlideTarget, vResult))
+			m_pTransformCom->Set_State(CTransform::STATE_POSITION, vResult);
+	}
+	else
+	{
+		m_pTransformCom->Set_State(CTransform::STATE_POSITION, vSlideTarget);
+	}
 }
-
 
 
 void CContainerObject::Free()

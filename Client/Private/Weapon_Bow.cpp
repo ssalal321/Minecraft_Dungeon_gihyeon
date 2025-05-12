@@ -25,13 +25,6 @@ HRESULT CWeapon_Bow::Initialize(void* pArg)
 {
 	/* 원형의 데이터를 복제하여 사본을 만들고. */
 	/* 추가적으로 필요한 데이터를 Arg로 받아와 실 사용하기위한 객체의 정보를 생성해준다. */	
-	ITEM_DESC* pDesc = static_cast<ITEM_DESC*>(pArg);
-
-	if (nullptr != pArg)
-	{
-		m_pTargetState = pDesc->pState;
-		m_pSocketMatrix = pDesc->pSocketMatrix;
-	}
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -133,7 +126,7 @@ HRESULT CWeapon_Bow::Ready_Components()
 	//OBBCollDesc.vRotation = _float3(0.f, /*XMConvertToRadians(0.f)*/ 0.f, 0.f);
 	//OBBCollDesc.pGameObject = this;
 	//OBBCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
-	//OBBCollDesc.pCollisionActivated = m_pCollisionActivating;
+	//OBBCollDesc.pCollisionActivated = m_pBigCollisionActivating;
 
 	//CComponent* pColliderCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_OBB"),
 	//	TEXT("Com_Collider_OBB"), reinterpret_cast<CComponent**>(&m_pColliderCom), &OBBCollDesc);

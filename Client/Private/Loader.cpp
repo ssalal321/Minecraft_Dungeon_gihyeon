@@ -29,6 +29,7 @@
 #include "Weapon_Bow.h"
 #include "Weapon_Glaive.h"
 #include "Weapon_ShortBow.h"
+#include "Wolf_Armor.h"
 #include "Zombie.h"
 
 
@@ -243,6 +244,11 @@ HRESULT CLoader::Ready_Prototype_TextureCom_Static()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Inventory/T_Bow_Icon_inventory.dds"), 1))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_Bow */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Wolf_Armor"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Inventory/T_WolfArmor_Icon_inventory.dds"), 1))))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -339,17 +345,22 @@ HRESULT CLoader::Ready_Prototype_ModelCom_Static()
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Weapon/Arrow.fbx", PreTransformMatrix))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Prototype_Armors_Static()))
+		return E_FAIL;
+
 	/* For.Prototype_Component_Model_LoungeMap */
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(270.f));
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_LoungeMap"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Map/Lounge/Lobby_NoGrass_Split.fbx", PreTransformMatrix))))
 		return E_FAIL;
 
-	///* For.Prototype_Component_Model_LoungeMap */
+	///* For.Prototype_Component_Model_SoggySwampMap */
 	//PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(270.f));
 	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_SoggySwampMap"),
 	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Map/SoggySwamp/SoggySwamp.fbx", PreTransformMatrix))))
 	//	return E_FAIL;
+
+
 
 	return S_OK;
 }
@@ -502,6 +513,11 @@ HRESULT CLoader::Ready_Prototype_GameObject_Static()
 		CWeapon_Bow::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_WolfArmor */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Wolf_Armor"),
+		CWolf_Armor::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	/* For.Prototype_GameObject_Arrow */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerArrow"),
 		CPlayer_Arrow::Create(m_pDevice, m_pContext))))
@@ -522,7 +538,45 @@ HRESULT CLoader::Ready_Prototype_GameObject_Static()
 	//	CSoggySwampMap::Create(m_pDevice, m_pContext))))
 	//	return E_FAIL;
 
+
+
 	return S_OK;
+}
+
+HRESULT CLoader::Ready_Prototype_Armors_Static()
+{
+	_matrix		PreTransformMatrix = XMMatrixIdentity();
+
+	/* For.Prototype_Component_Model_WolfArmor_Mask */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Wolf_Armor_Mask"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Armor/WolfArmor/WolfArmor_Mask.fbx", PreTransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_WolfArmor_FurArmor */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Wolf_Armor_FurArmor"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Armor/WolfArmor/WolfArmor_FurArmor.fbx", PreTransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_WolfArmor_L_Arm */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Wolf_Armor_L_Arm"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Armor/WolfArmor/WolfArmor_L_Arm.fbx", PreTransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_WolfArmor_R_Arm */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Wolf_Armor_R_Arm"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Armor/WolfArmor/WolfArmor_R_Arm.fbx", PreTransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_WolfArmor_L_Leg */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Wolf_Armor_L_Leg"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Armor/WolfArmor/WolfArmor_L_Leg.fbx", PreTransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_WolfArmor_R_Leg */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Wolf_Armor_R_Leg"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Armor/WolfArmor/WolfArmor_R_Leg.fbx", PreTransformMatrix))))
+		return E_FAIL;
+
 }
 
 

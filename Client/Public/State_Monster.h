@@ -11,8 +11,8 @@ public:
     typedef struct tagStateMonster
     {
         CModel*         pActorModelCom      = { nullptr };
-        CCollider*      pColliderCom     = { nullptr };
-        //CCollider*      pColliderSphereCom  = { nullptr };
+        CCollider*      pBigColliderCom     = { nullptr };
+        CCollider*      pSmallColliderCom   = { nullptr };
         CTransform*     pTransformCom       = { nullptr };
         CNavigation*    pNavigationCom      = { nullptr };
 
@@ -38,7 +38,8 @@ public:
 protected:
     CMonster::MONSTER_DESC*     m_pMonsterInfo = { nullptr };
     STATEMONSTER_DESC*          m_pStateMonsterDesc = { nullptr };
-    CCollider*                  m_pColliderCom = { nullptr };
+    CCollider*                  m_pBigColliderCom = { nullptr };
+    CCollider*                  m_pSmallColliderCom = { nullptr };
 
     _bool	m_bAnimationFinished = { false };
 
