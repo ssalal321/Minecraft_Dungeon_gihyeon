@@ -82,22 +82,22 @@ HRESULT CLevel_Lounge::Initialize()
 
 #pragma endregion
 
-//    #pragma region ARMOR
-//	CArmor::ARMOR_DESC	ArmorDesc{};
-//
-//	ArmorDesc.pParentWorldMatrix = pPlayerWorldMatrixPtr;
-//	ArmorDesc.pState = &m_pPlayer->Get_PlayerState();
-//	ArmorDesc.pMaskSocketMatrix  = pBody->Get_CombinedTransformationMatrix("Head_Armor");
-//	ArmorDesc.pBodySocketMatrix  = pBody->Get_CombinedTransformationMatrix("Body_Armor");
-//	ArmorDesc.pL_ArmSocketMatrix = pBody->Get_CombinedTransformationMatrix("L_Arm_Armor");
-//	ArmorDesc.pR_ArmSocketMatrix = pBody->Get_CombinedTransformationMatrix("R_Arm_Armor");
-//	ArmorDesc.pL_LegSocketMatrix = pBody->Get_CombinedTransformationMatrix("L_Leg_Armor");
-//	ArmorDesc.pR_LegSocketMatrix = pBody->Get_CombinedTransformationMatrix("R_Leg_Armor");
-//	ArmorDesc.pContainerObject = m_pPlayer;
-//
-//	// 인벤토리에 넣기
-//    m_pPlayer->Get_InventoryData()->Add_Item_To_StoreSlot(LEVEL_STATIC, TEXT("Prototype_GameObject_Wolf_Armor"), TEXT("Part_Armor"), &ArmorDesc);
-//#pragma endregion
+    #pragma region ARMOR
+	CArmor::ITEM_DESC	ArmorDesc{};
+
+	ArmorDesc.pParentWorldMatrix = pPlayerWorldMatrixPtr;
+	ArmorDesc.pState = &m_pPlayer->Get_PlayerState();
+	/*ArmorDesc.pMaskSocketMatrix  = pBody->Get_CombinedTransformationMatrix("Head_Armor");
+	ArmorDesc.pBodySocketMatrix  = pBody->Get_CombinedTransformationMatrix("Body_Armor");
+	ArmorDesc.pL_ArmSocketMatrix = pBody->Get_CombinedTransformationMatrix("L_Arm_Armor");
+	ArmorDesc.pR_ArmSocketMatrix = pBody->Get_CombinedTransformationMatrix("R_Arm_Armor");
+	ArmorDesc.pL_LegSocketMatrix = pBody->Get_CombinedTransformationMatrix("L_Leg_Armor");
+	ArmorDesc.pR_LegSocketMatrix = pBody->Get_CombinedTransformationMatrix("R_Leg_Armor");*/
+	ArmorDesc.pContainerObject = m_pPlayer;
+
+	// 인벤토리에 넣기
+    m_pPlayer->Get_InventoryData()->Add_Item_To_StoreSlot(LEVEL_STATIC, TEXT("Prototype_GameObject_WolfArmor"), TEXT("Part_Armor"), &ArmorDesc);
+#pragma endregion
 
     return S_OK;
 }

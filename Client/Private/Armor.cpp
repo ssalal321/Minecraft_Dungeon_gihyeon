@@ -58,7 +58,7 @@ void CArmor::Update(_float fTimeDelta)
 void CArmor::Late_Update(_float fTimeDelta)
 {
 	if (false == m_bItemActive)
-		return;
+		return; 
 
 	_matrix		SocketMatrix = XMLoadFloat4x4(m_pSocketMatrix);
 
@@ -110,7 +110,37 @@ HRESULT CArmor::Ready_Components()
 }
 
 
+CPartObject* CArmor::Find_PartObject(const _wstring& strPartObjectTag)
+{
+	auto	iter = m_ArmorPartObjects.find(strPartObjectTag);
+
+	if (iter == m_ArmorPartObjects.end())
+		return nullptr;
+
+	return iter->second;
+}
+
+HRESULT CArmor::Add_PartObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag,
+                               const _wstring& strPartObjectTag, void* pArg)
+{
+	if (nullptr != Find_PartObject(strPartObjectTag))
+		return E_FAIL;
+
+	CPartObject* pPartObject = dynamic_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTOTYPE_GAMEOBJECT, iPrototypeLevelIndex, strPrototypeTag, pArg));
+	if (nullptr == pPartObject)
+		return E_FAIL;
+
+	m_ArmorPartObjects.emplace(strPartObjectTag, pPartObject);
+
+	return S_OK;
+}
+
 void CArmor::Free()
 {
 	__super::Free();
+
+	for (auto& Pair : m_ArmorPartObjects)
+		Safe_Release(Pair.second);
+
+	m_ArmorPartObjects.clear();
 }
