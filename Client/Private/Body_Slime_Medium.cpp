@@ -107,7 +107,7 @@ HRESULT CBody_Slime_Medium::Ready_Components()
 	/* Com_Collider */
 	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereCollDesc{};
 
-	SphereCollDesc.fRadius = 1.f;
+	SphereCollDesc.fRadius = 1.3f;
 	SphereCollDesc.vCenter = _float3(0.f, SphereCollDesc.fRadius - 0.2f, 0.f);
 	SphereCollDesc.pGameObject = this;
 	SphereCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;

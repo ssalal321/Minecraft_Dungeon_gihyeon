@@ -68,12 +68,12 @@ void CTransform::Go_Straight(_float fTimeDelta, CNavigation* pNavigation, _float
 		if (pNavigation->Can_Move(vMovingPosition))
 		{
 			Set_State(STATE_POSITION, vMovingPosition);
-			std::cerr << "이동 중" << std::endl;
+			//std::cerr << "이동 중" << std::endl;
 		}
 		else if (pNavigation->Can_Slide(vPrevPosition, vMovingPosition, vSlidingPosition))
 		{
 			Set_State(STATE_POSITION, vSlidingPosition);
-			std::cerr << "슬라이딩" << std::endl;
+			//std::cerr << "슬라이딩" << std::endl;
 		}
 	}
 	else
@@ -125,7 +125,7 @@ void CTransform::Jump_Start(_float fJumpVelocity)
 		_vector vPos = Get_State(STATE_POSITION);
 		m_fCurrentY = XMVectorGetY(vPos);
 
-		std::cerr << "[점프]" << endl;
+		//std::cerr << "[점프]" << endl;
 	}
 }
 
@@ -160,7 +160,7 @@ void CTransform::Jump(_float fTimeDelta, CNavigation* pNavigation)
             pNavigation->SetUp_On_Navigation(this);
             m_bIsJumping = false;
 
-            std::cerr << "[착지]" << std::endl;
+            //std::cerr << "[착지]" << std::endl;
             return;
         }
     }

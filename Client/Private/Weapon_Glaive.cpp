@@ -122,8 +122,8 @@ HRESULT CWeapon_Glaive::Ready_Components()
 
 	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereCollDesc{};
 
-	SphereCollDesc.fRadius = 1.f;
-	SphereCollDesc.vCenter = _float3(0.f, SphereCollDesc.fRadius * 1.4f, 0.f);
+	SphereCollDesc.fRadius = 1.2f;
+	SphereCollDesc.vCenter = _float3(0.f, SphereCollDesc.fRadius * 1.3f, 0.f);
 	SphereCollDesc.pGameObject = this;
 	SphereCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
 	SphereCollDesc.pCollisionActivated = m_pBigCollisionActivating;

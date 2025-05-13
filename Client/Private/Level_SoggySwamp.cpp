@@ -1,5 +1,6 @@
 #include "Level_SoggySwamp.h"
 
+#include <iostream>
 #include <UI_Image.h>
 
 #include "GameInstance.h"
@@ -79,7 +80,7 @@ void CLevel_SoggySwamp::Update(_float fTimeDelta)
         pCurrMonster->Set_Hovered(true);
         m_pPickedMonster = pCurrMonster;
 
-        //std::wcerr << "[ÈÖ¹ÙÈÖ¹Ù]" << std::endl;
+        std::wcerr << "[ÈÖ¹ÙÈÖ¹Ù]" << std::endl;
 
         if (m_pGameInstance->Get_Key(VK_LBUTTON) && !bMouseClickLock)
         {

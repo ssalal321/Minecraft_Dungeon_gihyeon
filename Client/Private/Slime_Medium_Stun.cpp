@@ -57,7 +57,8 @@ void CSlime_Medium_Stun::State_Exit()
 void CSlime_Medium_Stun::Collision_Enter(CCollider* pOther)
 {
 	__super::Collision_Enter(pOther);
-	
+
+	Modify_HP(pOther);
 }
 
 void CSlime_Medium_Stun::Collision_Stay(CCollider* pOther)

@@ -12,15 +12,18 @@ private:
 
 public:
 	HRESULT Add_Font(const _wstring& strFontTag, const _tchar* pFontFilePath);
-
+	HRESULT Render(const _wstring& strFontTag, const _tchar* pText, const _float2& vPosition, _fvector vColor, _float fRotation, const _float2& vOrigin, _float fScale);
 private:
 	map<const _wstring, class CCustomFont*>				m_Fonts;
 	ID3D11Device*										m_pDevice = { nullptr };
 	ID3D11DeviceContext*								m_pContext = { nullptr };
 
 public:
-	static CFont_Manager*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pFontFilePath);
-	void	Free() override;
+	class CCustomFont* Find_Font(const _wstring& strFontTag);
+
+public:
+	static CFont_Manager* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual void Free() override;
 };
 
 END

@@ -2,6 +2,7 @@
 
 #include "Collision_Manager.h"
 #include "EventBus.h"
+#include "Font_Manager.h"
 #include "Input_Device.h"
 #include "Graphic_Device.h"
 #include "Timer_Manager.h"
@@ -72,6 +73,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 
 	m_pCollision_Manager = CCollision_Manager::Create(EngineDesc.iNumLevels);
 	if (nullptr == m_pCollision_Manager)
+		return E_FAIL;
+
+	m_pFont_Manager = CFont_Manager::Create(*ppDevice, *ppContext);
+	if (nullptr == m_pFont_Manager)
 		return E_FAIL;
 
 	m_pEventBus = CEventBus::Create();
@@ -414,6 +419,20 @@ unordered_map<_wstring, vector<CCollider*>>* CGameInstance::Get_Colliders(_uint 
 #pragma endregion
 
 
+#pragma region FONT_MANAGER
+HRESULT CGameInstance::Add_Font(const _wstring& strFontTag, const _tchar* pFontFilePath)
+{
+	return m_pFont_Manager->Add_Font(strFontTag, pFontFilePath);
+}
+
+HRESULT CGameInstance::Draw_Text(const _wstring& strFontTag, const _tchar* pText, const _float2& vPosition,
+	_fvector vColor, _float fRotation, const _float2& vOrigin, _float fScale)
+{
+	return m_pFont_Manager->Render(strFontTag, pText, vPosition, vColor, fRotation, vOrigin, fScale);
+}
+#pragma endregion
+
+
 void CGameInstance::Release_Engine()
 {
 	Safe_Release(m_pInput_Device);
@@ -428,6 +447,7 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pLight_Manager);
 	Safe_Release(m_pUI_Manager);
 	Safe_Release(m_pCollision_Manager);
+	Safe_Release(m_pFont_Manager);
 	Safe_Release(m_pEventBus);
 
 	Safe_Release(m_pGraphic_Device);

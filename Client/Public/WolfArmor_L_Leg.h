@@ -1,4 +1,4 @@
-#pragma onceCWolfArmor_L_Leg
+#pragma once
 #include "Client_Defines.h"
 #include "PartObject.h"
 

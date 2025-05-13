@@ -40,7 +40,7 @@ void CState_Slime_Large::State_Update(_float fTimeDelta)
 		
 		_vector vRight = m_pTransformCom->Get_State(CTransform::STATE_RIGHT);
 		vRight = XMVector3Normalize(vRight);  // 정규화
-		_vector vOffset = vRight * 0.9f;      // 0.9f 만큼 양옆으로 떨어지게
+		_vector vOffset = vRight * 1.3f;      // 1.3f 만큼 양옆으로 떨어지게
 
 		// Slime_Medium 생성할 두 위치 계산
 		_vector  vLeftPos  = vPosition - vOffset;
@@ -128,14 +128,13 @@ _bool CState_Slime_Large::Change_State_To_Idle()
 	return false;
 }
 
-_bool CState_Slime_Large::Change_State_To_Stun(CCollider* pOther)
+_bool CState_Slime_Large::Modify_HP(CCollider* pOther)
 {
 	if (TEXT("Player_Weapon") == pOther->Get_ColliderTag()
 		&& pOther->Get_Other_Collision_Activated())
 	{
 		CItem* pItem = dynamic_cast<CItem*>(pOther->Get_OwnerObject());
 		m_pMonsterInfo->Modify_CurrentHp(-pItem->Get_DealPoint());
-		m_pSlime_Large->Change_State(Make_Slime_LargeState(SLIME_LARGE_STATE::STUN));
 
 		return true;
 	}
@@ -145,8 +144,18 @@ _bool CState_Slime_Large::Change_State_To_Stun(CCollider* pOther)
 	{
 		CPlayer_Arrow* pPlayerArrow = dynamic_cast<CPlayer_Arrow*>(pOther->Get_OwnerObject());
 		m_pMonsterInfo->Modify_CurrentHp(-pPlayerArrow->Get_DealPoint());
-		m_pSlime_Large->Change_State(Make_Slime_LargeState(SLIME_LARGE_STATE::STUN));
 
+		return true;
+	}
+
+	return false;
+}
+
+_bool CState_Slime_Large::Change_State_To_Stun(CCollider* pOther)
+{
+	if (Modify_HP(pOther))
+	{
+		m_pSlime_Large->Change_State(Make_BabyZombieState(BABYZOMBIE_STATE::GET_HIT));
 		return true;
 	}
 

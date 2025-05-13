@@ -327,6 +327,9 @@
     <ClInclude Include="..\Public\UIObject.h">
       <Filter>01.Utility\08. UI</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CustomFont.h">
+      <Filter>01.Utility\09. Fonts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -478,6 +481,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\EventBus.cpp">
       <Filter>01.Utility\11. EventBus</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CustomFont.cpp">
+      <Filter>01.Utility\09. Fonts</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

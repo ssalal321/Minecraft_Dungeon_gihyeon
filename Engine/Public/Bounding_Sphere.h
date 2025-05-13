@@ -27,6 +27,8 @@ private:
 public:
 	void*		Get_Desc() override { return m_pDesc; }
 
+	_float		Get_Radius() const { return m_pLocalDesc->Radius; }
+
 	void	Edit_Bounding_Center(_float3 moveCenter) const
 	{
 		m_pLocalDesc->Center.x += moveCenter.x;

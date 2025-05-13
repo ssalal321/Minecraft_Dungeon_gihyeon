@@ -10,6 +10,7 @@
 #include "Body_Skeleton.h"
 #include "Body_Slime_Large.h"
 #include "Body_Slime_Medium.h"
+#include "Body_Slime_Small.h"
 #include "Body_Zombie.h"
 #include "InventoryBase.h"
 #include "InventoryGearSlot.h"
@@ -25,6 +26,7 @@
 #include "Skeleton.h"
 #include "Slime_Large.h"
 #include "Slime_Medium.h"
+#include "Slime_Small.h"
 #include "SoggySwampMap.h"
 #include "Weapon_Bow.h"
 #include "Weapon_Glaive.h"
@@ -314,7 +316,6 @@ HRESULT CLoader::Ready_Prototype_ModelCom_Static()
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Monster/Slime/Slime_Large.fbx", PreTransformMatrix))))
 		return E_FAIL;
 
-	PreTransformMatrix = XMMatrixIdentity();
 	/* For.Prototype_Component_Model_Skeleton */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Skeleton"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Monster/Skeleton/Skeleton.fbx", PreTransformMatrix))))
@@ -326,11 +327,13 @@ HRESULT CLoader::Ready_Prototype_ModelCom_Static()
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Monster/Slime/Slime_Medium.fbx", PreTransformMatrix))))
 		return E_FAIL;
 
-	///* For.Prototype_Component_Model_Slime_Small */
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Slime_Small"),
-	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Monster/Slime/Slime_Small.fbx", PreTransformMatrix))))
-	//	return E_FAIL;
+	//PreTransformMatrix = XMMatrixRotationAxis({0.f, 0.1, 0.f}, 90.f);
+	/* For.Prototype_Component_Model_Slime_Small */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Slime_Small"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Monster/Slime/Slime_Small2.fbx", PreTransformMatrix))))
+		return E_FAIL;
 
+	//PreTransformMatrix = XMMatrixIdentity();
 	/* For.Prototype_Component_Model_GlaiveSteel */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_GlaiveSteel"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Weapon/Glaive/GlaiveSteel.fbx", PreTransformMatrix))))
@@ -463,10 +466,10 @@ HRESULT CLoader::Ready_Prototype_GameObject_Static()
 		CBody_Slime_Medium::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	///* For.Prototype_GameObject_Body_Slime_Small */
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Body_Slime_Small"),
-	//	CBody_Slime_Small::Create(m_pDevice, m_pContext))))
-	//	return E_FAIL;
+	/* For.Prototype_GameObject_Body_Slime_Small */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Body_Slime_Small"),
+		CBody_Slime_Small::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 
 	/* For.Prototype_GameObject_Zombie */
@@ -494,10 +497,10 @@ HRESULT CLoader::Ready_Prototype_GameObject_Static()
 		CSlime_Medium::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	///* For.Prototype_GameObject_Slime_Large */
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Slime_Small"),
-	//	CSlime_Small::Create(m_pDevice, m_pContext))))
-	//	return E_FAIL;
+	/* For.Prototype_GameObject_Slime_Large */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Slime_Small"),
+		CSlime_Small::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	/* For.Prototype_GameObject_Camera_Free */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Free"),

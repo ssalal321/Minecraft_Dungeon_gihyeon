@@ -119,6 +119,11 @@ public:
 
 #pragma endregion
 
+#pragma region FONT_MANAGER
+	HRESULT		Add_Font(const _wstring& strFontTag, const _tchar* pFontFilePath);
+	HRESULT		Draw_Text(const _wstring& strFontTag, const _tchar* pText, const _float2& vPosition, _fvector vColor = XMVectorSet(1.f, 1.f, 1.f, 1.f), _float fRotation = 0.f, const _float2& vOrigin = _float2(0.f, 0.f), _float fScale = 1.f);
+#pragma endregion
+
 #pragma region EVENTBUS
 	template <typename T>
 	HRESULT   Subscribe(function<void(const T&)> handler)
@@ -152,6 +157,7 @@ private:
 	class	CLight_Manager*			m_pLight_Manager		= { nullptr };
 	class	CUI_Manager*			m_pUI_Manager			= { nullptr };
 	class	CCollision_Manager*		m_pCollision_Manager	= { nullptr };
+	class	CFont_Manager*			m_pFont_Manager			= { nullptr };
 	class	CPicking*				m_pPicking				= { nullptr };
 	class   CEventBus*				m_pEventBus				= { nullptr };
 	

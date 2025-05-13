@@ -27,12 +27,14 @@ private:
 	ID3D11DeviceContext*	m_pContext = { nullptr };
 
 private:
-	HRESULT Start_Level(LEVEL eStartLevelID);
+	HRESULT		Ready_Fonts();
+	HRESULT		Start_Level(LEVEL eStartLevelID);
 
 public:
 	static CMainApp* Create();
 	virtual void Free() override;
 };
+
 
 END
 
