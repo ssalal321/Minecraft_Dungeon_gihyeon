@@ -80,6 +80,8 @@ HRESULT CSlime_Medium::Render()
 	if (!m_bActive)
 		return S_OK;
 
+	__super::Render();
+
 	return S_OK;
 }
 

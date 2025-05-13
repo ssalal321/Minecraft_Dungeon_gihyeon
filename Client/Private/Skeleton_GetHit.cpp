@@ -56,6 +56,8 @@ void CSkeleton_GetHit::State_Exit()
 void CSkeleton_GetHit::Collision_Enter(CCollider* pOther)
 {
 	__super::Collision_Enter(pOther);
+
+	Modify_HP(pOther);
 }
 
 void CSkeleton_GetHit::Collision_Stay(CCollider* pOther)

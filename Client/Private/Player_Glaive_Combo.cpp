@@ -6,8 +6,8 @@
 
 #define GLAIVE_COMBO1_AttackOn  10.f
 #define GLAIVE_COMBO1_AttackOff  19.f
-#define GLAIVE_COMBO2_AttackOn  30.f
-#define GLAIVE_COMBO2_AttackOff  37.f
+#define GLAIVE_COMBO2_AttackOn  31.f
+#define GLAIVE_COMBO2_AttackOff  38.f
 #define GLAIVE_COMBO3_AttackOn  61.f
 #define GLAIVE_COMBO3_AttackOff  72.f
 #define GLAIVE_COMBO1_Finish  22.f

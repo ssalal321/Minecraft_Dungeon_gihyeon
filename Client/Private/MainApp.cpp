@@ -41,6 +41,9 @@ HRESULT CMainApp::Initialize()
     if (FAILED(m_pGameInstance->Initialize_Engine(EngineDesc, &m_pDevice, &m_pContext)))
         return E_FAIL;
 
+    if (FAILED(Ready_Fonts()))
+        return E_FAIL;
+
     if (FAILED(Start_Level(LEVEL_TITLE)))
         return E_FAIL;
 
@@ -60,6 +63,15 @@ HRESULT CMainApp::Render()
     m_pGameInstance->Draw();
 
     m_pGameInstance->Present();
+
+    return S_OK;
+}
+
+
+HRESULT CMainApp::Ready_Fonts()
+{
+    if (FAILED(m_pGameInstance->Add_Font(TEXT("Font_Minecraft"), TEXT("../Bin/Resources/Fonts/Minecraft.spritefont"))))
+        return E_FAIL;
 
     return S_OK;
 }

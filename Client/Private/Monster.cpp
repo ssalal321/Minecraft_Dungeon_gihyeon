@@ -58,6 +58,20 @@ void CMonster::Update(_float fTimeDelta)
 
 	m_pMonsterFSM->Update_State(fTimeDelta);
 
+	XMStoreFloat2(&m_vScreenPos,
+		XMVector3Project(
+			m_pTransformCom->Get_State(CTransform::STATE_POSITION) + XMVectorSet(0.f, 2.5f, 0.f, 1.f),
+			0.f,
+			0.f,
+			static_cast<_float>(g_iWinSizeX),
+			static_cast<_float>(g_iWinSizeY),
+			0.f,
+			1.f,
+			m_pGameInstance->Get_Transform_Matrix(CPipeLine::D3DTS_PROJ),
+			m_pGameInstance->Get_Transform_Matrix(CPipeLine::D3DTS_VIEW),
+			XMMatrixIdentity()));
+
+
 	__super::Update(fTimeDelta);
 }
 
@@ -67,12 +81,14 @@ void CMonster::Late_Update(_float fTimeDelta)
 
 	__super::Late_Update(fTimeDelta);
 
-	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 
+	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 }
 
 HRESULT CMonster::Render()
 {
+	std::wstring strHP = std::to_wstring(m_pMonsterInfo->Get_CurrentHP());
+	m_pGameInstance->Draw_Text(TEXT("Font_Minecraft"), strHP.c_str(), m_vScreenPos/*, Colors::White, 0.f, { 0.f, 0.f }, 1.f*/);
 
 	return S_OK;
 }

@@ -110,6 +110,8 @@ protected:
 	//_bool				m_bHoveringColl = { false };
 	_bool				m_bHovered = { false };
 
+	_float2				m_vScreenPos = {};
+
 protected:
 	HRESULT				Ready_Components();
 	virtual  HRESULT	Ready_PartObjects() = 0;

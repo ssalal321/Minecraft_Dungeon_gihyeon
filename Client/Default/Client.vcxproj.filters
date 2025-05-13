@@ -298,6 +298,27 @@
     <Filter Include="02.GameObjects\Item\Armor\Wolf_Armor\Leg\R_Leg">
       <UniqueIdentifier>{410587d1-e093-444b-a8a3-70bbfcb1839d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Small">
+      <UniqueIdentifier>{8faa4c16-70fb-4365-8976-2d161e173fc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Small\00. Body">
+      <UniqueIdentifier>{6afa40c9-f74e-439d-b673-384d5eb5a17b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Small\01. State">
+      <UniqueIdentifier>{41598d94-1ae4-4cfa-b46e-22d288899fc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Small\01. State\Slime_Small_Idle">
+      <UniqueIdentifier>{65b11b65-748f-4840-b80b-0cdc0de9c48d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Small\01. State\Slime_Small_Walk">
+      <UniqueIdentifier>{48aa590c-cf99-4f0c-af09-4f750d7f7f7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Small\01. State\Slime_Small_Novelty">
+      <UniqueIdentifier>{8f3145cc-019e-4a7f-aee1-e156b84b6e7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Small\01. State\Slime_Small_Attack">
+      <UniqueIdentifier>{9b08e7eb-c45d-4b60-9d05-351bf7932379}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -591,6 +612,27 @@
     <ClInclude Include="..\Public\WolfArmor_R_Leg.h">
       <Filter>02.GameObjects\Item\Armor\Wolf_Armor\Leg\R_Leg</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\State_Slime_Small.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Small\01. State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Slime_Small_Attack.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Small\01. State\Slime_Small_Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Slime_Small_Idle.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Small\01. State\Slime_Small_Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Slime_Small_Novelty.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Small\01. State\Slime_Small_Novelty</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Slime_Small_Walk.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Small\01. State\Slime_Small_Walk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Slime_Small.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Small</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Body_Slime_Small.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Small\00. Body</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -878,6 +920,27 @@
     </ClCompile>
     <ClCompile Include="..\Private\WolfArmor_R_Leg.cpp">
       <Filter>02.GameObjects\Item\Armor\Wolf_Armor\Leg\R_Leg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Slime_Small.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Small</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Slime_Small_Idle.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Small\01. State\Slime_Small_Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Slime_Small_Attack.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Small\01. State\Slime_Small_Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Slime_Small_Novelty.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Small\01. State\Slime_Small_Novelty</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Slime_Small_Walk.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Small\01. State\Slime_Small_Walk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Slime_Small.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Small\01. State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Body_Slime_Small.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Small\00. Body</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

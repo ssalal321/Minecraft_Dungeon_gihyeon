@@ -3,6 +3,7 @@
 
 #include "Player_Arrow.h"
 #include "Item.h"
+#include "Slime_Small.h"
 
 
 CState_Slime_Medium::CState_Slime_Medium(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
@@ -32,7 +33,30 @@ void CState_Slime_Medium::State_Update(_float fTimeDelta)
 {
 	__super::State_Update(fTimeDelta);
 
-	// 공격 받았을 때 스턴 걸리기
+	if (false == m_pActor->Get_GameObject_Active())
+	{
+		_vector vPosition = m_pTransformCom->Get_State(CTransform::STATE_POSITION);  // 죽은 위치
+
+
+		_vector vRight = m_pTransformCom->Get_State(CTransform::STATE_RIGHT);
+		vRight = XMVector3Normalize(vRight);  // 정규화
+		_vector vOffset = vRight * 1.f;      // 1.f 만큼 양옆으로 떨어지게
+
+		// Slime_Medium 생성할 두 위치 계산
+		_vector  vLeftPos = vPosition - vOffset;
+		_vector  vRightPos = vPosition + vOffset;
+
+		// 4. float4로 변환해서 desc에 넣기
+		CSlime_Small::SLIME_SMALL_DESC  leftDesc{};
+		XMStoreFloat4(&leftDesc.slimeSmallPosition, vLeftPos);
+
+		m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Slime_Small"), m_pGameInstance->Get_CurrentLevelIndex(), TEXT("Layer_Monster"), &leftDesc);
+
+		CSlime_Small::SLIME_SMALL_DESC  rightDesc{};
+		XMStoreFloat4(&rightDesc.slimeSmallPosition, vRightPos);
+
+		m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Slime_Small"), m_pGameInstance->Get_CurrentLevelIndex(), TEXT("Layer_Monster"), &rightDesc);
+	}
 }
 
 void CState_Slime_Medium::State_Late_Update(_float fTimeDelta)
@@ -103,14 +127,13 @@ _bool CState_Slime_Medium::Change_State_To_Idle()
 	return false;
 }
 
-_bool CState_Slime_Medium::Change_State_To_Stun(CCollider* pOther)
+_bool CState_Slime_Medium::Modify_HP(CCollider* pOther)
 {
 	if (TEXT("Player_Weapon") == pOther->Get_ColliderTag()
 		&& pOther->Get_Other_Collision_Activated())
 	{
 		CItem* pItem = dynamic_cast<CItem*>(pOther->Get_OwnerObject());
 		m_pMonsterInfo->Modify_CurrentHp(-pItem->Get_DealPoint());
-		m_pSlime_Medium->Change_State(Make_Slime_MediumState(SLIME_MEDIUM_STATE::STUN));
 
 		return true;
 	}
@@ -120,8 +143,18 @@ _bool CState_Slime_Medium::Change_State_To_Stun(CCollider* pOther)
 	{
 		CPlayer_Arrow* pPlayerArrow = dynamic_cast<CPlayer_Arrow*>(pOther->Get_OwnerObject());
 		m_pMonsterInfo->Modify_CurrentHp(-pPlayerArrow->Get_DealPoint());
-		m_pSlime_Medium->Change_State(Make_Slime_MediumState(SLIME_MEDIUM_STATE::STUN));
 
+		return true;
+	}
+
+	return false;
+}
+
+_bool CState_Slime_Medium::Change_State_To_Stun(CCollider* pOther)
+{
+	if (Modify_HP(pOther))
+	{
+		m_pSlime_Medium->Change_State(Make_BabyZombieState(BABYZOMBIE_STATE::GET_HIT));
 		return true;
 	}
 

@@ -152,7 +152,7 @@ HRESULT CSoggySwampMap::Render()
 	}
 
 #ifdef _DEBUG
-	//m_pNavigationCom->Render();
+	//m_pNavigationCom->Draw_Text();
 #endif
 
 	return S_OK;

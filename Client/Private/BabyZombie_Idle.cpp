@@ -43,14 +43,14 @@ void CBabyZombie_Idle::State_Update(_float fTimeDelta)
 
 	m_fLoopTime += fTimeDelta;
 
-	if (m_fLoopTime >= 2.5f)
+	if (m_fLoopTime >= 2.f)
 	{
 		// 난수 생성기 및 분포 정의 (정적: 최초 1회만 생성됨)
 		static std::random_device rd;
 		static std::mt19937 gen(rd());
 		static std::uniform_real_distribution<float> dist(0.0f, 1.0f); // 0.0 ~ 1.0 float 확률
 
-		if (dist(gen) < 0.4f) // 40% 확률
+		if (dist(gen) < 0.5f) // 50% 확률
 		{
 			m_pBabyZombie->Change_State(Make_BabyZombieState(BABYZOMBIE_STATE::NOVELTY));
 			return;

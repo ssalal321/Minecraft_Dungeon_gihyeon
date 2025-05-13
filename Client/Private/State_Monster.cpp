@@ -68,7 +68,7 @@ void CState_Monster::Collision_Enter(CCollider* pOther)
 		{
 			_float4  otherPosition;
 			XMStoreFloat4(&otherPosition, pTransformcom->Get_State(CTransform::STATE_POSITION));
-			dynamic_cast<CMonster*>(m_pActor)->Resolve_Penetration_And_Slide(pOther, 0.2f);
+			dynamic_cast<CMonster*>(m_pActor)->Resolve_Penetration_And_Slide(pOther, 0.4f);
 		}
 	}
 }

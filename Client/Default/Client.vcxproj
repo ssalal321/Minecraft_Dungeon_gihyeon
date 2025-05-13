@@ -162,6 +162,7 @@
     <ClInclude Include="..\Public\Body_BabyZombie.h" />
     <ClInclude Include="..\Public\Body_Slime_Large.h" />
     <ClInclude Include="..\Public\Body_Slime_Medium.h" />
+    <ClInclude Include="..\Public\Body_Slime_Small.h" />
     <ClInclude Include="..\Public\Level_SoggySwamp.h" />
     <ClInclude Include="..\Public\Level_Trigger.h" />
     <ClInclude Include="..\Public\Monster_Arrow.h" />
@@ -216,6 +217,11 @@
     <ClInclude Include="..\Public\Slime_Medium_Novelty.h" />
     <ClInclude Include="..\Public\Slime_Medium_Stun.h" />
     <ClInclude Include="..\Public\Slime_Medium_Walk.h" />
+    <ClInclude Include="..\Public\Slime_Small.h" />
+    <ClInclude Include="..\Public\Slime_Small_Attack.h" />
+    <ClInclude Include="..\Public\Slime_Small_Idle.h" />
+    <ClInclude Include="..\Public\Slime_Small_Novelty.h" />
+    <ClInclude Include="..\Public\Slime_Small_Walk.h" />
     <ClInclude Include="..\Public\SoggySwampMap.h" />
     <ClInclude Include="..\Public\State.h" />
     <ClInclude Include="..\Public\State_BabyZombie.h" />
@@ -224,6 +230,7 @@
     <ClInclude Include="..\Public\State_Skeleton.h" />
     <ClInclude Include="..\Public\State_Slime_Large.h" />
     <ClInclude Include="..\Public\State_Slime_Medium.h" />
+    <ClInclude Include="..\Public\State_Slime_Small.h" />
     <ClInclude Include="..\Public\State_Zombie.h" />
     <ClInclude Include="..\Public\UI_Image.h" />
     <ClInclude Include="..\Public\Item.h" />
@@ -261,6 +268,7 @@
     <ClCompile Include="..\Private\Body_BabyZombie.cpp" />
     <ClCompile Include="..\Private\Body_Slime_Large.cpp" />
     <ClCompile Include="..\Private\Body_Slime_Medium.cpp" />
+    <ClCompile Include="..\Private\Body_Slime_Small.cpp" />
     <ClCompile Include="..\Private\Level_SoggySwamp.cpp" />
     <ClCompile Include="..\Private\Level_Trigger.cpp" />
     <ClCompile Include="..\Private\Monster_Arrow.cpp" />
@@ -312,6 +320,11 @@
     <ClCompile Include="..\Private\Slime_Medium_Novelty.cpp" />
     <ClCompile Include="..\Private\Slime_Medium_Stun.cpp" />
     <ClCompile Include="..\Private\Slime_Medium_Walk.cpp" />
+    <ClCompile Include="..\Private\Slime_Small.cpp" />
+    <ClCompile Include="..\Private\Slime_Small_Attack.cpp" />
+    <ClCompile Include="..\Private\Slime_Small_Idle.cpp" />
+    <ClCompile Include="..\Private\Slime_Small_Novelty.cpp" />
+    <ClCompile Include="..\Private\Slime_Small_Walk.cpp" />
     <ClCompile Include="..\Private\SoggySwampMap.cpp" />
     <ClCompile Include="..\Private\State.cpp" />
     <ClCompile Include="..\Private\State_BabyZombie.cpp" />
@@ -320,6 +333,7 @@
     <ClCompile Include="..\Private\State_Skeleton.cpp" />
     <ClCompile Include="..\Private\State_Slime_Large.cpp" />
     <ClCompile Include="..\Private\State_Slime_Medium.cpp" />
+    <ClCompile Include="..\Private\State_Slime_Small.cpp" />
     <ClCompile Include="..\Private\State_Zombie.cpp" />
     <ClCompile Include="..\Private\UI_Image.cpp" />
     <ClCompile Include="..\Private\Item.cpp" />

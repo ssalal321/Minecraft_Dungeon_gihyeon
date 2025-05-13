@@ -110,14 +110,13 @@ _bool CState_BabyZombie::Change_State_To_Idle()
 	return false;
 }
 
-_bool CState_BabyZombie::Change_State_To_GetHit(CCollider* pOther)
+_bool CState_BabyZombie::Modify_HP(CCollider* pOther)
 {
 	if (TEXT("Player_Weapon") == pOther->Get_ColliderTag()
 		&& pOther->Get_Other_Collision_Activated())
 	{
 		CItem* pItem = dynamic_cast<CItem*>(pOther->Get_OwnerObject());
 		m_pMonsterInfo->Modify_CurrentHp(-pItem->Get_DealPoint());
-		m_pBabyZombie->Change_State(Make_BabyZombieState(BABYZOMBIE_STATE::GET_HIT));
 
 		return true;
 	}
@@ -127,8 +126,18 @@ _bool CState_BabyZombie::Change_State_To_GetHit(CCollider* pOther)
 	{
 		CPlayer_Arrow* pPlayerArrow = dynamic_cast<CPlayer_Arrow*>(pOther->Get_OwnerObject());
 		m_pMonsterInfo->Modify_CurrentHp(-pPlayerArrow->Get_DealPoint());
-		m_pBabyZombie->Change_State(Make_BabyZombieState(BABYZOMBIE_STATE::GET_HIT));
 
+		return true;
+	}
+
+	return false;
+}
+
+_bool CState_BabyZombie::Change_State_To_GetHit(CCollider* pOther)
+{
+	if (Modify_HP(pOther))
+	{
+		m_pBabyZombie->Change_State(Make_BabyZombieState(BABYZOMBIE_STATE::GET_HIT));
 		return true;
 	}
 
