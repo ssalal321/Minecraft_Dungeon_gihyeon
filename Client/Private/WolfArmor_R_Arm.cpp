@@ -1,63 +1,63 @@
-#include "WolfArmor_Mask.h"
+#include "WolfArmor_R_Arm.h"
 #include "GameInstance.h"
 #include "Item.h"
 
-CWolfArmor_Mask::CWolfArmor_Mask(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CWolfArmor_R_Arm::CWolfArmor_R_Arm(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CPartObject(pDevice, pContext)
 {
 
 }
 
-CWolfArmor_Mask::CWolfArmor_Mask(const CWolfArmor_Mask& Prototype)
+CWolfArmor_R_Arm::CWolfArmor_R_Arm(const CWolfArmor_R_Arm& Prototype)
 	: CPartObject(Prototype)
 {
 
 }
 
-HRESULT CWolfArmor_Mask::Initialize_Prototype()
+HRESULT CWolfArmor_R_Arm::Initialize_Prototype()
 {
 	/* 외부 데이터베이스를 통해서 값을 채운다. */
 
 	return S_OK;
 }
 
-HRESULT CWolfArmor_Mask::Initialize(void* pArg)
+HRESULT CWolfArmor_R_Arm::Initialize(void* pArg)
 {
 	/* 원형의 데이터를 복제하여 사본을 만들고. */
 	/* 추가적으로 필요한 데이터를 Arg로 받아와 실 사용하기위한 객체의 정보를 생성해준다. */	
 
-	WOLFARMOR_MASK_DESC* pDesc = static_cast<WOLFARMOR_MASK_DESC*>(pArg);
+	WOLFARMOR_R_ARM_DESC* pDesc = static_cast<WOLFARMOR_R_ARM_DESC*>(pArg);
 	m_bPartActive = pDesc->bPartActive;
-	m_pSocketMatrix = pDesc->pMaskSocketMatrix;
+	m_pSocketMatrix = pDesc->pRArmSocketMatrix;
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
-	m_strGameObjectTag = TEXT("GameObject_WolfArmor_Mask");
+	m_strGameObjectTag = TEXT("GameObject_WolfArmor_R_Arm");
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_pTransformCom->Rotation(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMConvertToRadians(90.f));
-	m_pTransformCom->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(180.f));
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMVectorSet(0.f, 0.1f, 0.1f, 1.f));
+	m_pTransformCom->Rotation(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMConvertToRadians(-90.f));
+	m_pTransformCom->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(-180.f));
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMVectorSet(0.f, -0.1f, 0.f, 1.f));
 	
 	return S_OK;
 }
 
-void CWolfArmor_Mask::Priority_Update(_float fTimeDelta)
+void CWolfArmor_R_Arm::Priority_Update(_float fTimeDelta)
 {
 	if (false == m_bPartActive)
 		return;
 }
 
-void CWolfArmor_Mask::Update(_float fTimeDelta)
+void CWolfArmor_R_Arm::Update(_float fTimeDelta)
 {
 	if (false == m_bPartActive)
 		return;
 }
 
-void CWolfArmor_Mask::Late_Update(_float fTimeDelta)
+void CWolfArmor_R_Arm::Late_Update(_float fTimeDelta)
 {
 	if (false == m_bPartActive)
 		return;
@@ -75,7 +75,7 @@ void CWolfArmor_Mask::Late_Update(_float fTimeDelta)
 	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 }
 
-HRESULT CWolfArmor_Mask::Render()
+HRESULT CWolfArmor_R_Arm::Render()
 {
 	if (false == m_bPartActive)
 		return S_OK;
@@ -100,7 +100,7 @@ HRESULT CWolfArmor_Mask::Render()
 	return S_OK;
 }
 
-HRESULT CWolfArmor_Mask::Ready_Components()
+HRESULT CWolfArmor_R_Arm::Ready_Components()
 {
 	/* Com_Shader */
 	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxMesh"),
@@ -111,14 +111,14 @@ HRESULT CWolfArmor_Mask::Ready_Components()
 	CModel::MODEL_DESC	pModelDesc = {};
 	pModelDesc.bPickable = false;
 
-	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Model_WolfArmor_Mask"),
+	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Model_WolfArmor_R_Arm"),
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom), &pModelDesc))
 		return E_FAIL;
 
 	return S_OK;
 }
 
-HRESULT CWolfArmor_Mask::Bind_ShaderResources()
+HRESULT CWolfArmor_R_Arm::Bind_ShaderResources()
 {
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix)))
 		return E_FAIL;
@@ -147,13 +147,13 @@ HRESULT CWolfArmor_Mask::Bind_ShaderResources()
 }
 
 
-CWolfArmor_Mask* CWolfArmor_Mask::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CWolfArmor_R_Arm* CWolfArmor_R_Arm::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	CWolfArmor_Mask* pGameInstance = new CWolfArmor_Mask(pDevice, pContext);
+	CWolfArmor_R_Arm* pGameInstance = new CWolfArmor_R_Arm(pDevice, pContext);
 
 	if (FAILED(pGameInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Create : CWolfArmor_Mask");
+		MSG_BOX("Failed to Create : CWolfArmor_R_Arm");
 		Safe_Release(pGameInstance);
 	}
 
@@ -161,20 +161,20 @@ CWolfArmor_Mask* CWolfArmor_Mask::Create(ID3D11Device* pDevice, ID3D11DeviceCont
 }
 
 
-CGameObject* CWolfArmor_Mask::Clone(void* pArg)
+CGameObject* CWolfArmor_R_Arm::Clone(void* pArg)
 {
-	CWolfArmor_Mask* pGameInstance = new CWolfArmor_Mask(*this);
+	CWolfArmor_R_Arm* pGameInstance = new CWolfArmor_R_Arm(*this);
 
 	if (FAILED(pGameInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Clone : CWolfArmor_Mask");
+		MSG_BOX("Failed to Clone : CWolfArmor_R_Arm");
 		Safe_Release(pGameInstance);
 	}
 
 	return pGameInstance;
 }
 
-void CWolfArmor_Mask::Free()
+void CWolfArmor_R_Arm::Free()
 {
 	__super::Free();
 

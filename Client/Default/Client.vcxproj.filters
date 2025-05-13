@@ -277,6 +277,27 @@
     <Filter Include="02.GameObjects\Item\Armor\Wolf_Armor\Mask">
       <UniqueIdentifier>{404765d5-b382-4cfb-a40c-1a2cd2d9595e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Item\Armor\Wolf_Armor\Body">
+      <UniqueIdentifier>{06eba003-27a1-4a2f-a52b-27ab16d99a70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Item\Armor\Wolf_Armor\Arm">
+      <UniqueIdentifier>{7e295b32-cd49-4c88-9464-cc29f45d6b1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Item\Armor\Wolf_Armor\Arm\L_Arm">
+      <UniqueIdentifier>{5dbc7051-6633-4009-a8ae-24651a34d705}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Item\Armor\Wolf_Armor\Arm\R_Arm">
+      <UniqueIdentifier>{6676739b-532d-42f7-9364-ee1702923efa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Item\Armor\Wolf_Armor\Leg">
+      <UniqueIdentifier>{bacd938a-1f06-45fe-b695-642c8c8117bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Item\Armor\Wolf_Armor\Leg\L_Leg">
+      <UniqueIdentifier>{cc8e7e8f-787c-4b53-bd52-a0b68eedb0ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Item\Armor\Wolf_Armor\Leg\R_Leg">
+      <UniqueIdentifier>{410587d1-e093-444b-a8a3-70bbfcb1839d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -549,11 +570,26 @@
     <ClInclude Include="..\Public\Armor.h">
       <Filter>02.GameObjects\Item\Armor</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Wolf_Armor.h">
-      <Filter>02.GameObjects\Item\Armor</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\WolfArmor_Mask.h">
       <Filter>02.GameObjects\Item\Armor\Wolf_Armor\Mask</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Wolf_Armor.h">
+      <Filter>02.GameObjects\Item\Armor\Wolf_Armor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\WolfArmor_Body.h">
+      <Filter>02.GameObjects\Item\Armor\Wolf_Armor\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\WolfArmor_L_Arm.h">
+      <Filter>02.GameObjects\Item\Armor\Wolf_Armor\Arm\L_Arm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\WolfArmor_R_Arm.h">
+      <Filter>02.GameObjects\Item\Armor\Wolf_Armor\Arm\R_Arm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\WolfArmor_L_Leg.h">
+      <Filter>02.GameObjects\Item\Armor\Wolf_Armor\Leg\L_Leg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\WolfArmor_R_Leg.h">
+      <Filter>02.GameObjects\Item\Armor\Wolf_Armor\Leg\R_Leg</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -822,11 +858,26 @@
     <ClCompile Include="..\Private\Armor.cpp">
       <Filter>02.GameObjects\Item\Armor</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Wolf_Armor.cpp">
-      <Filter>02.GameObjects\Item\Armor</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\WolfArmor_Mask.cpp">
       <Filter>02.GameObjects\Item\Armor\Wolf_Armor\Mask</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Wolf_Armor.cpp">
+      <Filter>02.GameObjects\Item\Armor\Wolf_Armor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\WolfArmor_Body.cpp">
+      <Filter>02.GameObjects\Item\Armor\Wolf_Armor\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\WolfArmor_L_Arm.cpp">
+      <Filter>02.GameObjects\Item\Armor\Wolf_Armor\Arm\L_Arm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\WolfArmor_R_Arm.cpp">
+      <Filter>02.GameObjects\Item\Armor\Wolf_Armor\Arm\R_Arm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\WolfArmor_L_Leg.cpp">
+      <Filter>02.GameObjects\Item\Armor\Wolf_Armor\Leg\L_Leg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\WolfArmor_R_Leg.cpp">
+      <Filter>02.GameObjects\Item\Armor\Wolf_Armor\Leg\R_Leg</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

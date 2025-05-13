@@ -9,13 +9,6 @@ class CArmor abstract : public CItem
 public:
 	typedef struct tagArmorDesc : ITEM_DESC
 	{
-		
-		/*const _float4x4*	pBodySocketMatrix = { nullptr };
-		const _float4x4*	pL_ArmSocketMatrix = { nullptr };
-		const _float4x4*	pR_ArmSocketMatrix = { nullptr };
-		const _float4x4*	pL_LegSocketMatrix = { nullptr };
-		const _float4x4*	pR_LegSocketMatrix = { nullptr };*/
-
 
 	}ARMOR_DESC;
 
@@ -33,18 +26,6 @@ public:
 	HRESULT		Render()							override;
 
 protected:
-	CModel*		m_pBody_ModelCom  = { nullptr };
-	CModel*		m_pL_Arm_ModelCom = { nullptr };
-	CModel*		m_pR_Arm_ModelCom = { nullptr };
-	CModel*		m_pL_Leg_ModelCom = { nullptr };
-	CModel*		m_pR_Leg_ModelCom = { nullptr };
-	
-	const _float4x4*	m_pBodySocketMatrix = { nullptr };
-	const _float4x4*	m_pL_ArmSocketMatrix = { nullptr };
-	const _float4x4*	m_pR_ArmSocketMatrix = { nullptr };
-	const _float4x4*	m_pL_LegSocketMatrix = { nullptr };
-	const _float4x4*	m_pR_LegSocketMatrix = { nullptr };
-
 	map<const _wstring, class CPartObject*>		m_ArmorPartObjects;
 
 protected:

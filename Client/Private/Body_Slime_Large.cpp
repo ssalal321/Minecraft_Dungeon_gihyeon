@@ -50,7 +50,7 @@ void CBody_Slime_Large::Late_Update(_float fTimeDelta)
 {
 	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()) * XMLoadFloat4x4(m_pParentWorldMatrix));
 
-	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
+	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_BLEND, this);
 }
 
 HRESULT CBody_Slime_Large::Render()

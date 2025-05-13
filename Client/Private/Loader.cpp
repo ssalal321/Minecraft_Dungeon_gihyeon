@@ -29,7 +29,12 @@
 #include "Weapon_Bow.h"
 #include "Weapon_Glaive.h"
 #include "Weapon_ShortBow.h"
+#include "WolfArmor_Body.h"
+#include "WolfArmor_L_Arm.h"
+#include "WolfArmor_L_Leg.h"
 #include "WolfArmor_Mask.h"
+#include "WolfArmor_R_Arm.h"
+#include "WolfArmor_R_Leg.h"
 #include "Wolf_Armor.h"
 #include "Zombie.h"
 
@@ -514,15 +519,6 @@ HRESULT CLoader::Ready_Prototype_GameObject_Static()
 		CWeapon_Bow::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_WolfArmor_Mask */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_WolfArmor_Mask"),
-		CWolfArmor_Mask::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
-	/* For.Prototype_GameObject_WolfArmor */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_WolfArmor"),
-		CWolf_Armor::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
 
 	/* For.Prototype_GameObject_Arrow */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerArrow"),
@@ -558,8 +554,8 @@ HRESULT CLoader::Ready_Prototype_Armors_Static()
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Armor/WolfArmor/WolfArmor_Mask.fbx", PreTransformMatrix))))
 		return E_FAIL;
 
-	/* For.Prototype_Component_Model_WolfArmor_FurArmor */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_WolfArmor_FurArmor"),
+	/* For.Prototype_Component_Model_WolfArmor_Body */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_WolfArmor_Body"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Armor/WolfArmor/WolfArmor_FurArmor.fbx", PreTransformMatrix))))
 		return E_FAIL;
 
@@ -581,6 +577,42 @@ HRESULT CLoader::Ready_Prototype_Armors_Static()
 	/* For.Prototype_Component_Model_WolfArmor_R_Leg */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_WolfArmor_R_Leg"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Armor/WolfArmor/WolfArmor_R_Leg.fbx", PreTransformMatrix))))
+		return E_FAIL;
+
+
+	/* For.Prototype_GameObject_WolfArmor_Mask */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_WolfArmor_Mask"),
+		CWolfArmor_Mask::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_WolfArmor_Body */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_WolfArmor_Body"),
+		CWolfArmor_Body::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_WolfArmor_L_Arm */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_WolfArmor_L_Arm"),
+		CWolfArmor_L_Arm::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_WolfArmor_R_Arm */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_WolfArmor_R_Arm"),
+		CWolfArmor_R_Arm::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_WolfArmor_L_Leg */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_WolfArmor_L_Leg"),
+		CWolfArmor_L_Leg::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_WolfArmor_R_Leg */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_WolfArmor_R_Leg"),
+		CWolfArmor_R_Leg::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_WolfArmor */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_WolfArmor"),
+		CWolf_Armor::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	return S_OK;

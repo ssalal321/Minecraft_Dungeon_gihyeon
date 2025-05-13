@@ -58,7 +58,7 @@ void CArmor::Update(_float fTimeDelta)
 void CArmor::Late_Update(_float fTimeDelta)
 {
 	if (false == m_bItemActive)
-		return;
+		return; 
 
 	_matrix		SocketMatrix = XMLoadFloat4x4(m_pSocketMatrix);
 
