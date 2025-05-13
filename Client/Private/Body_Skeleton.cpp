@@ -115,7 +115,7 @@ HRESULT CBody_Skeleton::Ready_Components()
 		return E_FAIL;
 
 	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), m_pBigColliderCom, TEXT("Monster_Body_NoHit"), TEXT("Monster"));
-	
+	dynamic_cast<CCollider*>(pColliderBigSphereCom)->Set_ColliderRole(CCollider::BIG);
 
 	/* Com_Collider Small*/
 	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereSmallCollDesc{};
@@ -134,6 +134,7 @@ HRESULT CBody_Skeleton::Ready_Components()
 
 	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), m_pSmallColliderCom, TEXT("Monster_Body_Small"), TEXT("Monster"));
 	dynamic_cast<CCollider*>(pColliderSmallSphereCom)->Set_AllowSameGroupCollision(true);
+	dynamic_cast<CCollider*>(pColliderSmallSphereCom)->Set_ColliderRole(CCollider::SMALL);
 
 	return S_OK;
 }

@@ -118,6 +118,7 @@ HRESULT CLevel_Trigger::Ready_Components()
 		return E_FAIL;
 
 	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), pColliderSphereCom, TEXT("Level_Change_Collider"), TEXT("Level"));
+	dynamic_cast<CCollider*>(pColliderSphereCom)->Set_ColliderRole(CCollider::ETC);
 
 	return S_OK;
 }

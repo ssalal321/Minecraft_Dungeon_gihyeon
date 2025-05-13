@@ -28,7 +28,7 @@ void CBounding_AABB::Update(_fmatrix WorldMatrix)
 	m_pLocalDesc->Transform(*m_pDesc, TransformMatrix);
 }
 
-_bool CBounding_AABB::Intersect(COLLIDER eColliderType, CBounding* pTargetBounding, void* pRayArg)
+_bool CBounding_AABB::Intersect(COLLIDER_TYPE eColliderType, CBounding* pTargetBounding, void* pRayArg)
 {
 	void* pTargetDesc = pTargetBounding->Get_Desc();
 
@@ -36,13 +36,13 @@ _bool CBounding_AABB::Intersect(COLLIDER eColliderType, CBounding* pTargetBoundi
 
 	switch (eColliderType)
 	{
-	case COLLIDER::TYPE_AABB:
+	case COLLIDER_TYPE::TYPE_AABB:
 		isColl = m_pDesc->Intersects(*static_cast<BoundingBox*>(pTargetDesc));
 		break;
-	case COLLIDER::TYPE_OBB:
+	case COLLIDER_TYPE::TYPE_OBB:
 		isColl = m_pDesc->Intersects(*static_cast<BoundingOrientedBox*>(pTargetDesc));
 		break;
-	case COLLIDER::TYPE_SPHERE:
+	case COLLIDER_TYPE::TYPE_SPHERE:
 		isColl = m_pDesc->Intersects(*static_cast<BoundingSphere*>(pTargetDesc));
 		break;
 	}

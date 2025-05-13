@@ -113,14 +113,14 @@ HRESULT CBody_Slime_Small::Ready_Components()
 	SphereCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
 	SphereCollDesc.pCollisionActivated = m_pBigCollisionActivating;
 
-	CComponent* pColliderSphereCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
+	CComponent* pColliderBigSphereCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
 		TEXT("Com_Collider_BigSphere"), reinterpret_cast<CComponent**>(&m_pBigColliderCom), &SphereCollDesc);
 
-	if (nullptr == pColliderSphereCom)
+	if (nullptr == pColliderBigSphereCom)
 		return E_FAIL;
 
 	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), m_pBigColliderCom, TEXT("Monster_Body_Hit"), TEXT("Monster"));
-	
+	dynamic_cast<CCollider*>(pColliderBigSphereCom)->Set_ColliderRole(CCollider::BIG);
 
 	/* Com_Collider Small*/
 	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereSmallCollDesc{};
@@ -139,6 +139,7 @@ HRESULT CBody_Slime_Small::Ready_Components()
 
 	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), m_pSmallColliderCom, TEXT("Monster_Body_Small"), TEXT("Monster"));
 	dynamic_cast<CCollider*>(pColliderSmallSphereCom)->Set_AllowSameGroupCollision(true);
+	dynamic_cast<CCollider*>(pColliderSmallSphereCom)->Set_ColliderRole(CCollider::SMALL);
 
 	return S_OK;
 }

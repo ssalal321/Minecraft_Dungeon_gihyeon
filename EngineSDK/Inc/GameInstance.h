@@ -116,6 +116,7 @@ public:
 								const _wstring& ObjectType, _bool bPersistent = false) const;
 	HRESULT		Attach_Persistent_Colliders_To_Level(_uint iLevelIndex, const wstring& targetTag);
 	unordered_map<_wstring, vector<CCollider*>>*	Get_Colliders(_uint iLevelIndex);
+	void		Resolve_Penetration_And_Slide(CCollider* pColliderA, CCollider* pColliderB, _float fForce);
 
 #pragma endregion
 

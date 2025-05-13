@@ -106,7 +106,7 @@ CCollider* CLevel_SoggySwamp::Get_Closest_Collider(const _float4& mousePos, cons
 
     for (auto& pCollider : it->second)
     {
-        if (pCollider->Get_ColliderType() != COLLIDER::TYPE_SPHERE)
+        if (pCollider->Get_ColliderType() != COLLIDER_TYPE::TYPE_SPHERE)
             continue;
 
         _float fDist = 0.f;
@@ -115,7 +115,7 @@ CCollider* CLevel_SoggySwamp::Get_Closest_Collider(const _float4& mousePos, cons
         rayDesc.MouseRay = mouseRay;
         rayDesc.fDist = &fDist;
 
-        if (pCollider->Get_Bounding()->Intersect(COLLIDER::TYPE_RAY, nullptr, &rayDesc))
+        if (pCollider->Get_Bounding()->Intersect(COLLIDER_TYPE::TYPE_RAY, nullptr, &rayDesc))
         {
             if (fDist < minDist)
             {

@@ -47,6 +47,9 @@ public:
 	class CComponent*	Find_Component(const _wstring& strComponentTag);
 	void				Erase_Component(const wstring& strComponentTag);
 	virtual  void		Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState);
+	virtual  void		Apply_Penetration_Momentum(_vector vMomentum);
+
+	virtual  void		Resolve_Penetration_And_Slide(CCollider* pMine, CCollider* pOther, _float fForce);
 
 protected:
 	ID3D11Device*			m_pDevice = { nullptr };

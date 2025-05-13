@@ -256,6 +256,26 @@ void CTransform::LookAt(_fvector vAt)
 	Set_State(STATE_LOOK, XMVector3Normalize(vLook) * vScaled.z);
 }
 
+void CTransform::Add_Momentum(_vector vImpulse)
+{
+	m_vVelocity += vImpulse;
+}
+
+void CTransform::Update_Momentum(_float fTimeDelta)
+{
+	if (XMVector3Equal(m_vVelocity, XMVectorZero()))
+		return;
+
+	_vector vPos = Get_State(STATE_POSITION);
+	vPos += m_vVelocity * fTimeDelta;
+
+	Set_State(STATE_POSITION, vPos);
+
+	m_vVelocity *= 0.85f;
+	if (XMVectorGetX(XMVector3Length(m_vVelocity)) < 0.001f)
+		m_vVelocity = XMVectorZero();
+}
+
 CTransform* CTransform::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	CTransform* pGameInstance = new CTransform(pDevice, pContext);

@@ -27,6 +27,8 @@ private:
 public:
 	void*		Get_Desc() override { return m_pDesc; }
 
+	_float		Get_Radius() const { return m_pLocalDesc->Radius; }
+
 	void	Edit_Bounding_Center(_float3 moveCenter) const
 	{
 		m_pLocalDesc->Center.x += moveCenter.x;
@@ -54,7 +56,7 @@ public:
 public:
 	HRESULT		Initialize(const BOUNDING_DESC* pArg);
 	void		Update(_fmatrix WorldMatrix)	override;
-	_bool		Intersect(COLLIDER eColliderType, CBounding* pTargetBounding, void* pRayArg = nullptr)	override;
+	_bool		Intersect(COLLIDER_TYPE eColliderType, CBounding* pTargetBounding, void* pRayArg = nullptr)	override;
 
 #ifdef _DEBUG
 	HRESULT		Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fvector vColor) override;

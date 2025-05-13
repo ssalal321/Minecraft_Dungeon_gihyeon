@@ -416,6 +416,11 @@ unordered_map<_wstring, vector<CCollider*>>* CGameInstance::Get_Colliders(_uint 
 {
 	return m_pCollision_Manager->Get_Colliders(iLevelIndex);
 }
+
+void CGameInstance::Resolve_Penetration_And_Slide(CCollider* pColliderA, CCollider* pColliderB, _float fForce)
+{
+	return m_pCollision_Manager->Resolve_Penetration_And_Slide(pColliderA, pColliderB, fForce);
+}
 #pragma endregion
 
 

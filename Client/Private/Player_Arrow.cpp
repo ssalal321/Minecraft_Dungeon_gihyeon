@@ -200,6 +200,7 @@ HRESULT CPlayer_Arrow::Ready_Components()
 
 	CCollider* pArrowCollider = dynamic_cast<CCollider*>(pColliderCom);
 	pArrowCollider->Set_ColliderActive(false);
+	pArrowCollider->Set_ColliderRole(CCollider::ETC);
 
 	return S_OK;
 }

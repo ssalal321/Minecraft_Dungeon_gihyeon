@@ -91,6 +91,10 @@ public:
 	void	Rotation(_fvector vAxis, _float fRadian);
 	void	LookAt(_fvector vAt);
 
+public:
+	void	Add_Momentum(_vector vImpulse);
+	void	Update_Momentum(_float fTimeDelta);
+
 private:
 	/* row_major = Right, Up, Look, Position */
 	_float4x4	m_WorldMatrix = {};
@@ -103,6 +107,7 @@ private:
 	_float		m_fGravity		= { -9.8f };    // 중력 가속도 (m/s²)
 	_float		m_fCurrentY		= {};			// 현재 Y 위치
 
+	_vector		m_vVelocity = XMVectorZero();
 
 public:
 	static	  CTransform*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
