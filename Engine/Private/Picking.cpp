@@ -1,14 +1,13 @@
 #include "Picking.h"
 #include <DirectXCollision.h>
 #include "GameInstance.h"
+#include "GameObject.h"
 
 using namespace DirectX;
 
-CPicking::CPicking(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-    : m_pDevice(pDevice), m_pContext(pContext), m_pGameInstance{ CGameInstance::GetInstance() }
+CPicking::CPicking()
+    : m_pGameInstance{ CGameInstance::GetInstance() }
 {
-    Safe_AddRef(m_pContext);
-    Safe_AddRef(m_pDevice);
     Safe_AddRef(m_pGameInstance);
 }
 
@@ -21,7 +20,54 @@ HRESULT CPicking::Initialize(HWND hWnd, _uint iWinSizeX, _uint iWinSizeY)
 	return S_OK;
 }
 
-void CPicking::Compute_MouseRay()
+_bool CPicking::Picked_Model(_float4& worldPickedPos, const _wstring& strGameObjectTag, _uint iLayerLevelIndex, const _wstring& strLayerTag)
+{
+    _float4  fWorldMousePos = {};
+    _float3  fWorldMouseRay = {};
+    _float3  fLocalPickedPos = {};
+
+    Compute_MouseRay(fWorldMousePos, fWorldMouseRay);
+
+    CGameObject*  pPickedObject = m_pGameInstance->Find_GameObject(strGameObjectTag, iLayerLevelIndex, strLayerTag);
+    CModel*       pPickedObjModelCom = dynamic_cast<CModel*>(pPickedObject->Find_Component(TEXT("Com_Model")));
+    CTransform*   pPickedObjTransformCom = dynamic_cast<CTransform*>(pPickedObject->Find_Component(TEXT("Com_Transform")));
+    const _float4x4&  pPickedObjWorldMatrix = pPickedObjTransformCom->Get_WorldMatrix();
+
+    // 2. LoungeMap에 피킹 요청 (BoundingBox 충돌 체크)
+    if (pPickedObjModelCom->Picking_Model(fWorldMousePos, fWorldMouseRay, fLocalPickedPos, pPickedObjWorldMatrix))
+    {
+        _float4  localPickedPos = { fLocalPickedPos.x, fLocalPickedPos.y, fLocalPickedPos.z, 1.f };
+        _vector  vWorldPickedPos = XMVector4Transform(XMLoadFloat4(&localPickedPos), XMLoadFloat4x4(&pPickedObjWorldMatrix));
+        XMStoreFloat4(&worldPickedPos, vWorldPickedPos);
+
+        return true;
+    }
+
+    return false;
+}
+
+_bool CPicking::Picked_Vertex(_float3& fLocalPickedVertex, const _wstring& strGameObjectTag, _uint iLayerLevelIndex, const _wstring& strLayerTag)
+{
+    _float4  fWorldMousePos = {};
+	_float3  fWorldMouseRay = {};
+
+    Compute_MouseRay(fWorldMousePos, fWorldMouseRay);
+
+    CGameObject* pPickedObject = m_pGameInstance->Find_GameObject(strGameObjectTag, iLayerLevelIndex, strLayerTag);
+    CModel* pPickedObjModelCom = dynamic_cast<CModel*>(pPickedObject->Find_Component(TEXT("Com_Model")));
+    CTransform* pPickedObjTransformCom = dynamic_cast<CTransform*>(pPickedObject->Find_Component(TEXT("Com_Transform")));
+    const _float4x4& pPickedObjWorldMatrix = pPickedObjTransformCom->Get_WorldMatrix();
+
+    // 2. LoungeMap에 피킹 요청 (BoundingBox 충돌 체크)
+    if (pPickedObjModelCom->Picking_Vertex(fWorldMousePos, fWorldMouseRay, fLocalPickedVertex, pPickedObjWorldMatrix))
+    {
+        return true;
+    }
+
+    return false;
+}
+
+void CPicking::Compute_MouseRay(_float4& worldMousePos, _float3& worldMouseRay)
 {
     POINT ptMouse = {};
     GetCursorPos(&ptMouse);
@@ -35,26 +81,23 @@ void CPicking::Compute_MouseRay()
     );
 
     // 2. 투영 행렬 역변환
-    _matrix  InvProjMatrix  = XMMatrixInverse(nullptr, m_pGameInstance->Get_Transform_Matrix(CPipeLine::D3DTS_PROJ));
-    _vector  vTransformed   = XMVector3TransformCoord(vPosition, InvProjMatrix);
+    _matrix  InvProjMatrix  = m_pGameInstance->Get_Transform_Inverse_Matrix(CPipeLine::D3DTS_PROJ);
+    _vector  vViewPosition  = XMVector3TransformCoord(vPosition, InvProjMatrix);
 
     // 3. 뷰 행렬 역변환
-    _matrix  InvViewMatrix  = XMMatrixInverse(nullptr, m_pGameInstance->Get_Transform_Matrix(CPipeLine::D3DTS_VIEW));
-    _vector  vMouseRay      = XMVector3TransformCoord(vTransformed, InvViewMatrix);
+    _matrix  InvViewMatrix  = m_pGameInstance->Get_Transform_Inverse_Matrix(CPipeLine::D3DTS_VIEW);
+    _vector  vWorldPosition = XMVector3TransformCoord(vViewPosition, InvViewMatrix);
     _vector  vCamPosition   = XMLoadFloat4(m_pGameInstance->Get_CamPosition());
 
-    // 레이 방향 벡터 정규화
-    vMouseRay = XMVector3Normalize(vMouseRay - vCamPosition);
-
-    XMStoreFloat3(&m_vMousePos, vCamPosition);
-    XMStoreFloat3(&m_vMouseRay, vMouseRay);
+    // 마우스 포지션과 정규화된 레이 반환
+    XMStoreFloat4(&worldMousePos, vCamPosition);
+	XMStoreFloat3(&worldMouseRay, XMVector3Normalize(vWorldPosition - vCamPosition));
 }
 
 
-
-CPicking* CPicking::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, HWND hWnd, _uint iWinSizeX, _uint iWinSizeY)
+CPicking* CPicking::Create(HWND hWnd, _uint iWinSizeX, _uint iWinSizeY)
 {
-    CPicking* pInstance = new CPicking(pDevice, pContext);
+    CPicking* pInstance = new CPicking();
 
     if (FAILED(pInstance->Initialize(hWnd, iWinSizeX, iWinSizeY)))
     {
@@ -69,7 +112,5 @@ void CPicking::Free()
 {
     __super::Free();
 
-    Safe_Release(m_pDevice);
-    Safe_Release(m_pContext);
     Safe_Release(m_pGameInstance);
 }

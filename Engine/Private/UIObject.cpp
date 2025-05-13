@@ -25,10 +25,13 @@ HRESULT CUIObject::Initialize(void* pArg)
 	if (nullptr == pDesc)
 		return E_FAIL;
 
+	m_eUIState = pDesc->eUIState;
 	m_fX = pDesc->fX;
 	m_fY = pDesc->fY;
+	m_fZ = pDesc->fZ;
 	m_fSizeX = pDesc->fSizeX;
 	m_fSizeY = pDesc->fSizeY;
+	m_strTexPrototypeTag = pDesc->strTexPrototypeTag;
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;

@@ -1,5 +1,8 @@
 #include "Transform.h"
 
+#include <iostream>
+
+#include "Navigation.h"
 #include "Shader.h"
 
 CTransform::CTransform(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -52,15 +55,33 @@ void CTransform::SetUp_Scale(_float fScaleX, _float fScaleY, _float fScaleZ)
 	Set_State(STATE_LOOK, XMVector3Normalize(Get_State(STATE_LOOK)) * fScaleZ);
 }
 
-void CTransform::Go_Straight(_float fTimeDelta)
+void CTransform::Go_Straight(_float fTimeDelta, CNavigation* pNavigation, _float fSpeedFactor)
 {
-	_vector		vLook = Get_State(STATE::STATE_LOOK);
-	_vector		vPosition = Get_State(STATE::STATE_POSITION);
-		
-	vPosition += XMVector3Normalize(vLook) * m_fSpeedPerSec * fTimeDelta;
+	_vector  vLook			 = Get_State(STATE_LOOK);
+	_vector  vPrevPosition	 = Get_State(STATE_POSITION);
+	_vector  vMovingPosition = vPrevPosition + XMVector3Normalize(vLook) * m_fSpeedPerSec * fTimeDelta * fSpeedFactor;
 
-	Set_State(STATE_POSITION, vPosition);
+	_vector  vSlidingPosition = vPrevPosition;
+
+	if (nullptr != pNavigation)
+	{
+		if (pNavigation->Can_Move(vMovingPosition))
+		{
+			Set_State(STATE_POSITION, vMovingPosition);
+			std::cerr << "이동 중" << std::endl;
+		}
+		else if (pNavigation->Can_Slide(vPrevPosition, vMovingPosition, vSlidingPosition))
+		{
+			Set_State(STATE_POSITION, vSlidingPosition);
+			std::cerr << "슬라이딩" << std::endl;
+		}
+	}
+	else
+	{
+		Set_State(STATE_POSITION, vMovingPosition);
+	}
 }
+
 
 void CTransform::Go_Left(_float fTimeDelta)
 {
@@ -93,11 +114,67 @@ void CTransform::Go_Backward(_float fTimeDelta)
 	Set_State(STATE_POSITION, vPosition);
 }
 
+void CTransform::Jump_Start(_float fJumpVelocity)
+{
+	if (!m_bIsJumping)
+	{
+		m_bIsJumping = true;
+		m_fJumpVelocity = fJumpVelocity;
+
+		// 슬라임의 현재 y 위치를 기준으로 점프 시작 위치 초기화
+		_vector vPos = Get_State(STATE_POSITION);
+		m_fCurrentY = XMVectorGetY(vPos);
+
+		std::cerr << "[점프]" << endl;
+	}
+}
+
+void CTransform::Jump(_float fTimeDelta, CNavigation* pNavigation)
+{
+    if (!m_bIsJumping)
+        return;
+
+    // 현재 위치 정보
+    _vector vPosition = Get_State(STATE_POSITION);  // 슬라임 현재 위치 정보
+    _float4 position = {};
+    XMStoreFloat4(&position, vPosition);
+
+    // 중력 반영: 점프 높이 증가 → 속도 감소
+    m_fCurrentY		+= m_fJumpVelocity * fTimeDelta;
+
+    m_fJumpVelocity += m_fGravity * fTimeDelta;
+
+    position.y = m_fCurrentY;
+    vPosition = XMLoadFloat4(&position);
+
+	//std::cerr << "[높이 :" << position.y << "]" << std::endl;
+
+	Set_State(STATE_POSITION, vPosition);
+
+    // 네비게이션 상태 복원 여부 확인
+    if (nullptr != pNavigation)
+    {
+    	if (pNavigation->Check_If_Grounded(this))
+    	{
+            // 착지 처리
+            pNavigation->SetUp_On_Navigation(this);
+            m_bIsJumping = false;
+
+            std::cerr << "[착지]" << std::endl;
+            return;
+        }
+    }
+
+    // 점프 중 위치 갱신
+
+}
+
+
 void CTransform::Turn(_fvector vAxis, _float fTimeDelta)
 {
 	_vector		vRight = Get_State(STATE_RIGHT);
-	_vector		vUp = Get_State(STATE_UP);
-	_vector		vLook = Get_State(STATE_LOOK);
+	_vector		vUp    = Get_State(STATE_UP);
+	_vector		vLook  = Get_State(STATE_LOOK);
 
 	_matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, m_fRotationPerSec * fTimeDelta);
 
@@ -107,6 +184,42 @@ void CTransform::Turn(_fvector vAxis, _float fTimeDelta)
 	Set_State(STATE_UP, XMVector3TransformNormal(vUp, RotationMatrix));
 	Set_State(STATE_LOOK, XMVector3TransformNormal(vLook, RotationMatrix));
 }
+
+void CTransform::Turn_Around_Offset(_fvector vAxis, _float fRadian, _float fOffsetDistance)
+{
+	// 1. 현재 상태 가져오기
+	_vector vRight = Get_State(STATE_RIGHT);
+	_vector vUp = Get_State(STATE_UP);
+	_vector vLook = Get_State(STATE_LOOK);
+	_vector vPosition = Get_State(STATE_POSITION);
+
+	// 2. 오프셋 계산 (바라보는 방향 기준 앞쪽)
+	_vector vOffset = XMVector3Normalize(vLook) * fOffsetDistance;
+
+	// 3. 위치를 임시로 앞쪽으로 이동
+	_vector vTempPos = vPosition + vOffset;
+
+	// 4. 회전 행렬 생성
+	_matrix RotationMatrix = XMMatrixRotationAxis(vAxis, fRadian);
+
+	// 5. 방향 벡터 회전
+	vRight = XMVector3TransformNormal(vRight, RotationMatrix);
+	vUp = XMVector3TransformNormal(vUp, RotationMatrix);
+	vLook = XMVector3TransformNormal(vLook, RotationMatrix);
+
+	// 6. 위치 회전 (오프셋 위치 기준 회전된 위치로 계산)
+	vTempPos = XMVector3TransformCoord(vTempPos, RotationMatrix);
+
+	// 7. 최종 위치 = 회전된 오프셋 위치 - 오프셋
+	vPosition = vTempPos - XMVector3Normalize(vLook) * fOffsetDistance;
+
+	// 8. 저장
+	Set_State(STATE_RIGHT, vRight);
+	Set_State(STATE_UP, vUp);
+	Set_State(STATE_LOOK, vLook);
+	Set_State(STATE_POSITION, vPosition);
+}
+
 
 void CTransform::Rotation(_fvector vAxis, _float fRadian)
 {
@@ -132,6 +245,7 @@ void CTransform::LookAt(_fvector vAt)
 	_vector		vPosition = Get_State(STATE_POSITION);
 
 	_vector		vLook = vAt - vPosition;
+	vLook = XMVectorSetY(vLook, 0.f);	// 직진만 할 수 있도록
 
 	_vector		vRight = XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLook);
 

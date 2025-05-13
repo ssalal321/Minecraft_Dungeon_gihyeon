@@ -1,32 +1,32 @@
 #pragma once
 #include "Client_Defines.h"
-#include "State.h"
+#include "State_Player.h"
 
 BEGIN(Client)
-
-class CPlayer_Idle final: public CState
+	class CPlayer_Idle final: public CState_Player
 {
 private:
-	CPlayer_Idle(CGameObject* pActor, CGameObject* pPartObject, OBJECT_DESC* pGameObjectDesc);
+	CPlayer_Idle(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEPLAYER_DESC* pDesc);
 	~CPlayer_Idle() override = default;
 
 public:
-    HRESULT   Init_State()          override;
+    HRESULT     Init_State()                                override;
 
-    void   State_Enter()            override;
-    void   State_Priority_Update()  override;
-    void   State_Update()           override;
-    void   State_Late_Update()      override;
-    void   State_Exit()             override;
+    void        State_Enter()                               override;
+    void        State_Priority_Update(_float fTimeDelta)    override;
+    void        State_Update(_float fTimeDelta)             override;
+    void        State_Late_Update(_float fTimeDelta)        override;
+    void        State_Exit()                                override;
+
+    void        Collision_Enter(CCollider* pOther)          override;
+    void        Collision_Stay(CCollider* pOther)           override;
+    void        Collision_Exit(CCollider* pOther)           override;
 
 private:
-    class CPlayer*          m_pPlayer = { nullptr };
-    class CBody_Player*     m_pBodyPlayer = { nullptr };
-    CModel*                 m_pBodyPlayerModelCom = { nullptr };
-    PLAYER_DESC*            m_pPlayerDesc = { nullptr };
+
 
 public:
-    static CState*  Create(CGameObject* pActor, CGameObject* pPartObject, OBJECT_DESC* pGameObjectDesc);
+    static CState_Player*  Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEPLAYER_DESC* pDesc);
     void   Free()    override;
 };
 

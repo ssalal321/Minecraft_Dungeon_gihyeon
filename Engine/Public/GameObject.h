@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Transform.h"
+#include "Collider.h"
 
 BEGIN(Engine)
 
@@ -9,14 +10,14 @@ class ENGINE_DLL CGameObject abstract : public CBase
 public:
 	typedef struct tagGameObjectDesc : public CTransform::TRANSFORM_DESC
 	{
-		const _tchar* pGameObjectTag;
+		_wstring	strGameObjectTag = {};
 
-		tagGameObjectDesc(const _tchar* gameObjectTag = TEXT(""), _float rotationPerSec = 0.f, _float speedPerSec = 0.f)
-			: tagTransformDesc(rotationPerSec, speedPerSec), pGameObjectTag(gameObjectTag) {}
+		tagGameObjectDesc(const _wstring& gameObjectTag = TEXT(""), _float rotationPerSec = 0.f, _float speedPerSec = 0.f)
+			: tagTransformDesc(rotationPerSec, speedPerSec), strGameObjectTag(gameObjectTag) {}
 
-		tagGameObjectDesc(const tagGameObjectDesc &other)
+		/*tagGameObjectDesc(const tagGameObjectDesc &other)
 			: CTransform::TRANSFORM_DESC(other),
-			  pGameObjectTag(other.pGameObjectTag) {}
+			  pGameObjectTag(other.pGameObjectTag) {}*/
 
 		~tagGameObjectDesc() override = default;
 
@@ -28,6 +29,13 @@ protected:
 	virtual ~CGameObject() override = default;
 
 public:
+	const _wstring&		Get_GameObjectTag() { return m_strGameObjectTag; }
+
+	_bool	Get_GameObject_Active() const { return m_bActive; }
+
+	void	Set_GameObject_Active(_bool bActive) { m_bActive = bActive; }
+
+public:
 	virtual   HRESULT	Initialize_Prototype();
 	virtual   HRESULT	Initialize(void* pArg);
 	virtual   void		Priority_Update(_float fTimeDelta);
@@ -37,6 +45,8 @@ public:
 
 public:
 	class CComponent*	Find_Component(const _wstring& strComponentTag);
+	void				Erase_Component(const wstring& strComponentTag);
+	virtual  void		Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState);
 
 protected:
 	ID3D11Device*			m_pDevice = { nullptr };
@@ -45,13 +55,14 @@ protected:
 	CTransform*				m_pTransformCom = { nullptr };
 
 protected:
-	_tchar									m_szGameObjectTag[MAX_PATH] = {};
+	_wstring	m_strGameObjectTag = {};
 	map<const _wstring, class CComponent*>	m_Components;
 
-protected:
-	HRESULT		Add_Component(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag,
-							  const _wstring& strComponentTag, CComponent** ppOut, void* pArg = nullptr);
+	_bool		m_bActive = { true };
 
+protected:
+	CComponent*		Add_Component(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag,
+								  const _wstring& strComponentTag, CComponent** ppOut, void* pArg = nullptr);
 
 public:
 	virtual  CGameObject*	Clone(void* pArg) = 0;

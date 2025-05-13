@@ -34,7 +34,6 @@ HRESULT CChannel::Initialize(const aiNodeAnim* pAIChannel, const vector<class CB
 		{
 			memcpy(&vScale, &pAIChannel->mScalingKeys[i].mValue, sizeof(_float3));
 			KeyFrame.fTrackPosition = pAIChannel->mScalingKeys[i].mTime;
-
 		}
 		
 		if (i < pAIChannel->mNumRotationKeys)

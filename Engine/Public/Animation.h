@@ -14,30 +14,35 @@ class CAnimation final : public CBase
 {
 private:
 	CAnimation();
-	virtual ~CAnimation() = default;
+	~CAnimation() override = default;
+
+public:
+	_float		Get_CurrentTrackPosition() const { return m_fCurrentTrackPosition; }
+
+	void		Set_CurrentTrackPosition(_float fAnimCurTrackPos) { m_fCurrentTrackPosition = fAnimCurTrackPos; }
 
 public:
 	HRESULT		Initialize(const aiAnimation* pAIAnimation, const vector<class CBone*>& Bones);
 	_bool		Update_TransformationMatrices(_float fTimeDelta, const vector<class CBone*>& Bones,
-											  _bool isLoop, _bool animationChanged);
+											  _bool isLoop, _float speedFactor, _bool animationChanged);
 
 private:
-	_char					m_szName[MAX_PATH] = {};
-	_float					m_fTickPerSecond = {}; /* 초당 재생 속도 */
-	_float					m_fDuration = {}; /* 애니메이션의 총 길이 */
-	_float					m_fCurrentTrackPosition = {}; /* 현재 재생 위치. */
+	_char		m_szName[MAX_PATH] = {};
+	_float		m_fTickPerSecond = {};			/* 초당 재생 속도 */
+	_float		m_fDuration = {};				/* 애니메이션의 총 길이 */
+	_float		m_fCurrentTrackPosition = {};	/* 현재 재생 위치. */
 
-	_uint					m_iNumChannels = {}; /* 이 애니메이션을 구동하기위해 필요한 뼈의 갯수. */
+	_uint		m_iNumChannels = {};			/* 이 애니메이션을 구동하기위해 필요한 뼈의 갯수. */
 
 	/* 각 뼈의 정보를 가진다. */
 	/* 정보 : 해당 뼈가 시간별로 취해야할 상태들. */
-	vector<class CChannel*>	m_Channels;
+	vector<class CChannel*>		m_Channels;
 
-	_bool			m_StartLerp = { false };
+	_bool		m_StartLerp = { false };
 
 public:
 	static CAnimation* Create(const aiAnimation* pAIAnimation, const vector<class CBone*>& Bones);
-	virtual void Free() override;
+	void	Free()	override;
 };
 
 END

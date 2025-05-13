@@ -2,12 +2,21 @@
 #include "Base.h"
 
 BEGIN(Engine)
-	class CUIObject;
+class CUIObject;
 
-	class CUI_Manager : public CBase
+class CUI_Manager : public CBase
 {
 public:
     enum UI_LIFETIME { TEMPORARY, PERSISTENT, LIFETIME_END  };
+
+    struct UIAddRequest
+    {
+        _uint           iPrototypeLevelIndex;
+        _uint           iLayerLevelIndex;
+        _wstring        strPrototypeTag;
+        UI_LIFETIME     eUILifeTime;
+        void*           pArg;
+    };
 
 private:
 	CUI_Manager();
@@ -16,8 +25,14 @@ private:
 public:
     HRESULT     Initialize(_uint iNumLevels);
 
-    CUIObject*   Add_UIObject(_uint iPrototypeLevelIndex, _uint iLayerLevelIndex, const _wstring& strPrototypeTag,
+    CUIObject*  Add_UIObject(_uint iPrototypeLevelIndex, _uint iLayerLevelIndex, const _wstring& strPrototypeTag,
 							 UI_LIFETIME eUILifeTime, void* pArg = nullptr);
+
+    CUIObject*  Find_UIGameObject(_wstring strGameObjectTag, UI_LIFETIME eUILifeTime) const;
+    HRESULT     Delete_UIObject(const _wstring& strGameObjectTag, UI_LIFETIME eUILifeTime);
+    
+    void        Request_Delete_UIObject(const _wstring& strGameObjectTag, UI_LIFETIME eUILifeTime);
+    void        Process_DeleteQueue();
 
     void        Priority_Update(_float fDeltaTime);
     void        Update(_float fDeltaTime);
@@ -25,15 +40,18 @@ public:
 
     HRESULT     Render_UI();
     void        Clear(_uint iCurrentLevelIndex, _uint iNextLevelIndex);
-   
+
 
 private:
     _uint   m_iObjectLevelIndex     = {};  // 현재 레벨의 UI 객체 인덱스
 
 	class CGameInstance*	    m_pGameInstance = { nullptr };
 
-    vector<CUIObject*>     m_CurrentUIObjects[LIFETIME_END]   = {};  // 관리할 UI 객체들
-    vector<CUIObject*>     m_NextUIObjects[LIFETIME_END] = {};       // 관리할 UI 객체들
+    unordered_map<_wstring, CUIObject*>   m_CurrentUIObjects[LIFETIME_END]   = {};  // 관리할 UI 객체들
+    unordered_map<_wstring, CUIObject*>   m_NextUIObjects[LIFETIME_END]      = {};       // 관리할 UI 객체들
+
+    vector<UIAddRequest>                  m_AddQueue;
+    vector<pair<_wstring, UI_LIFETIME>>   m_DeleteQueue;
 
 private:
     _uint   m_iNumLevels = {};

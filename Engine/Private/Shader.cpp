@@ -1,13 +1,13 @@
 #include "Shader.h"
 
 CShader::CShader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-    : CComponent { pDevice, pContext }
+    : CComponent ( pDevice, pContext )
 {
 
 }
 
 CShader::CShader(const CShader& Prototype)
-    : CComponent{ Prototype },
+    : CComponent( Prototype ),
 	  m_pEffect(Prototype.m_pEffect),
 	  m_iNumPasses(Prototype.m_iNumPasses),
 	  m_InputLayouts(Prototype.m_InputLayouts)
@@ -47,7 +47,7 @@ HRESULT CShader::Initialize_Prototype(const _tchar* pShaderFilePath, const D3D11
 
 	for (size_t i = 0; i < m_iNumPasses; i++)
 	{
-		ID3DX11EffectPass*		pPass = pTechnique->GetPassByIndex(i);
+		ID3DX11EffectPass*		pPass = pTechnique->GetPassByIndex(static_cast<_uint>(i));
 		if (nullptr == pPass)
 			return E_FAIL;
 

@@ -46,7 +46,7 @@ HRESULT CGameObject::Initialize(void* pArg)
 	{
 		GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
 
-		lstrcpy(m_szGameObjectTag, pDesc->pGameObjectTag);		
+		m_strGameObjectTag = pDesc->strGameObjectTag;		
 	}
 
 	return S_OK;
@@ -66,6 +66,7 @@ void CGameObject::Late_Update(_float fTimeDelta)
 
 HRESULT CGameObject::Render()
 {
+
 	return S_OK;
 }
 
@@ -79,14 +80,29 @@ CComponent* CGameObject::Find_Component(const _wstring& strComponentTag)
 	return iter->second;
 }
 
-HRESULT CGameObject::Add_Component(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, const _wstring& strComponentTag, CComponent** ppOut, void* pArg)
+void CGameObject::Erase_Component(const wstring& strComponentTag)
+{
+	auto iter = m_Components.find(strComponentTag);
+	if (iter != m_Components.end())
+	{
+		Safe_Release(iter->second);     // 참조 카운트 감소 및 메모리 해제
+		m_Components.erase(iter);       // map에서 제거
+	}
+}
+
+void CGameObject::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)
+{
+}
+
+
+CComponent* CGameObject::Add_Component(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, const _wstring& strComponentTag, CComponent** ppOut, void* pArg)
 {
 	if (nullptr != Find_Component(strComponentTag))
-		return E_FAIL;
+		return nullptr;
 
 	CComponent*		pComponent = dynamic_cast<CComponent*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTOTYPE_COMPONENT, iPrototypeLevelIndex, strPrototypeTag, pArg));
 	if (nullptr == pComponent)
-		return E_FAIL;
+		return nullptr;
 
 	m_Components.emplace(strComponentTag, pComponent);
 
@@ -94,7 +110,7 @@ HRESULT CGameObject::Add_Component(_uint iPrototypeLevelIndex, const _wstring& s
 
 	Safe_AddRef(pComponent);
 
-	return S_OK;
+	return pComponent;
 }
 
 void CGameObject::Free()

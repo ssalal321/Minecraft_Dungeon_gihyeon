@@ -15,13 +15,12 @@ class CLevel_Loading final : public CLevel
 {
 private:
 	CLevel_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual ~CLevel_Loading() = default;
+	~CLevel_Loading() override = default;
 
 public:
 	HRESULT		Initialize(LEVEL eNextLevelID);
 	void		Update(_float fTimeDelta)			override;
 	HRESULT		Render()							override;
-
 private:
 	LEVEL				m_eNextLevelID = { LEVEL_END };
 	class  CLoader*		m_pLoader = { nullptr };

@@ -1,14 +1,18 @@
 #include "Monster.h"
+#include "MonsterState.h"
+
 #include "GameInstance.h"
+#include "FSM.h"
+#include "Player.h"
 
 CMonster::CMonster(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CGameObject { pDevice, pContext }
+	: CContainerObject ( pDevice, pContext )
 {
 
 }
 
 CMonster::CMonster(const CMonster& Prototype)
-	: CGameObject { Prototype }
+	: CContainerObject( Prototype )
 {
 
 }
@@ -22,164 +26,193 @@ HRESULT CMonster::Initialize_Prototype()
 
 HRESULT CMonster::Initialize(void* pArg)
 {
-	/* 원형의 데이터를 복제하여 사본을 만들고. */
-	/* 추가적으로 필요한 데이터를 Arg로 받아와 실 사용하기위한 객체의 정보를 생성해준다. */	
-	CGameObject::GAMEOBJECT_DESC		Desc{};
-
-	Desc.pGameObjectTag = TEXT("GameObject_Terrain");
-	Desc.fSpeedPerSec = 0.f;
-	Desc.fRotationPerSec = 0.f;
-
-	if (FAILED(__super::Initialize(&Desc)))
+	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
-		XMVectorSet(m_pGameInstance->Compute_Random(0.f, 20.f),
-			5.0f,
-			m_pGameInstance->Compute_Random(0.f, 20.f),
-			1.f));
-
-	m_pModelCom->Set_Animation(0, false);
+	if (m_pNavigationCom)
+		m_pNavigationCom->SetUp_CurrentCellIndex(0);
 
 	return S_OK;
 }
 
 void CMonster::Priority_Update(_float fTimeDelta)
 {
+	m_pMonsterFSM->Priority_Update_State(fTimeDelta);
 
+	__super::Priority_Update(fTimeDelta);
 }
 
 void CMonster::Update(_float fTimeDelta)
 {
-	if (true == m_pModelCom->Play_Animation(fTimeDelta))
-		int a = 10;
+	if (m_pNavigationCom && false == m_pTransformCom->Get_Is_Jumping())
+	{
+		m_pNavigationCom->SetUp_On_Navigation(m_pTransformCom);
+	}
+	else
+	{
+		int i = 0;
+	}
+
+	m_pMonsterFSM->Update_State(fTimeDelta);
+
+	__super::Update(fTimeDelta);
 }
 
 void CMonster::Late_Update(_float fTimeDelta)
 {
+	m_pMonsterFSM->Late_Update_State(fTimeDelta);
 
+	__super::Late_Update(fTimeDelta);
 
 	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
+
 }
 
 HRESULT CMonster::Render()
 {
-	if (FAILED(Bind_ShaderResources()))
-		return E_FAIL;
-		
 
-	_uint	iNumMeshes = m_pModelCom->Get_NumMeshes();
-
-	for (size_t i = 0; i < iNumMeshes; i++)
-	{
-		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
-			return E_FAIL;
-
-		if (FAILED(m_pModelCom->Bind_BoneMatrices(m_pShaderCom, "g_BoneMatrices", i)))
-			return E_FAIL;
-
-		if (FAILED(m_pShaderCom->Begin(0)))
-			return E_FAIL;
-
-		if (FAILED(m_pModelCom->Render(i)))
-			return E_FAIL;
-	}
 	return S_OK;
+}
+
+
+
+void CMonster::Change_State(const MonsterState& state)
+{
+	switch (state.monsterType)
+	{
+	case MONSTER_TYPE::ZOMBIE:
+		m_iState = static_cast<_uint>(state.ZombieState);
+		break;
+
+	case MONSTER_TYPE::BABYZOMBIE:
+		m_iState = static_cast<_uint>(state.BabyZombieState);
+		break;
+
+	case MONSTER_TYPE::SKELETON:
+		m_iState = static_cast<_uint>(state.SkeletonState);
+		break;
+
+	case MONSTER_TYPE::SLIME_LARGE:
+		m_iState = static_cast<_uint>(state.SlimeLargeState);
+		break;
+
+	case MONSTER_TYPE::SLIME_MEDIUM:
+		m_iState = static_cast<_uint>(state.SlimeMediumState);
+		break;
+
+	case MONSTER_TYPE::SLIME_SMALL:
+		m_iState = static_cast<_uint>(state.SlimeSmallState);
+		break;
+	}
+
+	m_pMonsterFSM->Change_State(m_StatesVec[m_iState]);
+}
+
+
+void CMonster::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)
+{
+	switch (eCollisionState)
+	{
+	case CCollider::ENTER:
+		m_pMonsterFSM->Collision_Enter(pOther);
+		break;
+
+	case CCollider::STAY:
+		m_pMonsterFSM->Collision_Stay(pOther);
+		break;
+
+	case CCollider::EXIT:
+		m_pMonsterFSM->Collision_Exit(pOther);
+		break;
+	}
 }
 
 HRESULT CMonster::Ready_Components()
 {
-	/* Com_Shader */
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxAnimMesh"),
-		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
-		return E_FAIL;
+	/* Com_Navigation */
+	_uint	LevelIndex = m_pGameInstance->Get_ChangedLevelIndex();
 
-	/* Com_Model */
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Fiona"),
-		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
-		return E_FAIL;
+	switch (LevelIndex)
+	{
+	case LEVEL_LOUNGE:
+		{
+		if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Navigation_LoungeMap"),
+			TEXT("Com_Navigation_LoungeMap"), reinterpret_cast<CComponent**>(&m_pNavigationCom)))
+			return E_FAIL;
+		}
+		break;
+
+	/*case LEVEL_SOGGYSWAMP:
+	{
+		m_pNavigationCom = nullptr;
+	}*/
+	}
 
 	return S_OK;
 }
 
-HRESULT CMonster::Bind_ShaderResources()
+_float4 CMonster::Get_Player_Position(const _wstring& strPlayerGameObjectTag, _uint iPlayerLayerLevelIndex) const
 {
-	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
-		return E_FAIL;
+	CPlayer*	  pPlayer				= dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(strPlayerGameObjectTag, iPlayerLayerLevelIndex, TEXT("Layer_Player")));
+	if (nullptr == pPlayer)
+		return { 0.f, 0.f, 0.f, 1.f };
 
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Transform_Float4x4(CPipeLine::D3DTS_VIEW))))
-		return E_FAIL;
+	CTransform*   pPlayerTransformCom	= dynamic_cast<CTransform*>(pPlayer->Find_Component(TEXT("Com_Transform")));
+	_vector		  vPlayerPosition		= pPlayerTransformCom->Get_State(CTransform::STATE_POSITION);
 
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(CPipeLine::D3DTS_PROJ))))
-		return E_FAIL;
+	_float4  playerPos = {0.f, 0.f, 0.f, 0.f};
+	XMStoreFloat4(&playerPos, vPlayerPosition);
 
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4))))
-		return E_FAIL;
-	
-	const LIGHT_DESC* pLightDesc = m_pGameInstance->Get_LightDesc(0);
-	if (nullptr == pLightDesc)
-		return E_FAIL;
-
-	if (LIGHT_DESC::TYPE_DIRECTIONAL == pLightDesc->eType)
-	{
-		if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightDir", &pLightDesc->vDirection, sizeof(_float4))))
-			return E_FAIL;
-		m_iPassIndex = 0;
-	}
-	else
-	{
-		if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightPos", &pLightDesc->vPosition, sizeof(_float4))))
-			return E_FAIL;
-		if (FAILED(m_pShaderCom->Bind_RawValue("g_fLightRange", &pLightDesc->fRange, sizeof(_float))))
-			return E_FAIL;
-		m_iPassIndex = 1;
-	}
-
-	
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightDiffuse", &pLightDesc->vDiffuse, sizeof(_float4))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightAmbient", &pLightDesc->vAmbient, sizeof(_float4))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightSpecular", &pLightDesc->vSpecular, sizeof(_float4))))
-		return E_FAIL;
-
-	return S_OK;
+	return	 playerPos;
 }
 
-CMonster* CMonster::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+_vector CMonster::Vec_To_Player(const _wstring& strPlayerGameObjectTag, _uint iPlayerLayerLevelIndex) const
 {
-	CMonster* pGameInstance = new CMonster(pDevice, pContext);
+	CPlayer*	 pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(strPlayerGameObjectTag, iPlayerLayerLevelIndex, TEXT("Layer_Player")));
+	CTransform*  pPlayerTransformCom = dynamic_cast<CTransform*>(pPlayer->Find_Component(TEXT("Com_Transform")));
 
-	if (FAILED(pGameInstance->Initialize_Prototype()))
-	{
-		MSG_BOX("Failed to Create : CMonster");
-		Safe_Release(pGameInstance);
-	}
+	_vector		vPlayerPos  = pPlayerTransformCom->Get_State(CTransform::STATE_POSITION);
+	_vector		vMonsterPos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
 
-	return pGameInstance;
+	_vector		dirToPlayer = vPlayerPos - vMonsterPos;
+	//dirToPlayer.y = 0.f;
+
+	return	 dirToPlayer;
+}
+
+_float CMonster::Length_To_Player() const
+{
+	_uint	CurrentLevelIndex = m_pGameInstance->Get_CurrentLevelIndex();
+
+	_float   lengthToPlayer = {};
+	_vector  vecToPlayer = Vec_To_Player(TEXT("GameObject_Player"), CurrentLevelIndex);
+	XMStoreFloat(&lengthToPlayer, XMVector3Length(vecToPlayer));
+
+	return lengthToPlayer;
 }
 
 
-CGameObject* CMonster::Clone(void* pArg)
+_bool CMonster::Player_In_DetectRange() const
 {
-	CMonster* pGameInstance = new CMonster(*this);
+	_float	 vecToPlayer = Length_To_Player();
 
-	if (FAILED(pGameInstance->Initialize(pArg)))
-	{
-		MSG_BOX("Failed to Clone : CMonster");
-		Safe_Release(pGameInstance);
-	}
-
-	return pGameInstance;
+	return	vecToPlayer < m_pMonsterInfo->Get_DetectRange();
 }
 
 void CMonster::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pShaderCom);
-	Safe_Release(m_pModelCom);
+	Safe_Release(m_pNavigationCom);
+	Safe_Delete(m_pMonsterInfo);
+	Safe_Delete(m_pMonsterFSM);
+
+	for (auto& stateVec : m_StatesVec)
+	{
+		if (stateVec != nullptr)
+			Safe_Release(stateVec);
+	}
 }

@@ -7,8 +7,11 @@
 #include "Prototype_Manager.h"
 #include "PipeLine.h"
 #include "UI_Manager.h"
+#include "EventBus.h"
 
 BEGIN(Engine)
+	class CLayer;
+
 	class ENGINE_DLL CGameInstance final : public CBase
 {
 	DECLARE_SINGLETON(CGameInstance)
@@ -39,7 +42,6 @@ public:
 #pragma endregion
 
 #pragma region TIMER_MANAGER
-public:
 	_float		Get_TimeDelta(const _wstring& strTimerTag);
 	HRESULT		Add_Timer(const _wstring& strTimerTag);
 	void		Compute_TimeDelta(const _wstring& strTimerTag);
@@ -47,17 +49,27 @@ public:
 
 #pragma region LEVEL_MANAGER
 	HRESULT		Open_Level(_uint iNextLevelIndex, class CLevel* pNewLevel);
+	_uint		Get_CurrentLevelIndex() const;
+	_uint		Get_ChangedLevelIndex() const;
+	void		Set_NextLevelIndex(_uint iNextLevelIndex) const;
 #pragma endregion
 
 #pragma region PROTOTYPE_MANAGER
 	HRESULT		Add_Prototype(_uint iLevelIndex, const _wstring& strPrototypeTag, CBase* pPrototype);
-	CBase*		Clone_Prototype(PROTOTYPE ePrototype, _uint iPrototypeLevelIndex, _wstring strPrototypeTag, void* pArg = nullptr);
+	CBase*		Clone_Prototype(PROTOTYPE ePrototype, _uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, void* pArg = nullptr);
 #pragma endregion
 
 #pragma region OBJECT_MANAGER
-	HRESULT		Add_GameObject(_uint iPrototypeLevelIndex, _wstring strPrototypeTag,
+	CGameObject* Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag,
 							   _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg = nullptr);
-	CGameObject* Find_GameObject(_wstring strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag);
+	CGameObject* Find_GameObject(const _wstring& strGameObjectTag, _uint iLayerLevelIndex, const _wstring& strLayerTag);
+	//CComponent*  Get_Component(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strComponentTag, _uint iIndex = 0);
+
+	CLayer*		Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag);
+	HRESULT		Set_Layer_Persistent(_uint iLevelIndex, const wstring& strLayerTag);
+	CLayer*		Get_Persistent_Layer(const wstring& strLayerTag);
+	HRESULT		Attach_Persistent_Layer_To_Level(_uint iTargetLevelIndex, const wstring& strLayerTag);
+	HRESULT		Attach_Persistent_Layers_To_Level(_uint iLevelIndex);
 #pragma endregion
 
 #pragma region INPUT_MANAGER
@@ -69,9 +81,9 @@ public:
 #pragma endregion
 
 #pragma region PICKING
-	void	Compute_MouseRay() const;
-	_bool   Picking_In_World(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC) const;
-	_bool   Picking_In_Local(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC, const _float4x4& WorldMatrixInverse);
+	void    Compute_MouseRay(_float4& worldMousePos, _float3& worldMouseRay);
+	_bool   Picked_Model(_float4& fWorldPickedPos, const _wstring& strGameObjectTag, _uint iLayerLevelIndex, const _wstring& strLayerTag);
+	_bool	Picked_Vertex(_float3& fLocalPickedVertex, const _wstring& strGameObjectTag, _uint iLayerLevelIndex, const _wstring& strLayerTag);
 #pragma endregion
 
 #pragma region RENDERER
@@ -93,9 +105,39 @@ public:
 #pragma endregion
 
 #pragma region UI_MANAGER
-	CUIObject*	Add_UIObject(_uint iPrototypeLevelIndex, _uint iLayerLevelIndex, const _wstring& strPrototypeTag, CUI_Manager::UI_LIFETIME eUILifeTime, void* pArg = nullptr);
+	CUIObject*	Add_UIObject(_uint iPrototypeLevelIndex, _uint iLayerLevelIndex, const _wstring& strPrototypeTag, CUI_Manager::UI_LIFETIME eUILifeTime, void* pArg = nullptr) const;
+	CUIObject*  Find_UIGameObject(const _wstring& strGameObjectTag, CUI_Manager::UI_LIFETIME eUILifeTime) const;
+	HRESULT		Delete_UIObject(const _wstring& strGameObjectTag, CUI_Manager::UI_LIFETIME eUILifeTime);
+	void        Request_Delete_UIObject(const _wstring& strGameObjectTag, CUI_Manager::UI_LIFETIME eUILifeTime);
 #pragma endregion
 
+#pragma region COLLISION_MANAGER
+	HRESULT		Add_ColliderCom(_uint iLevelIndex, CComponent* pColliderCom, const _wstring& ColliderTag,
+								const _wstring& ObjectType, _bool bPersistent = false) const;
+	HRESULT		Attach_Persistent_Colliders_To_Level(_uint iLevelIndex, const wstring& targetTag);
+	unordered_map<_wstring, vector<CCollider*>>*	Get_Colliders(_uint iLevelIndex);
+
+#pragma endregion
+
+#pragma region EVENTBUS
+	template <typename T>
+	HRESULT   Subscribe(function<void(const T&)> handler)
+	{
+		if (FAILED(m_pEventBus->Subscribe(handler)))
+			return E_FAIL;
+
+		return S_OK;
+	}
+
+	template <typename T>
+	HRESULT   Publish(const T& event) const
+	{
+		if (FAILED(m_pEventBus->Publish(event)))
+			return E_FAIL;
+
+		return S_OK;
+	}
+#pragma endregion
 
 private:
 	class	CGraphic_Device*		m_pGraphic_Device		= { nullptr };
@@ -108,8 +150,10 @@ private:
 	class	CRenderer*				m_pRenderer				= { nullptr };
 	class	CPipeLine*				m_pPipeLine				= { nullptr };
 	class	CLight_Manager*			m_pLight_Manager		= { nullptr };
-	class   CUI_Manager*			m_pUI_Manager			= { nullptr };
+	class	CUI_Manager*			m_pUI_Manager			= { nullptr };
+	class	CCollision_Manager*		m_pCollision_Manager	= { nullptr };
 	class	CPicking*				m_pPicking				= { nullptr };
+	class   CEventBus*				m_pEventBus				= { nullptr };
 	
 public:
 	void	Release_Engine();

@@ -5,6 +5,10 @@ namespace Engine
 {
 	enum class WINMODE { MODE_FULL, MODE_WIN };
 
+	enum class COLLIDER { TYPE_AABB, TYPE_OBB, TYPE_SPHERE, TYPE_RAY, TYPE_END };
+
+	enum class RENDER_MODE { LINE, FILL };
+
 	enum class PROTOTYPE { PROTOTYPE_GAMEOBJECT, PROTOTYPE_COMPONENT };
 
 	enum class MOUSEKEYSTATE { DIM_LB, DIM_RB, DIM_MB };

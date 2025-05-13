@@ -5,6 +5,7 @@
 #include "Animation.h"
 
 #include "Material.h"
+#include "VIBuffer_Cube.h"
 
 CModel::CModel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : CComponent (pDevice, pContext)
@@ -51,11 +52,21 @@ const _float4x4* CModel::Get_CombinedTransformationMatrix(const _char* pBoneName
 	return (*iter)->Get_CombinedTransformationMatrix_Ptr();
 }
 
+_float CModel::Get_AnimCurrentTrackPosition() const
+{
+	return m_Animations[m_iCurrentAnimIndex]->Get_CurrentTrackPosition();
+}
+
+void CModel::Set_AnimCurrentTrackPosition(_float fAnimCurTrackPos)
+{
+	m_Animations[m_iCurrentAnimIndex]->Set_CurrentTrackPosition(fAnimCurTrackPos);
+}
+
 HRESULT CModel::Initialize_Prototype(TYPE eModelType, const _char* pModelFilePath, _fmatrix PreTransformMatrix)
 {
 	/* 어떤 설정? */
 	/* 데이터를 읽을 때 설정값에 따라서 데이터를 조작하여 로드해준다. */
-	_uint			iFlag = /*aiProcess_PreTransformVertices | */aiProcess_ConvertToLeftHanded | aiProcessPreset_TargetRealtime_Fast;	
+	_uint	iFlag = /*aiProcess_PreTransformVertices | */aiProcess_ConvertToLeftHanded | aiProcessPreset_TargetRealtime_Fast;	
 
 	if (TYPE_NONANIM == eModelType)
 		iFlag |= aiProcess_PreTransformVertices;
@@ -85,6 +96,16 @@ HRESULT CModel::Initialize_Prototype(TYPE eModelType, const _char* pModelFilePat
 
 HRESULT CModel::Initialize(void* pArg)
 {
+	if (nullptr == pArg)
+		return S_OK;
+
+	MODEL_DESC* pDesc = static_cast<MODEL_DESC*>(pArg);
+	
+	for (auto& Mesh : m_Meshes)
+	{
+		Mesh->Set_Pickable(pDesc->bPickable);
+	}
+
     return S_OK;
 }
 
@@ -111,7 +132,7 @@ _bool CModel::Play_Animation(_float fTimeDelta)
 	}
 
 	/* 뼈들의 m_TransformationMatrix를 애니메이터분들이 제공해준 시간에 맞는 뼈의 상태로 갱신해준다. */
-	isFinished = m_Animations[m_iCurrentAnimIndex]->Update_TransformationMatrices(fTimeDelta, m_Bones, m_isLoop, animationChanged);
+	isFinished = m_Animations[m_iCurrentAnimIndex]->Update_TransformationMatrices(fTimeDelta, m_Bones, m_isLoop, m_fSpeedFactor, animationChanged);
 
 	/* 모든 뼈들의 CombinedTransformationMatrix를 셋한다. */
 	for (auto& pBone : m_Bones)
@@ -120,52 +141,91 @@ _bool CModel::Play_Animation(_float fTimeDelta)
 	return isFinished;
 }
 
-_bool CModel::Picking_Model(const _float3& vMousePos, const _float3& vMouseRay, _float3& vPickedPos, const _float4x4& WorldMatrix) const
+_bool CModel::Picking_Model(const _float4& worldMousePos, const _float3& worldMouseRay,
+	_float3& localPickedPos, const _float4x4& WorldMatrix) const
 {
-	_float	fMinDist = FLT_MAX;
-	_bool	bHit = false;
+	_float		fMinDist = FLT_MAX;
+	_bool		bHit = false;
+
+	_matrix		matInvWorld = XMMatrixInverse(nullptr, XMLoadFloat4x4(&WorldMatrix));
+	_vector		vLocalOrigin = XMVector3TransformCoord(XMLoadFloat4(&worldMousePos), matInvWorld);
+	_vector		vLocalDir = XMVector3TransformNormal(XMLoadFloat3(&worldMouseRay), matInvWorld);
+	vLocalDir = XMVector3Normalize(vLocalDir);
+
+	_float3 localMousePos, localMouseRay;
+	XMStoreFloat3(&localMousePos, vLocalOrigin);
+	XMStoreFloat3(&localMouseRay, vLocalDir);
 
 	for (auto& pMesh : m_Meshes)
 	{
-		if (false == pMesh->Check_BoundingBox_Collision(vMousePos, vMouseRay, WorldMatrix))
+		if (false == pMesh->Check_BoundingBox_AABB(localMousePos, localMouseRay))
 			continue;
 
-		_float3 vLocalPickedPos = {};
-		_bool bMeshHit = false;
+		_float3		localPickedPosition = {};
+		_bool		bMeshHit = false;
+		_float		fOutDist = {};
 
-		if (m_eModelType == TYPE_NONANIM)
-		{
-			bMeshHit = pMesh->Picking_In_World(vMousePos, vMouseRay, vLocalPickedPos);
-		}
-		else
-		{
-			bMeshHit = pMesh->Picking_In_Local(vMousePos, vMouseRay, vLocalPickedPos, WorldMatrix);
-		}
+		bMeshHit = pMesh->Picking_In_Mesh(localMousePos, localMouseRay, localPickedPosition, fOutDist);
 
 		if (bMeshHit)
 		{
-			_float3 vWorldPickedPos = vLocalPickedPos;
+			//pMesh->Check_BoundingBox_AABB(localMousePos, localMouseRay);
 
-			// 애니메이션 모델이면 로컬 -> 월드 변환
-			if (m_eModelType == TYPE_ANIM)
+			if (fOutDist < fMinDist)
 			{
-				XMStoreFloat3(&vWorldPickedPos, XMVector3TransformCoord(XMLoadFloat3(&vLocalPickedPos), XMLoadFloat4x4(&WorldMatrix)));
+				fMinDist = fOutDist;
+				localPickedPos = localPickedPosition;
+				bHit = true;
 			}
+		}
+	}
 
-			_vector		vWorldMousePos = XMLoadFloat3(&vMousePos);
+	return bHit;
+}
 
-			_float		fDist = XMVectorGetX(XMVector3Length(XMLoadFloat3(&vWorldPickedPos) - vWorldMousePos));
 
-			if (fDist < fMinDist)
+_bool CModel::Picking_Vertex(const _float4& worldMousePos, const _float3& worldMouseRay, _float3& vOutPickedVertex, const _float4x4& WorldMatrix) const
+{
+	_float		fMinDist = FLT_MAX;
+	_bool		bHit = false;
+
+	// 월드 -> 로컬 좌표로 마우스 정보 변환
+	_matrix		matInvWorld = XMMatrixInverse(nullptr, XMLoadFloat4x4(&WorldMatrix));
+	_vector		vLocalOrigin = XMVector3TransformCoord(XMLoadFloat4(&worldMousePos), matInvWorld);
+	_vector		vLocalDir = XMVector3TransformNormal(XMLoadFloat3(&worldMouseRay), matInvWorld);
+	vLocalDir = XMVector3Normalize(vLocalDir);
+
+	_float3 localMousePos, localMouseRay;
+	XMStoreFloat3(&localMousePos, vLocalOrigin);
+	XMStoreFloat3(&localMouseRay, vLocalDir);
+
+	for (auto& pMesh : m_Meshes)
+	{
+		if (false == pMesh->Check_BoundingBox_AABB(localMousePos, localMouseRay))
+			continue;
+
+		_float3		vLocalPickedVertice = {};
+		_bool		bMeshHit = false;
+		_float		fOutDist = {};
+
+		bMeshHit = pMesh->Picking_Vertex(localMousePos, localMouseRay, vLocalPickedVertice, fOutDist, 0.3f);
+
+		if (bMeshHit)
+		{
+			/*_float3 vWorldPickedPos;
+			XMStoreFloat3(&vWorldPickedPos, XMVector3TransformCoord(XMLoadFloat3(&vLocalPickedPos), XMLoadFloat4x4(&WorldMatrix)));*/
+
+			if (fOutDist < fMinDist)
 			{
-				fMinDist = fDist;
-				vPickedPos = vWorldPickedPos;
+				fMinDist = fOutDist;
+				vOutPickedVertex = vLocalPickedVertice;
 				bHit = true;
 			}
 		}
 	}
 	return bHit;
 }
+
 
 HRESULT CModel::Bind_Material(CShader* pShader, const _char* pConstantName, _uint iMeshIndex, aiTextureType eMaterialType, _uint iTextureIndex)
 {
@@ -185,6 +245,7 @@ HRESULT CModel::Bind_BoneMatrices(CShader* pShader, const _char* pConstantName, 
 {
 	return m_Meshes[iMeshIndex]->Bind_BoneMatrices(pShader, pConstantName, m_Bones);
 }
+
 
 HRESULT CModel::Ready_Meshes()
 {
@@ -228,7 +289,7 @@ HRESULT CModel::Ready_Bones(const aiNode* pAINode, _int iParentBoneIndex)
 
 	m_Bones.push_back(pBone);
 
-	_int iParentIndex = m_Bones.size() - 1;
+	_int iParentIndex = static_cast<_int>(m_Bones.size()) - 1;
 
 	for (size_t i = 0; i < pAINode->mNumChildren; i++)
 	{
@@ -254,7 +315,8 @@ HRESULT CModel::Ready_Animations()
 	return S_OK;
 }
 
-CModel* CModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, TYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix)
+CModel* CModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, TYPE eType,
+					   const _char* pModelFilePath, _fmatrix PreTransformMatrix)
 {
 	CModel* pGameInstance = new CModel(pDevice, pContext);
 

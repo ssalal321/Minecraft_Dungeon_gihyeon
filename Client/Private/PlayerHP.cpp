@@ -1,5 +1,6 @@
 #include "PlayerHP.h"
 #include "GameInstance.h"
+#include "Player.h"
 
 CPlayerHP::CPlayerHP(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CUIObject(pDevice, pContext)
@@ -28,7 +29,13 @@ HRESULT CPlayerHP::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(m_pDesc)))
 		return E_FAIL;
 
-	
+	m_pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("GameObject_Player"), m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_Player")));
+	if (nullptr == m_pPlayer)
+		return E_FAIL;
+
+	_uint uiMaxHP = m_pPlayer->Get_PlayerInfo()->Get_MaxHP();
+	m_fInverseMaxHP = 1.f / static_cast<_float>(uiMaxHP);
+
 	if (FAILED(Ready_PlayerHP_Components()))
 			return E_FAIL;
 
@@ -42,19 +49,16 @@ void CPlayerHP::Priority_Update(_float fTimeDelta)
 
 void CPlayerHP::Update(_float fTimeDelta)
 {
-	if (Get_KeyDown())
-	{
-		m_CutOffY += 0.02f;
+	_uint uiCurrentHP = m_pPlayer->Get_PlayerInfo()->Get_CurrentHP();
+	m_CutOffY = 1.f - (static_cast<_float>(uiCurrentHP) * m_fInverseMaxHP);
 
-		if (m_CutOffY > 1.0f) m_CutOffY = 1.0f; // 최대값 제한
+	if (m_CutOffY > 1.0f) m_CutOffY = 1.0f; // 최대값 제한
 
-		m_pShaderCom->Bind_RawValue("g_fCutoffY", &m_CutOffY, sizeof(float));
+	m_pShaderCom->Bind_RawValue("g_fCutoffY", &m_CutOffY, sizeof(_float));
 
 
-		_float fYFactor = (m_CutOffY < 0.75f) ? 2.f : 5.f;
-		m_pShaderCom->Bind_RawValue("g_fYGradationFactor", &fYFactor, sizeof(float));
-		
-	}
+	_float fYFactor = (m_CutOffY < 0.75f) ? 2.f : 5.f;
+	m_pShaderCom->Bind_RawValue("g_fYGradationFactor", &fYFactor, sizeof(_float));
 }
 
 void CPlayerHP::Late_Update(_float fTimeDelta)
@@ -84,26 +88,21 @@ HRESULT CPlayerHP::Render()
 HRESULT CPlayerHP::Ready_PlayerHP_Components()
 {
 	/* Com_Texture - filled_heart 텍스처 */
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, m_pDesc->strTextureComTag,
-		TEXT("Com_Texture_PlayerHP"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+	if (nullptr == Add_Component(LEVEL_STATIC, m_pDesc->strTexPrototypeTag,
+		TEXT("Com_Texture_PlayerHP"), reinterpret_cast<CComponent**>(&m_pTextureCom)))
 		return E_FAIL;
 
 	/* Com_Shader */
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex_HPbar"),
-		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
+	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex_HPbar"),
+		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom)))
 		return E_FAIL;
 
 	/* Com_VIBuffer */
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
-		TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
+	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
+		TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom)))
 		return E_FAIL;
 
 	return S_OK;
-}
-
-_bool CPlayerHP::Get_KeyDown()
-{
-	return m_pGameInstance->Get_Key(VK_NUMPAD1);
 }
 
 CPlayerHP* CPlayerHP::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

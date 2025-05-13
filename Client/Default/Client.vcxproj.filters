@@ -25,9 +25,6 @@
     <Filter Include="97.ShaderFiles">
       <UniqueIdentifier>{0ec719f1-ae5d-4711-9dcb-96a12621ee33}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Terrain">
-      <UniqueIdentifier>{86458f00-d330-413e-aa5c-1ad58db19e28}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\Camera">
       <UniqueIdentifier>{7f6a5c1d-3c88-4637-ac65-c368fe98b7d9}</UniqueIdentifier>
     </Filter>
@@ -70,20 +67,11 @@
     <Filter Include="02.GameObjects\Sky">
       <UniqueIdentifier>{f921d5a2-b17c-4a73-a7d3-028b1053c5a0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Levels\02. GamePlay">
-      <UniqueIdentifier>{fae995d6-0f45-4682-97aa-35fe9c6e9a44}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\LoungeMap">
       <UniqueIdentifier>{a35214a7-3599-46bc-96d0-e0ce666aaa40}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\ForkLift">
-      <UniqueIdentifier>{97f07e9d-00c1-47e2-ad7d-79a41a661f9f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\Player\00. Body_Player">
       <UniqueIdentifier>{5373e998-8490-442b-bc63-474356c4fb92}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Player\01. Weapon">
-      <UniqueIdentifier>{e7e9d8fd-6248-4abe-9a63-c2fbf55b89dc}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\Player\02. State">
       <UniqueIdentifier>{f9107163-f31d-4f6f-9fe1-b689765a2b57}</UniqueIdentifier>
@@ -93,6 +81,222 @@
     </Filter>
     <Filter Include="96. FSM\State">
       <UniqueIdentifier>{ff95e289-b11b-4bc8-a789-3ea3d6113962}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Player\02. State\Player_Idle">
+      <UniqueIdentifier>{ee133f71-2358-4f54-a6f8-8a5dd22095a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Player\02. State\Player_Walk">
+      <UniqueIdentifier>{cd3059ba-cd8c-4bbf-8fb2-bff2d986a9a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Player\02. State\Player_Roll">
+      <UniqueIdentifier>{9905ea67-d423-4db9-ade2-018a707a5c88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Zombie">
+      <UniqueIdentifier>{a9c53524-8cf9-4a55-b3f2-e74ce3da8b24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Zombie\00. Body_Zombie">
+      <UniqueIdentifier>{f1c38f59-c0be-4535-b1f8-b2bf76de9d77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Zombie\01. State">
+      <UniqueIdentifier>{2e037a48-045f-4e3a-b4a4-f170ea2c96be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Zombie\01. State\Zombie_Attack">
+      <UniqueIdentifier>{2cd89c5d-710a-4e64-a216-36114b69581a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Zombie\01. State\Zombie_GetHit">
+      <UniqueIdentifier>{3fa056bc-39bd-49bf-a1ca-de90e3123438}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Zombie\01. State\Zombie_Stun">
+      <UniqueIdentifier>{da8c0f8c-285a-4e75-892c-0ceb54e4d5e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Zombie\01. State\Zombie_Idle">
+      <UniqueIdentifier>{6ef0e423-d2e3-47c1-86aa-5a2a2d3be815}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Zombie\01. State\Zombie_Walk">
+      <UniqueIdentifier>{8e7041c5-aa30-467a-b7d9-ad11d45d370e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Zombie\01. State\Zombie_Sleep">
+      <UniqueIdentifier>{c404b55d-3e06-430d-8643-66871d11ff98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Player\02. State\Player_Attack">
+      <UniqueIdentifier>{09cc7a4b-418f-46c1-972f-dd7dc99dca77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Player\02. State\Player_Attack\Player_Glaive_Combo">
+      <UniqueIdentifier>{bc024a76-42c2-4c9a-9ecd-4c55df8757f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Player\02. State\Player_GetHit">
+      <UniqueIdentifier>{ec2f2eb7-86f5-4d82-b48b-db550ed92c84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Skeleton">
+      <UniqueIdentifier>{ea033f82-cc04-4cda-ba19-522de26c7a4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Skeleton\00. Body_Skeleton">
+      <UniqueIdentifier>{557a3983-6cc4-40dd-8a9e-d9bbfa9a168f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Skeleton\01. State">
+      <UniqueIdentifier>{918e96c2-d0aa-4aad-a0a1-0d1dd40854b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Skeleton\01. State\Skeleton_Idle">
+      <UniqueIdentifier>{9ce11e69-7281-495e-a8be-6ec9c7b28dd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Skeleton\01. State\Skeleton_Walk">
+      <UniqueIdentifier>{fcea4a69-afab-4f0a-bdd8-553a62183101}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Skeleton\01. State\Skeleton_HeadSpin">
+      <UniqueIdentifier>{4e1846b7-c3e7-4f41-a473-7d9b744169c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Skeleton\01. State\Skeleton_GetHit">
+      <UniqueIdentifier>{aee1c940-b731-4a06-b78c-4d395d84c8d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Skeleton\01. State\Skeleton_BowAction">
+      <UniqueIdentifier>{757f20cf-5865-4d73-9099-fee7866e62a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\02. Lounge">
+      <UniqueIdentifier>{fae995d6-0f45-4682-97aa-35fe9c6e9a44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObjects\Inventory\InventoryIcon">
+      <UniqueIdentifier>{a672ba4a-bb13-4ecb-a7d8-5c4d0d1fb614}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Item">
+      <UniqueIdentifier>{986d68eb-39f5-4cd9-afec-fc22bf5a13eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Inventory">
+      <UniqueIdentifier>{141438c3-b8df-4b8c-b93f-a466fc15c1c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Arrow">
+      <UniqueIdentifier>{893bd376-3991-4702-af61-bf48a5e6ff93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Player\02. State\Player_Attack\Player_BowAction">
+      <UniqueIdentifier>{ec22efd6-d6f8-4601-ac97-fcd8afe526e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Item\Melee_Weapon">
+      <UniqueIdentifier>{d3f7fb40-c485-4381-a9ed-568de920ebad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Item\Melee_Weapon\Glaive">
+      <UniqueIdentifier>{eceafa73-f980-4124-9299-94b46878732a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Item\Artifact">
+      <UniqueIdentifier>{95770eb8-e502-4964-90a4-7bf140a5d52f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Item\Ranged_Weapon">
+      <UniqueIdentifier>{63859ab4-7dc8-4ac3-91bb-25ebb96f4291}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Item\Ranged_Weapon\ShortBow">
+      <UniqueIdentifier>{357aa7d7-963a-4187-9b68-1fb06e1baf3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Item\Ranged_Weapon\Bow">
+      <UniqueIdentifier>{57d21c53-5f98-4859-ae85-c003d0ff863d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\03. SoggySwamp">
+      <UniqueIdentifier>{9c0a999c-4f62-4586-9481-02340adabd81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Level_Trigger">
+      <UniqueIdentifier>{1d042e17-86bc-427c-83ad-d4c6d8f4f3df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\SoggySwampMap">
+      <UniqueIdentifier>{2b962968-0e94-4a2e-ad56-4d850404631f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\BabyZombie">
+      <UniqueIdentifier>{3bf345ce-a23d-43b0-abfe-954a13f6aa4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\BabyZombie\01. State">
+      <UniqueIdentifier>{3d89ef3d-a690-4596-be5e-5ce6aae1e1a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Idle">
+      <UniqueIdentifier>{76e92df8-fa7f-4785-8567-93a869c1e8f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Walk">
+      <UniqueIdentifier>{476667f2-4050-4e7f-acd1-8cc05247e0a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Attack">
+      <UniqueIdentifier>{f98e1a97-ac04-4daa-a169-e17debae4034}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Novelty">
+      <UniqueIdentifier>{f5799798-5a46-45fc-a7d7-821b6dfd5ad3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_GetHit">
+      <UniqueIdentifier>{fc9e17c7-700f-41b4-a7a6-b92619c399f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime">
+      <UniqueIdentifier>{05d750de-dea8-41b1-9a75-2df07c71f62f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Large">
+      <UniqueIdentifier>{2109de68-956e-4d7e-8518-80714c4cf38a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Large\00. Body">
+      <UniqueIdentifier>{929d2a3e-2aa3-4331-a698-43c4d79bb3a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Large\01. State">
+      <UniqueIdentifier>{31b45a82-0337-48fc-8451-ebeda7a9a767}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Large\01. State\Slime_Large_Idle">
+      <UniqueIdentifier>{573b4b6b-88a8-4249-99a1-2a24853756dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Large\01. State\Slime_Large_Attack">
+      <UniqueIdentifier>{5e75937a-3657-4925-8759-c98568e9aa10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Large\01. State\Slime_Large_Walk">
+      <UniqueIdentifier>{1629eb93-249b-4c4b-b385-31ee71ba5eb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Large\01. State\Slime_Large_Stun">
+      <UniqueIdentifier>{4408f859-a94e-4709-8c07-e35ca5789585}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Medium">
+      <UniqueIdentifier>{c788c731-7759-4598-80d6-1846c1b70d6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Medium\00. Body">
+      <UniqueIdentifier>{5dc8c2fc-d513-47bc-83de-646a923e3b21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Medium\01. State">
+      <UniqueIdentifier>{fafafdbd-0a5b-4e13-bc8d-72ca0ec0f241}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Medium\01. State\Slime_Medium_Idle">
+      <UniqueIdentifier>{2d93dcf3-66d7-4851-8cdd-94b3faaa1ef3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Medium\01. State\Slime_Medium_Attack">
+      <UniqueIdentifier>{57efaaa9-4097-4b0d-babd-82259a5d5712}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Medium\01. State\Slime_Medium_Novelty">
+      <UniqueIdentifier>{1579c07d-a7c9-44ac-b141-a7a48f02ba35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Medium\01. State\Slime_Medium_Walk">
+      <UniqueIdentifier>{cd16d7a4-6dd4-46a2-b330-91724c16eeff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Medium\01. State\Slime_Medium_Stun">
+      <UniqueIdentifier>{675e2077-3d4c-4a43-930f-0d8742b33e95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Item\Armor">
+      <UniqueIdentifier>{34388724-7958-45d4-a88a-b7b07cd66698}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\BabyZombie\00. Body_BabyZombie">
+      <UniqueIdentifier>{88dfeff6-640c-43ec-9814-1f1e3abffd06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Item\Armor\Wolf_Armor">
+      <UniqueIdentifier>{5398ece9-bbb2-4d11-a507-ae8dede8243b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Item\Armor\Wolf_Armor\Mask">
+      <UniqueIdentifier>{404765d5-b382-4cfb-a40c-1a2cd2d9595e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Item\Armor\Wolf_Armor\Body">
+      <UniqueIdentifier>{06eba003-27a1-4a2f-a52b-27ab16d99a70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Item\Armor\Wolf_Armor\Arm">
+      <UniqueIdentifier>{7e295b32-cd49-4c88-9464-cc29f45d6b1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Item\Armor\Wolf_Armor\Arm\L_Arm">
+      <UniqueIdentifier>{5dbc7051-6633-4009-a8ae-24651a34d705}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Item\Armor\Wolf_Armor\Arm\R_Arm">
+      <UniqueIdentifier>{6676739b-532d-42f7-9364-ee1702923efa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Item\Armor\Wolf_Armor\Leg">
+      <UniqueIdentifier>{bacd938a-1f06-45fe-b695-642c8c8117bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Item\Armor\Wolf_Armor\Leg\L_Leg">
+      <UniqueIdentifier>{cc8e7e8f-787c-4b53-bd52-a0b68eedb0ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Item\Armor\Wolf_Armor\Leg\R_Leg">
+      <UniqueIdentifier>{410587d1-e093-444b-a8a3-70bbfcb1839d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -120,11 +324,8 @@
     <ClInclude Include="..\Public\Loader.h">
       <Filter>01.Levels\00.Loading\Loader</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Level_GamePlay.h">
-      <Filter>01.Levels\02. GamePlay</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Terrain.h">
-      <Filter>02.GameObjects\Terrain</Filter>
+    <ClInclude Include="..\Public\Level_Lounge.h">
+      <Filter>01.Levels\02. Lounge</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Camera_Free.h">
       <Filter>02.GameObjects\Camera\Free</Filter>
@@ -156,26 +357,14 @@
     <ClInclude Include="..\Public\InventoryGearSlot.h">
       <Filter>02.GameObjects\UIObjects\Inventory\InventoryGearSlot</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\InventoryItemSlot.h">
+    <ClInclude Include="..\Public\InventoryArtifactSlot.h">
       <Filter>02.GameObjects\UIObjects\Inventory\InventoryItemSlot</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Weapon.h">
-      <Filter>02.GameObjects\Player\01. Weapon</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\LoungeMap.h">
       <Filter>02.GameObjects\LoungeMap</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Sky.h">
       <Filter>02.GameObjects\Sky</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\ForkLift.h">
-      <Filter>02.GameObjects\ForkLift</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Player_Idle.h">
-      <Filter>02.GameObjects\Player\02. State</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Client_Struct.h">
-      <Filter>99.Defines</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State.h">
       <Filter>96. FSM\State</Filter>
@@ -185,6 +374,222 @@
     </ClInclude>
     <ClInclude Include="..\Public\Client_Enum.h">
       <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Player_Idle.h">
+      <Filter>02.GameObjects\Player\02. State\Player_Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Player_Walk.h">
+      <Filter>02.GameObjects\Player\02. State\Player_Walk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Player.h">
+      <Filter>02.GameObjects\Player\02. State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Player_Roll.h">
+      <Filter>02.GameObjects\Player\02. State\Player_Roll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Body_Zombie.h">
+      <Filter>02.GameObjects\Monster\Zombie\00. Body_Zombie</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Zombie.h">
+      <Filter>02.GameObjects\Monster\Zombie</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Zombie_Idle.h">
+      <Filter>02.GameObjects\Monster\Zombie\01. State\Zombie_Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Zombie_Walk.h">
+      <Filter>02.GameObjects\Monster\Zombie\01. State\Zombie_Walk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Zombie_Attack.h">
+      <Filter>02.GameObjects\Monster\Zombie\01. State\Zombie_Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Zombie_GetHit.h">
+      <Filter>02.GameObjects\Monster\Zombie\01. State\Zombie_GetHit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Zombie_Stun.h">
+      <Filter>02.GameObjects\Monster\Zombie\01. State\Zombie_Stun</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Zombie_Sleep.h">
+      <Filter>02.GameObjects\Monster\Zombie\01. State\Zombie_Sleep</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Monster.h">
+      <Filter>02.GameObjects\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Zombie.h">
+      <Filter>02.GameObjects\Monster\Zombie\01. State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Player_Glaive_Combo.h">
+      <Filter>02.GameObjects\Player\02. State\Player_Attack\Player_Glaive_Combo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Player_GetHit.h">
+      <Filter>02.GameObjects\Player\02. State\Player_GetHit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Skeleton.h">
+      <Filter>02.GameObjects\Monster\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Body_Skeleton.h">
+      <Filter>02.GameObjects\Monster\Skeleton\00. Body_Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Skeleton_Idle.h">
+      <Filter>02.GameObjects\Monster\Skeleton\01. State\Skeleton_Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Skeleton.h">
+      <Filter>02.GameObjects\Monster\Skeleton\01. State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Skeleton_Walk.h">
+      <Filter>02.GameObjects\Monster\Skeleton\01. State\Skeleton_Walk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Skeleton_HeadSpin.h">
+      <Filter>02.GameObjects\Monster\Skeleton\01. State\Skeleton_HeadSpin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Skeleton_GetHit.h">
+      <Filter>02.GameObjects\Monster\Skeleton\01. State\Skeleton_GetHit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Skeleton_BowAction.h">
+      <Filter>02.GameObjects\Monster\Skeleton\01. State\Skeleton_BowAction</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\InventorySlot.h">
+      <Filter>02.GameObjects\UIObjects\Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\InventoryIcon.h">
+      <Filter>02.GameObjects\UIObjects\Inventory\InventoryIcon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Item.h">
+      <Filter>02.GameObjects\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\InventoryData.h">
+      <Filter>03. Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EventTypes.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Weapon_Glaive.h">
+      <Filter>02.GameObjects\Item\Melee_Weapon\Glaive</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Weapon_ShortBow.h">
+      <Filter>02.GameObjects\Item\Ranged_Weapon\ShortBow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Player_Arrow.h">
+      <Filter>02.GameObjects\Arrow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ArrowPool_Player.h">
+      <Filter>02.GameObjects\Arrow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Player_BowAction.h">
+      <Filter>02.GameObjects\Player\02. State\Player_Attack\Player_BowAction</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ArrowPool_Monster.h">
+      <Filter>02.GameObjects\Arrow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Monster_Arrow.h">
+      <Filter>02.GameObjects\Arrow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Weapon_Bow.h">
+      <Filter>02.GameObjects\Item\Ranged_Weapon\Bow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_SoggySwamp.h">
+      <Filter>01.Levels\03. SoggySwamp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SoggySwampMap.h">
+      <Filter>02.GameObjects\SoggySwampMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Trigger.h">
+      <Filter>02.GameObjects\Level_Trigger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BabyZombie.h">
+      <Filter>02.GameObjects\Monster\BabyZombie</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Body_BabyZombie.h">
+      <Filter>02.GameObjects\Monster\BabyZombie\00. Body_BabyZombie</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BabyZombie_GetHit.h">
+      <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_GetHit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BabyZombie_Idle.h">
+      <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BabyZombie_Walk.h">
+      <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Walk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BabyZombie_Novelty.h">
+      <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Novelty</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BabyZombie_Attack.h">
+      <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_BabyZombie.h">
+      <Filter>02.GameObjects\Monster\BabyZombie\01. State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Slime_Large.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Large</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Body_Slime_Large.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Large\00. Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Slime_Large_Attack.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Large\01. State\Slime_Large_Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Slime_Large_Idle.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Large\01. State\Slime_Large_Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Slime_Large_Stun.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Large\01. State\Slime_Large_Stun</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Slime_Large.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Large\01. State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Slime_Large_Walk.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Large\01. State\Slime_Large_Walk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Body_Slime_Medium.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Medium\00. Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Slime_Medium.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Medium</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Slime_Medium_Attack.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Medium\01. State\Slime_Medium_Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Slime_Medium_Idle.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Medium\01. State\Slime_Medium_Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Slime_Medium_Stun.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Medium\01. State\Slime_Medium_Stun</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Slime_Medium_Novelty.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Medium\01. State\Slime_Medium_Novelty</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Slime_Medium_Walk.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Medium\01. State\Slime_Medium_Walk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Slime_Medium.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Medium\01. State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Armor.h">
+      <Filter>02.GameObjects\Item\Armor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\WolfArmor_Mask.h">
+      <Filter>02.GameObjects\Item\Armor\Wolf_Armor\Mask</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Wolf_Armor.h">
+      <Filter>02.GameObjects\Item\Armor\Wolf_Armor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\WolfArmor_Body.h">
+      <Filter>02.GameObjects\Item\Armor\Wolf_Armor\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\WolfArmor_L_Arm.h">
+      <Filter>02.GameObjects\Item\Armor\Wolf_Armor\Arm\L_Arm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\WolfArmor_R_Arm.h">
+      <Filter>02.GameObjects\Item\Armor\Wolf_Armor\Arm\R_Arm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\WolfArmor_L_Leg.h">
+      <Filter>02.GameObjects\Item\Armor\Wolf_Armor\Leg\L_Leg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\WolfArmor_R_Leg.h">
+      <Filter>02.GameObjects\Item\Armor\Wolf_Armor\Leg\R_Leg</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -213,11 +618,8 @@
     <ClCompile Include="..\Private\Loader.cpp">
       <Filter>01.Levels\00.Loading\Loader</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Level_GamePlay.cpp">
-      <Filter>01.Levels\02. GamePlay</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Terrain.cpp">
-      <Filter>02.GameObjects\Terrain</Filter>
+    <ClCompile Include="..\Private\Level_Lounge.cpp">
+      <Filter>01.Levels\02. Lounge</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Camera_Free.cpp">
       <Filter>02.GameObjects\Camera\Free</Filter>
@@ -249,11 +651,8 @@
     <ClCompile Include="..\Private\InventoryGearSlot.cpp">
       <Filter>02.GameObjects\UIObjects\Inventory\InventoryGearSlot</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\InventoryItemSlot.cpp">
+    <ClCompile Include="..\Private\InventoryArtifactSlot.cpp">
       <Filter>02.GameObjects\UIObjects\Inventory\InventoryItemSlot</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Weapon.cpp">
-      <Filter>02.GameObjects\Player\01. Weapon</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\LoungeMap.cpp">
       <Filter>02.GameObjects\LoungeMap</Filter>
@@ -261,17 +660,224 @@
     <ClCompile Include="..\Private\Sky.cpp">
       <Filter>02.GameObjects\Sky</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\ForkLift.cpp">
-      <Filter>02.GameObjects\ForkLift</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Player_Idle.cpp">
-      <Filter>02.GameObjects\Player\02. State</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\State.cpp">
       <Filter>96. FSM\State</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\FSM.cpp">
       <Filter>96. FSM</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player_Idle.cpp">
+      <Filter>02.GameObjects\Player\02. State\Player_Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player_Walk.cpp">
+      <Filter>02.GameObjects\Player\02. State\Player_Walk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Player.cpp">
+      <Filter>02.GameObjects\Player\02. State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player_Roll.cpp">
+      <Filter>02.GameObjects\Player\02. State\Player_Roll</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Body_Zombie.cpp">
+      <Filter>02.GameObjects\Monster\Zombie\00. Body_Zombie</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Zombie.cpp">
+      <Filter>02.GameObjects\Monster\Zombie</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Zombie_Idle.cpp">
+      <Filter>02.GameObjects\Monster\Zombie\01. State\Zombie_Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Zombie_Walk.cpp">
+      <Filter>02.GameObjects\Monster\Zombie\01. State\Zombie_Walk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Zombie_Attack.cpp">
+      <Filter>02.GameObjects\Monster\Zombie\01. State\Zombie_Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Zombie_GetHit.cpp">
+      <Filter>02.GameObjects\Monster\Zombie\01. State\Zombie_GetHit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Zombie_Stun.cpp">
+      <Filter>02.GameObjects\Monster\Zombie\01. State\Zombie_Stun</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Zombie_Sleep.cpp">
+      <Filter>02.GameObjects\Monster\Zombie\01. State\Zombie_Sleep</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Monster.cpp">
+      <Filter>02.GameObjects\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Zombie.cpp">
+      <Filter>02.GameObjects\Monster\Zombie\01. State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player_Glaive_Combo.cpp">
+      <Filter>02.GameObjects\Player\02. State\Player_Attack\Player_Glaive_Combo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player_GetHit.cpp">
+      <Filter>02.GameObjects\Player\02. State\Player_GetHit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Skeleton.cpp">
+      <Filter>02.GameObjects\Monster\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Body_Skeleton.cpp">
+      <Filter>02.GameObjects\Monster\Skeleton\00. Body_Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Skeleton_Idle.cpp">
+      <Filter>02.GameObjects\Monster\Skeleton\01. State\Skeleton_Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Skeleton.cpp">
+      <Filter>02.GameObjects\Monster\Skeleton\01. State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Skeleton_Walk.cpp">
+      <Filter>02.GameObjects\Monster\Skeleton\01. State\Skeleton_Walk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Skeleton_HeadSpin.cpp">
+      <Filter>02.GameObjects\Monster\Skeleton\01. State\Skeleton_HeadSpin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Skeleton_GetHit.cpp">
+      <Filter>02.GameObjects\Monster\Skeleton\01. State\Skeleton_GetHit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Skeleton_BowAction.cpp">
+      <Filter>02.GameObjects\Monster\Skeleton\01. State\Skeleton_BowAction</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\InventorySlot.cpp">
+      <Filter>02.GameObjects\UIObjects\Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\InventoryIcon.cpp">
+      <Filter>02.GameObjects\UIObjects\Inventory\InventoryIcon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Item.cpp">
+      <Filter>02.GameObjects\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\InventoryData.cpp">
+      <Filter>03. Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Clien_Defines.cpp">
+      <Filter>99.Defines</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Weapon_Glaive.cpp">
+      <Filter>02.GameObjects\Item\Melee_Weapon\Glaive</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Weapon_ShortBow.cpp">
+      <Filter>02.GameObjects\Item\Ranged_Weapon\ShortBow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player_Arrow.cpp">
+      <Filter>02.GameObjects\Arrow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ArrowPool_Player.cpp">
+      <Filter>02.GameObjects\Arrow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player_BowAction.cpp">
+      <Filter>02.GameObjects\Player\02. State\Player_Attack\Player_BowAction</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ArrowPool_Monster.cpp">
+      <Filter>02.GameObjects\Arrow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Monster_Arrow.cpp">
+      <Filter>02.GameObjects\Arrow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Weapon_Bow.cpp">
+      <Filter>02.GameObjects\Item\Ranged_Weapon\Bow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_SoggySwamp.cpp">
+      <Filter>01.Levels\03. SoggySwamp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SoggySwampMap.cpp">
+      <Filter>02.GameObjects\SoggySwampMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Trigger.cpp">
+      <Filter>02.GameObjects\Level_Trigger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BabyZombie.cpp">
+      <Filter>02.GameObjects\Monster\BabyZombie</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Body_BabyZombie.cpp">
+      <Filter>02.GameObjects\Monster\BabyZombie\00. Body_BabyZombie</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BabyZombie_Attack.cpp">
+      <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BabyZombie_GetHit.cpp">
+      <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_GetHit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BabyZombie_Idle.cpp">
+      <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BabyZombie_Walk.cpp">
+      <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Walk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BabyZombie_Novelty.cpp">
+      <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Novelty</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_BabyZombie.cpp">
+      <Filter>02.GameObjects\Monster\BabyZombie\01. State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Slime_Large.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Large</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Body_Slime_Large.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Large\00. Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Slime_Large_Attack.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Large\01. State\Slime_Large_Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Slime_Large_Idle.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Large\01. State\Slime_Large_Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Slime_Large_Stun.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Large\01. State\Slime_Large_Stun</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Slime_Large.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Large\01. State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Slime_Large_Walk.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Large\01. State\Slime_Large_Walk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Slime_Medium.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Medium</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Body_Slime_Medium.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Medium\00. Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Slime_Medium_Attack.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Medium\01. State\Slime_Medium_Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Slime_Medium_Idle.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Medium\01. State\Slime_Medium_Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Slime_Medium_Stun.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Medium\01. State\Slime_Medium_Stun</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Slime_Medium_Novelty.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Medium\01. State\Slime_Medium_Novelty</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Slime_Medium_Walk.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Medium\01. State\Slime_Medium_Walk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Slime_Medium.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Medium\01. State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Armor.cpp">
+      <Filter>02.GameObjects\Item\Armor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\WolfArmor_Mask.cpp">
+      <Filter>02.GameObjects\Item\Armor\Wolf_Armor\Mask</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Wolf_Armor.cpp">
+      <Filter>02.GameObjects\Item\Armor\Wolf_Armor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\WolfArmor_Body.cpp">
+      <Filter>02.GameObjects\Item\Armor\Wolf_Armor\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\WolfArmor_L_Arm.cpp">
+      <Filter>02.GameObjects\Item\Armor\Wolf_Armor\Arm\L_Arm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\WolfArmor_R_Arm.cpp">
+      <Filter>02.GameObjects\Item\Armor\Wolf_Armor\Arm\R_Arm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\WolfArmor_L_Leg.cpp">
+      <Filter>02.GameObjects\Item\Armor\Wolf_Armor\Leg\L_Leg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\WolfArmor_R_Leg.cpp">
+      <Filter>02.GameObjects\Item\Armor\Wolf_Armor\Leg\R_Leg</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -291,6 +897,9 @@
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCube.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Cell.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

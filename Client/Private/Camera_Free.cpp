@@ -2,12 +2,12 @@
 #include "GameInstance.h"
 
 CCamera_Free::CCamera_Free(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CCamera { pDevice, pContext }
+	: CCamera (pDevice, pContext)
 {
 }
 
 CCamera_Free::CCamera_Free(const CCamera_Free& Prototype)
-	: CCamera{ Prototype }
+	: CCamera(Prototype )
 {
 }
 
@@ -22,7 +22,7 @@ HRESULT CCamera_Free::Initialize(void* pArg)
 		return E_FAIL;
 
 	CAMERA_FREE_DESC* pDesc = static_cast<CAMERA_FREE_DESC*>(pArg);
-	m_fMouseSensor = pDesc->fMouseSensor;
+	m_fKeySensor = pDesc->fKeySensor;
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -36,6 +36,11 @@ void CCamera_Free::Priority_Update(_float fTimeDelta)
 
 void CCamera_Free::Update(_float fTimeDelta)
 {
+	if (m_pGameInstance->Key_Down(VK_TAB))
+	{
+		m_bMouseFree = !m_bMouseFree;
+	}
+
 	if (GetKeyState('W') & 0x8000)
 	{
 		m_pTransformCom->Go_Straight(fTimeDelta);
@@ -52,18 +57,26 @@ void CCamera_Free::Update(_float fTimeDelta)
 	{
 		m_pTransformCom->Go_Right(fTimeDelta);
 	}
+	/*if (GetKeyState('Q') & 0x8000)
+	{
+		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * -m_fKeySensor);
+	}
+	if (GetKeyState('E') & 0x8000)
+	{
+		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * m_fKeySensor);
+	}*/
 
 	_long		MouseMove = {};
 	
-	if (MouseMove = m_pGameInstance->Get_DIMouseMove(MOUSEMOVESTATE::DIMS_X))
+	if ((MouseMove = m_pGameInstance->Get_DIMouseMove(MOUSEMOVESTATE::DIMS_X)) && !m_bMouseFree)
 	{
-		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * MouseMove * m_fMouseSensor);
+		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * MouseMove * m_fKeySensor);
 		
 	}
 
-	if (MouseMove = m_pGameInstance->Get_DIMouseMove(MOUSEMOVESTATE::DIMS_Y))
+	if ((MouseMove = m_pGameInstance->Get_DIMouseMove(MOUSEMOVESTATE::DIMS_Y)) && !m_bMouseFree)
 	{
-		m_pTransformCom->Turn(m_pTransformCom->Get_State(CTransform::STATE_RIGHT), fTimeDelta * MouseMove * m_fMouseSensor);
+		m_pTransformCom->Turn(m_pTransformCom->Get_State(CTransform::STATE_RIGHT), fTimeDelta * MouseMove * m_fKeySensor);
 	}
 
 	__super::Update_Camera();

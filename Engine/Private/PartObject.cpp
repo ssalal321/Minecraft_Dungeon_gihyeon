@@ -20,7 +20,13 @@ HRESULT CPartObject::Initialize(void* pArg)
 {
 	PARTOBJECT_DESC* pDesc = static_cast<PARTOBJECT_DESC*>(pArg);
 
-	m_pParentWorldMatrix = pDesc->pParentWorldMatrix;
+	if (nullptr != pDesc)
+	{
+		m_pContainerObject = pDesc->pContainerObject;
+		m_pParentWorldMatrix = pDesc->pParentWorldMatrix;
+		m_pBigCollisionActivating = pDesc->pBigCollisionActivating;
+		m_pSmallCollisionActivating = pDesc->pSmallCollisionActivating;
+	}
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;

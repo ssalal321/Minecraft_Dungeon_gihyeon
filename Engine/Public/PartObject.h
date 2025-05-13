@@ -3,19 +3,28 @@
 #include "GameObject.h"
 
 BEGIN(Engine)
+class CContainerObject;
 
 class ENGINE_DLL CPartObject abstract : public CGameObject
 {
 public:
 	typedef struct tagPartObject : public CGameObject::GAMEOBJECT_DESC
 	{
-		const _float4x4* pParentWorldMatrix = {nullptr};
+		CContainerObject*	pContainerObject	= {nullptr};
+		const _float4x4*	pParentWorldMatrix	= {nullptr};
+
+		_bool*		pBigCollisionActivating		= { nullptr };
+		_bool*		pSmallCollisionActivating	= { nullptr };
+
 	}PARTOBJECT_DESC;
 
 protected:
-	CPartObject(ID3D11Device * pDevice, ID3D11DeviceContext * pContext);
+	CPartObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CPartObject(const CPartObject& Prototype);
 	~CPartObject() override = default;
+
+public:
+	CContainerObject* Get_ContainerObject() { return m_pContainerObject; }
 
 public:
 	HRESULT		Initialize_Prototype()				override;
@@ -25,9 +34,14 @@ public:
 	void		Late_Update(_float fTimeDelta)		override;
 	HRESULT		Render()							override;
 
-protected:	
-	const _float4x4*	m_pParentWorldMatrix	= { nullptr };
-	_float4x4			m_CombinedWorldMatrix	= {};
+protected:
+	class CContainerObject*		m_pContainerObject = { nullptr };
+
+	const _float4x4*	m_pParentWorldMatrix		= { nullptr };
+	_float4x4			m_CombinedWorldMatrix		= {};
+
+	_bool*				m_pBigCollisionActivating	= { nullptr };
+	_bool*				m_pSmallCollisionActivating = { nullptr };
 
 public:
 	CGameObject* Clone(void* pArg)	override = 0;

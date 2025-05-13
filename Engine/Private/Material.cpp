@@ -20,7 +20,7 @@ HRESULT CMaterial::Initialize(const aiMaterial* pAIMaterial, const _char* pModel
 		{
 			aiString	strTexturePath;
 
-			if (FAILED(pAIMaterial->GetTexture(aiTextureType(i), j, &strTexturePath)))
+			if (FAILED(pAIMaterial->GetTexture(aiTextureType(static_cast<_uint>(i)), static_cast<_uint>(j), &strTexturePath)))
 				return E_FAIL;
 
 			_char		szDrive[MAX_PATH] = {};
@@ -40,7 +40,7 @@ HRESULT CMaterial::Initialize(const aiMaterial* pAIMaterial, const _char* pModel
 
 			_tchar		szFullPath[MAX_PATH] = {};
 
-			MultiByteToWideChar(CP_ACP, 0, szTextureFilePath, strlen(szTextureFilePath),
+			MultiByteToWideChar(CP_ACP, 0, szTextureFilePath, static_cast<_int>(strlen(szTextureFilePath)),
 				szFullPath, MAX_PATH);
 
 			ID3D11ShaderResourceView* pSRV = { nullptr };

@@ -3,6 +3,9 @@
 
 #include "framework.h"
 #include "Client.h"
+
+#include <ios>
+
 #include "MainApp.h"
 #include "GameInstance.h"
 
@@ -28,6 +31,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 #ifdef _DEBUG
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+    //_CrtSetBreakAlloc(5846642);
+    CreateConsole();
 #endif
 
     UNREFERENCED_PARAMETER(hPrevInstance);
@@ -63,7 +68,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return FALSE;
 
     if (FAILED(pGameInstance->Add_Timer(TEXT("Timer_60"))))
-        return FALSE;      
+        return FALSE;
+
+    if (FAILED(pGameInstance->Add_Timer(TEXT("DEBUG_FPS"))))
+        return FALSE;
 
     _float      fTimeAcc = { 0.f };
 
@@ -90,11 +98,20 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         if (fTimeAcc >= 1.f / 60.f /* 1초에 60번만 트루리턴 */)
         {
             pGameInstance->Compute_TimeDelta(TEXT("Timer_60"));
+            pGameInstance->Compute_TimeDelta(TEXT("DEBUG_FPS"));
 
             pMainApp->Update(pGameInstance->Get_TimeDelta(TEXT("Timer_60")));
             pMainApp->Render();
 
             fTimeAcc = 0.f;
+
+            pGameInstance->Compute_TimeDelta(TEXT("DEBUG_FPS"));
+
+            //Test
+            _wstring title = std::to_wstring(1.f / pGameInstance->Get_TimeDelta(TEXT("DEBUG_FPS")));
+            if (g_hWnd)
+                SetWindowText(g_hWnd, title.c_str());
+
         }
         
     }
@@ -238,4 +255,21 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     }
     return (INT_PTR)FALSE;
+}
+
+void CreateConsole()
+{
+    AllocConsole();
+
+    HANDLE hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
+    HANDLE hConsoleError = GetStdHandle(STD_ERROR_HANDLE);
+
+    std::ios::sync_with_stdio(); // iostream <-> C stdio 동기화
+
+    // 연결
+    FILE* fpOut;
+    FILE* fpErr;
+
+    freopen_s(&fpOut, "CONOUT$", "w", stdout);
+    freopen_s(&fpErr, "CONOUT$", "w", stderr);
 }

@@ -3,7 +3,8 @@
 #include "Loader.h"
 
 #include "UI_Image.h"
-#include "Level_GamePlay.h"
+#include "Level_Lounge.h"
+#include "Level_SoggySwamp.h"
 #include "Level_Title.h"
 
 CLevel_Loading::CLevel_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -14,6 +15,8 @@ CLevel_Loading::CLevel_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pCont
 HRESULT CLevel_Loading::Initialize(LEVEL eNextLevelID)
 {
     m_eNextLevelID = eNextLevelID;
+
+	m_pGameInstance->Set_NextLevelIndex(m_eNextLevelID);
 
     /* 다음레벨을 위한 자원을 준비한다. */
     m_pLoader = CLoader::Create(m_pDevice, m_pContext, eNextLevelID);
@@ -29,7 +32,7 @@ HRESULT CLevel_Loading::Initialize(LEVEL eNextLevelID)
 
 void CLevel_Loading::Update(_float fTimeDelta)
 {
-    if (true == m_pLoader->Is_Finished() && m_pGameInstance->Key_Down(VK_SPACE))
+    if (true == m_pLoader->Is_Finished() && m_pGameInstance->Key_Down(VK_RETURN))
     {
         CLevel* pNewLevel = { nullptr };
 
@@ -39,20 +42,20 @@ void CLevel_Loading::Update(_float fTimeDelta)
             pNewLevel = CLevel_Title::Create(m_pDevice, m_pContext);
             break;
 
-            /*case LEVEL_LOUNGE:
-            pNewLevel = CLevel_Lounge::Create(m_pDevice, m_pContext);
-            break;*/
 
-        case LEVEL_GAMEPLAY:
-            pNewLevel = CLevel_GamePlay::Create(m_pDevice, m_pContext);
+        case LEVEL_LOUNGE:
+            pNewLevel = CLevel_Lounge::Create(m_pDevice, m_pContext);
             break;
-        
+
+        case LEVEL_SOGGYSWAMP:
+            pNewLevel = CLevel_SoggySwamp::Create(m_pDevice, m_pContext);
+            break;
         }
 
         if (nullptr == pNewLevel)
             return;
 
-        if (FAILED(m_pGameInstance->Open_Level(m_eNextLevelID, pNewLevel)))
+        if (SUCCEEDED(m_pGameInstance->Open_Level(m_eNextLevelID, pNewLevel)))
             return;
 
         return;

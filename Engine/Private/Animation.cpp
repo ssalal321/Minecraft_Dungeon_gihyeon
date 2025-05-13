@@ -1,4 +1,5 @@
 #include "Animation.h"
+
 #include "Channel.h"
 
 CAnimation::CAnimation()
@@ -26,27 +27,35 @@ HRESULT CAnimation::Initialize(const aiAnimation* pAIAnimation, const vector<cla
     return S_OK;
 }
 
-_bool CAnimation::Update_TransformationMatrices(_float fTimeDelta, const vector<class CBone*>& Bones, _bool isLoop, _bool animationChanged)
+_bool CAnimation::Update_TransformationMatrices(_float fTimeDelta, const vector<class CBone*>& Bones, _bool isLoop, _float speedFactor, _bool animationChanged)
 {
 	_bool		isFinished = { false };  // 기본적으로는 루프를 돌도록 false로 설정
-
-	/* 현재 재생위치를 계산하자 */
-	m_fCurrentTrackPosition += m_fTickPerSecond * fTimeDelta;
-
-	if (m_fCurrentTrackPosition >= m_fDuration)  // 애니메이션 끝났을 때
-	{
-		if (false == isLoop)	// 루프 X
-			isFinished = true;
-		else                    // 루프 O
-		{
-			m_fCurrentTrackPosition = 0.f;
-		}
-	}
 
 	if (animationChanged)
 	{
 		m_fCurrentTrackPosition = 0.f;
 	}
+	/* 현재 재생위치를 계산하자 */
+	else
+	{
+		m_fCurrentTrackPosition += m_fTickPerSecond * fTimeDelta * speedFactor;
+
+		/*std::
+		<< "[m_fCurrentTrackPosition] : " << m_fCurrentTrackPosition <<
+			"\n[m_fDuration] : " << m_fDuration << std::endl;*/
+
+		if (m_fCurrentTrackPosition >= m_fDuration)  // 애니메이션 끝났을 때
+		{
+			if (false == isLoop)	// 루프 X
+				isFinished = true;
+			else                    // 루프 O
+			{
+				m_fCurrentTrackPosition = 0.f;
+				isFinished = true;  // 루프 O지만 어쨌든 한 타임 끝났으니까 true 반환
+			}
+		}
+	}
+
 
 	for (auto& pChannel : m_Channels)
 	{

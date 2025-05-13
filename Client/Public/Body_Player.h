@@ -4,8 +4,11 @@
 #include "PartObject.h"
 
 BEGIN(Engine)
-class CShader;
-class CModel;
+class  CShader;
+class  CModel;
+
+class  CCollider;
+class  CNavigation;
 END
 
 BEGIN(Client)
@@ -17,6 +20,7 @@ public:
 	{
 		const _uint* pState = { nullptr };
 	}BODY_PLAYER_DESC;
+
 private:
 	CBody_Player(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CBody_Player(const CBody_Player& Prototype);
@@ -30,16 +34,18 @@ public:
 	void		Late_Update(_float fTimeDelta)		override;
 	HRESULT		Render()							override;
 
+public:
+	void		Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState) override;
+
 private:	
-	
-	CShader*			m_pShaderCom = { nullptr };
-	CModel*				m_pModelCom = { nullptr };
+	CShader*		m_pShaderCom		= { nullptr };
+	CModel*			m_pModelCom			= { nullptr };
+	CCollider*		m_pBigColliderCom	= { nullptr };
+	CCollider*		m_pSmallColliderCom = { nullptr };
 
-	_uint				m_iPassIndex = {};
+	_uint			m_iPassIndex		= {};
 
-private:
-	const _uint*		m_pTargetState = { nullptr };
-
+	const _uint*	m_pTargetState		= { nullptr };
 
 private:
 	HRESULT		Ready_Components();

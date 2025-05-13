@@ -13,7 +13,7 @@ namespace Engine
 		unsigned int	iViewportWidth;
 		unsigned int	iViewportHeight;
 		unsigned int	iNumLevels;
-	}ENGINE_DESC;	
+	}ENGINE_DESC;
 
 	typedef struct tagLightDesc
 	{
@@ -38,14 +38,13 @@ namespace Engine
 		XMFLOAT3	vTranslation;
 	}KEYFRAME;
 
-	typedef struct ENGINE_DLL tagVertexCube
+	typedef struct ENGINE_DLL tagVertexPosition
 	{
 		XMFLOAT3		vPosition;
-		XMFLOAT3		vTexcoord;
 
-		static const unsigned int				iNumElements = { 2 };
+		static const unsigned int				iNumElements = { 1 };
 		static const D3D11_INPUT_ELEMENT_DESC	Elements[iNumElements];
-	}VTXCUBE;
+	}VTXPOS;
 
 	typedef struct ENGINE_DLL tagVertexPositionTextureCoord
 	{
@@ -54,7 +53,16 @@ namespace Engine
 
 		static const unsigned int				iNumElements = { 2 };
 		static const D3D11_INPUT_ELEMENT_DESC	Elements[iNumElements];
-	}VTXPOSTEX;	
+	}VTXPOSTEX;
+
+	typedef struct ENGINE_DLL tagVertexCube
+	{
+		XMFLOAT3		vPosition;
+		XMFLOAT3		vTexcoord;
+
+		static const unsigned int				iNumElements = { 2 };
+		static const D3D11_INPUT_ELEMENT_DESC	Elements[iNumElements];
+	}VTXCUBE;
 
 	typedef struct ENGINE_DLL tagVertexPositionNormalTextureCoord
 	{

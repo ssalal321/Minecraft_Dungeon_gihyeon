@@ -1,5 +1,7 @@
 #include "Body_Player.h"
 #include "GameInstance.h"
+#include "Monster.h"
+#include "Mesh.h"
 
 #include "Player.h"
 
@@ -34,29 +36,16 @@ HRESULT CBody_Player::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	//m_pModelCom->Set_InitAnimIndex(4, true);
-	
 	return S_OK;
 }
 
 void CBody_Player::Priority_Update(_float fTimeDelta)
 {
-
 }
 
 void CBody_Player::Update(_float fTimeDelta)
 {
-	if (m_pGameInstance->Get_Key(VK_NUMPAD7))
-		m_pModelCom->Set_Animation(6, true);
-
-	if (m_pGameInstance->Get_Key(VK_NUMPAD8))
-		m_pModelCom->Set_Animation(10, true);
-
-	if (m_pGameInstance->Get_Key(VK_NUMPAD9))
-		m_pModelCom->Set_Animation(15, true);
-
-	if (true == m_pModelCom->Play_Animation(fTimeDelta))
-		int a = 10;
+	
 }
 
 void CBody_Player::Late_Update(_float fTimeDelta)
@@ -75,32 +64,79 @@ HRESULT CBody_Player::Render()
 
 	for (size_t i = 0; i < iNumMeshes; i++)
 	{
-		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
+		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", static_cast<_uint>(i), aiTextureType_DIFFUSE, 0)))
 			return E_FAIL;
 
-		if (FAILED(m_pModelCom->Bind_BoneMatrices(m_pShaderCom, "g_BoneMatrices", i)))
+		if (FAILED(m_pModelCom->Bind_BoneMatrices(m_pShaderCom, "g_BoneMatrices", static_cast<_uint>(i))))
 			return E_FAIL;
 
 		if (FAILED(m_pShaderCom->Begin(0)))
 			return E_FAIL;
 
-		if (FAILED(m_pModelCom->Render(i)))
+		if (FAILED(m_pModelCom->Render(static_cast<_uint>(i))))
 			return E_FAIL;
 	}
+
 	return S_OK;
+}
+
+void CBody_Player::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)
+{
+	CPlayer* pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("GameObject_Player"), m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_Player")));
+	pPlayer->Collided_With(pOther, eCollisionState);
 }
 
 HRESULT CBody_Player::Ready_Components()
 {
 	/* Com_Shader */
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxAnimMesh"),
-		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
+	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxAnimMesh"),
+		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom)))
 		return E_FAIL;
 
 	/* Com_Model */
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_PlayerHex"),
-		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
+	/*CMesh::MESH_DESC pMeshDesc = {};
+	pMeshDesc.bPickable = true;*/
+
+	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Model_PlayerHex"),
+		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom)))
 		return E_FAIL;
+
+
+	/* Com_Collider */
+	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereCollDesc{};
+
+	SphereCollDesc.fRadius = 1.6f;
+	SphereCollDesc.vCenter = _float3(0.f, SphereCollDesc.fRadius - 0.2f, 0.f);
+	SphereCollDesc.pGameObject = this;
+	SphereCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
+	SphereCollDesc.pCollisionActivated = m_pBigCollisionActivating;
+
+	CComponent* pColliderSphereCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
+		TEXT("Com_Collider_Sphere"), reinterpret_cast<CComponent**>(&m_pBigColliderCom), &SphereCollDesc);
+
+	if (nullptr == pColliderSphereCom)
+		return E_FAIL;
+
+	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), pColliderSphereCom, TEXT("Player_Body"), TEXT("Player"), true);
+
+
+	/* Com_Collider Small*/
+	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereSmallCollDesc{};
+
+	SphereSmallCollDesc.fRadius = 0.8f;
+	SphereSmallCollDesc.vCenter = _float3(0.f, SphereSmallCollDesc.fRadius + 0.2f, 0.f);
+	SphereSmallCollDesc.pGameObject = this;
+	SphereSmallCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
+	SphereSmallCollDesc.pCollisionActivated = m_pSmallCollisionActivating;
+
+	CComponent* pColliderSmallSphereCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
+		TEXT("Com_Collider_SmallSphere"), reinterpret_cast<CComponent**>(&m_pSmallColliderCom), &SphereSmallCollDesc);
+
+	if (nullptr == pColliderSmallSphereCom)
+		return E_FAIL;
+
+	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), m_pSmallColliderCom, TEXT("Player_Body_Small"), TEXT("Player"));
+	dynamic_cast<CCollider*>(pColliderSmallSphereCom)->Set_AllowSameGroupCollision(true);
 
 	return S_OK;
 }
@@ -151,6 +187,7 @@ HRESULT CBody_Player::Bind_ShaderResources()
 	return S_OK;
 }
 
+
 CBody_Player* CBody_Player::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	CBody_Player* pGameInstance = new CBody_Player(pDevice, pContext);
@@ -182,6 +219,8 @@ void CBody_Player::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_pBigColliderCom);
+	Safe_Release(m_pSmallColliderCom);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pModelCom);
 }

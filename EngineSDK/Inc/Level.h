@@ -10,11 +10,11 @@ class ENGINE_DLL CLevel abstract : public CBase
 {
 protected:
 	CLevel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual ~CLevel() = default;
+	~CLevel() override = default;
 
 public:
 	virtual HRESULT Initialize();
-	virtual void Update(_float fTimeDelta);
+	virtual void	Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
 protected:

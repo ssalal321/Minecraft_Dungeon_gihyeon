@@ -127,6 +127,39 @@
     <Filter Include="01.Utility\10. Picking">
       <UniqueIdentifier>{25bbd5a5-e681-40de-b31e-b876cb9bbf44}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\04. Component\Navigation">
+      <UniqueIdentifier>{9b38e531-3160-4bce-b07d-bd2f523ab698}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04. Component\Navigation\Cell">
+      <UniqueIdentifier>{6396c232-a381-4344-ab2f-648abbaf92db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04. Component\VIBuffer\Cell">
+      <UniqueIdentifier>{0b5c9fce-418f-4046-a15a-1dd1588bf174}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04. Component\Collider">
+      <UniqueIdentifier>{762fdb54-0e27-4e08-87ba-89232c2359f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04. Component\Collider\Bounding">
+      <UniqueIdentifier>{34a2ba63-feee-4784-9434-8c17094a054b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04. Component\Collider\Bounding\AABB">
+      <UniqueIdentifier>{99c1bc84-9d22-4d5e-815b-2ea864b6fc9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04. Component\Collider\Bounding\Sphere">
+      <UniqueIdentifier>{8d350bef-1d63-418c-b837-9074af2c9f35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04. Component\Collider\DebugDraw">
+      <UniqueIdentifier>{58126a8d-7c33-4fef-bfa3-f1981bb69680}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04. Component\Collider\Bounding\OBB">
+      <UniqueIdentifier>{84659b82-acc8-423d-a381-bca6efce8398}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04. Component\Collider\Manager">
+      <UniqueIdentifier>{742cfa93-b9df-4015-a828-c6d91fc966d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\11. EventBus">
+      <UniqueIdentifier>{240c367b-fb5d-46a7-be33-01ca7ea212c6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Base.h">
@@ -249,9 +282,6 @@
     <ClInclude Include="..\Public\ContainerObject.h">
       <Filter>01.Utility\03. GameObject\ContainerObject</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\UIObject.h">
-      <Filter>01.Utility\08. UI</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\VIBuffer_Cube.h">
       <Filter>01.Utility\04. Component\VIBuffer\Cube</Filter>
     </ClInclude>
@@ -260,6 +290,42 @@
     </ClInclude>
     <ClInclude Include="..\Public\Picking.h">
       <Filter>01.Utility\10. Picking</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Cell.h">
+      <Filter>01.Utility\04. Component\VIBuffer\Cell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Navigation.h">
+      <Filter>01.Utility\04. Component\Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Cell.h">
+      <Filter>01.Utility\04. Component\Navigation\Cell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Bounding_AABB.h">
+      <Filter>01.Utility\04. Component\Collider\Bounding\AABB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Bounding.h">
+      <Filter>01.Utility\04. Component\Collider\Bounding</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Collider.h">
+      <Filter>01.Utility\04. Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DebugDraw.h">
+      <Filter>01.Utility\04. Component\Collider\DebugDraw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Bounding_OBB.h">
+      <Filter>01.Utility\04. Component\Collider\Bounding\OBB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Bounding_Sphere.h">
+      <Filter>01.Utility\04. Component\Collider\Bounding\Sphere</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Collision_Manager.h">
+      <Filter>01.Utility\04. Component\Collider\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EventBus.h">
+      <Filter>01.Utility\11. EventBus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UIObject.h">
+      <Filter>01.Utility\08. UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -379,6 +445,39 @@
     </ClCompile>
     <ClCompile Include="..\Private\Picking.cpp">
       <Filter>01.Utility\10. Picking</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Cell.cpp">
+      <Filter>01.Utility\04. Component\VIBuffer\Cell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Cell.cpp">
+      <Filter>01.Utility\04. Component\Navigation\Cell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Navigation.cpp">
+      <Filter>01.Utility\04. Component\Navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Bounding_AABB.cpp">
+      <Filter>01.Utility\04. Component\Collider\Bounding\AABB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Bounding.cpp">
+      <Filter>01.Utility\04. Component\Collider\Bounding</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Collider.cpp">
+      <Filter>01.Utility\04. Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DebugDraw.cpp">
+      <Filter>01.Utility\04. Component\Collider\DebugDraw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Bounding_Sphere.cpp">
+      <Filter>01.Utility\04. Component\Collider\Bounding\Sphere</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Bounding_OBB.cpp">
+      <Filter>01.Utility\04. Component\Collider\Bounding\OBB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Collision_Manager.cpp">
+      <Filter>01.Utility\04. Component\Collider\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EventBus.cpp">
+      <Filter>01.Utility\11. EventBus</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

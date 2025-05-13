@@ -1,58 +1,89 @@
 #include "Player_Idle.h"
-
-#include "Player.h"
 #include "Body_Player.h"
 
-CPlayer_Idle::CPlayer_Idle(CGameObject* pActor, CGameObject* pPartObject, OBJECT_DESC* pGameObjectDesc)
-	: CState(pActor, pPartObject, pGameObjectDesc)
+CPlayer_Idle::CPlayer_Idle(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEPLAYER_DESC* pDesc)
+	: CState_Player(pActor, pGameObjectDesc, pDesc)
 {
 }
 
 HRESULT CPlayer_Idle::Init_State()
 {
-	m_pPlayer = dynamic_cast<CPlayer*>(m_pActor);
-	m_pTransformCom = dynamic_cast<CTransform*>(m_pPlayer->Find_Component(TEXT("Com_Transform")));
-
-	m_pBodyPlayer = dynamic_cast<CBody_Player*>(m_pPartObject);
-	m_pBodyPlayerModelCom = dynamic_cast<CModel*>(m_pBodyPlayer->Find_Component(TEXT("Com_Model")));
-
-	m_pPlayerDesc = dynamic_cast<PLAYER_DESC*>(m_pGameObjectDesc);
-
-	if (nullptr == m_pPlayer || nullptr == m_pTransformCom)
-		return E_FAIL;
+	__super::Init_State();
 
 	return S_OK;
 }
 
 void CPlayer_Idle::State_Enter()
 {
+	/*CPartObject* pItem = m_pPlayer->Find_PartObject(TEXT("Part_Weapon_Melee"));
+
+	if (pItem && pItem->Get_GameObjectTag() == TEXT("GameObject_GlaiveSteel"))
+		m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::IDLE_GLAIVE), true);
+
+	else
+		m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::IDLE), true);*/
 }
 
-void CPlayer_Idle::State_Priority_Update()
+void CPlayer_Idle::State_Priority_Update(_float fTimeDelta)
 {
+	__super::State_Priority_Update(fTimeDelta);
+
+	CPartObject* pItem = m_pPlayer->Find_PartObject(TEXT("Part_Weapon_Melee"));
+
+	if (pItem && pItem->Get_GameObjectTag() == TEXT("GameObject_GlaiveSteel"))
+		m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::IDLE_GLAIVE), true);
+
+	else
+		m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::IDLE), true);
+
 }
 
-void CPlayer_Idle::State_Update()
+void CPlayer_Idle::State_Update(_float fTimeDelta)
 {
-	m_pBodyPlayerModelCom->Set_Animation(PLAYER_STATE::WHIP_COMBO, true);
+	__super::State_Update(fTimeDelta);
 
-	/*if (m_pGameInstance->Key_Down(VK_LBUTTON))
-	{
-		m_pPlayer->Change_State(m_pPlayer->Get_StateVec()[PLAYER_STATE::WALK]);
-	}*/
+	if (Change_State_To_Roll())
+		return;
+
+	if (Change_State_To_BowAction())
+		return;
+
+	/*if (Change_State_To_GlaiveCombo())
+		return;*/
+
+	if (Change_State_To_Walk())
+		return;
 }
 
-void CPlayer_Idle::State_Late_Update()
+void CPlayer_Idle::State_Late_Update(_float fTimeDelta)
 {
+	__super::State_Late_Update(fTimeDelta);
 }
 
 void CPlayer_Idle::State_Exit()
 {
 }
 
-CState* CPlayer_Idle::Create(CGameObject* pActor, CGameObject* pPartObject, OBJECT_DESC* pGameObjectDesc)
+void CPlayer_Idle::Collision_Enter(CCollider* pOther)
 {
-	CState* pGameInstance = new CPlayer_Idle(pActor, pPartObject, pGameObjectDesc);
+	__super::Collision_Enter(pOther);
+
+	//Change_State_To_GetHitFront();
+}
+
+void CPlayer_Idle::Collision_Stay(CCollider* pOther)
+{
+	__super::Collision_Stay(pOther);
+}
+
+void CPlayer_Idle::Collision_Exit(CCollider* pOther)
+{
+	__super::Collision_Exit(pOther);
+}
+
+CState_Player* CPlayer_Idle::Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEPLAYER_DESC* pDesc)
+{
+	CPlayer_Idle* pGameInstance = new CPlayer_Idle(pActor, pGameObjectDesc, pDesc);
 
 	if (FAILED(pGameInstance->Init_State()))
 	{
