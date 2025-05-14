@@ -45,6 +45,9 @@ _bool CBounding_Sphere::Intersect(COLLIDER_TYPE eColliderType, CBounding* pTarge
 	case COLLIDER_TYPE::TYPE_RAY:
 		{
 			RayDesc*	pRayDesc = static_cast<RayDesc*>(pArg);
+			if (nullptr == pRayDesc)
+				return false;
+
 			_fvector	vMousePos = XMLoadFloat3(&pRayDesc->MousePos);
 			_fvector	vMouseRay = XMLoadFloat3(&pRayDesc->MouseRay);
 			isColl = m_pDesc->Intersects(vMousePos, vMouseRay, *pRayDesc->fDist);

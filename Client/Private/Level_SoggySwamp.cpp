@@ -33,14 +33,14 @@ HRESULT CLevel_SoggySwamp::Initialize()
     /*if (FAILED(Ready_Layer_InventoryUI(TEXT("Layer_InventoryUI"))))
         return E_FAIL;*/
 
-    if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
-        return E_FAIL;
+    /*if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
+        return E_FAIL;*/
 
     /*if (FAILED(Ready_Layer_PlayerSlotUI(TEXT("Layer_PlayerSlotUI"))))
         return E_FAIL;*/
 
-    if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
-        return E_FAIL;
+    /*if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
+        return E_FAIL;*/
 
 
     return S_OK;
@@ -80,7 +80,7 @@ void CLevel_SoggySwamp::Update(_float fTimeDelta)
         pCurrMonster->Set_Hovered(true);
         m_pPickedMonster = pCurrMonster;
 
-        std::wcerr << "[ÈÖ¹ÙÈÖ¹Ù]" << std::endl;
+        //std::wcerr << "[ÈÖ¹ÙÈÖ¹Ù]" << std::endl;
 
         if (m_pGameInstance->Get_Key(VK_LBUTTON) && !bMouseClickLock)
         {
@@ -219,9 +219,9 @@ HRESULT CLevel_SoggySwamp::Ready_Layer_Player(const _wstring& strLayerTag)
     // ÀÌÀü Level¿¡¼­ÀÇ Colliderµµ º¸Á¸
     m_pGameInstance->Attach_Persistent_Colliders_To_Level(m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Player"));
 
-    m_pPlayer->Erase_Component(TEXT("Com_Navigation_LoungeMap"));
+    m_pPlayer->Erase_Component(TEXT("Com_Navigation_SoggySwamp"));
 
-    CComponent* pNavigationCom = m_pPlayer->Find_Component(TEXT("Com_Navigation_LoungeMap"));
+    CComponent* pNavigationCom = m_pPlayer->Find_Component(TEXT("Com_Navigation_SoggySwamp"));
     // ¡Ù¡Ù¡Ù¡Ù¡Ù navigationCom ÀçÁ¤ºñÇØÁà¾ß ÇÒ µí ¡Ù¡Ù¡Ù¡Ù¡Ù
 
     m_pPlayer->Delete_NavigationCom();

@@ -191,10 +191,12 @@ HRESULT CPlayer::Ready_Components()
 	}
 	break;
 
-	//case LEVEL_SOGGYSWAMP:
-	//{
-	//	m_pNavigationCom = nullptr;
-	//}
+	case LEVEL_SOGGYSWAMP:
+	{
+		if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Navigation_SoggySwampMap"),
+			TEXT("Com_Navigation_SoggySwampMap"), reinterpret_cast<CComponent**>(&m_pNavigationCom)))
+			return E_FAIL;
+	}
 	break;
 	}
 

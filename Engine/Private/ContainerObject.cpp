@@ -41,6 +41,8 @@ void CContainerObject::Update(_float fTimeDelta)
 		if (nullptr != Pair.second)
 			Pair.second->Update(fTimeDelta);
 	}
+
+	__super::Update(fTimeDelta);
 }
 
 void CContainerObject::Late_Update(_float fTimeDelta)

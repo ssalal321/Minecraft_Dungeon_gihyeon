@@ -68,12 +68,10 @@ void CTransform::Go_Straight(_float fTimeDelta, CNavigation* pNavigation, _float
 		if (pNavigation->Can_Move(vMovingPosition))
 		{
 			Set_State(STATE_POSITION, vMovingPosition);
-			//std::cerr << "이동 중" << std::endl;
 		}
 		else if (pNavigation->Can_Slide(vPrevPosition, vMovingPosition, vSlidingPosition))
 		{
 			Set_State(STATE_POSITION, vSlidingPosition);
-			//std::cerr << "슬라이딩" << std::endl;
 		}
 	}
 	else
@@ -124,8 +122,6 @@ void CTransform::Jump_Start(_float fJumpVelocity)
 		// 슬라임의 현재 y 위치를 기준으로 점프 시작 위치 초기화
 		_vector vPos = Get_State(STATE_POSITION);
 		m_fCurrentY = XMVectorGetY(vPos);
-
-		//std::cerr << "[점프]" << endl;
 	}
 }
 
@@ -147,8 +143,6 @@ void CTransform::Jump(_float fTimeDelta, CNavigation* pNavigation)
     position.y = m_fCurrentY;
     vPosition = XMLoadFloat4(&position);
 
-	//std::cerr << "[높이 :" << position.y << "]" << std::endl;
-
 	Set_State(STATE_POSITION, vPosition);
 
     // 네비게이션 상태 복원 여부 확인
@@ -160,8 +154,7 @@ void CTransform::Jump(_float fTimeDelta, CNavigation* pNavigation)
             pNavigation->SetUp_On_Navigation(this);
             m_bIsJumping = false;
 
-            //std::cerr << "[착지]" << std::endl;
-            return;
+    		return;
         }
     }
 
@@ -258,22 +251,27 @@ void CTransform::LookAt(_fvector vAt)
 
 void CTransform::Add_Momentum(_vector vImpulse)
 {
-	m_vVelocity += vImpulse;
+	_vector vOld = XMLoadFloat3(&m_vVelocity);
+	vOld += vImpulse;
+	XMStoreFloat3(&m_vVelocity, vOld);
 }
 
 void CTransform::Update_Momentum(_float fTimeDelta)
 {
-	if (XMVector3Equal(m_vVelocity, XMVectorZero()))
+	_vector vVel = XMLoadFloat3(&m_vVelocity);
+	if (XMVector3Equal(vVel, XMVectorZero()))
 		return;
 
 	_vector vPos = Get_State(STATE_POSITION);
-	vPos += m_vVelocity * fTimeDelta;
+	vPos += vVel * fTimeDelta;
 
 	Set_State(STATE_POSITION, vPos);
 
-	m_vVelocity *= 0.85f;
-	if (XMVectorGetX(XMVector3Length(m_vVelocity)) < 0.001f)
-		m_vVelocity = XMVectorZero();
+	vVel *= 0.85f;
+	if (XMVectorGetX(XMVector3Length(vVel)) < 0.001f)
+		vVel = XMVectorZero();
+
+	XMStoreFloat3(&m_vVelocity, vVel);
 }
 
 CTransform* CTransform::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

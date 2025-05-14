@@ -107,7 +107,8 @@ private:
 	_float		m_fGravity		= { -9.8f };    // 중력 가속도 (m/s²)
 	_float		m_fCurrentY		= {};			// 현재 Y 위치
 
-	_vector		m_vVelocity = XMVectorZero();
+	_float3		m_vVelocity = { 0.f, 0.f, 0.f };
+
 
 public:
 	static	  CTransform*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

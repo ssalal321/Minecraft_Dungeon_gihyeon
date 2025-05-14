@@ -42,7 +42,6 @@ void CLevel_Loading::Update(_float fTimeDelta)
             pNewLevel = CLevel_Title::Create(m_pDevice, m_pContext);
             break;
 
-
         case LEVEL_LOUNGE:
             pNewLevel = CLevel_Lounge::Create(m_pDevice, m_pContext);
             break;

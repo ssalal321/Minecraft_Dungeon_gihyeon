@@ -159,10 +159,12 @@ HRESULT CMonster::Ready_Components()
 		}
 		break;
 
-	/*case LEVEL_SOGGYSWAMP:
+	case LEVEL_SOGGYSWAMP:
 	{
-		m_pNavigationCom = nullptr;
-	}*/
+		if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Navigation_SoggySwampMap"),
+			TEXT("Com_Navigation_SoggySwampMap"), reinterpret_cast<CComponent**>(&m_pNavigationCom)))
+			return E_FAIL;
+	}
 	}
 
 	return S_OK;

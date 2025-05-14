@@ -1,4 +1,7 @@
 #include "Player_Walk.h"
+
+#include <iostream>
+
 #include "Body_Player.h"
 
 CPlayer_Walk::CPlayer_Walk(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEPLAYER_DESC* pDesc)
@@ -15,6 +18,7 @@ HRESULT CPlayer_Walk::Init_State()
 
 void CPlayer_Walk::State_Enter()
 {
+	std::cerr << "Player_Walk" << "\n";
 	// ¹Ù²ã¾ßµÅ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	/*CPartObject* pItem = m_pPlayer->Find_PartObject(TEXT("Part_Weapon_Melee"));
@@ -96,7 +100,7 @@ void CPlayer_Walk::Walk_Through_Destination(_float fTimeDelta)
 
 	_float fDist = XMVectorGetX(XMVector3Length(vToTarget));
 
-	if (fDist < 0.1f)
+	if (fDist < 0.3f)
 	{
 		if (Change_State_To_Idle())
 			return;
@@ -113,11 +117,21 @@ void CPlayer_Walk::Chase_Monster()
 	if (m_pPlayer->Get_Chasing())
 	{
 		CTransform* pMonsterTransformCom = m_pPlayer->Get_MonsterTransformCom();
-		_float4 pMonsterPos = {};
-		XMStoreFloat4(&pMonsterPos, pMonsterTransformCom->Get_State(CTransform::STATE_POSITION));
-		m_pPlayer->Set_NextPosition(pMonsterPos);
+
+		_vector  vMyPos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+		_vector  vMonsterPos = pMonsterTransformCom->Get_State(CTransform::STATE_POSITION);
+
+		_vector  vDir = XMVector3Normalize(vMyPos - vMonsterPos);
+
+		_vector  vTargetPos = vMonsterPos + vDir * 1.5f;
+
+		_float4  fTargetPos = {};
+		XMStoreFloat4(&fTargetPos, vTargetPos);
+
+		m_pPlayer->Set_NextPosition(fTargetPos);
 	}
 }
+
 
 CState_Player* CPlayer_Walk::Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEPLAYER_DESC* pDesc)
 {

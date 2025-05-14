@@ -130,7 +130,7 @@ HRESULT CNavigation::Make_Cell(const _float3* fCellPoints)
 
 	// 파일 열기
 	_ulong  dwByte = {};
-	HANDLE  hFile = CreateFile(TEXT("../Bin/DataFiles/Lounge_Navigation.dat"), GENERIC_WRITE, 0, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+	HANDLE  hFile = CreateFile(TEXT("../Bin/DataFiles/SoggySwamp_Navigation.dat"), GENERIC_WRITE, 0, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
 	if (INVALID_HANDLE_VALUE == hFile)
 		return E_FAIL;
 
@@ -283,7 +283,7 @@ HRESULT CNavigation::Read_Cell(const _tchar* pNavigationDataFilePath)
 
 void CNavigation::Resave_Files()
 {
-	HANDLE hFile = CreateFile(TEXT("../Bin/DataFiles/Lounge_Navigation.dat"),
+	HANDLE hFile = CreateFile(TEXT("../Bin/DataFiles/SoggySwamp_Navigation.dat"),
 		GENERIC_WRITE, 0, nullptr,
 		CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 	if (INVALID_HANDLE_VALUE == hFile)
@@ -385,61 +385,6 @@ _bool CNavigation::Can_Move(_fvector vWorldPos)
 
 	return false;
 }
-
-//_bool CNavigation::Can_Slide(_fvector vPrevWorldPos, _fvector vMovingWorldPos, _vector& vSlidingPosition)
-//{
-//	_matrix		WorldMatrixInv = XMMatrixInverse(nullptr, XMLoadFloat4x4(m_pWorldMatrix));
-//	_vector		vMovingLocalPos = XMVector3TransformCoord(vMovingWorldPos, WorldMatrixInv);
-//	_vector		vPrevLocalPos = XMVector3TransformCoord(vPrevWorldPos, WorldMatrixInv);
-//
-//	_int  iCellIndex = m_iCurrentCellIndex;
-//	_int  iNextNeighbor = -1;
-//	_int  iHitEdgeIndex = -1;
-//
-//	CCell* pCurrent = m_Cells[iCellIndex];
-//
-//	if (false == pCurrent->Is_In(vMovingLocalPos, &iNextNeighbor, &iHitEdgeIndex))
-//	{
-//		// == 슬라이딩 처리 ==
-//		if (iNextNeighbor == -1)
-//		{
-//			_vector vMoveDir = vMovingLocalPos - vPrevLocalPos;
-//			_vector vEdgeNormal = pCurrent->Get_EdgeNormal(iHitEdgeIndex);
-//
-//			_vector vSlideDir = vMoveDir - XMVector3Dot(vMoveDir, vEdgeNormal) * vEdgeNormal;
-//
-//			_vector vWorldSlideDir = XMVector3TransformNormal(vSlideDir, XMLoadFloat4x4(m_pWorldMatrix));
-//			_float3 testDir;
-//			XMStoreFloat3(&testDir, vWorldSlideDir);
-//			std::cerr << "X : " << testDir.x << " , Y : " << testDir.y << " , Z : " << testDir.z << std::endl;
-//
-//
-//			_vector vSlideTargetWorld = vPrevWorldPos + vWorldSlideDir ;
-//
-//			if (pCurrent->Is_In(vSlideTargetWorld, &iNextNeighbor, &iHitEdgeIndex))
-//			{
-//				vSlidingPosition = vSlideTargetWorld;
-//
-//				m_iCurrentCellIndex = iCellIndex;  // Is_In이 true면 현재 셀 안에 있는 거임
-//				return true;
-//			}
-//			else if (-1 != iNextNeighbor)
-//			{
-//				iCellIndex = iNextNeighbor;  // false면 다음 셀로 가야 하는 거임 (iNextNeighbor != -1이면)
-//				if (pCurrent->Is_In(vSlideTargetWorld, &iNextNeighbor, &iHitEdgeIndex))
-//				{
-//					vSlidingPosition = vSlideTargetWorld;
-//
-//					m_iCurrentCellIndex = iCellIndex;  // Is_In이 true면 현재 셀 안에 있는 거임
-//					return true;
-//				}
-//			}
-//		}
-//
-//	}
-//
-//	return false;
-//}
 
 _bool CNavigation::Can_Slide(_fvector vPrevWorldPos, _fvector vMovingWorldPos, _vector& vSlidingPosition)
 {

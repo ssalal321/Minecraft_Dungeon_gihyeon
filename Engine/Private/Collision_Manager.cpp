@@ -3,8 +3,9 @@
 #include <iostream>
 #include <ostream>
 
+#include "ContainerObject.h"
 #include "GameInstance.h"
-#include "GameObject.h"
+#include "PartObject.h"
 
 CCollision_Manager::CCollision_Manager()
 	: m_pGameInstance{ CGameInstance::GetInstance() }
@@ -128,9 +129,9 @@ void CCollision_Manager::Update()
 
                         // 여기서 슬라이딩 처리
                         if (pColliderA->Get_Role() == CCollider::SMALL && pColliderB->Get_Role() == CCollider::SMALL 
-                            /*&& pColliderA < pColliderB*/)
+                            && pColliderA < pColliderB)
                         {
-                            Resolve_Penetration_And_Slide(pColliderA, pColliderB, 50.f);
+                            Resolve_Penetration_And_Slide(pColliderA, pColliderB, 10.f);
                         }
                     }
                 }
@@ -160,9 +161,9 @@ void CCollision_Manager::Update()
 
                     // 여기서 슬라이딩 처리
                     if (pColliderA->Get_Role() == CCollider::SMALL && pColliderB->Get_Role() == CCollider::SMALL
-                        /*&& pColliderA < pColliderB*/)
+                        && pColliderA < pColliderB)
                     {
-                        Resolve_Penetration_And_Slide(pColliderA, pColliderB, 50.f);
+                        Resolve_Penetration_And_Slide(pColliderA, pColliderB, 10.f);
                     }
                 }
             }
@@ -251,33 +252,36 @@ void CCollision_Manager::Clear(_uint iLevelIndex)
 
 void CCollision_Manager::Resolve_Penetration_And_Slide(CCollider* pColA, CCollider* pColB, _float fForce)
 {
-    if (!pColA || !pColB)
+    if (!pColA || !pColB || !pColA->Get_ColliderActive() || !pColB->Get_ColliderActive())
         return;
 
-    CGameObject*    pObjA = pColA->Get_OwnerObject();
-    CGameObject*    pObjB = pColB->Get_OwnerObject();
+    CPartObject*    pPartObjA = dynamic_cast<CPartObject*>(pColA->Get_OwnerObject());
+    CPartObject*    pPartObjB = dynamic_cast<CPartObject*>(pColB->Get_OwnerObject());
+    CContainerObject*   pContainerObjA = pPartObjA->Get_ContainerObject();
+    CContainerObject*   pContainerObjB = pPartObjB->Get_ContainerObject();
+        
 
-    if (!pObjA || !pObjB)
+    if (!pContainerObjA || !pContainerObjB)
         return;
 
-    CTransform*     pA_TransformCom = dynamic_cast<CTransform*>(pObjA->Find_Component(TEXT("Com_Transform")));
-    CTransform*     pB_TransformCom = dynamic_cast<CTransform*>(pObjB->Find_Component(TEXT("Com_Transform")));
+    CTransform*     pA_TransformCom = dynamic_cast<CTransform*>(pContainerObjA->Find_Component(TEXT("Com_Transform")));
+    CTransform*     pB_TransformCom = dynamic_cast<CTransform*>(pContainerObjB->Find_Component(TEXT("Com_Transform")));
 
     if (!pA_TransformCom || !pB_TransformCom)
         return;
 
-    _vector vPosA = pA_TransformCom->Get_State(CTransform::STATE_POSITION);
-    _vector vPosB = pB_TransformCom->Get_State(CTransform::STATE_POSITION);
+    _vector     vPositionA = pA_TransformCom->Get_State(CTransform::STATE_POSITION);
+    _vector     vPositionB = pB_TransformCom->Get_State(CTransform::STATE_POSITION);
 
-    _vector vDelta = vPosB - vPosA;
-    _float fLen = XMVectorGetX(XMVector3Length(vDelta));
+    _vector     vAtoB  = vPositionB - vPositionA;
+    _float      fLen    = XMVectorGetX(XMVector3Length(vAtoB));
     if (fLen < 0.0001f)
         return;
 
-    _vector vDir = XMVector3Normalize(vDelta);
+    _vector  vNormalizedAtoB = XMVector3Normalize(vAtoB);
 
 
-    _float fDistance = XMVectorGetX(XMVector3Length(vPosB - vPosA));
+    _float fDistance = XMVectorGetX(XMVector3Length(vPositionB - vPositionA));
     _float fA_Radius = dynamic_cast<CBounding_Sphere*>(pColA->Get_Bounding())->Get_Radius();
     _float fB_Radius = dynamic_cast<CBounding_Sphere*>(pColB->Get_Bounding())->Get_Radius();
 
@@ -295,25 +299,25 @@ void CCollision_Manager::Resolve_Penetration_And_Slide(CCollider* pColA, CCollid
     _vector vLookA = pA_TransformCom->Get_State(CTransform::STATE_LOOK);
     vLookA = XMVector3Normalize(vLookA);
 
-    // 접선 방향 = LookA - (LookA ? Normal) * Normal
-    _vector vSlideA = XMVector3Normalize(vLookA - XMVectorScale(vDir, XMVectorGetX(XMVector3Dot(vLookA, vDir))));
+    //// 접선 방향 = LookA - (LookA ? Normal) * Normal
+    //_vector vSlideA = XMVector3Normalize(vLookA - XMVectorScale( vNormalizedAtoB, XMVectorGetX(XMVector3Dot(vLookA,  vNormalizedAtoB))));
 
-    // 최종 슬라이딩 벡터
-    _vector vSlidePushA = vSlideA * fPushForce * ratioA;
+    //// 최종 슬라이딩 벡터
+    //_vector vSlidePushA = vSlideA * fPushForce * ratioA;
 
     // 기본 반발 밀어내기 벡터
-    _vector vBouncePushA = -vDir * fPushForce * ratioA;
-    _vector vBouncePushB = +vDir * fPushForce * ratioB;
+    _vector vBouncePushA = - vNormalizedAtoB * fPushForce * ratioA;
+    _vector vBouncePushB = + vNormalizedAtoB * fPushForce * ratioB;
 
     // 슬라이딩 + 반발 벡터 조합
-    _vector vFinalPushA = XMVectorLerp(vBouncePushA, vSlidePushA, 0.7f);  // 슬라이딩 위주
+    _vector vFinalPushA = vBouncePushA;/*XMVectorLerp(, vSlidePushA, 0.7f);*/  // 슬라이딩 위주
     _vector vFinalPushB = vBouncePushB; // 그냥 밀리기만
 
-    if (pObjA)
-        pObjA->Apply_Penetration_Momentum(vFinalPushA);
+	pContainerObjA->Apply_Penetration_Momentum(vFinalPushA);
+	pContainerObjB->Apply_Penetration_Momentum(vFinalPushB);
 
-    if (pObjB)
-        pObjB->Apply_Penetration_Momentum(vFinalPushB);
+    m_iCallNumber++;
+    std::cerr << m_iCallNumber << "\n";
 }
 
 

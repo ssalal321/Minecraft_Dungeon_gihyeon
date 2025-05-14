@@ -24,6 +24,7 @@ void CSlime_Small_Attack::State_Enter()
 {
     m_fCoolTime = 0.f;
     m_bHitMode_Activated = false;
+    m_bAttackFinished = false;
 
 	m_pActorModelCom->Set_Animation(static_cast<_uint>(SLIME_MEDIUM_STATE::ATTACK), false, 0.5f);
 }
@@ -44,12 +45,14 @@ void CSlime_Small_Attack::State_Update(_float fTimeDelta)
 
     if (!m_bHitMode_Activated && ATTACKSTART <= fAnimCurTrackPos)
     {
+        dynamic_cast<CBounding_Sphere*>(m_pBigColliderCom->Get_Bounding())->Edit_Bounding_Center({0.f, 0.f, 0.5f});
         m_pSlime_Small->Set_Attacking(true);
         m_bHitMode_Activated = true;
     }
 
     if (m_bHitMode_Activated && fAnimCurTrackPos >= ATTACKFINISH)
     {
+        dynamic_cast<CBounding_Sphere*>(m_pBigColliderCom->Get_Bounding())->Edit_Bounding_Center({ 0.f, 0.f, -0.5f });
         m_bHitMode_Activated = false; // 다시 사용할 수 있게
         m_pSlime_Small->Set_Attacking(false);
     }
@@ -62,7 +65,7 @@ void CSlime_Small_Attack::State_Update(_float fTimeDelta)
         m_fCoolTime = 0.f;
     }
 
-    if (m_fCoolTime > 1.6f)
+    if (m_fCoolTime > 1.f)
     {
         m_pSlime_Small->Change_State(Make_Slime_SmallState(SLIME_SMALL_STATE::WALK));
         return;

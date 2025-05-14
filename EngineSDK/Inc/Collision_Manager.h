@@ -41,6 +41,8 @@ private:
 private:
     _uint   m_iNumLevels = {};
 
+	_uint	m_iCallNumber = 0;
+
 public:
 	static	 CCollision_Manager*	Create(_uint iNumLevels);
 	void	 Free() override;
