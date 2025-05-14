@@ -10,7 +10,6 @@
 #ifdef _DEBUG
 _uint CLoungeMap::m_iShaderPass = 0;
 _bool CLoungeMap::m_bLineRender = false;
-_bool CLoungeMap::m_bClickActive = false;
 #endif
 
 CLoungeMap::CLoungeMap(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -62,7 +61,7 @@ void CLoungeMap::Priority_Update(_float fTimeDelta)
 void CLoungeMap::Update(_float fTimeDelta)
 {
 #ifdef _DEBUG
-	if (m_pGameInstance->Key_Down(VK_LBUTTON) && m_bClickActive)
+	if (m_pGameInstance->Key_Down(VK_LBUTTON) && !bMouseClickLock)
 	{
 		_float3		fLocalPickedVertex = {};
 
@@ -79,19 +78,19 @@ void CLoungeMap::Update(_float fTimeDelta)
 								 << " Z: " << fWorldPickedVertex.z << std::endl;
 			
 
-			m_fCellPoints[m_iPointNum] = fLocalPickedVertex;
-			++m_iPointNum;
+			//m_fCellPoints[m_iPointNum] = fLocalPickedVertex;
+			//++m_iPointNum;
 
-			// Navigation에 전달
-			if (m_iPointNum == 3 && m_pNavigationCom)
-			{
-				m_pNavigationCom->Make_Cell(m_fCellPoints);
-			}
+			//// Navigation에 전달
+			//if (m_iPointNum == 3 && m_pNavigationCom)
+			//{
+			//	m_pNavigationCom->Make_Cell(m_fCellPoints);
+			//}
 
-			if (3 == m_iPointNum)
-			{
-				m_iPointNum = 0;
-			}
+			//if (3 == m_iPointNum)
+			//{
+			//	m_iPointNum = 0;
+			//}
 
 			/*CPlayer* pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("GameObject_Player"),
 							LEVEL_LOUNGE, TEXT("Layer_Player")));
@@ -100,7 +99,7 @@ void CLoungeMap::Update(_float fTimeDelta)
 		}
 	}
 
-	if (m_pGameInstance->Key_Down(VK_RBUTTON) && m_bClickActive)
+	/*if (m_pGameInstance->Key_Down(VK_RBUTTON) && m_bClickActive)
 	{
 		m_pNavigationCom->Erase_Cell_Pick(m_pTransformCom->Get_WorldMatrix_Inverse());
 	}
@@ -108,7 +107,7 @@ void CLoungeMap::Update(_float fTimeDelta)
 	if (m_pGameInstance->Key_Down(VK_BACK) && m_bClickActive)
 	{
 		m_pNavigationCom->Erase_Cell_Last();
-	}
+	}*/
 #endif
 }
 	

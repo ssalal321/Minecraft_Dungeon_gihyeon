@@ -40,13 +40,15 @@ HRESULT CMonster::Initialize(void* pArg)
 
 void CMonster::Priority_Update(_float fTimeDelta)
 {
-	m_pMonsterFSM->Priority_Update_State(fTimeDelta);
-
 	__super::Priority_Update(fTimeDelta);
+
+	m_pMonsterFSM->Priority_Update_State(fTimeDelta);
 }
 
 void CMonster::Update(_float fTimeDelta)
 {
+	__super::Update(fTimeDelta);
+
 	if (m_pNavigationCom && false == m_pTransformCom->Get_Is_Jumping())
 	{
 		m_pNavigationCom->SetUp_On_Navigation(m_pTransformCom);
@@ -70,17 +72,13 @@ void CMonster::Update(_float fTimeDelta)
 			m_pGameInstance->Get_Transform_Matrix(CPipeLine::D3DTS_PROJ),
 			m_pGameInstance->Get_Transform_Matrix(CPipeLine::D3DTS_VIEW),
 			XMMatrixIdentity()));
-
-
-	__super::Update(fTimeDelta);
 }
 
 void CMonster::Late_Update(_float fTimeDelta)
 {
-	m_pMonsterFSM->Late_Update_State(fTimeDelta);
-
 	__super::Late_Update(fTimeDelta);
 
+	m_pMonsterFSM->Late_Update_State(fTimeDelta);
 
 	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 }
@@ -161,10 +159,12 @@ HRESULT CMonster::Ready_Components()
 		}
 		break;
 
-	/*case LEVEL_SOGGYSWAMP:
+	case LEVEL_SOGGYSWAMP:
 	{
-		m_pNavigationCom = nullptr;
-	}*/
+		if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Navigation_SoggySwampMap"),
+			TEXT("Com_Navigation_SoggySwampMap"), reinterpret_cast<CComponent**>(&m_pNavigationCom)))
+			return E_FAIL;
+	}
 	}
 
 	return S_OK;

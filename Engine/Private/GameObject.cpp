@@ -58,6 +58,7 @@ void CGameObject::Priority_Update(_float fTimeDelta)
 
 void CGameObject::Update(_float fTimeDelta)
 {
+	m_pTransformCom->Update_Momentum(fTimeDelta);
 }
 
 void CGameObject::Late_Update(_float fTimeDelta)
@@ -111,6 +112,17 @@ CComponent* CGameObject::Add_Component(_uint iPrototypeLevelIndex, const _wstrin
 	Safe_AddRef(pComponent);
 
 	return pComponent;
+}
+
+
+void CGameObject::Apply_Penetration_Momentum(_vector vMomentum)
+{
+	m_pTransformCom->Add_Momentum(vMomentum);
+}
+
+void CGameObject::Resolve_Penetration_And_Slide(CCollider* pMine, CCollider* pOther, _float fForce)
+{
+	m_pGameInstance->Resolve_Penetration_And_Slide(pMine, pOther, fForce);
 }
 
 void CGameObject::Free()

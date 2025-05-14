@@ -37,8 +37,7 @@ private:
 
 	static  _bool	m_bLineRender;
 	static	_uint	m_iShaderPass;  // ¼±¾ð
-	static	_bool	m_bClickActive;;
-
+	
 private:
 	HRESULT		Ready_Components();
 	HRESULT		Bind_ShaderResources();

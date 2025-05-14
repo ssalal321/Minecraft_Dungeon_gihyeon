@@ -95,10 +95,10 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 
 	m_pObject_Manager->Priority_Update(fTimeDelta);
 	m_pUI_Manager->Priority_Update(fTimeDelta);
-		
+
+	
 	m_pObject_Manager->Update(fTimeDelta);
 	m_pUI_Manager->Update(fTimeDelta);
-
 	m_pPipeLine->Update();
 
 	m_pObject_Manager->Late_Update(fTimeDelta);
@@ -415,6 +415,11 @@ HRESULT CGameInstance::Attach_Persistent_Colliders_To_Level(_uint iLevelIndex, c
 unordered_map<_wstring, vector<CCollider*>>* CGameInstance::Get_Colliders(_uint iLevelIndex)
 {
 	return m_pCollision_Manager->Get_Colliders(iLevelIndex);
+}
+
+void CGameInstance::Resolve_Penetration_And_Slide(CCollider* pColliderA, CCollider* pColliderB, _float fForce)
+{
+	return m_pCollision_Manager->Resolve_Penetration_And_Slide(pColliderA, pColliderB, fForce);
 }
 #pragma endregion
 

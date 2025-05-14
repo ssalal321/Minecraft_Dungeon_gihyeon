@@ -3,8 +3,9 @@
 #include <iostream>
 #include <ostream>
 
+#include "ContainerObject.h"
 #include "GameInstance.h"
-#include "GameObject.h"
+#include "PartObject.h"
 
 CCollision_Manager::CCollision_Manager()
 	: m_pGameInstance{ CGameInstance::GetInstance() }
@@ -113,18 +114,25 @@ void CCollision_Manager::Update()
         {
             auto& groupB = iterB->second;
 
-            for (auto* colliderA : groupA)
+            for (auto* pColliderA : groupA)
             {
-                if (!colliderA || colliderA->Get_MouseCollider()) continue;
+                if (!pColliderA || pColliderA->Get_MouseCollider()) continue;
 
-                for (auto* colliderB : groupB)
+                for (auto* pColliderB : groupB)
                 {
-                    if (!colliderB || colliderB->Get_MouseCollider()) continue;
+                    if (!pColliderB || pColliderB->Get_MouseCollider()) continue;
 
-                    if (colliderA->Intersect(colliderB))
+                    if (pColliderA->Intersect(pColliderB))
                     {
-                        colliderA->Collided_With(colliderB);
-                        colliderB->Collided_With(colliderA);
+                        pColliderA->Collided_With(pColliderB);
+                        pColliderB->Collided_With(pColliderA);
+
+                        // 여기서 슬라이딩 처리
+                        if (pColliderA->Get_Role() == CCollider::SMALL && pColliderB->Get_Role() == CCollider::SMALL 
+                            && pColliderA < pColliderB)
+                        {
+                            Resolve_Penetration_And_Slide(pColliderA, pColliderB, 10.f);
+                        }
                     }
                 }
             }
@@ -138,18 +146,25 @@ void CCollision_Manager::Update()
 
         for (size_t i = 0; i < colliders.size(); ++i)
         {
-            CCollider* pA = colliders[i];
-            if (!pA || !pA->Get_AllowSameGroupCollision() || pA->Get_MouseCollider()) continue;
+            CCollider* pColliderA = colliders[i];
+            if (!pColliderA || !pColliderA->Get_AllowSameGroupCollision() || pColliderA->Get_MouseCollider()) continue;
 
             for (size_t j = i + 1; j < colliders.size(); ++j)
             {
-                CCollider* pB = colliders[j];
-                if (!pB || !pB->Get_AllowSameGroupCollision() || pB->Get_MouseCollider()) continue;
+                CCollider* pColliderB = colliders[j];
+                if (!pColliderB || !pColliderB->Get_AllowSameGroupCollision() || pColliderB->Get_MouseCollider()) continue;
 
-                if (pA->Intersect(pB))
+                if (pColliderA->Intersect(pColliderB))
                 {
-                    pA->Collided_With(pB);
-                    pB->Collided_With(pA);
+                    pColliderA->Collided_With(pColliderB);
+                    pColliderB->Collided_With(pColliderA);
+
+                    // 여기서 슬라이딩 처리
+                    if (pColliderA->Get_Role() == CCollider::SMALL && pColliderB->Get_Role() == CCollider::SMALL
+                        && pColliderA < pColliderB)
+                    {
+                        Resolve_Penetration_And_Slide(pColliderA, pColliderB, 10.f);
+                    }
                 }
             }
         }
@@ -165,7 +180,6 @@ void CCollision_Manager::Update()
         }
     }
 }
-
 
 
 #ifdef _DEBUG
@@ -233,6 +247,77 @@ void CCollision_Manager::Clear(_uint iLevelIndex)
         }
     }
 
+}
+
+
+void CCollision_Manager::Resolve_Penetration_And_Slide(CCollider* pColA, CCollider* pColB, _float fForce)
+{
+    if (!pColA || !pColB || !pColA->Get_ColliderActive() || !pColB->Get_ColliderActive())
+        return;
+
+    CPartObject*    pPartObjA = dynamic_cast<CPartObject*>(pColA->Get_OwnerObject());
+    CPartObject*    pPartObjB = dynamic_cast<CPartObject*>(pColB->Get_OwnerObject());
+    CContainerObject*   pContainerObjA = pPartObjA->Get_ContainerObject();
+    CContainerObject*   pContainerObjB = pPartObjB->Get_ContainerObject();
+        
+
+    if (!pContainerObjA || !pContainerObjB)
+        return;
+
+    CTransform*     pA_TransformCom = dynamic_cast<CTransform*>(pContainerObjA->Find_Component(TEXT("Com_Transform")));
+    CTransform*     pB_TransformCom = dynamic_cast<CTransform*>(pContainerObjB->Find_Component(TEXT("Com_Transform")));
+
+    if (!pA_TransformCom || !pB_TransformCom)
+        return;
+
+    _vector     vPositionA = pA_TransformCom->Get_State(CTransform::STATE_POSITION);
+    _vector     vPositionB = pB_TransformCom->Get_State(CTransform::STATE_POSITION);
+
+    _vector     vAtoB  = vPositionB - vPositionA;
+    _float      fLen    = XMVectorGetX(XMVector3Length(vAtoB));
+    if (fLen < 0.0001f)
+        return;
+
+    _vector  vNormalizedAtoB = XMVector3Normalize(vAtoB);
+
+
+    _float fDistance = XMVectorGetX(XMVector3Length(vPositionB - vPositionA));
+    _float fA_Radius = dynamic_cast<CBounding_Sphere*>(pColA->Get_Bounding())->Get_Radius();
+    _float fB_Radius = dynamic_cast<CBounding_Sphere*>(pColB->Get_Bounding())->Get_Radius();
+
+    _float fPenetration = (fA_Radius + fB_Radius) - fDistance;
+    if (fPenetration <= 0.f)
+        return;
+
+    _float ratioA = fB_Radius / (fA_Radius + fB_Radius);
+    _float ratioB = fA_Radius / (fA_Radius + fB_Radius);
+
+    // 강제 밀어내는 양
+    _float fPushForce = min(fPenetration * fForce, 5.f);
+
+    // [ 슬라이딩 방향 계산 - 객체 A의 Look 기준 ]
+    _vector vLookA = pA_TransformCom->Get_State(CTransform::STATE_LOOK);
+    vLookA = XMVector3Normalize(vLookA);
+
+    //// 접선 방향 = LookA - (LookA ? Normal) * Normal
+    //_vector vSlideA = XMVector3Normalize(vLookA - XMVectorScale( vNormalizedAtoB, XMVectorGetX(XMVector3Dot(vLookA,  vNormalizedAtoB))));
+
+    //// 최종 슬라이딩 벡터
+    //_vector vSlidePushA = vSlideA * fPushForce * ratioA;
+
+    // 기본 반발 밀어내기 벡터
+    _vector vBouncePushA = - vNormalizedAtoB * fPushForce * ratioA;
+    _vector vBouncePushB = + vNormalizedAtoB * fPushForce * ratioB;
+
+    // 슬라이딩 + 반발 벡터 조합
+    _vector vFinalPushA = vBouncePushA;/*XMVectorLerp(, vSlidePushA, 0.7f);*/  // 슬라이딩 위주
+    _vector vFinalPushB = vBouncePushB; // 그냥 밀리기만
+
+	pContainerObjA->Apply_Penetration_Momentum(vFinalPushA);
+	pContainerObjB->Apply_Penetration_Momentum(vFinalPushB);
+
+    m_iCallNumber++;
+    std::cerr << m_iCallNumber << "\n";
 }
 
 

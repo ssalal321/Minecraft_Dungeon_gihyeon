@@ -91,6 +91,10 @@ public:
 	void	Rotation(_fvector vAxis, _float fRadian);
 	void	LookAt(_fvector vAt);
 
+public:
+	void	Add_Momentum(_vector vImpulse);
+	void	Update_Momentum(_float fTimeDelta);
+
 private:
 	/* row_major = Right, Up, Look, Position */
 	_float4x4	m_WorldMatrix = {};
@@ -102,6 +106,8 @@ private:
 	_float		m_fJumpVelocity = {};			// 현재 y축 속도(점프 속도)
 	_float		m_fGravity		= { -9.8f };    // 중력 가속도 (m/s²)
 	_float		m_fCurrentY		= {};			// 현재 Y 위치
+
+	_float3		m_vVelocity = { 0.f, 0.f, 0.f };
 
 
 public:

@@ -111,13 +111,14 @@ HRESULT CBody_Player::Ready_Components()
 	SphereCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
 	SphereCollDesc.pCollisionActivated = m_pBigCollisionActivating;
 
-	CComponent* pColliderSphereCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
+	CComponent* pColliderBigSphereCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
 		TEXT("Com_Collider_Sphere"), reinterpret_cast<CComponent**>(&m_pBigColliderCom), &SphereCollDesc);
 
-	if (nullptr == pColliderSphereCom)
+	if (nullptr == pColliderBigSphereCom)
 		return E_FAIL;
 
-	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), pColliderSphereCom, TEXT("Player_Body"), TEXT("Player"), true);
+	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), pColliderBigSphereCom, TEXT("Player_Body"), TEXT("Player"), true);
+	dynamic_cast<CCollider*>(pColliderBigSphereCom)->Set_ColliderRole(CCollider::BIG);
 
 
 	/* Com_Collider Small*/
@@ -137,6 +138,7 @@ HRESULT CBody_Player::Ready_Components()
 
 	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), m_pSmallColliderCom, TEXT("Player_Body_Small"), TEXT("Player"));
 	dynamic_cast<CCollider*>(pColliderSmallSphereCom)->Set_AllowSameGroupCollision(true);
+	dynamic_cast<CCollider*>(pColliderSmallSphereCom)->Set_ColliderRole(CCollider::SMALL);
 
 	return S_OK;
 }

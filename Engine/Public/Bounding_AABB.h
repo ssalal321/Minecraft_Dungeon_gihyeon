@@ -37,7 +37,7 @@ public:
 public:
 	HRESULT		Initialize(const BOUNDING_DESC* pArg);
 	void		Update(_fmatrix WorldMatrix)	override;
-	_bool		Intersect(COLLIDER eColliderType, CBounding* pTargetBounding, void* pRayArg = nullptr)	override;
+	_bool		Intersect(COLLIDER_TYPE eColliderType, CBounding* pTargetBounding, void* pRayArg = nullptr)	override;
 
 #ifdef _DEBUG
 	HRESULT		Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fvector vColor)	override;

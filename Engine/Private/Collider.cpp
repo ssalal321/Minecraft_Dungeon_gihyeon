@@ -29,7 +29,7 @@ CCollider::CCollider(const CCollider& Prototype)
 #endif
 }
 
-HRESULT CCollider::Initialize_Prototype(COLLIDER eColliderType)
+HRESULT CCollider::Initialize_Prototype(COLLIDER_TYPE eColliderType)
 {
 	m_eColliderType = eColliderType;
 
@@ -57,13 +57,13 @@ HRESULT CCollider::Initialize(void* pArg)
 
 	switch (m_eColliderType)
 	{
-	case COLLIDER::TYPE_AABB:
+	case COLLIDER_TYPE::TYPE_AABB:
 		m_pBounding = CBounding_AABB::Create(m_pDevice, m_pContext, pDesc);
 		break;
-	case COLLIDER::TYPE_OBB:
+	case COLLIDER_TYPE::TYPE_OBB:
 		m_pBounding = CBounding_OBB::Create(m_pDevice, m_pContext, pDesc);
 		break;
-	case COLLIDER::TYPE_SPHERE:
+	case COLLIDER_TYPE::TYPE_SPHERE:
 		m_pBounding = CBounding_Sphere::Create(m_pDevice, m_pContext, pDesc);
 		break;
 	}
@@ -177,7 +177,7 @@ void CCollider::Clear_Collision_State()
 	m_currCollisions.clear();
 }
 
-CCollider* CCollider::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, COLLIDER eColliderType)
+CCollider* CCollider::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, COLLIDER_TYPE eColliderType)
 {
 	CCollider* pGameInstance = new CCollider(pDevice, pContext);
 

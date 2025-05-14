@@ -1,4 +1,7 @@
 #include "Player_Idle.h"
+
+#include <iostream>
+
 #include "Body_Player.h"
 
 CPlayer_Idle::CPlayer_Idle(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEPLAYER_DESC* pDesc)
@@ -15,6 +18,7 @@ HRESULT CPlayer_Idle::Init_State()
 
 void CPlayer_Idle::State_Enter()
 {
+	std::cerr << "Player_Idle" << "\n";
 	/*CPartObject* pItem = m_pPlayer->Find_PartObject(TEXT("Part_Weapon_Melee"));
 
 	if (pItem && pItem->Get_GameObjectTag() == TEXT("GameObject_GlaiveSteel"))

@@ -1,5 +1,8 @@
 #include "SoggySwampMap.h"
 
+#include <iostream>
+#include <ostream>
+
 #include "GameInstance.h"
 #include "Level_Loading.h"
 #include "Player.h"
@@ -47,7 +50,7 @@ HRESULT CSoggySwampMap::Initialize(void* pArg)
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
 		XMVectorSet(0.f, -3.f, 3.f, 1.f));
 
-	//m_pNavigationCom->Update(m_pTransformCom->Get_WorldMatrix_Ptr());
+	m_pNavigationCom->Update(m_pTransformCom->Get_WorldMatrix_Ptr());
 
 	return S_OK;
 }
@@ -60,57 +63,59 @@ void CSoggySwampMap::Priority_Update(_float fTimeDelta)
 void CSoggySwampMap::Update(_float fTimeDelta)
 {
 #ifdef _DEBUG
+	m_pNavigationCom->Update(m_pTransformCom->Get_WorldMatrix_Ptr());
 
-	//if (m_pGameInstance->Key_Down(VK_F1))
-	//	m_bClickActive = !m_bClickActive;
 
-	//if (m_pGameInstance->Key_Down(VK_LBUTTON) && m_bClickActive)
-	//{
-	//	_float3		fLocalPickedVertex = {};
+	if (m_pGameInstance->Key_Down(VK_F1))
+		m_bClickActive = !m_bClickActive;
 
-	//	if (m_pGameInstance->Picked_Vertex(fLocalPickedVertex, TEXT("GameObject_SoggySwampMap"), LEVEL_SOGGYSWAMP, TEXT("Layer_BackGround")))
-	//	{
-	//		
-	//		_vector vWorldPickedVertex = {};
-	//		vWorldPickedVertex = XMVector3TransformCoord(XMLoadFloat3(&fLocalPickedVertex), XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
-	//		_float3  fWorldPickedVertex;
-	//		XMStoreFloat3(&fWorldPickedVertex, vWorldPickedVertex);
+	if (m_pGameInstance->Key_Down(VK_LBUTTON) && m_bClickActive)
+	{
+		_float3		fLocalPickedVertex = {};
 
-	//		std::cerr << "[피킹된 정점] X: " << fWorldPickedVertex.x
-	//							 << " Y: " << fWorldPickedVertex.y
-	//							 << " Z: " << fWorldPickedVertex.z << std::endl;
-	//		
+		if (m_pGameInstance->Picked_Vertex(fLocalPickedVertex, TEXT("GameObject_SoggySwampMap"), LEVEL_SOGGYSWAMP, TEXT("Layer_BackGround")))
+		{
+			
+			_vector vWorldPickedVertex = {};
+			vWorldPickedVertex = XMVector3TransformCoord(XMLoadFloat3(&fLocalPickedVertex), XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
+			_float3  fWorldPickedVertex;
+			XMStoreFloat3(&fWorldPickedVertex, vWorldPickedVertex);
 
-	//		m_fCellPoints[m_iPointNum] = fLocalPickedVertex;
-	//		++m_iPointNum;
+			std::cerr << "[피킹된 정점] X: " << fWorldPickedVertex.x
+								 << " Y: " << fWorldPickedVertex.y
+								 << " Z: " << fWorldPickedVertex.z << std::endl;
+			
 
-	//		// Navigation에 전달
-	//		if (m_iPointNum == 3 && m_pNavigationCom)
-	//		{
-	//			m_pNavigationCom->Make_Cell(m_fCellPoints);
-	//		}
+			m_fCellPoints[m_iPointNum] = fLocalPickedVertex;
+			++m_iPointNum;
 
-	//		if (3 == m_iPointNum)
-	//		{
-	//			m_iPointNum = 0;
-	//		}
+			// Navigation에 전달
+			if (m_iPointNum == 3 && m_pNavigationCom)
+			{
+				m_pNavigationCom->Make_Cell(m_fCellPoints);
+			}
 
-	//		/*CPlayer* pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("GameObject_Player"),
-	//						LEVEL_SOGGYSWAMP, TEXT("Layer_Player")));
-	//					pPlayer->Set_NextPosition({ fWorldPickedPos.x, fWorldPickedPos.y, fWorldPickedPos.z, 1.f });
-	//					pPlayer->Change_State(PLAYER_STATE::WALK);*/
-	//	}
-	//}
+			if (3 == m_iPointNum)
+			{
+				m_iPointNum = 0;
+			}
 
-	//if (m_pGameInstance->Key_Down(VK_RBUTTON) && m_bClickActive)
-	//{
-	//	m_pNavigationCom->Erase_Cell_Pick(m_pTransformCom->Get_WorldMatrix_Inverse());
-	//}
+			/*CPlayer* pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("GameObject_Player"),
+							LEVEL_SOGGYSWAMP, TEXT("Layer_Player")));
+						pPlayer->Set_NextPosition({ fWorldPickedPos.x, fWorldPickedPos.y, fWorldPickedPos.z, 1.f });
+						pPlayer->Change_State(PLAYER_STATE::WALK);*/
+		}
+	}
 
-	//if (m_pGameInstance->Key_Down(VK_BACK) && m_bClickActive)
-	//{
-	//	m_pNavigationCom->Erase_Cell_Last();
-	//}
+	if (m_pGameInstance->Key_Down(VK_RBUTTON) && m_bClickActive)
+	{
+		m_pNavigationCom->Erase_Cell_Pick(m_pTransformCom->Get_WorldMatrix_Inverse());
+	}
+
+	if (m_pGameInstance->Key_Down(VK_BACK) && m_bClickActive)
+	{
+		m_pNavigationCom->Erase_Cell_Last();
+	}
 #endif
 }
 	
@@ -152,7 +157,7 @@ HRESULT CSoggySwampMap::Render()
 	}
 
 #ifdef _DEBUG
-	//m_pNavigationCom->Draw_Text();
+	m_pNavigationCom->Render();
 #endif
 
 	return S_OK;
@@ -174,10 +179,10 @@ HRESULT CSoggySwampMap::Ready_Components()
 		return E_FAIL;
 
 
-	///* Com_Navigation */
-	//if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Navigation_SoggySwampMap"),
-	//	TEXT("Com_Navigation"), reinterpret_cast<CComponent**>(&m_pNavigationCom)))
-	//	return E_FAIL;
+	/* Com_Navigation */
+	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Navigation_SoggySwampMap"),
+		TEXT("Com_Navigation"), reinterpret_cast<CComponent**>(&m_pNavigationCom)))
+		return E_FAIL;
 
 
 	///* Com_Collider */
@@ -264,5 +269,5 @@ void CSoggySwampMap::Free()
 
 	Safe_Release(m_pShader_MeshCom);
 	Safe_Release(m_pModelCom);
-	//Safe_Release(m_pNavigationCom);
+	Safe_Release(m_pNavigationCom);
 }

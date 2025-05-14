@@ -31,6 +31,8 @@ void CPlayer_Glaive_Combo::State_Enter()
 {
 	//m_fAnimTimer = 0.f;
 
+	std::cerr << "Player_Glaive_Combo" << "\n";
+
 	if (nullptr == m_pGlaiveCollider)
 		m_pGlaiveCollider = dynamic_cast<CCollider*>(m_pPlayer->Find_Part_Component(TEXT("Part_Weapon_Melee"),
 																		TEXT("Com_Collider_Sphere")));

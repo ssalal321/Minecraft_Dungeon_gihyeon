@@ -29,7 +29,7 @@ public:
 private:	
 	CShader*		m_pShader_MeshCom	 = { nullptr };
 	CModel*			m_pModelCom		 = { nullptr };
-	//CNavigation*	m_pNavigationCom = { nullptr };
+	CNavigation*	m_pNavigationCom = { nullptr };
 
 	_int			m_iPointNum		 = {};
 	_float3			m_fCellPoints[3] = {};

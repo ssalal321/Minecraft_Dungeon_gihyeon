@@ -46,7 +46,7 @@ HRESULT CLevel_Lounge::Initialize()
         return E_FAIL;
 
     CLevel_Trigger::LEVEL_TRIGGER_DESC pDesc = {};
-    pDesc.triggerPosition = { 2.5f, 5.5f, 15.f };
+    pDesc.triggerPosition = { 2.5f, 2.f, 15.f };
     m_pLevel_Trigger = CLevel_Trigger::Create(m_pDevice, m_pContext, &pDesc);
     if (nullptr == m_pLevel_Trigger)
         return E_FAIL;

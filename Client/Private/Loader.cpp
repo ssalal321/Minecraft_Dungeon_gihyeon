@@ -152,6 +152,12 @@ HRESULT CLoader::Loading_For_Static()
 		CNavigation::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Lounge_Navigation.dat")))))
 		return E_FAIL;
 
+	lstrcpy(m_szLoadingText, TEXT("네비게이션 로딩 중"));
+	/* For.Prototype_Component_Navigation */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Navigation_SoggySwampMap"),
+		CNavigation::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/SoggySwamp_Navigation.dat")))))
+		return E_FAIL;
+
 
 	lstrcpy(m_szLoadingText, TEXT("콜라이더 로딩 중"));
 	if (FAILED(Ready_Prototype_ColliderCom_Static()))
@@ -363,11 +369,11 @@ HRESULT CLoader::Ready_Prototype_ModelCom_Static()
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Map/Lounge/Lobby_NoGrass_Split.fbx", PreTransformMatrix))))
 		return E_FAIL;
 
-	///* For.Prototype_Component_Model_SoggySwampMap */
-	//PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(270.f));
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_SoggySwampMap"),
-	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Map/SoggySwamp/SoggySwamp.fbx", PreTransformMatrix))))
-	//	return E_FAIL;
+	/* For.Prototype_Component_Model_SoggySwampMap */
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(270.f));
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_SoggySwampMap"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Map/SoggySwamp/SoggySwamp.fbx", PreTransformMatrix))))
+		return E_FAIL;
 
 
 
@@ -378,17 +384,17 @@ HRESULT CLoader::Ready_Prototype_ColliderCom_Static()
 {
 	/* For.Prototype_Component_Collider_AABB */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
-		CCollider::Create(m_pDevice, m_pContext, COLLIDER::TYPE_AABB))))
+		CCollider::Create(m_pDevice, m_pContext, COLLIDER_TYPE::TYPE_AABB))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Collider_OBB */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Collider_OBB"),
-		CCollider::Create(m_pDevice, m_pContext, COLLIDER::TYPE_OBB))))
+		CCollider::Create(m_pDevice, m_pContext, COLLIDER_TYPE::TYPE_OBB))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Collider_Sphere */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
-		CCollider::Create(m_pDevice, m_pContext, COLLIDER::TYPE_SPHERE))))
+		CCollider::Create(m_pDevice, m_pContext, COLLIDER_TYPE::TYPE_SPHERE))))
 		return E_FAIL;
 
 	return S_OK;
@@ -538,10 +544,10 @@ HRESULT CLoader::Ready_Prototype_GameObject_Static()
 		CLoungeMap::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	///* For.Prototype_GameObject_SoggySwampMap */
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_SoggySwampMap"),
-	//	CSoggySwampMap::Create(m_pDevice, m_pContext))))
-	//	return E_FAIL;
+	/* For.Prototype_GameObject_SoggySwampMap */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_SoggySwampMap"),
+		CSoggySwampMap::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 
 

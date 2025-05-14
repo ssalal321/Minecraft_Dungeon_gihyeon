@@ -27,7 +27,7 @@ public:
 
 public:
 	virtual  void	Update(_fmatrix WorldMatrix) = 0;
-	virtual  _bool	Intersect(COLLIDER eColliderType, CBounding* pTargetBounding, void* pRayArg = nullptr) = 0;
+	virtual  _bool	Intersect(COLLIDER_TYPE eColliderType, CBounding* pTargetBounding, void* pRayArg = nullptr) = 0;
 
 #ifdef _DEBUG
 public:

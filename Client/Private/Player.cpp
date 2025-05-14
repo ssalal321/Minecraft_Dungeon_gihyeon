@@ -69,28 +69,28 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 void CPlayer::Priority_Update(_float fTimeDelta)
 {
-	m_pPlayerFSM->Priority_Update_State(fTimeDelta);
-
 	__super::Priority_Update(fTimeDelta);
+
+	m_pPlayerFSM->Priority_Update_State(fTimeDelta);	
 }
 
 void CPlayer::Update(_float fTimeDelta)
 {
+	__super::Update(fTimeDelta);
+
 	if (m_pNavigationCom)
 		m_pNavigationCom->SetUp_On_Navigation(m_pTransformCom);
 
 	m_pPlayerFSM->Update_State(fTimeDelta);
-
-	__super::Update(fTimeDelta);
 }
 
 void CPlayer::Late_Update(_float fTimeDelta)
 {
+	__super::Late_Update(fTimeDelta);
+
 	m_pPlayerFSM->Late_Update_State(fTimeDelta);
 
 	Hover_and_Chase_Monster();
-
-	__super::Late_Update(fTimeDelta);
 
 	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 }
@@ -191,10 +191,12 @@ HRESULT CPlayer::Ready_Components()
 	}
 	break;
 
-	//case LEVEL_SOGGYSWAMP:
-	//{
-	//	m_pNavigationCom = nullptr;
-	//}
+	case LEVEL_SOGGYSWAMP:
+	{
+		if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Navigation_SoggySwampMap"),
+			TEXT("Com_Navigation_SoggySwampMap"), reinterpret_cast<CComponent**>(&m_pNavigationCom)))
+			return E_FAIL;
+	}
 	break;
 	}
 
@@ -315,7 +317,7 @@ CCollider* CPlayer::Get_Closest_Collider(const _float4& mousePos, const _float3&
 
 	for (auto& pCollider : it->second)
 	{
-		if (pCollider->Get_ColliderType() != COLLIDER::TYPE_SPHERE)
+		if (pCollider->Get_ColliderType() != COLLIDER_TYPE::TYPE_SPHERE)
 			continue;
 
 		_float fDist = 0.f;
@@ -324,7 +326,7 @@ CCollider* CPlayer::Get_Closest_Collider(const _float4& mousePos, const _float3&
 		rayDesc.MouseRay = mouseRay;
 		rayDesc.fDist = &fDist;
 
-		if (pCollider->Get_Bounding()->Intersect(COLLIDER::TYPE_RAY, nullptr, &rayDesc))
+		if (pCollider->Get_Bounding()->Intersect(COLLIDER_TYPE::TYPE_RAY, nullptr, &rayDesc))
 		{
 			if (fDist < minDist)
 			{

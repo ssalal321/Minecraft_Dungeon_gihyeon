@@ -17,6 +17,7 @@ public:
 	HRESULT		Add_ColliderCom(_uint iLevelIndex, CComponent* pColliderCom, const _wstring& ColliderTag, const _wstring& ObjectType, _bool bPersistent = false);
     HRESULT		Attach_Persistent_Colliders_To_Level(_uint iLevelIndex, const wstring& targetTag);
     unordered_map<_wstring, vector<CCollider*>>*	Get_Colliders(_uint iLevelIndex);
+	void		Resolve_Penetration_And_Slide(CCollider* pColA, CCollider* pColB, _float fForce);
 
 public:
     HRESULT     Initialize(_uint iNumLevels);
@@ -39,6 +40,8 @@ private:
 
 private:
     _uint   m_iNumLevels = {};
+
+	_uint	m_iCallNumber = 0;
 
 public:
 	static	 CCollision_Manager*	Create(_uint iNumLevels);
