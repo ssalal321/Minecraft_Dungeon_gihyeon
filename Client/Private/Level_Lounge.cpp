@@ -12,6 +12,7 @@
 #include "InventoryData.h"
 #include "Item.h"
 #include "Level_Trigger.h"
+#include "LobbyChest.h"
 #include "LoungeMap.h"
 #include "Player.h"
 #include "Zombie.h"
@@ -45,14 +46,9 @@ HRESULT CLevel_Lounge::Initialize()
     if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
         return E_FAIL;
 
-    CLevel_Trigger::LEVEL_TRIGGER_DESC pDesc = {};
-    pDesc.triggerPosition = { 2.5f, 2.f, 15.f };
-    m_pLevel_Trigger = CLevel_Trigger::Create(m_pDevice, m_pContext, &pDesc);
-    if (nullptr == m_pLevel_Trigger)
-        return E_FAIL;
 
 #pragma region MELEE
-    CItem::ITEM_DESC	ItemDesc{};
+    CItem::ITEM_DESC	GlaiveDesc{};
 
     CModel* pBody = dynamic_cast<CModel*>(m_pPlayer->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Model")));
     if (nullptr == pBody)
@@ -60,17 +56,33 @@ HRESULT CLevel_Lounge::Initialize()
 
     _float4x4* pPlayerWorldMatrixPtr = dynamic_cast<CTransform*>(m_pPlayer->Find_Component(TEXT("Com_Transform")))->Get_WorldMatrix_Ptr();
 
-    ItemDesc.pParentWorldMatrix = pPlayerWorldMatrixPtr;
-    ItemDesc.pState = &m_pPlayer->Get_PlayerState();
-    ItemDesc.pSocketMatrix = pBody->Get_CombinedTransformationMatrix("J_R_Weapon");
-    ItemDesc.pContainerObject = m_pPlayer;
-    ItemDesc.pBigCollisionActivating = &m_pPlayer->Get_Attacking();
+	GlaiveDesc.strGameObjectTag         = TEXT("GameObject_GlaiveSteel");
+    GlaiveDesc.strObjectPrototypeTag    = TEXT("Prototype_GameObject_Glaive_Steel");
+    GlaiveDesc.strIconTexPrototypeTag   = TEXT("Prototype_Component_Texture_Glaive_Steel");
+    GlaiveDesc.strPartObjectTag         = TEXT("Part_Weapon_Melee");
+	GlaiveDesc.iDealPoint               = 5;
+    GlaiveDesc.m_eItemtype              = ITEM_TYPE::MELEE;;
+    GlaiveDesc.strIconGameObjectTag     = TEXT("UIGameObject_Glaive_Steel");
 
-    m_pPlayer->Get_InventoryData()->Add_Item_To_StoreSlot(LEVEL_STATIC, TEXT("Prototype_GameObject_Glaive_Steel"), TEXT("Part_Weapon_Glaive"), &ItemDesc);
+    GlaiveDesc.pParentWorldMatrix       = pPlayerWorldMatrixPtr;
+    GlaiveDesc.pState                   = &m_pPlayer->Get_PlayerState();
+    GlaiveDesc.pSocketMatrix            = pBody->Get_CombinedTransformationMatrix("J_R_Weapon");
+    GlaiveDesc.pContainerObject         = m_pPlayer;
+    GlaiveDesc.pBigCollisionActivating  = &m_pPlayer->Get_Attacking();
+
+    //m_pPlayer->Get_InventoryData()->Add_Item_To_StoreSlot(LEVEL_STATIC, TEXT("Prototype_GameObject_Glaive_Steel"), TEXT("Weapon_Glaive"), &GlaiveDesc);
 #pragma endregion
 
 #pragma region RANGED
     CItem::ITEM_DESC	BowDesc{};
+
+    BowDesc.strGameObjectTag         = TEXT("GameObject_Bow");
+    BowDesc.strObjectPrototypeTag    = TEXT("Prototype_GameObject_Bow");
+    BowDesc.strIconTexPrototypeTag   = TEXT("Prototype_Component_Texture_Bow");
+    BowDesc.strPartObjectTag         = TEXT("Part_Weapon_Ranged");
+    BowDesc.iDealPoint               = 10;
+    BowDesc.m_eItemtype              = ITEM_TYPE::RANGED;
+    BowDesc.strIconGameObjectTag     = TEXT("UIGameObject_Bow");
 
     BowDesc.pParentWorldMatrix = pPlayerWorldMatrixPtr;
     BowDesc.pState = &m_pPlayer->Get_PlayerState();
@@ -78,7 +90,7 @@ HRESULT CLevel_Lounge::Initialize()
     BowDesc.pContainerObject = m_pPlayer;
     BowDesc.pBigCollisionActivating = &m_pPlayer->Get_Attacking();
 
-    m_pPlayer->Get_InventoryData()->Add_Item_To_StoreSlot(LEVEL_STATIC, TEXT("Prototype_GameObject_Bow"), TEXT("Part_Weapon_Bow"), &BowDesc);
+    m_pPlayer->Get_InventoryData()->Add_Item_To_StoreSlot(LEVEL_STATIC, TEXT("Prototype_GameObject_Bow"), TEXT("Weapon_Bow"), &BowDesc);
 
 #pragma endregion
 
@@ -87,17 +99,31 @@ HRESULT CLevel_Lounge::Initialize()
 
 	ArmorDesc.pParentWorldMatrix = pPlayerWorldMatrixPtr;
 	ArmorDesc.pState = &m_pPlayer->Get_PlayerState();
-	/*ArmorDesc.pMaskSocketMatrix  = pBody->Get_CombinedTransformationMatrix("Head_Armor");
-	ArmorDesc.pBodySocketMatrix  = pBody->Get_CombinedTransformationMatrix("Body_Armor");
-	ArmorDesc.pL_ArmSocketMatrix = pBody->Get_CombinedTransformationMatrix("L_Arm_Armor");
-	ArmorDesc.pR_ArmSocketMatrix = pBody->Get_CombinedTransformationMatrix("R_Arm_Armor");
-	ArmorDesc.pL_LegSocketMatrix = pBody->Get_CombinedTransformationMatrix("L_Leg_Armor");
-	ArmorDesc.pR_LegSocketMatrix = pBody->Get_CombinedTransformationMatrix("R_Leg_Armor");*/
 	ArmorDesc.pContainerObject = m_pPlayer;
 
 	// 인벤토리에 넣기
-    m_pPlayer->Get_InventoryData()->Add_Item_To_StoreSlot(LEVEL_STATIC, TEXT("Prototype_GameObject_WolfArmor"), TEXT("Part_Armor"), &ArmorDesc);
+    m_pPlayer->Get_InventoryData()->Add_Item_To_StoreSlot(LEVEL_STATIC, TEXT("Prototype_GameObject_WolfArmor"), TEXT("Armor_WolfArmor"), &ArmorDesc);
 #pragma endregion
+
+    CChestIcon::CHEST_ICON_DESC  iconDesc_0{};
+    iconDesc_0.iPrototypeLevelIndex = LEVEL_STATIC;
+    iconDesc_0.ItemDesc = GlaiveDesc;
+    iconDesc_0.worldPosition = { 4.f, 5.f, -32.f, 1.f };
+
+    CLobbyChest::LOBBY_CHEST_DESC   pLobbyChestDesc = {};
+    pLobbyChestDesc.worldPosition = { 4.f, 4.f, -32.f, 1.f };
+    pLobbyChestDesc.pChestIconDescs.push_back(iconDesc_0);
+    pLobbyChestDesc.uiMoneyNum = 10;
+
+    m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_LobbyChest"), m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_BackGround"), &pLobbyChestDesc);
+
+
+    CLevel_Trigger::LEVEL_TRIGGER_DESC   pLevelTriggerDesc = {};
+    pLevelTriggerDesc.triggerPosition = { 2.5f, 2.f, 15.f };
+    m_pLevel_Trigger = CLevel_Trigger::Create(m_pDevice, m_pContext, &pLevelTriggerDesc);
+    if (nullptr == m_pLevel_Trigger)
+        return E_FAIL;
+
 
     return S_OK;
 }

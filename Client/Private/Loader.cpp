@@ -12,11 +12,13 @@
 #include "Body_Slime_Medium.h"
 #include "Body_Slime_Small.h"
 #include "Body_Zombie.h"
+#include "ChestIcon.h"
 #include "InventoryBase.h"
 #include "InventoryGearSlot.h"
 #include "InventoryArtifactSlot.h"
 #include "InventoryIcon.h"
 #include "InventoryStoreSlot.h"
+#include "LobbyChest.h"
 #include "LoungeMap.h"
 #include "Monster_Arrow.h"
 #include "Sky.h"
@@ -360,6 +362,17 @@ HRESULT CLoader::Ready_Prototype_ModelCom_Static()
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Weapon/Arrow.fbx", PreTransformMatrix))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Model_LobbyChest_Closed */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_LobbyChest_Closed"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Chest/LobbyChest/Lobby_Chest_Closed.fbx", PreTransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_LobbyChest_Opened */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_LobbyChest_Opened"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Chest/LobbyChest/Lobby_Chest_Opened.fbx", PreTransformMatrix))))
+		return E_FAIL;
+
+
 	if (FAILED(Ready_Prototype_Armors_Static()))
 		return E_FAIL;
 
@@ -537,6 +550,11 @@ HRESULT CLoader::Ready_Prototype_GameObject_Static()
 	/* For.Prototype_GameObject_Arrow */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_MonsterArrow"),
 		CMonster_Arrow::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_LobbyChest */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_LobbyChest"),
+		CLobbyChest::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_LoungeMap */

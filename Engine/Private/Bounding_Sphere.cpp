@@ -50,6 +50,18 @@ _bool CBounding_Sphere::Intersect(COLLIDER_TYPE eColliderType, CBounding* pTarge
 
 			_fvector	vMousePos = XMLoadFloat3(&pRayDesc->MousePos);
 			_fvector	vMouseRay = XMLoadFloat3(&pRayDesc->MouseRay);
+
+			if (XMVectorGetX(XMVector3Length(vMouseRay)) == 0.f)
+				return false;
+
+
+			_float dst = {};
+
+			if (nullptr == pRayDesc->fDist)
+			{
+				pRayDesc->fDist = &dst;
+			}
+
 			isColl = m_pDesc->Intersects(vMousePos, vMouseRay, *pRayDesc->fDist);
 		}
 		break;

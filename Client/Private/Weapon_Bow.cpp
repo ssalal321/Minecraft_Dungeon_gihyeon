@@ -29,14 +29,6 @@ HRESULT CWeapon_Bow::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
-	m_strGameObjectTag = TEXT("GameObject_Bow");
-	m_strObjectPrototypeTag = TEXT("Prototype_GameObject_Bow");
-	m_strTexPrototypeTag = TEXT("Prototype_Component_Texture_Bow");
-	m_strIconGameObjectTag = TEXT("UIGameObject_Bow");
-	m_strPartObjectTag = TEXT("Part_Weapon_Ranged");
-	m_eItemtype = ITEM_TYPE::RANGED;
-	m_iDealPoint = 10;
-
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 

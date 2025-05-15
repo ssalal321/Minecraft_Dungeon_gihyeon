@@ -28,7 +28,7 @@ public:
 
 private:
 	HRESULT		Ready_Components()		override;
-	//HRESULT		Bind_ShaderResources()		override;
+	//HRESULT	Bind_ShaderResources()		override;
 
 public:
 	static  CWeapon_Glaive*	 Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

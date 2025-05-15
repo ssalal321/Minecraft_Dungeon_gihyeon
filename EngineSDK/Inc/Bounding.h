@@ -26,7 +26,7 @@ public:
 	virtual  void*	Get_Desc() = 0;
 
 public:
-	virtual  void	Update(_fmatrix WorldMatrix) = 0;
+	virtual  void	Update(_fmatrix WorldMatrix = XMMatrixIdentity()) = 0;
 	virtual  _bool	Intersect(COLLIDER_TYPE eColliderType, CBounding* pTargetBounding, void* pRayArg = nullptr) = 0;
 
 #ifdef _DEBUG

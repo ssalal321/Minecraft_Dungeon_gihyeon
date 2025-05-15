@@ -25,19 +25,10 @@ HRESULT CWeapon_Glaive::Initialize(void* pArg)
 {
 	/* 원형의 데이터를 복제하여 사본을 만들고. */
 	/* 추가적으로 필요한 데이터를 Arg로 받아와 실 사용하기위한 객체의 정보를 생성해준다. */	
-	
-	m_eItemtype = ITEM_TYPE::MELEE;
-	m_iDealPoint = 5;
 	m_bItemActive = true;
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
-
-	m_strGameObjectTag = TEXT("GameObject_GlaiveSteel");
-	m_strPartObjectTag = TEXT("Part_Weapon_Melee");
-	m_strObjectPrototypeTag = TEXT("Prototype_GameObject_Glaive_Steel");
-	m_strTexPrototypeTag = TEXT("Prototype_Component_Texture_Glaive_Steel");
-	m_strIconGameObjectTag = TEXT("UIGameObject_Glaive_Steel");
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
