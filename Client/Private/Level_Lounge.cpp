@@ -12,6 +12,7 @@
 #include "InventoryData.h"
 #include "Item.h"
 #include "Level_Trigger.h"
+#include "LobbyChest.h"
 #include "LoungeMap.h"
 #include "Player.h"
 #include "Zombie.h"
@@ -45,11 +46,21 @@ HRESULT CLevel_Lounge::Initialize()
     if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
         return E_FAIL;
 
-    CLevel_Trigger::LEVEL_TRIGGER_DESC pDesc = {};
-    pDesc.triggerPosition = { 2.5f, 2.f, 15.f };
-    m_pLevel_Trigger = CLevel_Trigger::Create(m_pDevice, m_pContext, &pDesc);
+    CLevel_Trigger::LEVEL_TRIGGER_DESC   pLevelTriggerDesc = {};
+    pLevelTriggerDesc.triggerPosition = { 2.5f, 2.f, 15.f };
+    m_pLevel_Trigger = CLevel_Trigger::Create(m_pDevice, m_pContext, &pLevelTriggerDesc);
     if (nullptr == m_pLevel_Trigger)
         return E_FAIL;
+
+
+    CLobbyChest::LOBBY_CHEST_DESC   pLobbyChestDesc = {};
+    pLobbyChestDesc.worldPosition = { 4.f, 4.f, -32.f, 1.f };
+    //pLobbyChestDesc.pItems.push_back();
+	pLobbyChestDesc.uiMoneyNum = 10;
+    pLobbyChestDesc.strGameObjectTag = TEXT("GameObject_LobbyChest");
+
+    m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_LobbyChest"), m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_BackGround"), &pLobbyChestDesc);
+
 
 #pragma region MELEE
     CItem::ITEM_DESC	ItemDesc{};

@@ -17,7 +17,7 @@ public:
 	{
 		_float3		MousePos = { 0.f, 0.f, 0.f };
 		_float3		MouseRay = { 0.f, 0.f, 0.f };
-		_float*		fDist = {};
+		_float*		fDist	 = { nullptr };
 	};
 
 private:

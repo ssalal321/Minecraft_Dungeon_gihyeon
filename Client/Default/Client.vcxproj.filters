@@ -319,6 +319,12 @@
     <Filter Include="02.GameObjects\Monster\Slime\Slime_Small\01. State\Slime_Small_Attack">
       <UniqueIdentifier>{9b08e7eb-c45d-4b60-9d05-351bf7932379}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\LobbyChest">
+      <UniqueIdentifier>{f398542a-0797-4d47-8d95-91b8dda658fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\LobbyChest\ChestIcon">
+      <UniqueIdentifier>{f92f5617-6f9e-4b67-b261-2396cb17cc11}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -633,6 +639,12 @@
     <ClInclude Include="..\Public\Body_Slime_Small.h">
       <Filter>02.GameObjects\Monster\Slime\Slime_Small\00. Body</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\LobbyChest.h">
+      <Filter>02.GameObjects\LobbyChest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ChestIcon.h">
+      <Filter>02.GameObjects\LobbyChest\ChestIcon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -941,6 +953,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Body_Slime_Small.cpp">
       <Filter>02.GameObjects\Monster\Slime\Slime_Small\00. Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\LobbyChest.cpp">
+      <Filter>02.GameObjects\LobbyChest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ChestIcon.cpp">
+      <Filter>02.GameObjects\LobbyChest\ChestIcon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

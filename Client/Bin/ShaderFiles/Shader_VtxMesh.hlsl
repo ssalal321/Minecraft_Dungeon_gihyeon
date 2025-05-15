@@ -94,6 +94,33 @@ PS_OUT PS_MAIN(PS_IN In)
     return Out;
 }
 
+
+PS_OUT PS_AlphaBrown(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+
+    vector vMtrlDiffuse = g_DiffuseTexture.Sample(g_LinearSampler, In.vTexcoord);
+
+    if (vMtrlDiffuse.a < 0.3f)
+    {
+        // 알파 낮으면 갈색으로 출력
+        Out.vColor = float4(0.25f, 0.14f, 0.09f, 1.0f); // 갈색
+        return Out;
+    }
+
+    float fShade = max(dot(normalize(g_vLightDir) * -1.f, In.vNormal), 0.f);
+    
+    vector vReflect = reflect(normalize(g_vLightDir), normalize(In.vNormal));
+    vector vLook = normalize(In.vWorldPos - g_vCamPosition);
+    float fSpecular = pow(max(dot(normalize(vReflect) * -1.f, vLook), 0.f), 50.f);
+    
+    Out.vColor = g_vLightDiffuse * vMtrlDiffuse * saturate(fShade + (g_vLightAmbient * g_vMtrlAmbient)) +
+        (g_vLightSpecular * g_vMtrlSpecular) * fSpecular;
+
+    return Out;
+}
+
+
 technique11 DefaultTechnique
 {
     pass Solid
@@ -114,6 +141,16 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_MAIN();
         PixelShader = compile ps_5_0 PS_MAIN();
+    }
+
+    pass AlphaBrownPass
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        PixelShader = compile ps_5_0 PS_AlphaBrown();
     }
 }
 

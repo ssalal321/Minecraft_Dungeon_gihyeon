@@ -163,8 +163,10 @@
     <ClInclude Include="..\Public\Body_Slime_Large.h" />
     <ClInclude Include="..\Public\Body_Slime_Medium.h" />
     <ClInclude Include="..\Public\Body_Slime_Small.h" />
+    <ClInclude Include="..\Public\ChestIcon.h" />
     <ClInclude Include="..\Public\Level_SoggySwamp.h" />
     <ClInclude Include="..\Public\Level_Trigger.h" />
+    <ClInclude Include="..\Public\LobbyChest.h" />
     <ClInclude Include="..\Public\Monster_Arrow.h" />
     <ClInclude Include="..\Public\Player_Arrow.h" />
     <ClInclude Include="..\Public\ArrowPool_Player.h" />
@@ -269,8 +271,10 @@
     <ClCompile Include="..\Private\Body_Slime_Large.cpp" />
     <ClCompile Include="..\Private\Body_Slime_Medium.cpp" />
     <ClCompile Include="..\Private\Body_Slime_Small.cpp" />
+    <ClCompile Include="..\Private\ChestIcon.cpp" />
     <ClCompile Include="..\Private\Level_SoggySwamp.cpp" />
     <ClCompile Include="..\Private\Level_Trigger.cpp" />
+    <ClCompile Include="..\Private\LobbyChest.cpp" />
     <ClCompile Include="..\Private\Monster_Arrow.cpp" />
     <ClCompile Include="..\Private\Player_Arrow.cpp" />
     <ClCompile Include="..\Private\ArrowPool_Player.cpp" />

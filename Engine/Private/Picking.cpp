@@ -84,6 +84,11 @@ void CPicking::Compute_MouseRay(_float4& worldMousePos, _float3& worldMouseRay)
     _matrix  InvProjMatrix  = m_pGameInstance->Get_Transform_Inverse_Matrix(CPipeLine::D3DTS_PROJ);
     _vector  vViewPosition  = XMVector3TransformCoord(vPosition, InvProjMatrix);
 
+    if (XMMatrixIsNaN(InvProjMatrix))
+    {
+        return;
+    }
+
     // 3. 뷰 행렬 역변환
     _matrix  InvViewMatrix  = m_pGameInstance->Get_Transform_Inverse_Matrix(CPipeLine::D3DTS_VIEW);
     _vector  vWorldPosition = XMVector3TransformCoord(vViewPosition, InvViewMatrix);
