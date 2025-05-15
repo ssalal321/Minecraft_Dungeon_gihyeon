@@ -33,11 +33,11 @@ HRESULT CInventoryData::Initialize(CPlayer* pPlayer)
 }
 
 void CInventoryData::Add_Item_To_StoreSlot(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag,
-										   const _wstring& strItemObjectTag, void* pItemDesc)
+										   const _wstring& strGameObjectTag, void* pItemDesc)
 {
 	for (const auto& pExistingItem : m_StoreSlots)  // 이미 있는 Item인지 검사
 	{
-		if (pExistingItem && pExistingItem->Get_GameObjectTag() == strItemObjectTag)
+		if (pExistingItem && pExistingItem->Get_GameObjectTag() == strGameObjectTag)
 			return;
 	}
 

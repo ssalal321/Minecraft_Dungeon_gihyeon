@@ -1,5 +1,6 @@
 #pragma once
 #include "Client_Defines.h"
+#include "Item.h"
 #include "UIObject.h"
 
 BEGIN (Engine)
@@ -13,8 +14,10 @@ class CChestIcon final : public CGameObject
 public:
     typedef struct CHEST_ICON_DESC : public CGameObject::GAMEOBJECT_DESC
     {
-        ITEM_TYPE   eItemType = ITEM_TYPE::NONE;
-        _wstring	strTexPrototypeTag;
+        _uint       iPrototypeLevelIndex;
+        _float4     worldPosition = { 0.f, 0.f, 0.f, 1.f };
+
+        CItem::ITEM_DESC   ItemDesc = {};
 
         //// 복사 생성자
         //CHEST_ICON_DESC(const CHEST_ICON_DESC& other)
@@ -50,7 +53,7 @@ private:
     CVIBuffer_Rect*     m_pVIBufferCom  = { nullptr };
 
     _bool			    m_bActivated = { true };
-
+    _float4x4		    m_IdentityWorldMatrix = {};
     _wstring		    m_strTexPrototypeTag = {};
 
 private:
@@ -58,7 +61,7 @@ private:
     HRESULT     Bind_ShaderResources();
 
 public:
-    static  CChestIcon*     Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+    static  CChestIcon*     Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, void* pArg);
     CGameObject*    Clone(void* pArg)	override;
     void            Free()				override;
 };

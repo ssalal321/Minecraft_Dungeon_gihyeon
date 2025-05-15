@@ -12,6 +12,7 @@
 #include "Body_Slime_Medium.h"
 #include "Body_Slime_Small.h"
 #include "Body_Zombie.h"
+#include "ChestIcon.h"
 #include "InventoryBase.h"
 #include "InventoryGearSlot.h"
 #include "InventoryArtifactSlot.h"

@@ -1,4 +1,5 @@
 #pragma once
+#include "ChestIcon.h"
 #include "Client_Defines.h"
 #include "GameObject.h"
 
@@ -7,14 +8,16 @@ class CModel;
 END
 
 BEGIN(Client)
-	class CLobbyChest : public CGameObject
+class CChestIcon;
+
+class CLobbyChest : public CGameObject
 {
 public:
 	struct LOBBY_CHEST_DESC : public GAMEOBJECT_DESC
 	{
 		_float4 worldPosition = { 0.f, 0.f, 0.f, 1.f};
 
-		vector<CItem*>	pItems;
+		vector<CChestIcon::CHEST_ICON_DESC>	 pChestIconDescs;
 
 		_uint	uiMoneyNum = {};
 	};
@@ -46,7 +49,8 @@ private:
 
 	_float4			m_WorldPosition = { 0.f, 0.f, 0.f, 1.f };
 
-	vector<CItem*>	m_pItems;
+	vector<CChestIcon::CHEST_ICON_DESC>		m_pChestIconDescs;
+	vector<CChestIcon*>		m_pChestIcons;
 	_uint			m_uiMoneyNum = {};
 
 private:

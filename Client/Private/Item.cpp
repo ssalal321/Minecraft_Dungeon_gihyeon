@@ -32,6 +32,13 @@ HRESULT CItem::Initialize(void* pArg)
 	{
 		m_pTargetState = pDesc->pState;
 		m_pSocketMatrix = pDesc->pSocketMatrix;
+		m_strObjectPrototypeTag = pDesc->strObjectPrototypeTag;
+		m_strTexPrototypeTag	= pDesc->strIconTexPrototypeTag;
+		m_strIconGameObjectTag	= pDesc->strIconGameObjectTag;
+		m_strPartObjectTag		= pDesc->strPartObjectTag;
+		m_eItemtype				= pDesc->m_eItemtype;
+		m_iDealPoint			= pDesc->iDealPoint;
+		m_iHealPoint			= pDesc->iHealPoint;
 	}
 	
 	if (FAILED(__super::Initialize(pArg)))

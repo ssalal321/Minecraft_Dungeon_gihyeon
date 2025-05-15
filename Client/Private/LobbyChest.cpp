@@ -22,9 +22,9 @@ HRESULT CLobbyChest::Initialize(void* pArg)
 		return E_FAIL;
 
 	LOBBY_CHEST_DESC* pDesc = static_cast<LOBBY_CHEST_DESC*>(pArg);
-	m_WorldPosition = pDesc->worldPosition;
-	m_pItems		= move(pDesc->pItems);
-	m_uiMoneyNum	= pDesc->uiMoneyNum;
+	m_WorldPosition		= pDesc->worldPosition;
+	m_pChestIconDescs	= move(pDesc->pChestIconDescs);
+	m_uiMoneyNum		= pDesc->uiMoneyNum;
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -42,6 +42,12 @@ void CLobbyChest::Priority_Update(_float fTimeDelta)
 {
 	if (!m_bActive)
 		return;
+
+	for (auto& chestIcon : m_pChestIcons)
+	{
+		if (chestIcon)
+			chestIcon->Priority_Update(fTimeDelta);
+	}
 }
 
 void CLobbyChest::Update(_float fTimeDelta)
@@ -58,12 +64,20 @@ void CLobbyChest::Update(_float fTimeDelta)
 	rayDesc.MouseRay = fWorldMouseRay;
 	//rayDesc.fDist = &fDist;
 
-	if (m_pColliderCom->Get_Bounding()->Intersect(COLLIDER_TYPE::TYPE_RAY, nullptr, &rayDesc) &&
-		m_pGameInstance->Key_Up(VK_LBUTTON) && !bMouseClickLock)  // 플레이어와 일정 거리 이상이어야 추가도!
+	if (false == m_bOpened && m_pGameInstance->Key_Up(VK_LBUTTON) && !bMouseClickLock &&
+		m_pColliderCom->Get_Bounding()->Intersect(COLLIDER_TYPE::TYPE_RAY, nullptr, &rayDesc))  // 플레이어와 일정 거리 이상이어야 추가도!
 	{
 		m_bOpened = true;
 
+		CChestIcon* pChestIcon_0 = CChestIcon::Create(m_pDevice, m_pContext, &m_pChestIconDescs[0]);
+		if (!pChestIcon_0) return;
+		m_pChestIcons.push_back(pChestIcon_0);
+	}
 
+	for (auto& chestIcon : m_pChestIcons)
+	{
+		if (chestIcon)
+			chestIcon->Update(fTimeDelta);
 	}
 }
 
@@ -73,6 +87,13 @@ void CLobbyChest::Late_Update(_float fTimeDelta)
 		return;
 
 	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
+
+
+	for (auto& chestIcon : m_pChestIcons)
+	{
+		if (chestIcon)
+			chestIcon->Late_Update(fTimeDelta);
+	}
 }
 
 HRESULT CLobbyChest::Render()
@@ -114,6 +135,12 @@ HRESULT CLobbyChest::Render()
 
 		if (FAILED(m_pClosedModelCom->Render(static_cast<_uint>(i))))
 			return E_FAIL;
+	}
+
+	for (auto& chestIcon : m_pChestIcons)
+	{
+		if (chestIcon)
+			chestIcon->Render();
 	}
 
 	return S_OK;
@@ -183,14 +210,12 @@ HRESULT CLobbyChest::Ready_Components()
 
 
 	/* Com_Collider */
-	XMStoreFloat4x4(&m_IdentityWorldMatrix, XMMatrixIdentity());
-
 	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereCollDesc{};
 
 	SphereCollDesc.fRadius = 2.f;
-	SphereCollDesc.vCenter = { m_WorldPosition.x, m_WorldPosition.y, m_WorldPosition.z };
+	SphereCollDesc.vCenter = _float3(0.f, SphereCollDesc.fRadius, 0.f);
 	SphereCollDesc.pGameObject = this;
-	SphereCollDesc.CombinedWorldMatrix = &m_IdentityWorldMatrix;
+	SphereCollDesc.CombinedWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	SphereCollDesc.pCollisionActivated = &m_bActivated;
 
 	CComponent* pColliderSphereCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
@@ -235,6 +260,12 @@ CGameObject* CLobbyChest::Clone(void* pArg)
 void CLobbyChest::Free()
 {
 	__super::Free();
+
+	for (auto& pChestIcon : m_pChestIcons)
+	{
+		if (pChestIcon)
+			Safe_Release(pChestIcon);
+	}
 
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pClosedModelCom);

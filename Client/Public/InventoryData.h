@@ -21,7 +21,7 @@ private:
 public:
 	HRESULT		Initialize(CPlayer* pPlayer);
 
-	void		Add_Item_To_StoreSlot(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, const _wstring& strItemObjectTag, void* pItemDesc);
+	void		Add_Item_To_StoreSlot(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, const _wstring& strGameObjectTag, void* pItemDesc);
 
 	void		Equip_From_StoreSlot(const DoubleClicked_From_StoreSlot& event);
 	void		Unequip_GearSlot(const DoubleClicked_From_GearSlot& event);
