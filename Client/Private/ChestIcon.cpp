@@ -89,7 +89,7 @@ HRESULT CChestIcon::Render()
 		return E_FAIL;
 
 	m_pVIBufferCom->Input_Assembler();
-	m_pShaderCom->Begin(0);
+	m_pShaderCom->Begin(1);
 
 	m_pVIBufferCom->Render();
 
