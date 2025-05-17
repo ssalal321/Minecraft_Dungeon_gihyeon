@@ -29,7 +29,7 @@ HRESULT CChestIcon::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-
+	m_pTransformCom->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(45.f));
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&m_pDesc->worldPosition));
 
 	return S_OK;
@@ -67,6 +67,9 @@ void CChestIcon::Update(_float fTimeDelta)
 
 		m_bActivated = false;
 	}
+
+	// 뽀용 업데이트 중
+	m_pTransformCom->Update_BezierFlight(fTimeDelta);
 }
 
 void CChestIcon::Late_Update(_float fTimeDelta)

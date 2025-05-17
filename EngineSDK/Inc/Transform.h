@@ -95,6 +95,9 @@ public:
 	void	Add_Momentum(_vector vImpulse);
 	void	Update_Momentum(_float fTimeDelta);
 
+	void	Start_BezierFlight(const XMFLOAT3& vStart, const XMFLOAT3& vControl, const XMFLOAT3& vEnd, _float fSpeed);
+	void	Update_BezierFlight(_float fDeltaTime);
+
 private:
 	/* row_major = Right, Up, Look, Position */
 	_float4x4	m_WorldMatrix = {};
@@ -109,6 +112,15 @@ private:
 
 	_float3		m_vVelocity = { 0.f, 0.f, 0.f };
 
+#pragma region BEZIER CURVE
+	_bool       m_bBezierFlying = { false };
+	_float      m_fBezierT		= { 0.f };
+	_float      m_fBezierSpeed	= { 1.f };
+
+	_float3     m_vBezierStart	  = {};
+	_float3     m_vBezierControl  = {};
+	_float3     m_vBezierEnd	  = {};
+#pragma endregion
 
 public:
 	static	  CTransform*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

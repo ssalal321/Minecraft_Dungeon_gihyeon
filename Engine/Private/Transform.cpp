@@ -274,6 +274,45 @@ void CTransform::Update_Momentum(_float fTimeDelta)
 	XMStoreFloat3(&m_vVelocity, vVel);
 }
 
+void CTransform::Start_BezierFlight(const XMFLOAT3& vStart, const XMFLOAT3& vControl, const XMFLOAT3& vEnd, _float fSpeed)
+{
+	m_vBezierStart		= vStart;
+	m_vBezierControl	= vControl;
+	m_vBezierEnd		= vEnd;
+
+	m_fBezierT		= 0.f;
+	m_fBezierSpeed	= fSpeed;
+	m_bBezierFlying = true;
+}
+
+void CTransform::Update_BezierFlight(_float fDeltaTime)
+{
+	if (!m_bBezierFlying)
+		return;
+
+	m_fBezierT += fDeltaTime * m_fBezierSpeed;
+
+	if (m_fBezierT >= 1.f)
+	{
+		m_fBezierT = 1.f;
+		m_bBezierFlying = false;
+	}
+
+	// 베지어 계산 (2차)
+	_float  t	= m_fBezierT;
+	_float  u	= 1.f - t;
+	_float  tt	= t * t;
+	_float  uu	= u * u;
+
+	_float4   result = {};
+	result.x = uu * m_vBezierStart.x + 2 * u * t * m_vBezierControl.x + tt * m_vBezierEnd.x;
+	result.y = uu * m_vBezierStart.y + 2 * u * t * m_vBezierControl.y + tt * m_vBezierEnd.y;
+	result.z = uu * m_vBezierStart.z + 2 * u * t * m_vBezierControl.z + tt * m_vBezierEnd.z;
+	result.w = 1.f;
+
+	Set_State(STATE_POSITION, XMLoadFloat4(&result));
+}
+
 CTransform* CTransform::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	CTransform* pGameInstance = new CTransform(pDevice, pContext);

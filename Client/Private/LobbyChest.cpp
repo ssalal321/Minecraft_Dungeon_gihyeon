@@ -1,4 +1,7 @@
 #include "LobbyChest.h"
+
+#include <random>
+
 #include "GameInstance.h"
 
 CLobbyChest::CLobbyChest(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -69,9 +72,7 @@ void CLobbyChest::Update(_float fTimeDelta)
 	{
 		m_bOpened = true;
 
-		CChestIcon* pChestIcon_0 = CChestIcon::Create(m_pDevice, m_pContext, &m_pChestIconDescs[0]);
-		if (!pChestIcon_0) return;
-		m_pChestIcons.push_back(pChestIcon_0);
+		Pop_Out_Items();
 	}
 
 	for (auto& chestIcon : m_pChestIcons)
@@ -176,6 +177,50 @@ HRESULT CLobbyChest::Bind_ShaderResources()
 
 void CLobbyChest::Pop_Out_Items()
 {
+	std::random_device rd;
+	std::mt19937 gen(rd());
+
+	std::uniform_real_distribution<_float>  distX(-2.f, 2.f);      // 좌우 범위
+	std::uniform_real_distribution<_float>  distZ(-2.f, 2.f);      // 앞뒤 범위
+	std::uniform_real_distribution<_float>  distHeight(3.f, 5.f);  // 튀는 높이
+	std::uniform_real_distribution<_float>  distSpeed(1.0f, 1.5f); // 이동 속도
+
+	for (auto& iconDesc : m_pChestIconDescs)
+	{
+		CChestIcon* pIcon = CChestIcon::Create(m_pDevice, m_pContext, &iconDesc);
+		if (!pIcon)
+			continue;
+
+		m_pChestIcons.push_back(pIcon);
+
+		// 시작 위치 (상자 위)
+		XMFLOAT3 vStart = {
+			m_WorldPosition.x,
+			m_WorldPosition.y + 1.0f,
+			m_WorldPosition.z
+		};
+
+		// 랜덤 도착 위치 (사방으로 퍼지도록)
+		XMFLOAT3 vEnd = {
+			vStart.x + distX(gen),
+			m_WorldPosition.y + 0.5f, // 착지 높이는 약간 위
+			vStart.z + distZ(gen)
+		};
+
+		// 제어점 (중간 + 위로 튐)
+		XMFLOAT3 vControl = {
+			(vStart.x + vEnd.x) * 0.5f,
+			vStart.y + distHeight(gen),
+			(vStart.z + vEnd.z) * 0.5f
+		};
+
+		_float fBezierSpeed = distSpeed(gen);
+
+		// 이동 시작!
+		CTransform* pIconTransformCom = dynamic_cast<CTransform*>(pIcon->Find_Component(TEXT("Com_Transform")));
+
+		pIconTransformCom->Start_BezierFlight(vStart, vControl, vEnd, fBezierSpeed);
+	}
 }
 
 void CLobbyChest::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)
