@@ -467,6 +467,9 @@ HRESULT CNavigation::SetUp_Neighbors()
 
 void CNavigation::SetUp_On_Navigation(CTransform* pTransform)
 {
+	if (nullptr == m_pWorldMatrix)
+		return;
+
 	_vector		vWorldPos = pTransform->Get_State(CTransform::STATE_POSITION);
 	_matrix		WorldMatrixInv = XMMatrixInverse(nullptr, XMLoadFloat4x4(m_pWorldMatrix));
 
@@ -481,8 +484,11 @@ void CNavigation::SetUp_On_Navigation(CTransform* pTransform)
 
 _bool CNavigation::Check_If_Grounded(CTransform* pObjectTransformCom)
 {
+	if (nullptr == m_pWorldMatrix)
+		return false;
+
 	if (m_iCurrentCellIndex < 0 || m_iCurrentCellIndex >= m_Cells.size())
-		return 0.0f;
+		return false;
 
 	_vector		vWorldPos = pObjectTransformCom->Get_State(CTransform::STATE_POSITION);  // 오브젝트 현재 월드 위치
 	_matrix		WorldMatrixInv = XMMatrixInverse(nullptr, XMLoadFloat4x4(m_pWorldMatrix));  // 맵의 월드 역행렬
@@ -503,6 +509,9 @@ _bool CNavigation::Check_If_Grounded(CTransform* pObjectTransformCom)
 #ifdef _DEBUG
 HRESULT CNavigation::Render()
 {
+	if (nullptr == m_pWorldMatrix)
+		return S_OK;
+
 	_float4x4 WorldMatrix = *m_pWorldMatrix;
 
 	/*if (FAILED(m_pShader->Bind_Matrix("g_WorldMatrix", &WorldMatrix)))
@@ -603,4 +612,6 @@ void CNavigation::Free()
 		Safe_Release(pCell);
 
 	m_Cells.clear();
+
+	m_pWorldMatrix = nullptr;
 }

@@ -61,7 +61,7 @@ HRESULT CLevel_Lounge::Initialize()
     GlaiveDesc.strIconTexPrototypeTag   = TEXT("Prototype_Component_Texture_Glaive_Steel");
     GlaiveDesc.strPartObjectTag         = TEXT("Part_Weapon_Melee");
 	GlaiveDesc.iDealPoint               = 5;
-    GlaiveDesc.m_eItemtype              = ITEM_TYPE::MELEE;;
+    GlaiveDesc.eItemtype                = ITEM_TYPE::MELEE;;
     GlaiveDesc.strIconGameObjectTag     = TEXT("UIGameObject_Glaive_Steel");
 
     GlaiveDesc.pParentWorldMatrix       = pPlayerWorldMatrixPtr;
@@ -81,38 +81,56 @@ HRESULT CLevel_Lounge::Initialize()
     BowDesc.strIconTexPrototypeTag   = TEXT("Prototype_Component_Texture_Bow");
     BowDesc.strPartObjectTag         = TEXT("Part_Weapon_Ranged");
     BowDesc.iDealPoint               = 10;
-    BowDesc.m_eItemtype              = ITEM_TYPE::RANGED;
+    BowDesc.eItemtype                = ITEM_TYPE::RANGED;
     BowDesc.strIconGameObjectTag     = TEXT("UIGameObject_Bow");
 
-    BowDesc.pParentWorldMatrix = pPlayerWorldMatrixPtr;
-    BowDesc.pState = &m_pPlayer->Get_PlayerState();
-    BowDesc.pSocketMatrix = pBody->Get_CombinedTransformationMatrix("J_L_Weapon");
-    BowDesc.pContainerObject = m_pPlayer;
+    BowDesc.pParentWorldMatrix      = pPlayerWorldMatrixPtr;
+    BowDesc.pState                  = &m_pPlayer->Get_PlayerState();
+    BowDesc.pSocketMatrix           = pBody->Get_CombinedTransformationMatrix("J_L_Weapon");
+    BowDesc.pContainerObject        = m_pPlayer;
     BowDesc.pBigCollisionActivating = &m_pPlayer->Get_Attacking();
 
-    m_pPlayer->Get_InventoryData()->Add_Item_To_StoreSlot(LEVEL_STATIC, TEXT("Prototype_GameObject_Bow"), TEXT("Weapon_Bow"), &BowDesc);
+    //m_pPlayer->Get_InventoryData()->Add_Item_To_StoreSlot(LEVEL_STATIC, TEXT("Prototype_GameObject_Bow"), TEXT("Weapon_Bow"), &BowDesc);
 
 #pragma endregion
 
     #pragma region ARMOR
 	CArmor::ITEM_DESC	ArmorDesc{};
+    ArmorDesc.strGameObjectTag       = TEXT("GameObject_WolfArmor");
+    ArmorDesc.strObjectPrototypeTag  = TEXT("Prototype_GameObject_WolfArmor");
+    ArmorDesc.strIconTexPrototypeTag = TEXT("Prototype_Component_Texture_WolfArmor");
+    ArmorDesc.strPartObjectTag       = TEXT("Part_Armor");
+    ArmorDesc.iDealPoint             = 0;
+    ArmorDesc.strIconGameObjectTag   = TEXT("UIGameObject_WolfArmor");
+    ArmorDesc.eItemtype              = ITEM_TYPE::ARMOR;
 
-	ArmorDesc.pParentWorldMatrix = pPlayerWorldMatrixPtr;
-	ArmorDesc.pState = &m_pPlayer->Get_PlayerState();
-	ArmorDesc.pContainerObject = m_pPlayer;
+	ArmorDesc.pParentWorldMatrix    = pPlayerWorldMatrixPtr;
+	ArmorDesc.pState                = &m_pPlayer->Get_PlayerState();
+	ArmorDesc.pContainerObject      = m_pPlayer;
 
 	// 인벤토리에 넣기
-    m_pPlayer->Get_InventoryData()->Add_Item_To_StoreSlot(LEVEL_STATIC, TEXT("Prototype_GameObject_WolfArmor"), TEXT("Armor_WolfArmor"), &ArmorDesc);
+    //m_pPlayer->Get_InventoryData()->Add_Item_To_StoreSlot(LEVEL_STATIC, TEXT("Prototype_GameObject_WolfArmor"), TEXT("Armor_WolfArmor"), &ArmorDesc);
 #pragma endregion
 
     CChestIcon::CHEST_ICON_DESC  iconDesc_0{};
     iconDesc_0.iPrototypeLevelIndex = LEVEL_STATIC;
     iconDesc_0.ItemDesc = GlaiveDesc;
-    iconDesc_0.worldPosition = { 4.f, 5.f, -32.f, 1.f };
+    //iconDesc_0.worldPosition = { 4.f, 5.f, -32.f, 1.f };
+
+    CChestIcon::CHEST_ICON_DESC  iconDesc_1{};
+    iconDesc_1.iPrototypeLevelIndex = LEVEL_STATIC;
+    iconDesc_1.ItemDesc = BowDesc;
+    //iconDesc_0.worldPosition = { 4.f, 5.f, -32.f, 1.f };
+
+    CChestIcon::CHEST_ICON_DESC  iconDesc_2{};
+    iconDesc_2.iPrototypeLevelIndex = LEVEL_STATIC;
+    iconDesc_2.ItemDesc = ArmorDesc;
 
     CLobbyChest::LOBBY_CHEST_DESC   pLobbyChestDesc = {};
     pLobbyChestDesc.worldPosition = { 4.f, 4.f, -32.f, 1.f };
     pLobbyChestDesc.pChestIconDescs.push_back(iconDesc_0);
+    pLobbyChestDesc.pChestIconDescs.push_back(iconDesc_1);
+    pLobbyChestDesc.pChestIconDescs.push_back(iconDesc_2);
     pLobbyChestDesc.uiMoneyNum = 10;
 
     m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_LobbyChest"), m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_BackGround"), &pLobbyChestDesc);

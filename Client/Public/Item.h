@@ -25,7 +25,7 @@ public:
 		_wstring	strIconGameObjectTag;
 		_wstring	strObjectPrototypeTag;
 		_wstring	strPartObjectTag;
-		ITEM_TYPE	m_eItemtype = { ITEM_TYPE::NONE };
+		ITEM_TYPE	eItemtype = { ITEM_TYPE::NONE };
 
 	}ITEM_DESC;
 

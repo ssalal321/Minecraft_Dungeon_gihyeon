@@ -32,10 +32,7 @@ HRESULT CWolf_Armor::Initialize(void* pArg)
 		return E_FAIL;
 
 
-	m_strGameObjectTag		= TEXT("GameObject_WolfArmor");
-	m_strObjectPrototypeTag = TEXT("Prototype_GameObject_WolfArmor");
-	m_strTexPrototypeTag	= TEXT("Prototype_Component_Texture_WolfArmor");
-	m_strIconGameObjectTag	= TEXT("UIGameObject_WolfArmor");
+	
 
 	if (FAILED(Ready_Armor_PartObjects()))
 		return E_FAIL;

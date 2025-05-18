@@ -4,6 +4,7 @@
 
 #include "Player.h"
 #include "Body_Player.h"
+#include "InventoryData.h"
 
 #include "Item.h"
 #include "Level_Loading.h"
@@ -55,18 +56,11 @@ void CState_Player::State_Enter()
 
 void CState_Player::State_Priority_Update(_float fTimeDelta)
 {
-//#ifdef _DEBUG
-//	if (m_pGameInstance->Key_Down(VK_F1))
-//		m_bClickLock = !m_bClickLock;
-//#endif
+
 }
 
 void CState_Player::State_Update(_float fTimeDelta)
 {
-	//if (m_pPlayerInfo->Get_CurrentHP() <= 0)
-	//	//die
-
-	// std::wcerr << "[플레이어 공격 상태 : " << m_pPlayer->Get_Attacking() << std::endl;
 
 	m_bAnimationFinished = m_pActorModelCom->Play_Animation(fTimeDelta);
 
@@ -84,49 +78,15 @@ void CState_Player::State_Exit()
 void CState_Player::Collision_Enter(CCollider* pOther)
 {
 	Modify_HP(pOther);
-
-	//if (/*pOther->Get_ColliderTag() == TEXT("Player_Body") ||*/
-	//	pOther->Get_ColliderTag() == TEXT("Monster_Body_Hit") ||
-	//	pOther->Get_ColliderTag() == TEXT("Monster_Body_NoHit"))
-	//{
-	//	CTransform* pTransformcom = dynamic_cast<CTransform*>(pOther->Get_OwnerObject()->Find_Component(TEXT("Com_Transform")));
-	//	if (nullptr != pTransformcom)
-	//	{
-	//		_float4  otherPosition;
-	//		XMStoreFloat4(&otherPosition, pTransformcom->Get_State(CTransform::STATE_LOOK));
-	//		dynamic_cast<CPlayer*>(m_pActor)->Apply_PushBack(otherPosition, 0.02f, m_pNavigationCom);
-	//	}
-	//}
-
-	/*_wstring other = pOther->Get_CollidergGroupTag();
-
-	std::wcerr << "[플레이어와 " << other << " 충돌 Enter]" << std::endl;*/
 }
 
 void CState_Player::Collision_Stay(CCollider* pOther)
 {
-	//if (/*pOther->Get_ColliderTag() == TEXT("Player_Body") ||*/
-	//	pOther->Get_ColliderTag() == TEXT("Monster_Body_Hit") ||
-	//	pOther->Get_ColliderTag() == TEXT("Monster_Body_NoHit"))
-	//{
-	//	CTransform* pTransformcom = dynamic_cast<CTransform*>(pOther->Get_OwnerObject()->Find_Component(TEXT("Com_Transform")));
-	//	if (nullptr != pTransformcom)
-	//	{
-	//		_float4  otherPosition;
-	//		XMStoreFloat4(&otherPosition, pTransformcom->Get_State(CTransform::STATE_LOOK));
-	//		dynamic_cast<CPlayer*>(m_pActor)->Apply_PushBack(otherPosition, 0.001f, m_pNavigationCom);
-	//	}
-	//}
-	/*_wstring other = pOther->Get_CollidergGroupTag();
-
-	std::wcerr << "[플레이어와 " << other << " 충돌 Stay]" << std::endl;*/
 }
 
 void CState_Player::Collision_Exit(CCollider* pOther)
 {
-	/*_wstring other = pOther->Get_CollidergGroupTag();
 
-	std::wcerr << "[플레이어와 " << other << " 충돌 Exit]" << std::endl;*/
 }
 
 _bool CState_Player::Change_State_To_Idle()
@@ -162,8 +122,6 @@ _bool CState_Player::Change_State_To_Walk()
 			m_pPlayer->Set_Chasing(false, nullptr);
 			m_pPlayer->Change_State(PLAYER_STATE::WALK);
 
-			//std::cerr << fWorldPickedPos.x << ", " << fWorldPickedPos.y << ", " << fWorldPickedPos.z << std::endl;
-
 			return true;
 		}
 	}
@@ -186,7 +144,16 @@ _bool CState_Player::Change_State_To_Roll()
 _bool CState_Player::Change_State_To_GlaiveCombo()
 {
 	if (nullptr == m_pPlayer->Find_PartObject(TEXT("Part_Weapon_Melee")))
-		return false;
+	{
+		CInventoryData* pInventory = m_pPlayer->Get_InventoryData();
+		if (pInventory)
+		{
+			CItem* pGearItem = pInventory->Get_GearItem(0);
+			if (!pGearItem || pGearItem->Get_GameObjectTag() != TEXT("GameObject_GlaiveSteel"))
+				return false;
+		}
+	}
+
 
 	CTransform* pMonsterTransformCom = m_pPlayer->Get_MonsterTransformCom();
 
@@ -315,7 +282,7 @@ void CState_Player::Reset_Combo()
 
 	//m_pPlayer->Set_Attacking(false);
 
-	std::wcerr << "[콤보 초기화 딩딩딩딩딩~]" << std::endl;
+	//std::wcerr << "[콤보 초기화 딩딩딩딩딩~]" << std::endl;
 }
 
 

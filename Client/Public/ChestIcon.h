@@ -15,7 +15,7 @@ public:
     typedef struct CHEST_ICON_DESC : public CGameObject::GAMEOBJECT_DESC
     {
         _uint       iPrototypeLevelIndex;
-        _float4     worldPosition = { 0.f, 0.f, 0.f, 1.f };
+        //_float4     worldPosition = { 0.f, 0.f, 0.f, 1.f };
 
         CItem::ITEM_DESC   ItemDesc = {};
 

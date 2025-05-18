@@ -21,6 +21,9 @@ CLevel_SoggySwamp::CLevel_SoggySwamp(ID3D11Device* pDevice, ID3D11DeviceContext*
 
 HRESULT CLevel_SoggySwamp::Initialize()
 {
+    if (FAILED(Ready_PrePlayer()))
+        return E_FAIL;
+
     if (FAILED(Ready_Lights()))
         return E_FAIL;
 
@@ -30,17 +33,11 @@ HRESULT CLevel_SoggySwamp::Initialize()
     if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
         return E_FAIL;
 
-    /*if (FAILED(Ready_Layer_InventoryUI(TEXT("Layer_InventoryUI"))))
-        return E_FAIL;*/
+    if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
+        return E_FAIL;
 
-    /*if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
-        return E_FAIL;*/
-
-    /*if (FAILED(Ready_Layer_PlayerSlotUI(TEXT("Layer_PlayerSlotUI"))))
-        return E_FAIL;*/
-
-    /*if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
-        return E_FAIL;*/
+    if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
+        return E_FAIL;
 
 
     return S_OK;
@@ -142,8 +139,6 @@ void CLevel_SoggySwamp::Click_Chase_Monster(CMonster* pMonster)
 
     XMStoreFloat4(&monsterPickedPos, pMonsterTransform->Get_State(CTransform::STATE_POSITION));
     m_pPlayer->Set_MonsterPickedPos(monsterPickedPos);
-
-    //m_pPlayer->Change_State(PLAYER_STATE::WALK);  // 무기 바꾸면 여기 상태도 수정해야 함
 }
 
 HRESULT CLevel_SoggySwamp::Render()
@@ -151,6 +146,25 @@ HRESULT CLevel_SoggySwamp::Render()
 #ifdef _DEBUG
     SetWindowText(g_hWnd, TEXT("게임플레이레벨입니다."));
 #endif
+
+    return S_OK;
+}
+
+HRESULT CLevel_SoggySwamp::Ready_PrePlayer()
+{
+    CLayer* pPersistentPlayerLayer = m_pGameInstance->Get_Persistent_Layer(TEXT("Layer_Player"));
+    if (nullptr == pPersistentPlayerLayer)
+        return E_FAIL;
+
+    // Level_SoggySwamp의 m_pLayers에 붙여줌
+    if (FAILED(m_pGameInstance->Attach_Persistent_Layer_To_Level(m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_Player"))))
+        return E_FAIL;
+
+    m_pGameInstance->Attach_Persistent_Colliders_To_Level(m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Player"));
+
+    m_pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("GameObject_Player"), m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_Player")));
+    m_pPlayer->Erase_Component(TEXT("Com_Navigation"));
+    m_pPlayer->Delete_NavigationCom();
 
     return S_OK;
 }
@@ -203,48 +217,6 @@ HRESULT CLevel_SoggySwamp::Ready_Layer_Camera(const _wstring& strLayerTag)
     return S_OK;
 }
 
-HRESULT CLevel_SoggySwamp::Ready_Layer_Player(const _wstring& strLayerTag)
-{
-    // 이전 Level의 Layer_Player 가져옴
-    CLayer* pPersistentPlayerLayer = m_pGameInstance->Get_Persistent_Layer(TEXT("Layer_Player"));
-    if (nullptr == pPersistentPlayerLayer)
-        return E_FAIL;
-
-    // Level_SoggySwamp의 m_pLayers에 붙여줌
-    if (FAILED(m_pGameInstance->Attach_Persistent_Layer_To_Level(m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_Player"))))
-        return E_FAIL;
-
-    m_pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("GameObject_Player"), m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_Player")));
-
-    // 이전 Level에서의 Collider도 보존
-    m_pGameInstance->Attach_Persistent_Colliders_To_Level(m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Player"));
-
-    m_pPlayer->Erase_Component(TEXT("Com_Navigation_SoggySwamp"));
-
-    CComponent* pNavigationCom = m_pPlayer->Find_Component(TEXT("Com_Navigation_SoggySwamp"));
-    // ☆☆☆☆☆ navigationCom 재정비해줘야 할 듯 ☆☆☆☆☆
-
-    m_pPlayer->Delete_NavigationCom();
-
-    CTransform* pTransformCom = dynamic_cast<CTransform*>(m_pPlayer->Find_Component(TEXT("Com_Transform")));
-    pTransformCom->Set_State(CTransform::STATE_POSITION, { 0.f, 0.f, 0.f , 1.f });
-
-    return S_OK;
-}
-
-HRESULT CLevel_SoggySwamp::Ready_Layer_Monster(const _wstring& strLayerTag)
-{
-    CGameObject* pZombie = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Zombie"),
-        LEVEL_SOGGYSWAMP, strLayerTag);
-    if (nullptr == pZombie)     return E_FAIL;
-
-    CGameObject* pSkeleton = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Skeleton"),
-        LEVEL_SOGGYSWAMP, strLayerTag);
-    if (nullptr == pSkeleton)     return E_FAIL;
-
-    return S_OK;
-}
-
 HRESULT CLevel_SoggySwamp::Ready_Layer_BackGround(const _wstring& strLayerTag)
 {
     CGameObject* pSoggySwampMap = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_SoggySwampMap"),
@@ -259,52 +231,33 @@ HRESULT CLevel_SoggySwamp::Ready_Layer_BackGround(const _wstring& strLayerTag)
     return S_OK;
 }
 
-HRESULT CLevel_SoggySwamp::Ready_Layer_InventoryUI(const _wstring& strLayerTag)
+HRESULT CLevel_SoggySwamp::Ready_Layer_Player(const _wstring& strLayerTag)
 {
-    CInventoryBase::INVENTORY_BASE_DESC  InventoryBaseDesc
-    (TEXT("GameObject_InventoryBase"), CUIObject::UNCLICKABLE,
-        g_iWinSizeX * 0.5f, g_iWinSizeY * 0.5f, 0.6f, 1280.f, 720.f,
-        L"Prototype_Component_Texture_InventoryBase");
+    if (FAILED(m_pPlayer->Ready_Components()))
+        return E_FAIL;
 
-    CUIObject* pInventoryBase = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_SOGGYSWAMP,
-        TEXT("Prototype_GameObject_InventoryBase"),
-        CUI_Manager::PERSISTENT, &InventoryBaseDesc);
+    CTransform* pTransformCom = dynamic_cast<CTransform*>(m_pPlayer->Find_Component(TEXT("Com_Transform")));
+    pTransformCom->Set_State(CTransform::STATE_POSITION, { 1.f, 3.5f, 5.f , 1.f });
 
-    if (nullptr == pInventoryBase) return E_FAIL;
+    CNavigation* pNavigationCom = dynamic_cast<CNavigation*>(m_pPlayer->Find_Component(TEXT("Com_Navigation")));
+    if (pNavigationCom)
+        pNavigationCom->SetUp_CurrentCellIndex(26);
 
     return S_OK;
 }
 
-HRESULT CLevel_SoggySwamp::Ready_Layer_PlayerSlotUI(const _wstring& strLayerTag)
-{
-    _float fPlayerStateSlotX = g_iWinSizeX * 0.5f;
-    _float fPlayerStateSlotY = g_iWinSizeY - 105.f * 0.5f;
-
-    CUI_Image::UIIMAGE_DESC  PlayerStateSlotDesc
-    (TEXT("GameObject_PlayerStateSlot"), CUI_Image::UNCLICKABLE,
-        fPlayerStateSlotX, fPlayerStateSlotY, 0.9f, 713.f, 105.f,
-        L"Prototype_Component_Texture_PlayerStateSlot", LEVEL_STATIC, LEVEL_STATIC);
-
-    CUIObject* pPlayerStateSlot = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_STATIC,
-        TEXT("Prototype_GameObject_UIImage"),
-        CUI_Manager::PERSISTENT, &PlayerStateSlotDesc);
-
-    if (nullptr == pPlayerStateSlot) return E_FAIL;
-
-
-    CPlayerHP::PLAYERHP_DESC  PlayerHPDesc
-    (TEXT("GameObject_PlayerHPBar"), CUIObject::UNCLICKABLE,
-        fPlayerStateSlotX + 0.3f, fPlayerStateSlotY - 7.f, 0.7f, 86.f, 65.f,
-        L"Prototype_Component_Texture_PlayerHP");
-
-    CUIObject* pPlayerHP = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_STATIC,
-        TEXT("Prototype_GameObject_Player_HPbar"),
-        CUI_Manager::PERSISTENT, &PlayerHPDesc);
-
-    if (nullptr == pPlayerHP) return E_FAIL;
-
-    return S_OK;
-}
+//HRESULT CLevel_SoggySwamp::Ready_Layer_Monster(const _wstring& strLayerTag)
+//{
+//    CGameObject* pZombie = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Zombie"),
+//        LEVEL_SOGGYSWAMP, strLayerTag);
+//    if (nullptr == pZombie)     return E_FAIL;
+//
+//    CGameObject* pSkeleton = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Skeleton"),
+//        LEVEL_SOGGYSWAMP, strLayerTag);
+//    if (nullptr == pSkeleton)     return E_FAIL;
+//
+//    return S_OK;
+//}
 
 CLevel_SoggySwamp* CLevel_SoggySwamp::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {

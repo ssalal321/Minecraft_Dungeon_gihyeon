@@ -19,6 +19,9 @@ private:
 	~CInventoryData()	override = default;
 
 public:
+	CItem* Get_GearItem(_uint uiGearSlotIndex) { return m_GearSlots[uiGearSlotIndex]; }
+
+public:
 	HRESULT		Initialize(CPlayer* pPlayer);
 
 	void		Add_Item_To_StoreSlot(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, const _wstring& strGameObjectTag, void* pItemDesc);
@@ -35,11 +38,7 @@ private:
 	vector<CItem*>		m_ArtifactSlots;   // 고정 크기 3
 
 	CItem*				m_pItem = { nullptr };
-	ITEM_TYPE			m_eWeaponType = {ITEM_TYPE::NONE };
-
 	CPlayer*			m_pPlayer = { nullptr };
-
-	//_int		m_iSlotIndex = { -1 };
 
 private:
 	_int		Find_Empty_ArtifactSlot();

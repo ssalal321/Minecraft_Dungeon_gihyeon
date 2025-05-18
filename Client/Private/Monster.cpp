@@ -53,10 +53,6 @@ void CMonster::Update(_float fTimeDelta)
 	{
 		m_pNavigationCom->SetUp_On_Navigation(m_pTransformCom);
 	}
-	else
-	{
-		int i = 0;
-	}
 
 	m_pMonsterFSM->Update_State(fTimeDelta);
 
@@ -154,7 +150,7 @@ HRESULT CMonster::Ready_Components()
 	case LEVEL_LOUNGE:
 		{
 		if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Navigation_LoungeMap"),
-			TEXT("Com_Navigation_LoungeMap"), reinterpret_cast<CComponent**>(&m_pNavigationCom)))
+			TEXT("Com_Navigation"), reinterpret_cast<CComponent**>(&m_pNavigationCom)))
 			return E_FAIL;
 		}
 		break;
@@ -162,7 +158,7 @@ HRESULT CMonster::Ready_Components()
 	case LEVEL_SOGGYSWAMP:
 	{
 		if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Navigation_SoggySwampMap"),
-			TEXT("Com_Navigation_SoggySwampMap"), reinterpret_cast<CComponent**>(&m_pNavigationCom)))
+			TEXT("Com_Navigation"), reinterpret_cast<CComponent**>(&m_pNavigationCom)))
 			return E_FAIL;
 	}
 	}

@@ -31,7 +31,7 @@ void CPlayer_Glaive_Combo::State_Enter()
 {
 	//m_fAnimTimer = 0.f;
 
-	std::cerr << "Player_Glaive_Combo" << "\n";
+	//std::cerr << "Player_Glaive_Combo" << "\n";
 
 	if (nullptr == m_pGlaiveCollider)
 		m_pGlaiveCollider = dynamic_cast<CCollider*>(m_pPlayer->Find_Part_Component(TEXT("Part_Weapon_Melee"),
@@ -112,23 +112,23 @@ void CPlayer_Glaive_Combo::State_Update(_float fTimeDelta)
 	{
 		m_fPrevAnimTrackPosition = GLAIVE_COMBO1_Finish;
 		m_bCombo1_Finished = true;
-		std::wcerr << "[콤보 1 끝]" << std::endl;
+		//std::wcerr << "[콤보 1 끝]" << std::endl;
 	}
 
 	if (!m_bCombo2_Finished && GLAIVE_COMBO2_Finish <= fAnimCurTrackPos)  // GLAIVE_COMBO2까지만
 	{
 		m_fPrevAnimTrackPosition = GLAIVE_COMBO2_Finish;
 		m_bCombo2_Finished = true;
-		std::wcerr << "[콤보 2 끝]" << std::endl;
+		//std::wcerr << "[콤보 2 끝]" << std::endl;
 	}
 
 	if (!m_bCombo3_Finished && GLAIVE_COMBO3_Finish <= fAnimCurTrackPos)  // GLAIVE_COMBO3 끝나면
 	{
 		m_bCombo3_Finished = true;
-		std::wcerr << "[콤보 3 끝]" << std::endl;
+		//std::wcerr << "[콤보 3 끝]" << std::endl;
 
 		m_pPlayer->Change_State(PLAYER_STATE::IDLE);
-		std::wcerr << "[안녕히 계세요 여러분]" << std::endl;
+		//std::wcerr << "[안녕히 계세요 여러분]" << std::endl;
 
 		return;
 	}
@@ -139,7 +139,7 @@ void CPlayer_Glaive_Combo::State_Update(_float fTimeDelta)
 		if (m_bCombo1_Finished && fAnimCurTrackPos < GLAIVE_COMBO1_Finish + 1.5f)
 		{
 			m_pPlayer->Change_State(PLAYER_STATE::IDLE);
-			std::wcerr << "[안녕히 계세요 여러분]" << std::endl;
+			//std::wcerr << "[안녕히 계세요 여러분]" << std::endl;
 
 			m_bComboInitiating = true;
 			m_fCombo_ElapsedTime = 0.f;
@@ -148,7 +148,7 @@ void CPlayer_Glaive_Combo::State_Update(_float fTimeDelta)
 		if (m_bCombo2_Finished && fAnimCurTrackPos < GLAIVE_COMBO2_Finish + 1.5f)
 		{
 			m_pPlayer->Change_State(PLAYER_STATE::IDLE);
-			std::wcerr << "[안녕히 계세요 여러분]" << std::endl;
+			//std::wcerr << "[안녕히 계세요 여러분]" << std::endl;
 
 			m_bComboInitiating = true;
 			m_fCombo_ElapsedTime = 0.f;
