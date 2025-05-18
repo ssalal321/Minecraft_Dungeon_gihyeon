@@ -48,6 +48,9 @@ HRESULT CZombie::Initialize(void* pArg)
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
 								XMVectorSet(0.f, 0.f, -10.f, 1.f));
 
+	/*ZOMBIE_DESC* pDesc = static_cast<ZOMBIE_DESC*>(pArg);
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&pDesc->zombiePosition));*/
+
 	return S_OK;
 }
 

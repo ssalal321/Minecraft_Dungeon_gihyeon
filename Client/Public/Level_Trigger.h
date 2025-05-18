@@ -43,7 +43,6 @@ private:
 
 private:
 	HRESULT		Ready_Components();
-	HRESULT		Bind_ShaderResources();
 
 public:
 	static CLevel_Trigger*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, void* pArg);

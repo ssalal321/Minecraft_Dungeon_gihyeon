@@ -1,31 +1,31 @@
-#include "Body_Slime_Medium.h"
-#include "Slime_Medium.h"
+#include "Body_Slime_Cauldron.h"
 
 #include "GameInstance.h"
 #include "Mesh.h"
+#include "Slime_Cauldron.h"
 
-CBody_Slime_Medium::CBody_Slime_Medium(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CBody_Slime_Cauldron::CBody_Slime_Cauldron(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CPartObject(pDevice, pContext)
 {
 
 }
 
-CBody_Slime_Medium::CBody_Slime_Medium(const CBody_Slime_Medium& Prototype)
+CBody_Slime_Cauldron::CBody_Slime_Cauldron(const CBody_Slime_Cauldron& Prototype)
 	: CPartObject(Prototype)
 {
 
 }
 
-HRESULT CBody_Slime_Medium::Initialize_Prototype()
+HRESULT CBody_Slime_Cauldron::Initialize_Prototype()
 {
 	/* 외부 데이터베이스를 통해서 값을 채운다. */
 
 	return S_OK;
 }
 
-HRESULT CBody_Slime_Medium::Initialize(void* pArg)
+HRESULT CBody_Slime_Cauldron::Initialize(void* pArg)
 {
-	BODY_SLIME_MEDIUM_DESC* pDesc = static_cast<BODY_SLIME_MEDIUM_DESC*>(pArg);
+	BODY_SLIME_CAULDRON_DESC* pDesc = static_cast<BODY_SLIME_CAULDRON_DESC*>(pArg);
 
 	m_pTargetState = pDesc->pState;
 
@@ -38,22 +38,22 @@ HRESULT CBody_Slime_Medium::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CBody_Slime_Medium::Priority_Update(_float fTimeDelta)
+void CBody_Slime_Cauldron::Priority_Update(_float fTimeDelta)
 {
 }
 
-void CBody_Slime_Medium::Update(_float fTimeDelta)
+void CBody_Slime_Cauldron::Update(_float fTimeDelta)
 {
 }
 
-void CBody_Slime_Medium::Late_Update(_float fTimeDelta)
+void CBody_Slime_Cauldron::Late_Update(_float fTimeDelta)
 {
 	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()) * XMLoadFloat4x4(m_pParentWorldMatrix));
 
 	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_BLEND, this);
 }
 
-HRESULT CBody_Slime_Medium::Render()
+HRESULT CBody_Slime_Cauldron::Render()
 {
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
@@ -76,7 +76,6 @@ HRESULT CBody_Slime_Medium::Render()
 			m_pShaderCom->Begin(1); // Blend
 
 
-
 		if (FAILED(m_pModelCom->Render(static_cast<_uint>(i))))
 			return E_FAIL;
 	}
@@ -84,12 +83,12 @@ HRESULT CBody_Slime_Medium::Render()
 	return S_OK;
 }
 
-void CBody_Slime_Medium::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)
+void CBody_Slime_Cauldron::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)
 {
-	dynamic_cast<CSlime_Medium*>(m_pContainerObject)->Collided_With(pOther, eCollisionState);
+	dynamic_cast<CSlime_Cauldron*>(m_pContainerObject)->Collided_With(pOther, eCollisionState);
 }
 
-HRESULT CBody_Slime_Medium::Ready_Components()
+HRESULT CBody_Slime_Cauldron::Ready_Components()
 {
 	/* Com_Shader */
 	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxAnimMesh"),
@@ -100,7 +99,7 @@ HRESULT CBody_Slime_Medium::Ready_Components()
 	CModel::MODEL_DESC	pModelDesc = {};
 	pModelDesc.bPickable = true;
 
-	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Model_Slime_Medium"),
+	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Model_Slime_Cauldron"),
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom), &pModelDesc))
 		return E_FAIL;
 
@@ -119,7 +118,7 @@ HRESULT CBody_Slime_Medium::Ready_Components()
 	if (nullptr == pColliderBigSphereCom)
 		return E_FAIL;
 
-	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), m_pBigColliderCom, TEXT("Monster_Body_Hit"), TEXT("Monster"));
+	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), m_pBigColliderCom, TEXT("Monster_Body_NoHit"), TEXT("Monster"));
 	dynamic_cast<CCollider*>(pColliderBigSphereCom)->Set_ColliderRole(CCollider::BIG);
 
 
@@ -145,7 +144,7 @@ HRESULT CBody_Slime_Medium::Ready_Components()
 	return S_OK;
 }
 
-HRESULT CBody_Slime_Medium::Bind_ShaderResources()
+HRESULT CBody_Slime_Cauldron::Bind_ShaderResources()
 {
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix)))
 		return E_FAIL;	
@@ -189,13 +188,13 @@ HRESULT CBody_Slime_Medium::Bind_ShaderResources()
 	return S_OK;
 }
 
-CBody_Slime_Medium* CBody_Slime_Medium::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CBody_Slime_Cauldron* CBody_Slime_Cauldron::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	CBody_Slime_Medium* pGameInstance = new CBody_Slime_Medium(pDevice, pContext);
+	CBody_Slime_Cauldron* pGameInstance = new CBody_Slime_Cauldron(pDevice, pContext);
 
 	if (FAILED(pGameInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Create : CBody_Slime_Medium");
+		MSG_BOX("Failed to Create : CBody_Slime_Cauldron");
 		Safe_Release(pGameInstance);
 	}
 
@@ -203,20 +202,20 @@ CBody_Slime_Medium* CBody_Slime_Medium::Create(ID3D11Device* pDevice, ID3D11Devi
 }
 
 
-CGameObject* CBody_Slime_Medium::Clone(void* pArg)
+CGameObject* CBody_Slime_Cauldron::Clone(void* pArg)
 {
-	CBody_Slime_Medium* pGameInstance = new CBody_Slime_Medium(*this);
+	CBody_Slime_Cauldron* pGameInstance = new CBody_Slime_Cauldron(*this);
 
 	if (FAILED(pGameInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Clone : CBody_Slime_Medium");
+		MSG_BOX("Failed to Clone : CBody_Slime_Cauldron");
 		Safe_Release(pGameInstance);
 	}
 
 	return pGameInstance;
 }
 
-void CBody_Slime_Medium::Free()
+void CBody_Slime_Cauldron::Free()
 {
 	__super::Free();
 

@@ -160,10 +160,14 @@
     <ClInclude Include="..\Public\BabyZombie_Novelty.h" />
     <ClInclude Include="..\Public\BabyZombie_Walk.h" />
     <ClInclude Include="..\Public\Body_BabyZombie.h" />
+    <ClInclude Include="..\Public\Body_Slime_Cauldron.h" />
     <ClInclude Include="..\Public\Body_Slime_Large.h" />
     <ClInclude Include="..\Public\Body_Slime_Medium.h" />
     <ClInclude Include="..\Public\Body_Slime_Small.h" />
+    <ClInclude Include="..\Public\BulletPool_Monster.h" />
     <ClInclude Include="..\Public\ChestIcon.h" />
+    <ClInclude Include="..\Public\Slime_Cauldron.h" />
+    <ClInclude Include="..\Public\Slime_Cauldron_Attack.h" />
     <ClInclude Include="..\Public\Level_SoggySwamp.h" />
     <ClInclude Include="..\Public\Level_Trigger.h" />
     <ClInclude Include="..\Public\LobbyChest.h" />
@@ -208,6 +212,8 @@
     <ClInclude Include="..\Public\Skeleton_Idle.h" />
     <ClInclude Include="..\Public\Skeleton_Walk.h" />
     <ClInclude Include="..\Public\Sky.h" />
+    <ClInclude Include="..\Public\Slime_Cauldron_Bullet.h" />
+    <ClInclude Include="..\Public\Slime_Cauldron_Idle.h" />
     <ClInclude Include="..\Public\Slime_Large.h" />
     <ClInclude Include="..\Public\Slime_Large_Attack.h" />
     <ClInclude Include="..\Public\Slime_Large_Idle.h" />
@@ -227,6 +233,7 @@
     <ClInclude Include="..\Public\SoggySwampMap.h" />
     <ClInclude Include="..\Public\State.h" />
     <ClInclude Include="..\Public\State_BabyZombie.h" />
+    <ClInclude Include="..\Public\State_Slime_Cauldron.h" />
     <ClInclude Include="..\Public\State_Monster.h" />
     <ClInclude Include="..\Public\State_Player.h" />
     <ClInclude Include="..\Public\State_Skeleton.h" />
@@ -268,10 +275,14 @@
     <ClCompile Include="..\Private\BabyZombie_Novelty.cpp" />
     <ClCompile Include="..\Private\BabyZombie_Walk.cpp" />
     <ClCompile Include="..\Private\Body_BabyZombie.cpp" />
+    <ClCompile Include="..\Private\Body_Slime_Cauldron.cpp" />
     <ClCompile Include="..\Private\Body_Slime_Large.cpp" />
     <ClCompile Include="..\Private\Body_Slime_Medium.cpp" />
     <ClCompile Include="..\Private\Body_Slime_Small.cpp" />
+    <ClCompile Include="..\Private\BulletPool_Monster.cpp" />
     <ClCompile Include="..\Private\ChestIcon.cpp" />
+    <ClCompile Include="..\Private\Slime_Cauldron.cpp" />
+    <ClCompile Include="..\Private\Slime_Cauldron_Attack.cpp" />
     <ClCompile Include="..\Private\Level_SoggySwamp.cpp" />
     <ClCompile Include="..\Private\Level_Trigger.cpp" />
     <ClCompile Include="..\Private\LobbyChest.cpp" />
@@ -313,6 +324,8 @@
     <ClCompile Include="..\Private\Skeleton_Idle.cpp" />
     <ClCompile Include="..\Private\Skeleton_Walk.cpp" />
     <ClCompile Include="..\Private\Sky.cpp" />
+    <ClCompile Include="..\Private\Slime_Cauldron_Bullet.cpp" />
+    <ClCompile Include="..\Private\Slime_Cauldron_Idle.cpp" />
     <ClCompile Include="..\Private\Slime_Large.cpp" />
     <ClCompile Include="..\Private\Slime_Large_Attack.cpp" />
     <ClCompile Include="..\Private\Slime_Large_Idle.cpp" />
@@ -332,6 +345,7 @@
     <ClCompile Include="..\Private\SoggySwampMap.cpp" />
     <ClCompile Include="..\Private\State.cpp" />
     <ClCompile Include="..\Private\State_BabyZombie.cpp" />
+    <ClCompile Include="..\Private\State_Slime_Cauldron.cpp" />
     <ClCompile Include="..\Private\State_Monster.cpp" />
     <ClCompile Include="..\Private\State_Player.cpp" />
     <ClCompile Include="..\Private\State_Skeleton.cpp" />

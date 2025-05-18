@@ -7,6 +7,7 @@ class CModel;
 END
 
 BEGIN(Client)
+	class CArrowPool_Player;
 	class CPlayer_Arrow : public CGameObject
 {
 private:
@@ -17,6 +18,7 @@ private:
 public:
 	_int		Get_DealPoint() const { return	m_iDealPoint; }
 
+	void		Set_Pool(CArrowPool_Player* pPool) { m_pArrowPool = pPool; }
 	void		Set_DealPoint(_int iDealPoint) { m_iDealPoint = iDealPoint; }
 
 public:
@@ -29,7 +31,7 @@ public:
 
 public:
 	void	Shoot(_float4 startPos, _float4 lookPos);
-	void	Reset(); // 풀로 돌아갈 때 초기화할 함수
+	void	Return_To_Pool(); // 풀로 돌아갈 때 초기화할 함수
 
 	void	Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState) override;
 
@@ -37,6 +39,8 @@ private:
 	CShader*	m_pShaderCom = { nullptr };
 	CModel*		m_pModelCom = { nullptr };
 	CCollider*	m_pColliderCom = { nullptr };
+
+	CArrowPool_Player*  m_pArrowPool = { nullptr };
 
 	GAMEOBJECT_DESC*	m_pArrowDesc = { nullptr };;
 	_bool				m_bColliderActivating = { false };

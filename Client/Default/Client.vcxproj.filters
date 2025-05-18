@@ -325,6 +325,27 @@
     <Filter Include="02.GameObjects\LobbyChest\ChestIcon">
       <UniqueIdentifier>{f92f5617-6f9e-4b67-b261-2396cb17cc11}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Cauldron">
+      <UniqueIdentifier>{8552b650-ffb5-406c-ba6a-14d25b12327b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Cauldron\00. Body">
+      <UniqueIdentifier>{57834bad-103c-491d-92dd-23ca999ad413}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Cauldron\00. Body\01. State">
+      <UniqueIdentifier>{efd2f0dc-60d8-40d0-b6b8-a8cf9775add4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Cauldron\00. Body\02. Bullet">
+      <UniqueIdentifier>{68b11009-f072-42ac-9207-f244e50ec9c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Bullet">
+      <UniqueIdentifier>{ad1ae41b-9d8f-4f29-a42e-23d43a98324a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Cauldron\00. Body\01. State\Slime_Cauldron_Idle">
+      <UniqueIdentifier>{e8ad416a-0179-4262-9147-bee87d870bda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Cauldron\00. Body\01. State\Slime_Cauldron_Attack">
+      <UniqueIdentifier>{774d764b-8e18-432e-a0e0-9f302d4e130f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -645,6 +666,27 @@
     <ClInclude Include="..\Public\ChestIcon.h">
       <Filter>02.GameObjects\LobbyChest\ChestIcon</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Slime_Cauldron.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Cauldron</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Body_Slime_Cauldron.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Cauldron\00. Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Slime_Cauldron.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Cauldron\00. Body\01. State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Slime_Cauldron_Attack.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Cauldron\00. Body\01. State\Slime_Cauldron_Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Slime_Cauldron_Bullet.h">
+      <Filter>02.GameObjects\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BulletPool_Monster.h">
+      <Filter>02.GameObjects\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Slime_Cauldron_Idle.h">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Cauldron\00. Body\01. State\Slime_Cauldron_Idle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -959,6 +1001,27 @@
     </ClCompile>
     <ClCompile Include="..\Private\ChestIcon.cpp">
       <Filter>02.GameObjects\LobbyChest\ChestIcon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Slime_Cauldron.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Cauldron</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Body_Slime_Cauldron.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Cauldron\00. Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Slime_Cauldron.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Cauldron\00. Body\01. State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Slime_Cauldron_Attack.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Cauldron\00. Body\01. State\Slime_Cauldron_Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Slime_Cauldron_Bullet.cpp">
+      <Filter>02.GameObjects\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BulletPool_Monster.cpp">
+      <Filter>02.GameObjects\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Slime_Cauldron_Idle.cpp">
+      <Filter>02.GameObjects\Monster\Slime\Slime_Cauldron\00. Body\01. State\Slime_Cauldron_Idle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

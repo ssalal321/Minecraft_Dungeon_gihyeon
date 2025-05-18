@@ -36,8 +36,8 @@ HRESULT CLevel_SoggySwamp::Initialize()
     if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
         return E_FAIL;
 
-    if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
-        return E_FAIL;
+    /*if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
+        return E_FAIL;*/
 
 
     return S_OK;
@@ -243,21 +243,25 @@ HRESULT CLevel_SoggySwamp::Ready_Layer_Player(const _wstring& strLayerTag)
     if (pNavigationCom)
         pNavigationCom->SetUp_CurrentCellIndex(26);
 
+    _float4 currentPosition = {};
+    XMStoreFloat4(&currentPosition, pTransformCom->Get_State(CTransform::STATE_POSITION));
+    //m_pPlayer->Set_NextPosition(currentPosition);
+
     return S_OK;
 }
 
-//HRESULT CLevel_SoggySwamp::Ready_Layer_Monster(const _wstring& strLayerTag)
-//{
-//    CGameObject* pZombie = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Zombie"),
-//        LEVEL_SOGGYSWAMP, strLayerTag);
-//    if (nullptr == pZombie)     return E_FAIL;
-//
-//    CGameObject* pSkeleton = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Skeleton"),
-//        LEVEL_SOGGYSWAMP, strLayerTag);
-//    if (nullptr == pSkeleton)     return E_FAIL;
-//
-//    return S_OK;
-//}
+HRESULT CLevel_SoggySwamp::Ready_Layer_Monster(const _wstring& strLayerTag)
+{
+    CGameObject* pZombie = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Zombie"),
+        LEVEL_SOGGYSWAMP, strLayerTag);
+    if (nullptr == pZombie)     return E_FAIL;
+
+    CGameObject* pSkeleton = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Skeleton"),
+        LEVEL_SOGGYSWAMP, strLayerTag);
+    if (nullptr == pSkeleton)     return E_FAIL;
+
+    return S_OK;
+}
 
 CLevel_SoggySwamp* CLevel_SoggySwamp::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {

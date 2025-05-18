@@ -99,6 +99,13 @@ namespace Client
 		STATE_END
 	};
 
+	enum class SLIME_CAULDRON_STATE
+	{
+		ATTACK,
+		IDLE,
+		STATE_END
+	};
+
 	enum class	SLOT_TYPE { STORE, GEAR, ARTIFACT, NONE };
 
 	enum class	ITEM_TYPE { MELEE, ARMOR, RANGED, ARTIFACT, NONE };

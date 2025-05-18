@@ -16,6 +16,7 @@ HRESULT CArrowPool_Player::Initialize()
 		if (nullptr == pArrowObject)	return E_FAIL;
 
 		CPlayer_Arrow*	 pArrow = dynamic_cast<CPlayer_Arrow*>(pArrowObject);
+		pArrow->Set_Pool(this);
 		m_PlayerArrowPool.push(pArrow);
 	}
 
@@ -52,7 +53,9 @@ CPlayer_Arrow* CArrowPool_Player::Get_Arrow(_uint uiAttackPoint)
 		if (nullptr == pArrowObject)	return nullptr;
 
 		CPlayer_Arrow* pNewArrow = dynamic_cast<CPlayer_Arrow*>(pArrowObject);
+		pNewArrow->Set_Pool(this);
 		m_PlayerArrowPool.push(pNewArrow);
+
 		pNewArrow = m_PlayerArrowPool.front();
 		m_PlayerArrowPool.pop();  // 맨 앞에 있는 걸 꺼내고 제거
 		pNewArrow->Set_DealPoint(uiAttackPoint);
@@ -74,7 +77,6 @@ void CArrowPool_Player::Return_Arrow(CPlayer_Arrow* pArrow)
 {
 	if (pArrow)
 	{
-		pArrow->Reset(); // 재사용을 위해 상태 초기화
 		m_PlayerArrowPool.push(pArrow);
 	}
 }

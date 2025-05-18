@@ -60,9 +60,10 @@ HRESULT CPlayer::Initialize(void* pArg)
 		return E_FAIL;
 
 	m_pTransformCom->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(180.f));
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMVectorSet(-11.f, 0.05f, -2.5f, 1.f));
 
 	if (m_pNavigationCom)
-		m_pNavigationCom->SetUp_CurrentCellIndex(0);
+		m_pNavigationCom->SetUp_CurrentCellIndex(1);
 
 	return S_OK;
 }
@@ -317,7 +318,7 @@ CCollider* CPlayer::Get_Closest_Collider(const _float4& mousePos, const _float3&
 
 	for (auto& pCollider : it->second)
 	{
-		if (pCollider->Get_ColliderType() != COLLIDER_TYPE::TYPE_SPHERE)
+		if (pCollider->Get_ColliderType() != COLLIDER_TYPE::TYPE_SPHERE || CCollider::COLLIDER_ROLE::BIG != pCollider->Get_Role())
 			continue;
 
 		_float fDist = 0.f;

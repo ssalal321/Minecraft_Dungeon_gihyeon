@@ -8,6 +8,7 @@
 #include "Camera_Free.h"
 #include "Body_Player.h"
 #include "Body_Skeleton.h"
+#include "Body_Slime_Cauldron.h"
 #include "Body_Slime_Large.h"
 #include "Body_Slime_Medium.h"
 #include "Body_Slime_Small.h"
@@ -26,6 +27,8 @@
 #include "UI_Image.h"
 #include "PlayerHP.h"
 #include "Skeleton.h"
+#include "Slime_Cauldron.h"
+#include "Slime_Cauldron_Bullet.h"
 #include "Slime_Large.h"
 #include "Slime_Medium.h"
 #include "Slime_Small.h"
@@ -206,6 +209,7 @@ HRESULT CLoader::Loading_For_Lounge()
 
 HRESULT CLoader::Loading_For_SoggySwamp()
 {
+
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
 	m_isFinished = true;
@@ -329,16 +333,24 @@ HRESULT CLoader::Ready_Prototype_ModelCom_Static()
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Monster/Skeleton/Skeleton.fbx", PreTransformMatrix))))
 		return E_FAIL;
 
-
 	/* For.Prototype_Component_Model_Slime_Medium */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Slime_Medium"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Monster/Slime/Slime_Medium.fbx", PreTransformMatrix))))
 		return E_FAIL;
 
-	//PreTransformMatrix = XMMatrixRotationAxis({0.f, 0.1, 0.f}, 90.f);
 	/* For.Prototype_Component_Model_Slime_Small */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Slime_Small"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Monster/Slime/Slime_Small2.fbx", PreTransformMatrix))))
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Monster/Slime/Slime_Small.fbx", PreTransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_Slime_Medium */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Slime_Cauldron"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Monster/Slime/Slime_Cauldron.fbx", PreTransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_Cube */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Cube"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Cube/CubeMesh.fbx", PreTransformMatrix))))
 		return E_FAIL;
 
 	//PreTransformMatrix = XMMatrixIdentity();
@@ -490,6 +502,10 @@ HRESULT CLoader::Ready_Prototype_GameObject_Static()
 		CBody_Slime_Small::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_Body_Slime_Cauldron */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Body_Slime_Cauldron"),
+		CBody_Slime_Cauldron::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	/* For.Prototype_GameObject_Zombie */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Zombie"),
@@ -521,6 +537,11 @@ HRESULT CLoader::Ready_Prototype_GameObject_Static()
 		CSlime_Small::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_Slime_Cauldron */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Slime_Cauldron"),
+		CSlime_Cauldron::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	/* For.Prototype_GameObject_Camera_Free */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Free"),
 		CCamera_Free::Create(m_pDevice, m_pContext))))
@@ -550,6 +571,11 @@ HRESULT CLoader::Ready_Prototype_GameObject_Static()
 	/* For.Prototype_GameObject_Arrow */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_MonsterArrow"),
 		CMonster_Arrow::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Slime_Cauldron_Bullet */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Slime_Cauldron_Bullet"),
+		CSlime_Cauldron_Bullet::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_LobbyChest */
