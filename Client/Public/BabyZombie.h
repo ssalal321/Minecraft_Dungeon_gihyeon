@@ -10,23 +10,10 @@ class CState;
 class CBabyZombie final : public CMonster
 {
 public:
-	/*struct ZOMBIE_DESC : public GAMEOBJECT_DESC
+	struct BABYZOMBIE_DESC
 	{
-		_int     uiCurrentHP;
-		_int     uiMaxHP;
-		_int     iArrowDealPoint;
-		_float   fAttackableRange;
-		_bool    bStunned;
-
-		ZOMBIE_DESC(const _tchar* GameObjectTag, _int currentHP, _int maxHP, _int attackPoint,
-			_float effectiveRange, _bool stunned = false,
-			_float rotationPerSec = 0.f, _float speedPerSec = 0.f)
-			: GAMEOBJECT_DESC(GameObjectTag, rotationPerSec, speedPerSec), uiCurrentHP(currentHP), uiMaxHP(maxHP), iArrowDealPoint(attackPoint),
-			fAttackableRange(effectiveRange), bStunned(stunned) {
-		}
-
-		~ZOMBIE_DESC() override = default;
-	};*/
+		_float4  babyZombiePosition = { 0.f, 0.f, 0.f, 1.f };
+	};
 
 private:
 	CBabyZombie(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

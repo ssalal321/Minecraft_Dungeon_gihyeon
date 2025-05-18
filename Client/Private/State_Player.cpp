@@ -11,6 +11,7 @@
 #include "Level_SoggySwamp.h"
 #include "Monster.h"
 #include "Monster_Arrow.h"
+#include "Slime_Cauldron_Bullet.h"
 
 _float	CState_Player::m_fCombo_ElapsedTime = 0.f;
 _bool   CState_Player::m_bCombo1_ColliderOn = { false };
@@ -231,6 +232,13 @@ void CState_Player::Modify_HP(CCollider* pOther)
 	{
 		CMonster_Arrow* pMonsterArrow = dynamic_cast<CMonster_Arrow*>(pOther->Get_OwnerObject());
 		m_pPlayerInfo->Modify_CurrentHp(-pMonsterArrow->Get_DealPoint());
+	}
+
+	if (TEXT("Slime_Cauldron_Bullet") == pOther->Get_ColliderTag()
+		&& pOther->Get_Other_Collision_Activated())
+	{
+		CSlime_Cauldron_Bullet* pMonsterBullet = dynamic_cast<CSlime_Cauldron_Bullet*>(pOther->Get_OwnerObject());
+		m_pPlayerInfo->Modify_CurrentHp(-pMonsterBullet->Get_DealPoint());
 	}
 
 	if (TEXT("Monster_Weapon") == pOther->Get_ColliderTag()

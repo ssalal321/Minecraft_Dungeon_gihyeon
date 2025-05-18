@@ -43,7 +43,8 @@ HRESULT CSkeleton::Initialize(void* pArg)
 		return E_FAIL;
 
 	m_pArrowPool_Monster = CArrowPool_Monster::Create();
-	if (nullptr == m_pArrowPool_Monster)	return E_FAIL;
+	if (nullptr == m_pArrowPool_Monster)	
+		return E_FAIL;
 
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;

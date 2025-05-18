@@ -18,6 +18,8 @@ HRESULT CPartObject::Initialize_Prototype()
 
 HRESULT CPartObject::Initialize(void* pArg)
 {
+	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixIdentity());
+
 	PARTOBJECT_DESC* pDesc = static_cast<PARTOBJECT_DESC*>(pArg);
 
 	if (nullptr != pDesc)

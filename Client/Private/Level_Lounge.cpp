@@ -276,6 +276,10 @@ HRESULT CLevel_Lounge::Ready_Layer_Monster(const _wstring& strLayerTag)
         LEVEL_LOUNGE, strLayerTag);
     if (nullptr == pSlimeLarge)     return E_FAIL;
 
+    /*CGameObject* pSlimeCauldron = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Slime_Cauldron"),
+        LEVEL_LOUNGE, strLayerTag);
+    if (nullptr == pSlimeCauldron)     return E_FAIL;*/
+
     return S_OK;
 }
 

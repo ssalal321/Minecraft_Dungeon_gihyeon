@@ -64,6 +64,8 @@ void CSoggySwampMap::Update(_float fTimeDelta)
 {
 #ifdef _DEBUG
 
+	//m_pNavigationCom->Update(m_pTransformCom->Get_WorldMatrix_Ptr());
+
 	if (m_pGameInstance->Key_Down(VK_F1))
 		m_bClickActive = !m_bClickActive;
 
@@ -84,7 +86,6 @@ void CSoggySwampMap::Update(_float fTimeDelta)
 				<< " Z: " << fWorldPickedVertex.z << std::endl;
 		}
 	}
-	//		
 
 	//		m_fCellPoints[m_iPointNum] = fLocalPickedVertex;
 	//		++m_iPointNum;

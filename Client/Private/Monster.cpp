@@ -116,6 +116,10 @@ void CMonster::Change_State(const MonsterState& state)
 	case MONSTER_TYPE::SLIME_SMALL:
 		m_iState = static_cast<_uint>(state.SlimeSmallState);
 		break;
+
+	case MONSTER_TYPE::SLIME_CAULDRON:
+		m_iState = static_cast<_uint>(state.SlimeCauldronState);
+		break;
 	}
 
 	m_pMonsterFSM->Change_State(m_StatesVec[m_iState]);

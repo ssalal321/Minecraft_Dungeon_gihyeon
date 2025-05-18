@@ -1,4 +1,6 @@
 #include "Monster_Arrow.h"
+
+#include "ArrowPool_Monster.h"
 #include "GameInstance.h"
 
 _int  CMonster_Arrow::m_iArrowID = 0;
@@ -52,15 +54,15 @@ void CMonster_Arrow::Update(_float fTimeDelta)
 
 		m_fResetTimer += fTimeDelta;
 		if (m_fResetTimer >= 3.5f)
-			Reset();
+			Return_To_Pool();
 	}
-		
+
 	if (m_bCollided)
 	{
 		m_fResetTimer += fTimeDelta;
 
 		if (m_fResetTimer >= 0.2f)
-			Reset();
+			Return_To_Pool();
 	}
 }
 
@@ -136,7 +138,7 @@ void CMonster_Arrow::Shoot(_float4 startPos, _float4 lookPos)
 	m_pColliderCom->Set_ColliderActive(true);
 }
 
-void CMonster_Arrow::Reset()
+void CMonster_Arrow::Return_To_Pool()
 {
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, { 0.f, 200.f, 0.f, 1.f});
 	m_pTransformCom->LookAt({ 0.f, 0.f, 0.f, 1.f });
@@ -147,21 +149,19 @@ void CMonster_Arrow::Reset()
 	m_bCollided  = false;
 	m_bActive	 = false;
 	m_pColliderCom->Set_ColliderActive(false);
+
+	if (m_pArrowPool)
+		m_pArrowPool->Return_Arrow(this);
 }
 
 void CMonster_Arrow::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)
 {
 	if (pOther->Get_ColliderActive() &&
 		CCollider::COLLISION_STATE::ENTER == eCollisionState &&
-		TEXT("Player_Body") == pOther->Get_ColliderTag())
+		TEXT("Player_Body_Small") == pOther->Get_ColliderTag())
 	{
 		m_bCollided = true;
-		m_fResetTimer = 0.f;
-
-		/*CPartObject* pPartObject = dynamic_cast<CPartObject*>(pOther->Get_OwnerObject());
-		CTransform* pOtherTransformCom = dynamic_cast<CTransform*>(pPartObject->Get_ContainerObject()->Find_Component(TEXT("Com_Transform")));
-
-		m_pCurrentParentWorldMatrix = pOtherTransformCom->Get_WorldMatrix_Ptr();*/
+		//m_fResetTimer = 0.f;
 	}
 }
 

@@ -3,19 +3,21 @@
 #include "State_Monster.h"
 
 BEGIN(Client)
-class CSlime_Large;
+	class CBulletPool_Monster;
+	class CSlime_Cauldron;
 
-class CState_Slime_Large abstract: public CState_Monster
+class CState_Slime_Cauldron abstract: public CState_Monster
 {
 public:
-    struct SLIME_LARGE_DESC
+    typedef struct tagStateSlimeCauldron : STATEMONSTER_DESC
     {
-        _float4  zombiePosition = { 0.f, 0.f, 0.f, 1.f };
-    };
+        CBulletPool_Monster*    pBulletPool_Monster = { nullptr };
+
+    }STATE_SLIME_CAULDRON_DESC;
 
 protected:
-    CState_Slime_Large(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
-	~CState_Slime_Large() override = default;
+    CState_Slime_Cauldron(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATE_SLIME_CAULDRON_DESC* pDesc);
+	~CState_Slime_Cauldron() override = default;
 
 public:
     HRESULT   Init_State()                              override;
@@ -31,14 +33,12 @@ public:
     void      Collision_Exit(CCollider* pOther)       override;
 
 protected:
-    CSlime_Large*    m_pSlime_Large = { nullptr };
+    CSlime_Cauldron*    m_pSlime_Cauldron = { nullptr };
+
+    CBulletPool_Monster* m_pBulletPool_Monster = { nullptr };
 
 protected:
-    _bool     Change_State_To_Attack();
-    _bool     Change_State_To_Walk();
-    _bool     Change_State_To_Idle();
     _bool     Modify_HP(CCollider* pOther);
-    _bool     Change_State_To_Stun(CCollider* pOther);
 
 public:
     void   Free()    override;

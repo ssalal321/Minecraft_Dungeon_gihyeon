@@ -1,4 +1,6 @@
 #include "Player_Arrow.h"
+
+#include "ArrowPool_Player.h"
 #include "GameInstance.h"
 
 _int  CPlayer_Arrow::m_iArrowID = 0;
@@ -52,7 +54,7 @@ void CPlayer_Arrow::Update(_float fTimeDelta)
 
 		m_fResetTimer += fTimeDelta;
 		if (m_fResetTimer >= 3.5f)
-			Reset();
+			Return_To_Pool();
 	}
 		
 	if (m_bCollided)
@@ -60,7 +62,7 @@ void CPlayer_Arrow::Update(_float fTimeDelta)
 		m_fResetTimer += fTimeDelta;
 
 		if (m_fResetTimer >= 0.2f)
-			Reset();
+			Return_To_Pool();
 	}
 }
 
@@ -136,7 +138,7 @@ void CPlayer_Arrow::Shoot(_float4 startPos, _float4 lookPos)
 	m_pColliderCom->Set_ColliderActive(true);
 }
 
-void CPlayer_Arrow::Reset()
+void CPlayer_Arrow::Return_To_Pool()
 {
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, { 0.f, 200.f, 0.f, 1.f});
 	m_pTransformCom->LookAt({ 0.f, 0.f, 0.f, 1.f });
@@ -147,6 +149,9 @@ void CPlayer_Arrow::Reset()
 	m_bCollided  = false;
 	m_bActive	 = false;
 	m_pColliderCom->Set_ColliderActive(false);
+
+	if (m_pArrowPool)
+		m_pArrowPool->Return_Arrow(this);
 }
 
 void CPlayer_Arrow::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)
@@ -157,11 +162,6 @@ void CPlayer_Arrow::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE 
 	{
 		m_bCollided = true;
 		m_fResetTimer = 0.f;
-
-		/*CPartObject* pPartObject = dynamic_cast<CPartObject*>(pOther->Get_OwnerObject());
-		CTransform* pOtherTransformCom = dynamic_cast<CTransform*>(pPartObject->Get_ContainerObject()->Find_Component(TEXT("Com_Transform")));
-
-		m_pCurrentParentWorldMatrix = pOtherTransformCom->Get_WorldMatrix_Ptr();*/
 	}
 }
 
