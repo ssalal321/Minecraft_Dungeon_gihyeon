@@ -120,7 +120,7 @@ HRESULT CSkeleton::Ready_PartObjects()
 	ItemDesc.strIconTexPrototypeTag = TEXT("Prototype_Component_Texture_ShortBow");
 	ItemDesc.strPartObjectTag		= TEXT("Part_Weapon_Ranged");
 	ItemDesc.iDealPoint				= 8;
-	ItemDesc.m_eItemtype			= ITEM_TYPE::RANGED;
+	ItemDesc.eItemtype			= ITEM_TYPE::RANGED;
 	ItemDesc.strIconGameObjectTag	= TEXT("UIGameObject_ShortBow");
 
 	ItemDesc.pParentWorldMatrix		 = m_pTransformCom->Get_WorldMatrix_Ptr();

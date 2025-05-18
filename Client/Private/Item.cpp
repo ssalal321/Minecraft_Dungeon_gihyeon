@@ -36,7 +36,7 @@ HRESULT CItem::Initialize(void* pArg)
 		m_strTexPrototypeTag	= pDesc->strIconTexPrototypeTag;
 		m_strIconGameObjectTag	= pDesc->strIconGameObjectTag;
 		m_strPartObjectTag		= pDesc->strPartObjectTag;
-		m_eItemtype				= pDesc->m_eItemtype;
+		m_eItemtype				= pDesc->eItemtype;
 		m_iDealPoint			= pDesc->iDealPoint;
 		m_iHealPoint			= pDesc->iHealPoint;
 	}

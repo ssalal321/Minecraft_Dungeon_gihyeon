@@ -29,8 +29,9 @@ HRESULT CChestIcon::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+	m_pTransformCom->SetUp_Scale(1.5f, 1.5f, 1.5f);
 	m_pTransformCom->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(45.f));
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&m_pDesc->worldPosition));
+	//m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&m_pDesc->worldPosition));
 
 	return S_OK;
 }
@@ -120,7 +121,7 @@ HRESULT CChestIcon::Ready_Components()
 	/* Com_Collider */
 	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereCollDesc{};
 
-	SphereCollDesc.fRadius = 1.4f;
+	SphereCollDesc.fRadius = 0.3f;
 	SphereCollDesc.vCenter = _float3(0.f, SphereCollDesc.fRadius, 0.f);
 	SphereCollDesc.pGameObject = this;
 	SphereCollDesc.CombinedWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();;

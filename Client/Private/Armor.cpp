@@ -29,10 +29,6 @@ HRESULT CArmor::Initialize(void* pArg)
 	/* 원형의 데이터를 복제하여 사본을 만들고. */
 	/* 추가적으로 필요한 데이터를 Arg로 받아와 실 사용하기위한 객체의 정보를 생성해준다. */	
 
-	m_strPartObjectTag = TEXT("Part_Armor");
-	m_eItemtype = ITEM_TYPE::ARMOR;
-	m_iDealPoint = 0;
-
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 

@@ -127,6 +127,9 @@ public:
 	void		Late_Update(_float fTimeDelta)		override;
 	HRESULT		Render()							override;
 
+
+	HRESULT		Ready_Components();
+
 public:
 	void	Hover_and_Chase_Monster();
 
@@ -169,7 +172,7 @@ private:
 #pragma endregion
 
 private:
-	HRESULT		Ready_Components();
+	
 	HRESULT		Ready_Inventory();
 	HRESULT		Ready_PartObjects();
 	HRESULT		Ready_States();

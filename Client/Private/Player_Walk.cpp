@@ -18,7 +18,7 @@ HRESULT CPlayer_Walk::Init_State()
 
 void CPlayer_Walk::State_Enter()
 {
-	std::cerr << "Player_Walk" << "\n";
+	//std::cerr << "Player_Walk" << "\n";
 	// ¹Ù²ã¾ßµÅ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	/*CPartObject* pItem = m_pPlayer->Find_PartObject(TEXT("Part_Weapon_Melee"));
@@ -108,7 +108,7 @@ void CPlayer_Walk::Walk_Through_Destination(_float fTimeDelta)
 
 	m_pTransformCom->LookAt(vNextPos);
 
-	CNavigation* pNavigationCom = dynamic_cast<CNavigation*>(m_pPlayer->Find_Component(TEXT("Com_Navigation_LoungeMap")));
+	CNavigation* pNavigationCom = dynamic_cast<CNavigation*>(m_pPlayer->Find_Component(TEXT("Com_Navigation")));
 	m_pTransformCom->Go_Straight(fTimeDelta, pNavigationCom);
 }
 

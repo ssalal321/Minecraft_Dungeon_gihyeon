@@ -175,39 +175,53 @@ HRESULT CLobbyChest::Bind_ShaderResources()
 	return S_OK;
 }
 
+
 void CLobbyChest::Pop_Out_Items()
 {
 	std::random_device rd;
 	std::mt19937 gen(rd());
 
-	std::uniform_real_distribution<_float>  distX(-2.f, 2.f);      // 좌우 범위
-	std::uniform_real_distribution<_float>  distZ(-2.f, 2.f);      // 앞뒤 범위
-	std::uniform_real_distribution<_float>  distHeight(3.f, 5.f);  // 튀는 높이
-	std::uniform_real_distribution<_float>  distSpeed(1.0f, 1.5f); // 이동 속도
+	std::uniform_real_distribution<_float> distHeight(3.5f, 5.f);   // 높이
+	std::uniform_real_distribution<_float> distSpeed(1.0f, 1.5f);   // 속도
+	std::uniform_real_distribution<_float> distRandom(0.0f, 0.3f);  // 미세 흔들림
 
-	for (auto& iconDesc : m_pChestIconDescs)
+	const _uint iconCount = static_cast<_uint>(m_pChestIconDescs.size());
+
+	for (_uint i = 0; i < iconCount; ++i)
 	{
+		auto& iconDesc = m_pChestIconDescs[i];
+
 		CChestIcon* pIcon = CChestIcon::Create(m_pDevice, m_pContext, &iconDesc);
 		if (!pIcon)
 			continue;
 
 		m_pChestIcons.push_back(pIcon);
 
-		// 시작 위치 (상자 위)
+		// 시작 위치: 상자 위
 		XMFLOAT3 vStart = {
 			m_WorldPosition.x,
 			m_WorldPosition.y + 1.0f,
 			m_WorldPosition.z
 		};
 
-		// 랜덤 도착 위치 (사방으로 퍼지도록)
+		// 각도 계산 (아이콘 개수에 따라 분산)
+		_float angleDeg = 60.f + (i * 60.f);  // 60, 120, 180, ...
+		_float angleRad = XMConvertToRadians(angleDeg);
+
+		// 기본 거리
+		_float distanceX = -1.5f;  // 왼쪽으로 기본 거리 유지
+		_float distanceZ = 1.5f;   // 앞으로 기본 거리 유지
+
+		// 방향 벡터 계산 (회전된 방향)
+		_float offsetX = cosf(angleRad) * distanceX + distRandom(gen);
+		_float offsetZ = sinf(angleRad) * distanceZ + distRandom(gen);
+
 		XMFLOAT3 vEnd = {
-			vStart.x + distX(gen),
-			m_WorldPosition.y + 0.5f, // 착지 높이는 약간 위
-			vStart.z + distZ(gen)
+			vStart.x + offsetX,
+			m_WorldPosition.y + 2.0f,
+			vStart.z + offsetZ
 		};
 
-		// 제어점 (중간 + 위로 튐)
 		XMFLOAT3 vControl = {
 			(vStart.x + vEnd.x) * 0.5f,
 			vStart.y + distHeight(gen),
@@ -216,12 +230,13 @@ void CLobbyChest::Pop_Out_Items()
 
 		_float fBezierSpeed = distSpeed(gen);
 
-		// 이동 시작!
 		CTransform* pIconTransformCom = dynamic_cast<CTransform*>(pIcon->Find_Component(TEXT("Com_Transform")));
-
-		pIconTransformCom->Start_BezierFlight(vStart, vControl, vEnd, fBezierSpeed);
+		if (pIconTransformCom)
+			pIconTransformCom->Start_BezierFlight(vStart, vControl, vEnd, fBezierSpeed);
 	}
 }
+
+
 
 void CLobbyChest::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)
 {

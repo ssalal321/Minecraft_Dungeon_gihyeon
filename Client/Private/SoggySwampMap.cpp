@@ -63,8 +63,6 @@ void CSoggySwampMap::Priority_Update(_float fTimeDelta)
 void CSoggySwampMap::Update(_float fTimeDelta)
 {
 #ifdef _DEBUG
-	m_pNavigationCom->Update(m_pTransformCom->Get_WorldMatrix_Ptr());
-
 
 	if (m_pGameInstance->Key_Down(VK_F1))
 		m_bClickActive = !m_bClickActive;
@@ -75,47 +73,49 @@ void CSoggySwampMap::Update(_float fTimeDelta)
 
 		if (m_pGameInstance->Picked_Vertex(fLocalPickedVertex, TEXT("GameObject_SoggySwampMap"), LEVEL_SOGGYSWAMP, TEXT("Layer_BackGround")))
 		{
-			
+
 			_vector vWorldPickedVertex = {};
 			vWorldPickedVertex = XMVector3TransformCoord(XMLoadFloat3(&fLocalPickedVertex), XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
 			_float3  fWorldPickedVertex;
 			XMStoreFloat3(&fWorldPickedVertex, vWorldPickedVertex);
 
 			std::cerr << "[피킹된 정점] X: " << fWorldPickedVertex.x
-								 << " Y: " << fWorldPickedVertex.y
-								 << " Z: " << fWorldPickedVertex.z << std::endl;
-			
-
-			m_fCellPoints[m_iPointNum] = fLocalPickedVertex;
-			++m_iPointNum;
-
-			// Navigation에 전달
-			if (m_iPointNum == 3 && m_pNavigationCom)
-			{
-				m_pNavigationCom->Make_Cell(m_fCellPoints);
-			}
-
-			if (3 == m_iPointNum)
-			{
-				m_iPointNum = 0;
-			}
-
-			/*CPlayer* pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("GameObject_Player"),
-							LEVEL_SOGGYSWAMP, TEXT("Layer_Player")));
-						pPlayer->Set_NextPosition({ fWorldPickedPos.x, fWorldPickedPos.y, fWorldPickedPos.z, 1.f });
-						pPlayer->Change_State(PLAYER_STATE::WALK);*/
+				<< " Y: " << fWorldPickedVertex.y
+				<< " Z: " << fWorldPickedVertex.z << std::endl;
 		}
 	}
+	//		
 
-	if (m_pGameInstance->Key_Down(VK_RBUTTON) && m_bClickActive)
-	{
-		m_pNavigationCom->Erase_Cell_Pick(m_pTransformCom->Get_WorldMatrix_Inverse());
-	}
+	//		m_fCellPoints[m_iPointNum] = fLocalPickedVertex;
+	//		++m_iPointNum;
 
-	if (m_pGameInstance->Key_Down(VK_BACK) && m_bClickActive)
-	{
-		m_pNavigationCom->Erase_Cell_Last();
-	}
+	//		// Navigation에 전달
+	//		if (m_iPointNum == 3 && m_pNavigationCom)
+	//		{
+	//			m_pNavigationCom->Make_Cell(m_fCellPoints);
+	//		}
+
+	//		if (3 == m_iPointNum)
+	//		{
+	//			m_iPointNum = 0;
+	//		}
+
+	//		/*CPlayer* pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("GameObject_Player"),
+	//						LEVEL_SOGGYSWAMP, TEXT("Layer_Player")));
+	//					pPlayer->Set_NextPosition({ fWorldPickedPos.x, fWorldPickedPos.y, fWorldPickedPos.z, 1.f });
+	//					pPlayer->Change_State(PLAYER_STATE::WALK);*/
+	//	}
+	//}
+
+	//if (m_pGameInstance->Key_Down(VK_RBUTTON) && m_bClickActive)
+	//{
+	//	m_pNavigationCom->Erase_Cell_Pick(m_pTransformCom->Get_WorldMatrix_Inverse());
+	//}
+
+	//if (m_pGameInstance->Key_Down(VK_BACK) && m_bClickActive)
+	//{
+	//	m_pNavigationCom->Erase_Cell_Last();
+	//}
 #endif
 }
 	
