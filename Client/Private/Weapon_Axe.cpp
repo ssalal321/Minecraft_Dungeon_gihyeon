@@ -1,27 +1,27 @@
-#include "Weapon_Glaive.h"
+#include "Weapon_Axe.h"
 #include "GameInstance.h"
 #include "Item.h"
 
-CWeapon_Glaive::CWeapon_Glaive(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CWeapon_Axe::CWeapon_Axe(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CItem(pDevice, pContext)
 {
 
 }
 
-CWeapon_Glaive::CWeapon_Glaive(const CWeapon_Glaive& Prototype)
+CWeapon_Axe::CWeapon_Axe(const CWeapon_Axe& Prototype)
 	: CItem(Prototype)
 {
 
 }
 
-HRESULT CWeapon_Glaive::Initialize_Prototype()
+HRESULT CWeapon_Axe::Initialize_Prototype()
 {
 	/* 외부 데이터베이스를 통해서 값을 채운다. */
 
 	return S_OK;
 }
 
-HRESULT CWeapon_Glaive::Initialize(void* pArg)
+HRESULT CWeapon_Axe::Initialize(void* pArg)
 {
 	/* 원형의 데이터를 복제하여 사본을 만들고. */
 	/* 추가적으로 필요한 데이터를 Arg로 받아와 실 사용하기위한 객체의 정보를 생성해준다. */	
@@ -33,26 +33,26 @@ HRESULT CWeapon_Glaive::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	// Glaive 세팅
-	m_pTransformCom->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(100.f));
-	m_pTransformCom->Rotation(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMConvertToRadians(90.f));
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMVectorSet(0.02f, -0.05f, 0.4f, 1.f));
+	// Axe 세팅
+	m_pTransformCom->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(180.f));
+	m_pTransformCom->Rotation(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMConvertToRadians(270.f));
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMVectorSet(0.02f, -0.05f, 0.25f, 1.f));
 	return S_OK;
 }
 
-void CWeapon_Glaive::Priority_Update(_float fTimeDelta)
+void CWeapon_Axe::Priority_Update(_float fTimeDelta)
 {
 	if (false == m_bItemActive)
 		return;
 }
 
-void CWeapon_Glaive::Update(_float fTimeDelta)
+void CWeapon_Axe::Update(_float fTimeDelta)
 {
 	if (false == m_bItemActive)
 		return;
 }
 
-void CWeapon_Glaive::Late_Update(_float fTimeDelta)
+void CWeapon_Axe::Late_Update(_float fTimeDelta)
 {
 	if (false == m_bItemActive)
 		return;
@@ -70,7 +70,7 @@ void CWeapon_Glaive::Late_Update(_float fTimeDelta)
 	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 }
 
-HRESULT CWeapon_Glaive::Render()
+HRESULT CWeapon_Axe::Render()
 {
 	if (false == m_bItemActive)
 		return S_OK;
@@ -95,7 +95,7 @@ HRESULT CWeapon_Glaive::Render()
 	return S_OK;
 }
 
-HRESULT CWeapon_Glaive::Ready_Components()
+HRESULT CWeapon_Axe::Ready_Components()
 {
 	/* Com_Shader */
 	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxMesh"),
@@ -106,15 +106,15 @@ HRESULT CWeapon_Glaive::Ready_Components()
 	CModel::MODEL_DESC	pModelDesc = {};
 	pModelDesc.bPickable = false;
 
-	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Model_GlaiveSteel"),
+	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Model_AxeSteel"),
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom), &pModelDesc))
 		return E_FAIL;
 
 
 	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereCollDesc{};
 
-	SphereCollDesc.fRadius = 1.2f;
-	SphereCollDesc.vCenter = _float3(0.f, SphereCollDesc.fRadius * 1.3f, 0.f);
+	SphereCollDesc.fRadius = 0.5f;
+	SphereCollDesc.vCenter = _float3(0.f, SphereCollDesc.fRadius - 0.8f, 0.f);
 	SphereCollDesc.pGameObject = this;
 	SphereCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
 	SphereCollDesc.pCollisionActivated = m_pBigCollisionActivating;
@@ -125,7 +125,7 @@ HRESULT CWeapon_Glaive::Ready_Components()
 	if (nullptr == pColliderSphereCom)
 		return E_FAIL;
 
-	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), pColliderSphereCom, TEXT("Player_Weapon"), TEXT("Player"), true);
+	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), pColliderSphereCom, TEXT("Monster_Weapon"), TEXT("Monster"), true);
 	CCollider* pWeaponCollider = dynamic_cast<CCollider*>(pColliderSphereCom);
 	pWeaponCollider->Set_ColliderActive(false);
 
@@ -133,13 +133,13 @@ HRESULT CWeapon_Glaive::Ready_Components()
 }
 
 
-CWeapon_Glaive* CWeapon_Glaive::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CWeapon_Axe* CWeapon_Axe::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	CWeapon_Glaive* pGameInstance = new CWeapon_Glaive(pDevice, pContext);
+	CWeapon_Axe* pGameInstance = new CWeapon_Axe(pDevice, pContext);
 
 	if (FAILED(pGameInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Create : CWeapon_Glaive");
+		MSG_BOX("Failed to Create : CWeapon_Axe");
 		Safe_Release(pGameInstance);
 	}
 
@@ -147,20 +147,20 @@ CWeapon_Glaive* CWeapon_Glaive::Create(ID3D11Device* pDevice, ID3D11DeviceContex
 }
 
 
-CGameObject* CWeapon_Glaive::Clone(void* pArg)
+CGameObject* CWeapon_Axe::Clone(void* pArg)
 {
-	CWeapon_Glaive* pGameInstance = new CWeapon_Glaive(*this);
+	CWeapon_Axe* pGameInstance = new CWeapon_Axe(*this);
 
 	if (FAILED(pGameInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Clone : CWeapon_Glaive");
+		MSG_BOX("Failed to Clone : CWeapon_Axe");
 		Safe_Release(pGameInstance);
 	}
 
 	return pGameInstance;
 }
 
-void CWeapon_Glaive::Free()
+void CWeapon_Axe::Free()
 {
 	__super::Free();
 

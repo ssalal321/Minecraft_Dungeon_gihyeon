@@ -37,7 +37,8 @@ HRESULT CState_Player::Init_State()
 	m_pPlayerInfo = dynamic_cast<CPlayer::PLAYER_DESC*>(m_pGameObjectInfo);
 
 	m_pActorModelCom	= m_pStatePlayerDesc->pActorModelCom;
-	m_pColliderOBBCom	= m_pStatePlayerDesc->pColliderCom;
+	m_pColliderBigCom	= m_pStatePlayerDesc->pColliderBigCom;
+	m_pColliderSmallCom = m_pStatePlayerDesc->pColliderSmallCom;
 	m_pTransformCom		= m_pStatePlayerDesc->pTransformCom;
 	//m_pNavigationCom	= m_pStatePlayerDesc->pNavigationCom;
 
@@ -45,7 +46,7 @@ HRESULT CState_Player::Init_State()
 	m_pArrowPool_Player = m_pStatePlayerDesc->pArrowPool_Player;
 
 	if (nullptr == m_pPlayer || nullptr == m_pPlayerInfo || nullptr == m_pActorModelCom ||
-		nullptr == m_pTransformCom /*|| nullptr == m_pNavigationCom*/ || nullptr == m_pColliderOBBCom)
+		nullptr == m_pTransformCom /*|| nullptr == m_pNavigationCom*/ || nullptr == m_pColliderBigCom)
 		return E_FAIL;
 
 	return S_OK;

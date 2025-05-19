@@ -106,6 +106,15 @@ namespace Client
 		STATE_END
 	};
 
+	enum class VINDICATOR_STATE
+	{
+		ATTACK,
+		IDLE,
+		NOVELTY,
+		WALK,
+		STATE_END
+	};
+
 	enum class	SLOT_TYPE { STORE, GEAR, ARTIFACT, NONE };
 
 	enum class	ITEM_TYPE { MELEE, ARMOR, RANGED, ARTIFACT, NONE };

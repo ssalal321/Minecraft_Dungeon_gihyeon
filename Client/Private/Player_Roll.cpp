@@ -15,11 +15,11 @@ HRESULT CPlayer_Roll::Init_State()
 
 void CPlayer_Roll::State_Enter()
 {
-	m_pColliderOBBCom->Set_ColliderActive(true);
+	m_bRollStarted = false;
+	m_pColliderSmallCom->Set_ColliderActive(false);
+	m_pColliderBigCom->Set_ColliderActive(false);
 
-	m_fRollingTime = 0.f;
-
-	m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::ROLL), false, 1.3f);
+	m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::ROLL), false, 1.1f);
 }
 
 void CPlayer_Roll::State_Priority_Update(_float fTimeDelta)
@@ -43,10 +43,18 @@ void CPlayer_Roll::State_Update(_float fTimeDelta)
 			return;
 	}
 
-	m_fRollingTime += fTimeDelta;
+	_float  fAnimCurTrackPos = m_pActorModelCom->Get_AnimCurrentTrackPosition();
 
-	CNavigation* pNavigationCom = dynamic_cast<CNavigation*>(m_pPlayer->Find_Component(TEXT("Com_Navigation")));
-	m_pTransformCom->Go_Straight(fTimeDelta, pNavigationCom, 3.5f);
+	if (!m_bRollStarted && fAnimCurTrackPos > 2.f)
+	{
+		m_bRollStarted = true;
+	}
+
+	if (m_bRollStarted && fAnimCurTrackPos <= 19.f)
+	{
+		CNavigation* pNavigationCom = dynamic_cast<CNavigation*>(m_pPlayer->Find_Component(TEXT("Com_Navigation")));
+		m_pTransformCom->Go_Straight(fTimeDelta, pNavigationCom, 1.7f);
+	}
 }
 
 
@@ -57,12 +65,16 @@ void CPlayer_Roll::State_Late_Update(_float fTimeDelta)
 
 void CPlayer_Roll::State_Exit()
 {
-	m_pColliderOBBCom->Set_ColliderActive(false);
+	m_pColliderSmallCom->Set_ColliderActive(true);
+	m_pColliderBigCom->Set_ColliderActive(true);
 }
 
 void CPlayer_Roll::Collision_Enter(CCollider* pOther)
 {
 	__super::Collision_Enter(pOther);
+
+	// 그냥 Roll에만 ModifyHP 안넣으면 된다.
+	// 하지만 충돌 연산 잠시라도 줄일 겸 그냥 Collider 끄는 방식 채택하겟다.
 }
 
 void CPlayer_Roll::Collision_Stay(CCollider* pOther)

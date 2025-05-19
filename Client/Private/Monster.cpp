@@ -32,8 +32,8 @@ HRESULT CMonster::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	if (m_pNavigationCom)
-		m_pNavigationCom->SetUp_CurrentCellIndex(0);
+	/*if (m_pNavigationCom)
+		m_pNavigationCom->SetUp_CurrentCellIndex(0);*/
 
 	return S_OK;
 }
@@ -119,6 +119,10 @@ void CMonster::Change_State(const MonsterState& state)
 
 	case MONSTER_TYPE::SLIME_CAULDRON:
 		m_iState = static_cast<_uint>(state.SlimeCauldronState);
+		break;
+
+	case MONSTER_TYPE::VINDICATOR:
+		m_iState = static_cast<_uint>(state.VindicatorState);
 		break;
 	}
 

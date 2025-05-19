@@ -42,6 +42,9 @@ HRESULT CSkeleton::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(m_pMonsterInfo)))
 		return E_FAIL;
 
+	if (m_pNavigationCom)
+		m_pNavigationCom->SetUp_CurrentCellIndex(0);
+
 	m_pArrowPool_Monster = CArrowPool_Monster::Create();
 	if (nullptr == m_pArrowPool_Monster)	
 		return E_FAIL;
@@ -121,7 +124,7 @@ HRESULT CSkeleton::Ready_PartObjects()
 	ItemDesc.strIconTexPrototypeTag = TEXT("Prototype_Component_Texture_ShortBow");
 	ItemDesc.strPartObjectTag		= TEXT("Part_Weapon_Ranged");
 	ItemDesc.iDealPoint				= 8;
-	ItemDesc.eItemtype			= ITEM_TYPE::RANGED;
+	ItemDesc.eItemtype				= ITEM_TYPE::RANGED;
 	ItemDesc.strIconGameObjectTag	= TEXT("UIGameObject_ShortBow");
 
 	ItemDesc.pParentWorldMatrix		 = m_pTransformCom->Get_WorldMatrix_Ptr();

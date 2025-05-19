@@ -346,6 +346,30 @@
     <Filter Include="02.GameObjects\Monster\Slime\Slime_Cauldron\00. Body\01. State\Slime_Cauldron_Attack">
       <UniqueIdentifier>{774d764b-8e18-432e-a0e0-9f302d4e130f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster\Vindicator">
+      <UniqueIdentifier>{10110c8b-aafd-4651-a77c-35864f95e8d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Vindicator\00. Body">
+      <UniqueIdentifier>{16fe1a2b-718c-4241-a5b1-1e8e12517b14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Vindicator\01. State">
+      <UniqueIdentifier>{0e52d0f5-6e3c-407f-9b30-aa119bd66b70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Vindicator\01. State\Vindicator_Idle">
+      <UniqueIdentifier>{ca3f03b9-dbca-4832-8d94-66b7a6e67d12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Vindicator\01. State\Vindicator_Walk">
+      <UniqueIdentifier>{7fb45f62-1eb6-4d1f-9487-389c4defd538}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Vindicator\01. State\Vindicator_Novelty">
+      <UniqueIdentifier>{5a25d8b2-b830-49da-bfb7-b42a0a77cca0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Vindicator\01. State\Vindicator_Attack">
+      <UniqueIdentifier>{1ce42cff-10a2-419f-beaa-d7b9a51acce0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Item\Melee_Weapon\Axe">
+      <UniqueIdentifier>{e8c37d4b-83ed-4921-85d8-a56fe4ee245d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -687,6 +711,30 @@
     <ClInclude Include="..\Public\Slime_Cauldron_Idle.h">
       <Filter>02.GameObjects\Monster\Slime\Slime_Cauldron\00. Body\01. State\Slime_Cauldron_Idle</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\State_Vindicator.h">
+      <Filter>02.GameObjects\Monster\Vindicator\01. State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Vindicator.h">
+      <Filter>02.GameObjects\Monster\Vindicator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Vindicator_Walk.h">
+      <Filter>02.GameObjects\Monster\Vindicator\01. State\Vindicator_Walk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Vindicator_Idle.h">
+      <Filter>02.GameObjects\Monster\Vindicator\01. State\Vindicator_Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Vindicator_Attack.h">
+      <Filter>02.GameObjects\Monster\Vindicator\01. State\Vindicator_Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Vindicator_Novelty.h">
+      <Filter>02.GameObjects\Monster\Vindicator\01. State\Vindicator_Novelty</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Body_Vindicator.h">
+      <Filter>02.GameObjects\Monster\Vindicator\00. Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Weapon_Axe.h">
+      <Filter>02.GameObjects\Item\Melee_Weapon\Axe</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1022,6 +1070,30 @@
     </ClCompile>
     <ClCompile Include="..\Private\Slime_Cauldron_Idle.cpp">
       <Filter>02.GameObjects\Monster\Slime\Slime_Cauldron\00. Body\01. State\Slime_Cauldron_Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Vindicator.cpp">
+      <Filter>02.GameObjects\Monster\Vindicator\01. State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Body_Vindicator.cpp">
+      <Filter>02.GameObjects\Monster\Vindicator\00. Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Vindicator.cpp">
+      <Filter>02.GameObjects\Monster\Vindicator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Vindicator_Attack.cpp">
+      <Filter>02.GameObjects\Monster\Vindicator\01. State\Vindicator_Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Vindicator_Idle.cpp">
+      <Filter>02.GameObjects\Monster\Vindicator\01. State\Vindicator_Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Vindicator_Novelty.cpp">
+      <Filter>02.GameObjects\Monster\Vindicator\01. State\Vindicator_Novelty</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Vindicator_Walk.cpp">
+      <Filter>02.GameObjects\Monster\Vindicator\01. State\Vindicator_Walk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Weapon_Axe.cpp">
+      <Filter>02.GameObjects\Item\Melee_Weapon\Axe</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
