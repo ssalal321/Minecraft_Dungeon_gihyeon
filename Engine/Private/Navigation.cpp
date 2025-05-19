@@ -416,8 +416,8 @@ _bool CNavigation::Can_Slide(_fvector vPrevWorldPos, _fvector vMovingWorldPos, _
 			_vector vWorldSlideDir = XMVector3TransformNormal(vSlideDir, XMLoadFloat4x4(m_pWorldMatrix));
 			_vector vSlideTargetWorld = vPrevWorldPos + vWorldSlideDir * fSlideSpeed;
 
-			// 최대 5회 Is_In 재시도
-			for (_int i = 0; i < 5; ++i)
+			// 최대 10회 Is_In 재시도
+			for (_int i = 0; i < 10; ++i)
 			{
 				_vector vSlideTargetLocal = XMVector3TransformCoord(vSlideTargetWorld, WorldMatrixInv);
 				if (m_Cells[iCellIndex]->Is_In(vSlideTargetLocal, &iNextNeighbor, &iHitEdgeIndex))

@@ -1,32 +1,31 @@
-#include "Body_Player.h"
+#include "Body_Vindicator.h"
 #include "GameInstance.h"
-#include "Monster.h"
 #include "Mesh.h"
 
-#include "Player.h"
+#include "Vindicator.h"
 
-CBody_Player::CBody_Player(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CBody_Vindicator::CBody_Vindicator(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CPartObject(pDevice, pContext)
 {
 
 }
 
-CBody_Player::CBody_Player(const CBody_Player& Prototype)
+CBody_Vindicator::CBody_Vindicator(const CBody_Vindicator& Prototype)
 	: CPartObject(Prototype)
 {
 
 }
 
-HRESULT CBody_Player::Initialize_Prototype()
+HRESULT CBody_Vindicator::Initialize_Prototype()
 {
 	/* 외부 데이터베이스를 통해서 값을 채운다. */
 
 	return S_OK;
 }
 
-HRESULT CBody_Player::Initialize(void* pArg)
+HRESULT CBody_Vindicator::Initialize(void* pArg)
 {
-	BODY_PLAYER_DESC* pDesc = static_cast<BODY_PLAYER_DESC*>(pArg);
+	BODY_VINDICATOR_DESC* pDesc = static_cast<BODY_VINDICATOR_DESC*>(pArg);
 
 	m_pTargetState = pDesc->pState;
 
@@ -39,23 +38,22 @@ HRESULT CBody_Player::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CBody_Player::Priority_Update(_float fTimeDelta)
+void CBody_Vindicator::Priority_Update(_float fTimeDelta)
 {
 }
 
-void CBody_Player::Update(_float fTimeDelta)
+void CBody_Vindicator::Update(_float fTimeDelta)
 {
-	
 }
 
-void CBody_Player::Late_Update(_float fTimeDelta)
+void CBody_Vindicator::Late_Update(_float fTimeDelta)
 {
 	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()) * XMLoadFloat4x4(m_pParentWorldMatrix));
 
 	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 }
 
-HRESULT CBody_Player::Render()
+HRESULT CBody_Vindicator::Render()
 {
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
@@ -80,13 +78,12 @@ HRESULT CBody_Player::Render()
 	return S_OK;
 }
 
-void CBody_Player::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)
+void CBody_Vindicator::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)
 {
-	CPlayer* pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("GameObject_Player"), m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_Player")));
-	pPlayer->Collided_With(pOther, eCollisionState);
+	dynamic_cast<CVindicator*>(m_pContainerObject)->Collided_With(pOther, eCollisionState);
 }
 
-HRESULT CBody_Player::Ready_Components()
+HRESULT CBody_Vindicator::Ready_Components()
 {
 	/* Com_Shader */
 	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxAnimMesh"),
@@ -94,30 +91,30 @@ HRESULT CBody_Player::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Model */
-	/*CMesh::MESH_DESC pMeshDesc = {};
-	pMeshDesc.bPickable = true;*/
+	CModel::MODEL_DESC	pModelDesc = {};
+	pModelDesc.bPickable = true;
 
-	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Model_PlayerHex"),
-		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom)))
+	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Model_Vindicator"),
+		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom), &pModelDesc))
 		return E_FAIL;
 
 
-	/* Com_Collider */
-	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereCollDesc{};
+	/* Com_Collider Big*/
+	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereBigCollDesc{};
 
-	SphereCollDesc.fRadius = 1.6f;
-	SphereCollDesc.vCenter = _float3(0.f, SphereCollDesc.fRadius - 0.2f, 0.f);
-	SphereCollDesc.pGameObject = this;
-	SphereCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
-	SphereCollDesc.pCollisionActivated = m_pBigCollisionActivating;
+	SphereBigCollDesc.fRadius = 1.6f;
+	SphereBigCollDesc.vCenter = _float3(0.f, SphereBigCollDesc.fRadius - 0.2f, 0.f);
+	SphereBigCollDesc.pGameObject = this;
+	SphereBigCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
+	SphereBigCollDesc.pCollisionActivated = m_pBigCollisionActivating;
 
 	CComponent* pColliderBigSphereCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
-		TEXT("Com_Collider_BigSphere"), reinterpret_cast<CComponent**>(&m_pBigColliderCom), &SphereCollDesc);
+		TEXT("Com_Collider_BigSphere"), reinterpret_cast<CComponent**>(&m_pBigColliderCom), &SphereBigCollDesc);
 
 	if (nullptr == pColliderBigSphereCom)
 		return E_FAIL;
 
-	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), pColliderBigSphereCom, TEXT("Player_Body"), TEXT("Player"), true);
+	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), m_pBigColliderCom, TEXT("Monster_Body_NoHit"), TEXT("Monster"));
 	dynamic_cast<CCollider*>(pColliderBigSphereCom)->Set_ColliderRole(CCollider::BIG);
 
 
@@ -136,17 +133,15 @@ HRESULT CBody_Player::Ready_Components()
 	if (nullptr == pColliderSmallSphereCom)
 		return E_FAIL;
 
-	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), m_pSmallColliderCom, TEXT("Player_Body_Small"), TEXT("Player"));
+	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), m_pSmallColliderCom, TEXT("Monster_Body_Small"), TEXT("Monster"));
 	dynamic_cast<CCollider*>(pColliderSmallSphereCom)->Set_AllowSameGroupCollision(true);
 	dynamic_cast<CCollider*>(pColliderSmallSphereCom)->Set_ColliderRole(CCollider::SMALL);
 
 	return S_OK;
 }
 
-HRESULT CBody_Player::Bind_ShaderResources()
+HRESULT CBody_Vindicator::Bind_ShaderResources()
 {
-	/*if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
-		return E_FAIL;*/
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix)))
 		return E_FAIL;	
 
@@ -189,14 +184,13 @@ HRESULT CBody_Player::Bind_ShaderResources()
 	return S_OK;
 }
 
-
-CBody_Player* CBody_Player::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CBody_Vindicator* CBody_Vindicator::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	CBody_Player* pGameInstance = new CBody_Player(pDevice, pContext);
+	CBody_Vindicator* pGameInstance = new CBody_Vindicator(pDevice, pContext);
 
 	if (FAILED(pGameInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Create : CBody_Player");
+		MSG_BOX("Failed to Create : CBody_Vindicator");
 		Safe_Release(pGameInstance);
 	}
 
@@ -204,20 +198,20 @@ CBody_Player* CBody_Player::Create(ID3D11Device* pDevice, ID3D11DeviceContext* p
 }
 
 
-CGameObject* CBody_Player::Clone(void* pArg)
+CGameObject* CBody_Vindicator::Clone(void* pArg)
 {
-	CBody_Player* pGameInstance = new CBody_Player(*this);
+	CBody_Vindicator* pGameInstance = new CBody_Vindicator(*this);
 
 	if (FAILED(pGameInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Clone : CBody_Player");
+		MSG_BOX("Failed to Clone : CBody_Vindicator");
 		Safe_Release(pGameInstance);
 	}
 
 	return pGameInstance;
 }
 
-void CBody_Player::Free()
+void CBody_Vindicator::Free()
 {
 	__super::Free();
 

@@ -39,7 +39,7 @@ HRESULT CPlayer::Initialize_Prototype()
 
 HRESULT CPlayer::Initialize(void* pArg)
 {
-	m_pPlayerInfo = new PLAYER_DESC(TEXT("GameObject_Player"), 100, 100, 5, 3.5f, 40, false, 90.f, 3.f);
+	m_pPlayerInfo = new PLAYER_DESC(TEXT("GameObject_Player"), 500, 500, 5, 3.5f, 40, false, 90.f, 3.f);
 
 	if (FAILED(__super::Initialize(m_pPlayerInfo)))
 		return E_FAIL;
@@ -283,12 +283,14 @@ HRESULT CPlayer::Ready_States()
 	m_StatesVec.resize(static_cast<_uint>(PLAYER_STATE::STATE_END));	// state vector 자리 예약
 
 	CModel* pPlayerModel  = dynamic_cast<CModel*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Model")));
-	CCollider* pCollider = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_Sphere")));
+	CCollider* pColliderBig   = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_BigSphere")));
+	CCollider* pColliderSmall = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_SmallSphere")));
 
 	CState_Player::STATEPLAYER_DESC		pStatePlayerDesc = {};
-	pStatePlayerDesc.pColliderCom		= pCollider;
+	pStatePlayerDesc.pColliderBigCom	= pColliderBig;
+	pStatePlayerDesc.pColliderSmallCom	= pColliderSmall;
 	pStatePlayerDesc.pActorModelCom		= pPlayerModel;
-	//pStatePlayerDesc.pNavigationCom		= m_pNavigationCom;
+	//pStatePlayerDesc.pNavigationCom	= m_pNavigationCom;
 	pStatePlayerDesc.pTransformCom		= m_pTransformCom;
 	pStatePlayerDesc.pArrowPool_Player	= m_pArrowPool_Player;
 

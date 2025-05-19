@@ -38,6 +38,9 @@ HRESULT CBabyZombie::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(m_pMonsterInfo)))
 		return E_FAIL;
 
+	if (m_pNavigationCom)
+		m_pNavigationCom->SetUp_CurrentCellIndex(0);
+
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;
 

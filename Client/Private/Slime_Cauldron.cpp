@@ -36,6 +36,9 @@ HRESULT CSlime_Cauldron::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(m_pMonsterInfo)))
 		return E_FAIL;
 
+	if (m_pNavigationCom)
+		m_pNavigationCom->SetUp_CurrentCellIndex(0);
+
 	m_pBulletPool_Monster = CBulletPool_Monster::Create();
 	if (nullptr == m_pBulletPool_Monster)
 		return E_FAIL;

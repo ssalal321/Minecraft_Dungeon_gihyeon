@@ -10,10 +10,11 @@ class CState_Player abstract: public CState
 public:
     typedef struct tagStatePlayer
     {
-        CModel*         pActorModelCom = { nullptr };
-        CCollider*      pColliderCom = { nullptr };
-        CTransform*     pTransformCom = { nullptr };
-        CNavigation*    pNavigationCom = { nullptr };
+        CModel*         pActorModelCom      = { nullptr };
+        CCollider*      pColliderBigCom     = { nullptr };
+        CCollider*      pColliderSmallCom   = { nullptr };
+        CTransform*     pTransformCom       = { nullptr };
+        CNavigation*    pNavigationCom      = { nullptr };
         CArrowPool_Player*  pArrowPool_Player = { nullptr };
 
     }STATEPLAYER_DESC;
@@ -39,7 +40,8 @@ protected:
     CPlayer*                m_pPlayer = { nullptr };
     CPlayer::PLAYER_DESC*   m_pPlayerInfo = { nullptr };
     STATEPLAYER_DESC*       m_pStatePlayerDesc = { nullptr };
-    CCollider*              m_pColliderOBBCom = { nullptr };
+    CCollider*              m_pColliderBigCom = { nullptr };
+    CCollider*              m_pColliderSmallCom = { nullptr };
     CArrowPool_Player*      m_pArrowPool_Player = { nullptr };
 
     _bool			        m_bAnimationFinished = { false };

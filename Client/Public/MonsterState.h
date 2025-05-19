@@ -15,6 +15,7 @@ namespace Client
 		SLIME_MEDIUM,
 		SLIME_SMALL,
 		SLIME_CAULDRON,
+		VINDICATOR,
 		TYPE_END
 	};
 
@@ -31,6 +32,7 @@ namespace Client
 			SLIME_MEDIUM_STATE	SlimeMediumState;
 			SLIME_SMALL_STATE	SlimeSmallState;
 			SLIME_CAULDRON_STATE	SlimeCauldronState;
+			VINDICATOR_STATE	VindicatorState;
 		};
 
 		MonsterState() = default;
@@ -91,6 +93,14 @@ namespace Client
 		MonsterState monsterState;
 		monsterState.monsterType = MONSTER_TYPE::SLIME_CAULDRON;
 		monsterState.SlimeCauldronState = state;
+		return monsterState;
+	}
+
+	inline MonsterState Make_VindicatorState(VINDICATOR_STATE state)
+	{
+		MonsterState monsterState;
+		monsterState.monsterType = MONSTER_TYPE::VINDICATOR;
+		monsterState.VindicatorState = state;
 		return monsterState;
 	}
 }
