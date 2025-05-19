@@ -16,6 +16,7 @@ namespace Client
 		SLIME_SMALL,
 		SLIME_CAULDRON,
 		VINDICATOR,
+		CAULDRONBOSS,
 		TYPE_END
 	};
 
@@ -25,14 +26,15 @@ namespace Client
 
 		union
 		{
-			ZOMBIE_STATE		ZombieState;
-			BABYZOMBIE_STATE	BabyZombieState;
-			SKELETON_STATE		SkeletonState;
-			SLIME_LARGE_STATE	SlimeLargeState;
-			SLIME_MEDIUM_STATE	SlimeMediumState;
-			SLIME_SMALL_STATE	SlimeSmallState;
+			ZOMBIE_STATE			ZombieState;
+			BABYZOMBIE_STATE		BabyZombieState;
+			SKELETON_STATE			SkeletonState;
+			SLIME_LARGE_STATE		SlimeLargeState;
+			SLIME_MEDIUM_STATE		SlimeMediumState;
+			SLIME_SMALL_STATE		SlimeSmallState;
 			SLIME_CAULDRON_STATE	SlimeCauldronState;
-			VINDICATOR_STATE	VindicatorState;
+			VINDICATOR_STATE		VindicatorState;
+			CAULDRONBOSS_STATE		CauldronBossState;
 		};
 
 		MonsterState() = default;
@@ -101,6 +103,14 @@ namespace Client
 		MonsterState monsterState;
 		monsterState.monsterType = MONSTER_TYPE::VINDICATOR;
 		monsterState.VindicatorState = state;
+		return monsterState;
+	}
+
+	inline MonsterState Make_CauldronBossState(CAULDRONBOSS_STATE state)
+	{
+		MonsterState monsterState;
+		monsterState.monsterType = MONSTER_TYPE::CAULDRONBOSS;
+		monsterState.CauldronBossState = state;
 		return monsterState;
 	}
 }

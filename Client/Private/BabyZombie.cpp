@@ -5,6 +5,7 @@
 
 #include "FSM.h"
 #include "BabyZombie_Attack.h"
+#include "BabyZombie_Dead.h"
 #include "BabyZombie_GetHit.h"
 #include "BabyZombie_Idle.h"
 #include "BabyZombie_Novelty.h"
@@ -38,8 +39,8 @@ HRESULT CBabyZombie::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(m_pMonsterInfo)))
 		return E_FAIL;
 
-	if (m_pNavigationCom)
-		m_pNavigationCom->SetUp_CurrentCellIndex(0);
+	/*if (m_pNavigationCom)
+		m_pNavigationCom->SetUp_CurrentCellIndex(800);*/
 
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;
@@ -47,12 +48,14 @@ HRESULT CBabyZombie::Initialize(void* pArg)
 	if (FAILED(Ready_States()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
-								XMVectorSet(-3.f, 0.f, -15.f, 1.f));
+	/*m_pTransformCom->Set_State(CTransform::STATE_POSITION,
+								XMVectorSet(-3.f, 0.f, -15.f, 1.f));*/
 
+	BABYZOMBIE_DESC* pDesc = static_cast<BABYZOMBIE_DESC*>(pArg);
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&pDesc->babyZombiePosition));
 
-	/*BABYZOMBIE_DESC* pDesc = static_cast<BABYZOMBIE_DESC*>(pArg);
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&pDesc->babyZombiePosition));*/
+	if (m_pNavigationCom)
+		m_pNavigationCom->SetUp_CurrentCellIndex(m_pNavigationCom->Find_CellIndex(m_pTransformCom->Get_State(CTransform::STATE_POSITION)));
 
 	return S_OK;
 }
@@ -133,6 +136,7 @@ HRESULT CBabyZombie::Ready_States()
 	m_StatesVec[static_cast<_uint>(BABYZOMBIE_STATE::ATTACK)]	= CBabyZombie_Attack::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
 	m_StatesVec[static_cast<_uint>(BABYZOMBIE_STATE::GET_HIT)]	= CBabyZombie_GetHit::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
 	m_StatesVec[static_cast<_uint>(BABYZOMBIE_STATE::NOVELTY)]	= CBabyZombie_Novelty::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
+	m_StatesVec[static_cast<_uint>(BABYZOMBIE_STATE::DEAD)]		= CBabyZombie_Dead::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
 
 	m_pMonsterFSM = FSM::Create();
 

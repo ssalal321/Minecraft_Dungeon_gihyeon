@@ -202,9 +202,6 @@
     <Filter Include="02.GameObjects\Monster\BabyZombie\01. State">
       <UniqueIdentifier>{3d89ef3d-a690-4596-be5e-5ce6aae1e1a8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Idle">
-      <UniqueIdentifier>{76e92df8-fa7f-4785-8567-93a869c1e8f4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Walk">
       <UniqueIdentifier>{476667f2-4050-4e7f-acd1-8cc05247e0a2}</UniqueIdentifier>
     </Filter>
@@ -331,20 +328,8 @@
     <Filter Include="02.GameObjects\Monster\Slime\Slime_Cauldron\00. Body">
       <UniqueIdentifier>{57834bad-103c-491d-92dd-23ca999ad413}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Monster\Slime\Slime_Cauldron\00. Body\01. State">
-      <UniqueIdentifier>{efd2f0dc-60d8-40d0-b6b8-a8cf9775add4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Monster\Slime\Slime_Cauldron\00. Body\02. Bullet">
-      <UniqueIdentifier>{68b11009-f072-42ac-9207-f244e50ec9c6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\Bullet">
       <UniqueIdentifier>{ad1ae41b-9d8f-4f29-a42e-23d43a98324a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Monster\Slime\Slime_Cauldron\00. Body\01. State\Slime_Cauldron_Idle">
-      <UniqueIdentifier>{e8ad416a-0179-4262-9147-bee87d870bda}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Monster\Slime\Slime_Cauldron\00. Body\01. State\Slime_Cauldron_Attack">
-      <UniqueIdentifier>{774d764b-8e18-432e-a0e0-9f302d4e130f}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\Monster\Vindicator">
       <UniqueIdentifier>{10110c8b-aafd-4651-a77c-35864f95e8d8}</UniqueIdentifier>
@@ -369,6 +354,45 @@
     </Filter>
     <Filter Include="02.GameObjects\Item\Melee_Weapon\Axe">
       <UniqueIdentifier>{e8c37d4b-83ed-4921-85d8-a56fe4ee245d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\CauldronBoss">
+      <UniqueIdentifier>{8c3d2862-4e07-490d-8062-b656d4dbc169}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\CauldronBoss\00. Body">
+      <UniqueIdentifier>{b6610525-39d2-4f4a-8283-a5fb7d13f33a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\CauldronBoss\01. State">
+      <UniqueIdentifier>{cd9b72c6-82f6-4fc0-b889-df930e6fba9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss Idle">
+      <UniqueIdentifier>{d243c7c1-b145-4202-8737-cdeefed16b6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss BasicAttack">
+      <UniqueIdentifier>{d88192de-6859-463a-b5ae-da36fa948802}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss IntenseSpin">
+      <UniqueIdentifier>{0fc64abd-d455-4626-a422-7c8c36728479}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss StrongAttack">
+      <UniqueIdentifier>{5dc2f529-1942-474b-8faa-2ef3502697b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Cauldron\01. State">
+      <UniqueIdentifier>{efd2f0dc-60d8-40d0-b6b8-a8cf9775add4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Cauldron\01. State\Slime_Cauldron_Idle">
+      <UniqueIdentifier>{e8ad416a-0179-4262-9147-bee87d870bda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Cauldron\01. State\Slime_Cauldron_Attack">
+      <UniqueIdentifier>{774d764b-8e18-432e-a0e0-9f302d4e130f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Slime\Slime_Cauldron\02. Bullet">
+      <UniqueIdentifier>{68b11009-f072-42ac-9207-f244e50ec9c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Dead">
+      <UniqueIdentifier>{cf91a26d-b31e-432e-a422-37bd046f3e22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Attack\BabyZombie_Idle">
+      <UniqueIdentifier>{76e92df8-fa7f-4785-8567-93a869c1e8f4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -580,7 +604,7 @@
       <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_GetHit</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\BabyZombie_Idle.h">
-      <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Idle</Filter>
+      <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Attack\BabyZombie_Idle</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\BabyZombie_Walk.h">
       <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Walk</Filter>
@@ -697,10 +721,10 @@
       <Filter>02.GameObjects\Monster\Slime\Slime_Cauldron\00. Body</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Slime_Cauldron.h">
-      <Filter>02.GameObjects\Monster\Slime\Slime_Cauldron\00. Body\01. State</Filter>
+      <Filter>02.GameObjects\Monster\Slime\Slime_Cauldron\01. State</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Slime_Cauldron_Attack.h">
-      <Filter>02.GameObjects\Monster\Slime\Slime_Cauldron\00. Body\01. State\Slime_Cauldron_Attack</Filter>
+      <Filter>02.GameObjects\Monster\Slime\Slime_Cauldron\01. State\Slime_Cauldron_Attack</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Slime_Cauldron_Bullet.h">
       <Filter>02.GameObjects\Bullet</Filter>
@@ -709,7 +733,7 @@
       <Filter>02.GameObjects\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Slime_Cauldron_Idle.h">
-      <Filter>02.GameObjects\Monster\Slime\Slime_Cauldron\00. Body\01. State\Slime_Cauldron_Idle</Filter>
+      <Filter>02.GameObjects\Monster\Slime\Slime_Cauldron\01. State\Slime_Cauldron_Idle</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Vindicator.h">
       <Filter>02.GameObjects\Monster\Vindicator\01. State</Filter>
@@ -734,6 +758,30 @@
     </ClInclude>
     <ClInclude Include="..\Public\Weapon_Axe.h">
       <Filter>02.GameObjects\Item\Melee_Weapon\Axe</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CauldronBoss.h">
+      <Filter>02.GameObjects\Monster\CauldronBoss</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CauldronBoss_BasicAttack.h">
+      <Filter>02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss BasicAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CauldronBoss_Idle.h">
+      <Filter>02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CauldronBoss_StrongAttack.h">
+      <Filter>02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss StrongAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_CauldronBoss.h">
+      <Filter>02.GameObjects\Monster\CauldronBoss\01. State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CauldronBoss_IntenseSpin.h">
+      <Filter>02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss IntenseSpin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Body_CauldronBoss.h">
+      <Filter>02.GameObjects\Monster\CauldronBoss\00. Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BabyZombie_Dead.h">
+      <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Dead</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -943,7 +991,7 @@
       <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_GetHit</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BabyZombie_Idle.cpp">
-      <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Idle</Filter>
+      <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Attack\BabyZombie_Idle</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BabyZombie_Walk.cpp">
       <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Walk</Filter>
@@ -1057,10 +1105,10 @@
       <Filter>02.GameObjects\Monster\Slime\Slime_Cauldron\00. Body</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Slime_Cauldron.cpp">
-      <Filter>02.GameObjects\Monster\Slime\Slime_Cauldron\00. Body\01. State</Filter>
+      <Filter>02.GameObjects\Monster\Slime\Slime_Cauldron\01. State</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Slime_Cauldron_Attack.cpp">
-      <Filter>02.GameObjects\Monster\Slime\Slime_Cauldron\00. Body\01. State\Slime_Cauldron_Attack</Filter>
+      <Filter>02.GameObjects\Monster\Slime\Slime_Cauldron\01. State\Slime_Cauldron_Attack</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Slime_Cauldron_Bullet.cpp">
       <Filter>02.GameObjects\Bullet</Filter>
@@ -1069,7 +1117,7 @@
       <Filter>02.GameObjects\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Slime_Cauldron_Idle.cpp">
-      <Filter>02.GameObjects\Monster\Slime\Slime_Cauldron\00. Body\01. State\Slime_Cauldron_Idle</Filter>
+      <Filter>02.GameObjects\Monster\Slime\Slime_Cauldron\01. State\Slime_Cauldron_Idle</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Vindicator.cpp">
       <Filter>02.GameObjects\Monster\Vindicator\01. State</Filter>
@@ -1094,6 +1142,30 @@
     </ClCompile>
     <ClCompile Include="..\Private\Weapon_Axe.cpp">
       <Filter>02.GameObjects\Item\Melee_Weapon\Axe</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CauldronBoss.cpp">
+      <Filter>02.GameObjects\Monster\CauldronBoss</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Body_CauldronBoss.cpp">
+      <Filter>02.GameObjects\Monster\CauldronBoss\00. Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CauldronBoss_BasicAttack.cpp">
+      <Filter>02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss BasicAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CauldronBoss_Idle.cpp">
+      <Filter>02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CauldronBoss_IntenseSpin.cpp">
+      <Filter>02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss IntenseSpin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CauldronBoss_StrongAttack.cpp">
+      <Filter>02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss StrongAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_CauldronBoss.cpp">
+      <Filter>02.GameObjects\Monster\CauldronBoss\01. State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BabyZombie_Dead.cpp">
+      <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Dead</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -2,6 +2,7 @@
 
 #include "BabyZombie.h"
 #include "Body_BabyZombie.h"
+#include "Body_CauldronBoss.h"
 #include "Player_Arrow.h"
 #include "GameInstance.h"
 
@@ -14,6 +15,7 @@
 #include "Body_Slime_Small.h"
 #include "Body_Vindicator.h"
 #include "Body_Zombie.h"
+#include "CauldronBoss.h"
 #include "ChestIcon.h"
 #include "InventoryBase.h"
 #include "InventoryGearSlot.h"
@@ -356,6 +358,11 @@ HRESULT CLoader::Ready_Prototype_ModelCom_Static()
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Monster/Vindicator/Vindicator.fbx", PreTransformMatrix))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Model_CauldronBoss */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_CauldronBoss"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Monster/CauldronBoss/CauldronBoss.fbx", PreTransformMatrix))))
+		return E_FAIL;
+
 	/* For.Prototype_Component_Model_Cube */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Cube"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Cube/CubeMesh.fbx", PreTransformMatrix))))
@@ -412,7 +419,6 @@ HRESULT CLoader::Ready_Prototype_ModelCom_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_SoggySwampMap"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Map/SoggySwamp/SoggySwamp.fbx", PreTransformMatrix))))
 		return E_FAIL;
-
 
 
 	return S_OK;
@@ -525,6 +531,11 @@ HRESULT CLoader::Ready_Prototype_GameObject_Static()
 		CBody_Vindicator::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_Body_CauldronBoss */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Body_CauldronBoss"),
+		CBody_CauldronBoss::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	/* For.Prototype_GameObject_Zombie */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Zombie"),
 		CZombie::Create(m_pDevice, m_pContext))))
@@ -563,6 +574,11 @@ HRESULT CLoader::Ready_Prototype_GameObject_Static()
 	/* For.Prototype_GameObject_Slime_Cauldron */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Vindicator"),
 		CVindicator::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_CauldronBoss */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_CauldronBoss"),
+		CCauldronBoss::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Camera_Free */

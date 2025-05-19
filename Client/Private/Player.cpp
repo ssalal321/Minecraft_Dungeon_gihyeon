@@ -222,7 +222,7 @@ HRESULT CPlayer::Ready_PartObjects()
 	BodyDesc.pParentWorldMatrix			= m_pTransformCom->Get_WorldMatrix_Ptr();
 	BodyDesc.pState						= &m_iState;
 	BodyDesc.pContainerObject			= this;
-	BodyDesc.pBigCollisionActivating	= &m_bAttacking;
+	BodyDesc.pBigCollisionActivating	= &m_bAlwaysNotActivated;
 	BodyDesc.pSmallCollisionActivating	= &m_bAlwaysActivated;
 
 	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Body_Player"), TEXT("Part_Body"), &BodyDesc)))

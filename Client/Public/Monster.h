@@ -16,8 +16,8 @@ class CMonster abstract : public CContainerObject
 public:
 	struct MONSTER_DESC : public GAMEOBJECT_DESC
 	{
-		_int     iCurrentHP;
-		_int     iMaxHP;
+		_int      iCurrentHP;
+		_int      iMaxHP;
 		_int      iDealPoint;
 		_float    fAttackableRange;
 		_float	  fDetectableRange;
@@ -78,6 +78,8 @@ public:
 	_bool	Get_Attacking() const { return m_bAttacking; }
 
 	const _float4& Get_NextPosition() const { return m_NextPosition; }
+	_bool		Get_Can_be_Eaten() { return m_bCanbeEaten; }
+	CMonster*	Get_Eating_BossMonster() { return m_pBossMonster; }
 
 	void	Set_Attacking(_bool bAttacking) { m_bAttacking = bAttacking; }
 
@@ -87,6 +89,12 @@ public:
 	}
 
 	void	Set_Hovered(_bool bPicked) { m_bHovered = bPicked; }
+	void	Set_Can_be_Eaten(_bool bCanbeEaten, CMonster* pBossMonster)
+	{
+		m_bCanbeEaten = bCanbeEaten;
+		m_pBossMonster = pBossMonster;
+	}
+
 
 	void		Change_State(const MonsterState& state);
 	void		Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)	override;
@@ -109,6 +117,8 @@ protected:
 	_bool				m_bAlwaysActivated = { true };
 	//_bool				m_bHoveringColl = { false };
 	_bool				m_bHovered = { false };
+	_bool				m_bCanbeEaten = { false };
+	CMonster*			m_pBossMonster = { nullptr };
 
 	_float2				m_vScreenPos = {};
 

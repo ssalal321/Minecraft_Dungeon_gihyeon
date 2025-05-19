@@ -62,93 +62,87 @@ HRESULT CChannel::Initialize(const aiNodeAnim* pAIChannel, const vector<class CB
     return S_OK;
 }
 
-void CChannel::Update_TransformationMatrix(_float& fCurrentTrackPosition, const vector<class CBone*>& Bones, _bool animationChanged)
+void CChannel::Update_TransformationMatrix(_float fCurrentTrackPosition, const vector<CBone*>& Bones, _uint* pCurrentKeyFrameIndex, _bool animationChanged, _float fTimeDelta)
 {
-	if (0.f == fCurrentTrackPosition)
-	{
-		m_iCurrentKeyFrameIndex = 0;
-	}
+    if (fCurrentTrackPosition == 0.f)
+        *pCurrentKeyFrameIndex = 0;
 
-	_vector			vScale, vRotation, vTranslation;
-	KEYFRAME		LastKeyFrame = m_KeyFrames.back();
+    _vector vScale, vRotation, vTranslation;
+    KEYFRAME LastKeyFrame = m_KeyFrames.back();
 
-	if (animationChanged == true)
-	{
-		m_AnimationChanged = true;
-	}
+    const _float fBlendDuration = 0.2f;
 
-	if (m_AnimationChanged)
-	{
-		if (!m_StartedLerp)
-		{
-			XMStoreFloat4x4(&m_PrevTransformMatrix, Bones[m_iBoneIndex]->Get_TransformationMatrix());
-			XMMatrixDecompose(&m_vLeftScale, &m_vLeftRotation, &m_vLeftTranslation, XMLoadFloat4x4(&m_PrevTransformMatrix));
-			m_StartedLerp = true;
-		}
+    if (animationChanged)
+    {
+        m_bInBlending = true;
+        m_fBlendElapsedTime = 0.f;
 
-		/* 애니메이션 간 선형보간 */
-		_vector		vRightScale, vRightRotation, vRightTranslation;
+        // 현재 뼈의 기존 최종 행렬 기준 보간 시작값 저장
+        XMStoreFloat4x4(&m_PrevTransformMatrix, Bones[m_iBoneIndex]->Get_TransformationMatrix());
+        XMMatrixDecompose(&m_vLeftScale, &m_vLeftRotation, &m_vLeftTranslation, XMLoadFloat4x4(&m_PrevTransformMatrix));
+    }
 
-		// 애니메이션 전환에 걸리는 시간 (예: 0.5초)
-		_float fBlendDuration = 5.f;
+    if (m_bInBlending)
+    {
+        m_fBlendElapsedTime += fTimeDelta;
+        _float fRatio = m_fBlendElapsedTime / fBlendDuration;
+        fRatio = min(max(fRatio, 0.f), 1.f);
 
-		// fRatio 정의 (현재 트랙 위치를 Blend 시간으로 나눠줌)
-		_float fRatio = fCurrentTrackPosition / fBlendDuration;
+        // 오른쪽(새 애니메이션의 첫 키프레임)
+        _vector vRightScale = XMLoadFloat3(&m_KeyFrames[0].vScale);
+        _vector vRightRotation = XMQuaternionNormalize(XMLoadFloat4(&m_KeyFrames[0].vRotation));
+        _vector vRightTranslation = XMVectorSetW(XMLoadFloat3(&m_KeyFrames[0].vTranslation), 1.f);
 
-		_uint	firstKeyFrame = 0;
-		vRightScale		  = XMLoadFloat3(&m_KeyFrames[firstKeyFrame].vScale);
-		vRightRotation    = XMLoadFloat4(&m_KeyFrames[firstKeyFrame].vRotation);
-		vRightTranslation = XMVectorSetW(XMLoadFloat3(&m_KeyFrames[firstKeyFrame].vTranslation), 1.f);
+        m_vLeftRotation = XMQuaternionNormalize(m_vLeftRotation);
 
-		vScale = XMVectorLerp(m_vLeftScale, vRightScale, fRatio);
-		vRotation = XMQuaternionSlerp(m_vLeftRotation, vRightRotation, fRatio);
-		vTranslation = XMVectorSetW(XMVectorLerp(m_vLeftTranslation, vRightTranslation, fRatio), 1.f);
+        vScale = XMVectorLerp(m_vLeftScale, vRightScale, fRatio);
+        vRotation = XMQuaternionSlerp(m_vLeftRotation, vRightRotation, fRatio);
+        vTranslation = XMVectorSetW(XMVectorLerp(m_vLeftTranslation, vRightTranslation, fRatio), 1.f);
 
-		if (fRatio >= 1.f)
-		{
-			m_StartedLerp = false;
-			m_AnimationChanged = false;
-		}
-	}
-	else if (fCurrentTrackPosition >= LastKeyFrame.fTrackPosition)  // 모션이 끝났다면
-	{
-		/*마지막 모션을 취한다. */
-		vScale = XMLoadFloat3(&LastKeyFrame.vScale);
-		vRotation = XMLoadFloat4(&LastKeyFrame.vRotation);
-		vTranslation = XMVectorSetW(XMLoadFloat3(&LastKeyFrame.vTranslation), 1.f);
+        if (fRatio >= 1.f)
+        {
+            m_bInBlending = false;
+        }
+    }
+    else if (fCurrentTrackPosition >= LastKeyFrame.fTrackPosition)
+    {
+        // 마지막 키프레임 유지
+        vScale = XMLoadFloat3(&LastKeyFrame.vScale);
+        vRotation = XMQuaternionNormalize(XMLoadFloat4(&LastKeyFrame.vRotation));
+        vTranslation = XMVectorSetW(XMLoadFloat3(&LastKeyFrame.vTranslation), 1.f);
 
-		m_iCurrentKeyFrameIndex = m_iNumKeyFrames - 1;  // m_iCurrentKeyFrameIndex : 0부터 시작이므로 -1 해줌
-	}
-	else  // 키프레임 간 선형보간
-	{
-		while (fCurrentTrackPosition >= m_KeyFrames[m_iCurrentKeyFrameIndex + 1].fTrackPosition)
-			++m_iCurrentKeyFrameIndex;
+        *pCurrentKeyFrameIndex = m_iNumKeyFrames - 1;
+    }
+    else
+    {
+        while (fCurrentTrackPosition >= m_KeyFrames[*pCurrentKeyFrameIndex + 1].fTrackPosition)
+            ++(*pCurrentKeyFrameIndex);
 
-		_float		fRatio = (fCurrentTrackPosition - m_KeyFrames[m_iCurrentKeyFrameIndex].fTrackPosition) /
-			(m_KeyFrames[m_iCurrentKeyFrameIndex + 1].fTrackPosition - m_KeyFrames[m_iCurrentKeyFrameIndex].fTrackPosition);
+        _float t1 = m_KeyFrames[*pCurrentKeyFrameIndex].fTrackPosition;
+        _float t2 = m_KeyFrames[*pCurrentKeyFrameIndex + 1].fTrackPosition;
+        _float fRatio = (fCurrentTrackPosition - t1) / (t2 - t1);
+        fRatio = min(max(fRatio, 0.f), 1.f);
 
-		/* 선형보간한다. */
-		_vector		vLeftScale, vRightScale;
-		_vector		vLeftRotation, vRightRotation;
-		_vector		vLeftTranslation, vRightTranslation;
+        _vector vLeftScale = XMLoadFloat3(&m_KeyFrames[*pCurrentKeyFrameIndex].vScale);
+        _vector vRightScale = XMLoadFloat3(&m_KeyFrames[*pCurrentKeyFrameIndex + 1].vScale);
 
-		vLeftScale		 = XMLoadFloat3(&m_KeyFrames[m_iCurrentKeyFrameIndex].vScale);
-		vLeftRotation	 = XMLoadFloat4(&m_KeyFrames[m_iCurrentKeyFrameIndex].vRotation);
-		vLeftTranslation = XMVectorSetW(XMLoadFloat3(&m_KeyFrames[m_iCurrentKeyFrameIndex].vTranslation), 1.f);
+        _vector vLeftRotation = XMQuaternionNormalize(XMLoadFloat4(&m_KeyFrames[*pCurrentKeyFrameIndex].vRotation));
+        _vector vRightRotation = XMQuaternionNormalize(XMLoadFloat4(&m_KeyFrames[*pCurrentKeyFrameIndex + 1].vRotation));
 
-		vRightScale		  = XMLoadFloat3(&m_KeyFrames[m_iCurrentKeyFrameIndex + 1].vScale);
-		vRightRotation	  = XMLoadFloat4(&m_KeyFrames[m_iCurrentKeyFrameIndex + 1].vRotation);
-		vRightTranslation = XMVectorSetW(XMLoadFloat3(&m_KeyFrames[m_iCurrentKeyFrameIndex + 1].vTranslation), 1.f);
+        _vector vLeftTranslation = XMVectorSetW(XMLoadFloat3(&m_KeyFrames[*pCurrentKeyFrameIndex].vTranslation), 1.f);
+        _vector vRightTranslation = XMVectorSetW(XMLoadFloat3(&m_KeyFrames[*pCurrentKeyFrameIndex + 1].vTranslation), 1.f);
 
-		vScale		 = XMVectorLerp(vLeftScale, vRightScale, fRatio);
-		vRotation	 = XMQuaternionSlerp(vLeftRotation, vRightRotation, fRatio);
-		vTranslation = XMVectorSetW(XMVectorLerp(vLeftTranslation, vRightTranslation, fRatio), 1.f);
-	}	
+        vScale = XMVectorLerp(vLeftScale, vRightScale, fRatio);
+        vRotation = XMQuaternionSlerp(vLeftRotation, vRightRotation, fRatio);
+        vTranslation = XMVectorSetW(XMVectorLerp(vLeftTranslation, vRightTranslation, fRatio), 1.f);
+    }
 
-	_matrix			TransformationMatrix = XMMatrixAffineTransformation(vScale, XMVectorSet(0.f, 0.f, 0.f, 1.f), vRotation, vTranslation);
-
-	Bones[m_iBoneIndex]->Set_TransformationMatrix(TransformationMatrix);
+    _matrix TransformationMatrix = XMMatrixAffineTransformation(vScale, XMVectorSet(0.f, 0.f, 0.f, 1.f), vRotation, vTranslation);
+    Bones[m_iBoneIndex]->Set_TransformationMatrix(TransformationMatrix);
 }
+
+
+
 
 CChannel* CChannel::Create(const aiNodeAnim* pAIChannel, const vector<class CBone*>& Bones)
 {

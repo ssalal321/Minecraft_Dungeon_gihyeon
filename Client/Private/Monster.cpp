@@ -84,6 +84,13 @@ HRESULT CMonster::Render()
 	std::wstring strHP = std::to_wstring(m_pMonsterInfo->Get_CurrentHP());
 	m_pGameInstance->Draw_Text(TEXT("Font_Minecraft"), strHP.c_str(), m_vScreenPos/*, Colors::White, 0.f, { 0.f, 0.f }, 1.f*/);
 
+
+#ifdef _DEBUG
+	if (m_pNavigationCom)
+		m_pNavigationCom->Render();
+#endif
+
+
 	return S_OK;
 }
 
@@ -123,6 +130,10 @@ void CMonster::Change_State(const MonsterState& state)
 
 	case MONSTER_TYPE::VINDICATOR:
 		m_iState = static_cast<_uint>(state.VindicatorState);
+		break;
+
+	case MONSTER_TYPE::CAULDRONBOSS:
+		m_iState = static_cast<_uint>(state.CauldronBossState);
 		break;
 	}
 

@@ -14,7 +14,7 @@ class CBone final : public CBase
 {
 private:
 	CBone();
-	virtual ~CBone() = default;
+	~CBone() override = default;
 
 public:
 	const _char* Get_Name() const { return m_szName; }

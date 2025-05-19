@@ -1,5 +1,7 @@
 #include "State_Slime_Cauldron.h"
 
+#include <iostream>
+
 #include "Player_Arrow.h"
 #include "Item.h"
 
@@ -30,10 +32,9 @@ void CState_Slime_Cauldron::State_Update(_float fTimeDelta)
 {
 	__super::State_Update(fTimeDelta);
 
-	if (false == m_pActor->Get_GameObject_Active())
-	{
-		
-	}
+	m_pTransformCom->Jump(fTimeDelta, m_pNavigationCom);
+	if (m_pTransformCom->Get_Is_Jumping())
+		m_pTransformCom->Go_Straight(fTimeDelta, m_pNavigationCom);
 }
 
 void CState_Slime_Cauldron::State_Late_Update(_float fTimeDelta)

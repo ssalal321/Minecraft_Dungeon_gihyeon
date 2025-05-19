@@ -61,7 +61,7 @@ public:
 	/*enum PLAYERSTATE
 	{
 		IDLE, IDLE_CLAYMORE, IDLE_GLAIVE, IDLE_HAMMER, IDLE_KATANA, IDLE_LOOKAROUND,
-		WALK, WALK_CLAYMORE, WALK_GLAIVE, WALK_HAMMER, WALK_KATANA,
+		STRONG_ATTACK, WALK_CLAYMORE, WALK_GLAIVE, WALK_HAMMER, WALK_KATANA,
 		RUN,  RUN_CLAYMORE,  RUN_GLAIVE,  RUN_HAMMER,  RUN_KATANA,
 		BOWACTION, DODGEROLL, STUN, FALLING, GETHITFRONT, DOWNEDFLOOR,
 		DRINK, EATFAST, HORNBLOW, LASERPOSE,
@@ -159,8 +159,9 @@ private:
 	_bool				m_bHoveringMonster	= { false };
 	CMonster*			m_pPickedMonster	= { nullptr };
 
-	_bool				m_bAttacking		= { false };
-	_bool				m_bAlwaysActivated	= { true };
+	_bool				m_bAttacking			= { false };
+	_bool				m_bAlwaysNotActivated	= { false };
+	_bool				m_bAlwaysActivated		= { true };
 
 	_bool				m_bChasing			= { false };
 	CTransform*			m_pMonsterTransformCom = { nullptr };

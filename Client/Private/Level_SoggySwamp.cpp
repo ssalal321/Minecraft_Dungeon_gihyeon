@@ -7,6 +7,7 @@
 #include "PartObject.h"
 #include "Level_Loading.h"
 #include "Camera_Free.h"
+#include "CauldronBoss.h"
 #include "InventoryBase.h"
 #include "InventoryData.h"
 #include "Item.h"
@@ -36,8 +37,8 @@ HRESULT CLevel_SoggySwamp::Initialize()
     if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
         return E_FAIL;
 
-    /*if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
-        return E_FAIL;*/
+    if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
+        return E_FAIL;
 
 
     return S_OK;
@@ -103,7 +104,7 @@ CCollider* CLevel_SoggySwamp::Get_Closest_Collider(const _float4& mousePos, cons
 
     for (auto& pCollider : it->second)
     {
-        if (pCollider->Get_ColliderType() != COLLIDER_TYPE::TYPE_SPHERE)
+        if (pCollider->Get_ColliderType() != COLLIDER_TYPE::TYPE_SPHERE || pCollider->Get_Role() == CCollider::ETC || pCollider->Get_Role() == CCollider::SMALL)
             continue;
 
         _float fDist = 0.f;
@@ -163,7 +164,10 @@ HRESULT CLevel_SoggySwamp::Ready_PrePlayer()
     m_pGameInstance->Attach_Persistent_Colliders_To_Level(m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Player"));
 
     m_pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("GameObject_Player"), m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_Player")));
-    m_pPlayer->Erase_Component(TEXT("Com_Navigation"));
+    CCollider* pCollider = dynamic_cast<CCollider*>(m_pPlayer->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_BigSphere")));
+    pCollider->Set_IsCollision(false);  // 이전 트리거와 부딪히고 남은 거 지워줌
+
+	m_pPlayer->Erase_Component(TEXT("Com_Navigation"));
     m_pPlayer->Delete_NavigationCom();
 
     return S_OK;
@@ -245,20 +249,32 @@ HRESULT CLevel_SoggySwamp::Ready_Layer_Player(const _wstring& strLayerTag)
 
     _float4 currentPosition = {};
     XMStoreFloat4(&currentPosition, pTransformCom->Get_State(CTransform::STATE_POSITION));
-    //m_pPlayer->Set_NextPosition(currentPosition);
+    m_pPlayer->Set_NextPosition(currentPosition);
+
+    m_pPlayer->Change_State(PLAYER_STATE::IDLE);
 
     return S_OK;
 }
 
 HRESULT CLevel_SoggySwamp::Ready_Layer_Monster(const _wstring& strLayerTag)
 {
-    CGameObject* pZombie = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Zombie"),
+    /*CGameObject* pZombie = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Zombie"),
         LEVEL_SOGGYSWAMP, strLayerTag);
-    if (nullptr == pZombie)     return E_FAIL;
+    if (nullptr == pZombie)
+		return E_FAIL;
 
     CGameObject* pSkeleton = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Skeleton"),
         LEVEL_SOGGYSWAMP, strLayerTag);
-    if (nullptr == pSkeleton)     return E_FAIL;
+    if (nullptr == pSkeleton)
+		return E_FAIL;*/
+
+    CCauldronBoss::CAULDRONBOSS_DESC  cauldronBossDesc = {};
+    cauldronBossDesc.slimeCauldronPosition = { 0.45f, 0, 30.f, 1.f };
+
+    CGameObject* pCauldronBoss = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_CauldronBoss"),
+																 LEVEL_SOGGYSWAMP, strLayerTag, &cauldronBossDesc);
+    if (nullptr == pCauldronBoss)
+        return E_FAIL;
 
     return S_OK;
 }

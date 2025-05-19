@@ -36,6 +36,7 @@ public:
 	HRESULT		Read_Cell(const _tchar* pNavigationDataFilePath);
 	void		Resave_Files();
 	void		Sort_Clockwise(const _float3* pInPoints, _float3* pOutSorted);
+	_int		Find_CellIndex(_vector vWorldPos);
 
 	_bool		Can_Move(_fvector vMovingWorldPos);
 	_bool		Can_Slide(_fvector vPrevWorldPos, _fvector vMovingWorldPos, _vector& vSlidingPosition);

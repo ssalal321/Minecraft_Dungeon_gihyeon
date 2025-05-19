@@ -19,7 +19,7 @@ HRESULT CSlime_Cauldron_Idle::Init_State()
 
 void CSlime_Cauldron_Idle::State_Enter()
 {
-	m_pActorModelCom->Set_Animation(static_cast<_uint>(SLIME_CAULDRON_STATE::IDLE), false);
+	m_pActorModelCom->Set_Animation(static_cast<_uint>(SLIME_CAULDRON_STATE::IDLE), false, 0.6f);
 }
 
 void CSlime_Cauldron_Idle::State_Priority_Update(_float fTimeDelta)

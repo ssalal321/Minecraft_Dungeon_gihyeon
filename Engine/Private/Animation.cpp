@@ -1,9 +1,29 @@
 #include "Animation.h"
 
+#include <iostream>
+#include <ostream>
+
 #include "Channel.h"
 
 CAnimation::CAnimation()
 {
+}
+
+CAnimation::CAnimation(const CAnimation& Prototype)
+	: m_fCurrentTrackPosition(Prototype.m_fCurrentTrackPosition)
+	, m_fDuration(Prototype.m_fDuration)
+	, m_fTickPerSecond(Prototype.m_fTickPerSecond)
+	, m_iNumChannels(Prototype.m_iNumChannels)
+	, m_Channels(Prototype.m_Channels)
+	, m_ChannelCurrentKeyFrameIndices{ Prototype.m_ChannelCurrentKeyFrameIndices }
+	, m_StartLerp(Prototype.m_StartLerp)
+{
+	strcpy_s(m_szName, Prototype.m_szName);
+
+	for (auto& pChannel : m_Channels)
+	{
+		Safe_AddRef(pChannel);
+	}
 }
 
 HRESULT CAnimation::Initialize(const aiAnimation* pAIAnimation, const vector<class CBone*>& Bones)
@@ -14,6 +34,8 @@ HRESULT CAnimation::Initialize(const aiAnimation* pAIAnimation, const vector<cla
 	m_fDuration = static_cast<_float>(pAIAnimation->mDuration);
 
 	m_iNumChannels = pAIAnimation->mNumChannels;
+
+	m_ChannelCurrentKeyFrameIndices.resize(m_iNumChannels);
 
 	for (size_t i = 0; i < m_iNumChannels; i++)
 	{
@@ -40,10 +62,6 @@ _bool CAnimation::Update_TransformationMatrices(_float fTimeDelta, const vector<
 	{
 		m_fCurrentTrackPosition += m_fTickPerSecond * fTimeDelta * speedFactor;
 
-		/*std::
-		<< "[m_fCurrentTrackPosition] : " << m_fCurrentTrackPosition <<
-			"\n[m_fDuration] : " << m_fDuration << std::endl;*/
-
 		if (m_fCurrentTrackPosition >= m_fDuration)  // 애니메이션 끝났을 때
 		{
 			if (false == isLoop)	// 루프 X
@@ -56,10 +74,11 @@ _bool CAnimation::Update_TransformationMatrices(_float fTimeDelta, const vector<
 		}
 	}
 
+	_uint		iChannelIndex = { 0 };
 
 	for (auto& pChannel : m_Channels)
 	{
-		pChannel->Update_TransformationMatrix(m_fCurrentTrackPosition, Bones, animationChanged);
+		pChannel->Update_TransformationMatrix(m_fCurrentTrackPosition, Bones, &m_ChannelCurrentKeyFrameIndices[iChannelIndex++], animationChanged, fTimeDelta);
 	}
 
 	return isFinished;
@@ -76,6 +95,11 @@ CAnimation* CAnimation::Create(const aiAnimation* pAIAnimation, const vector<cla
 	}
 
 	return pGameInstance;
+}
+
+CAnimation* CAnimation::Clone()
+{
+	return new CAnimation(*this);
 }
 
 

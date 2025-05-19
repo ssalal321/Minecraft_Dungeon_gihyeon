@@ -333,6 +333,26 @@ void CNavigation::Sort_Clockwise(const _float3* pInPoints, _float3* pOutSorted)
 	pOutSorted[2] = p2;
 }
 
+_int CNavigation::Find_CellIndex(_fvector vWorldPos)
+{
+	// 1. 월드 좌표 → 로컬 좌표로 변환
+	_matrix WorldMatrixInv = XMMatrixInverse(nullptr, XMLoadFloat4x4(m_pWorldMatrix));
+	_vector vLocalPos = XMVector3TransformCoord(vWorldPos, WorldMatrixInv);
+
+	// 2. 모든 셀을 검사해서 포함 여부 확인
+	for (_int i = 0; i < m_Cells.size(); ++i)
+	{
+		_int dummyNeighbor = -1;
+		if (m_Cells[i]->Is_In(vLocalPos, &dummyNeighbor, nullptr))
+		{
+			return i;  // 위치가 포함된 셀 인덱스 반환
+		}
+	}
+
+	return -1; // 포함된 셀 없음
+}
+
+
 _bool CNavigation::Can_Move(_fvector vWorldPos)
 {
 	_matrix WorldMatrixInv = XMMatrixInverse(nullptr, XMLoadFloat4x4(m_pWorldMatrix));
@@ -341,7 +361,7 @@ _bool CNavigation::Can_Move(_fvector vWorldPos)
 	_int iCellIndex = m_iCurrentCellIndex;
 	_int iNextNeighbor = -1;
 
-	for (_int depth = 0; depth < 8; ++depth)
+	for (_int depth = 0; depth < 100; ++depth)  // 8.........
 	{
 		CCell* pCurrent = m_Cells[iCellIndex];
 

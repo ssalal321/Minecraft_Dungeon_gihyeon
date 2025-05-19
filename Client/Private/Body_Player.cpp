@@ -136,7 +136,7 @@ HRESULT CBody_Player::Ready_Components()
 	if (nullptr == pColliderSmallSphereCom)
 		return E_FAIL;
 
-	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), m_pSmallColliderCom, TEXT("Player_Body_Small"), TEXT("Player"));
+	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), m_pSmallColliderCom, TEXT("Player_Body_Small"), TEXT("Player"), true);
 	dynamic_cast<CCollider*>(pColliderSmallSphereCom)->Set_AllowSameGroupCollision(true);
 	dynamic_cast<CCollider*>(pColliderSmallSphereCom)->Set_ColliderRole(CCollider::SMALL);
 

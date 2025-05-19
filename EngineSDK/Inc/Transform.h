@@ -110,7 +110,9 @@ private:
 	_float		m_fGravity		= { -9.8f };    // 중력 가속도 (m/s²)
 	_float		m_fCurrentY		= {};			// 현재 Y 위치
 
-	_float3		m_vVelocity = { 0.f, 0.f, 0.f };
+	_float3		m_Velocity = { 0.f, 0.f, 0.f };
+
+	_vector		m_vJumpDirection = {};
 
 #pragma region BEZIER CURVE
 	_bool       m_bBezierFlying = { false };

@@ -63,7 +63,6 @@ void CState_Player::State_Priority_Update(_float fTimeDelta)
 
 void CState_Player::State_Update(_float fTimeDelta)
 {
-
 	m_bAnimationFinished = m_pActorModelCom->Play_Animation(fTimeDelta);
 
 	Check_Combo_Timeout(fTimeDelta);

@@ -58,6 +58,7 @@ namespace Client
 		IDLE,
 		NOVELTY,  // Novelty
 		WALK,
+		DEAD,
 		STATE_END
 	};
 
@@ -112,6 +113,16 @@ namespace Client
 		IDLE,
 		NOVELTY,
 		WALK,
+		STATE_END
+	};
+
+	enum class CAULDRONBOSS_STATE
+	{
+		BASIC_ATTACK,
+		IDLE,
+		INTENSE_SPIN,
+		STRONG_ATTACK,
+		TPOSE,
 		STATE_END
 	};
 

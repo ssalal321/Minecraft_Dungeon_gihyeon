@@ -22,6 +22,8 @@ HRESULT CBabyZombie_Attack::Init_State()
 
 void CBabyZombie_Attack::State_Enter()
 {
+    __super::State_Enter();
+
     m_fAnimTimer = 0.f;
     m_bHitMode_Activated = false;
 
