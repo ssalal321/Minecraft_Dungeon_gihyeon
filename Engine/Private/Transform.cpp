@@ -159,7 +159,6 @@ void CTransform::Jump(_float fTimeDelta, CNavigation* pNavigation)
     }
 
     // 점프 중 위치 갱신
-
 }
 
 void CTransform::Turn(_fvector vAxis, _float fTimeDelta)
@@ -261,17 +260,41 @@ void CTransform::Update_Momentum(_float fTimeDelta)
 	if (XMVector3Equal(vVel, XMVectorZero()))
 		return;
 
-	_vector vPos = Get_State(STATE_POSITION);
-	vPos += vVel * fTimeDelta;
+	_vector vCurrPos = Get_State(STATE_POSITION);
+	_vector vNextPos = vCurrPos + vVel * fTimeDelta;
+	_vector vSlidePos = vCurrPos;
 
-	Set_State(STATE_POSITION, vPos);
+	if (m_pNavigationCom)
+	{
+		if (m_pNavigationCom->Can_Move(vNextPos))
+		{
+			Set_State(STATE_POSITION, vNextPos);
+		}
+		else if (m_pNavigationCom->Can_Slide(vCurrPos, vNextPos, vSlidePos))
+		{
+			Set_State(STATE_POSITION, vSlidePos);
+		}
+		else
+		{
+			// 아무것도 안 됐으면 멈춘다.
+			vVel = XMVectorZero();
+			XMStoreFloat3(&m_Velocity, vVel);
+			return;
+		}
+	}
+	else
+	{
+		Set_State(STATE_POSITION, vNextPos);
+	}
 
+	// 감쇠
 	vVel *= 0.85f;
 	if (XMVectorGetX(XMVector3Length(vVel)) < 0.001f)
 		vVel = XMVectorZero();
 
 	XMStoreFloat3(&m_Velocity, vVel);
 }
+
 
 void CTransform::Start_BezierFlight(const XMFLOAT3& vStart, const XMFLOAT3& vControl, const XMFLOAT3& vEnd, _float fSpeed)
 {

@@ -4,6 +4,7 @@
 
 #include "Player_Arrow.h"
 #include "Item.h"
+#include "Slime_Cauldron.h"
 
 CState_Slime_Cauldron::CState_Slime_Cauldron(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATE_SLIME_CAULDRON_DESC* pDesc)
 	: CState_Monster(pActor, pGameObjectDesc, pDesc), m_pBulletPool_Monster(pDesc->pBulletPool_Monster)
@@ -37,6 +38,13 @@ void CState_Slime_Cauldron::State_Update(_float fTimeDelta)
 		m_pActor->Set_GameObject_Active(false);
 		m_pBigColliderCom->Set_ColliderActive(false);
 		m_pSmallColliderCom->Set_ColliderActive(false);
+	}
+
+	if (m_pSlime_Cauldron->Get_Is_Jumping())
+	{
+		m_pTransformCom->Jump_Start(10.f);
+		m_pTransformCom->LookAt(m_pSlime_Cauldron->Get_Jump_LandPos());
+		m_pSlime_Cauldron->Set_Is_Jumping(false);
 	}
 
 	m_pTransformCom->Jump(fTimeDelta, m_pNavigationCom);

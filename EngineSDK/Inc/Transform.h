@@ -69,6 +69,11 @@ public:
 		XMStoreFloat4(reinterpret_cast<_float4*>(&m_WorldMatrix.m[eState][0]), vState);
 	}
 
+	void	Set_Navigation(CNavigation* pNavigationCom)
+	{
+		m_pNavigationCom = pNavigationCom;
+	}
+
 public:
 	HRESULT Initialize_Prototype() override;
 	HRESULT Initialize(void* pArg) override;	
@@ -115,6 +120,10 @@ private:
 	_float3		m_Velocity = { 0.f, 0.f, 0.f };
 
 	_vector		m_vJumpDirection = {};
+
+
+	CNavigation* m_pNavigationCom = nullptr;
+
 
 #pragma region BEZIER CURVE
 	_bool       m_bBezierFlying = { false };

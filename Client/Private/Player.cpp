@@ -201,6 +201,8 @@ HRESULT CPlayer::Ready_Components()
 	break;
 	}
 
+	m_pTransformCom->Set_Navigation(m_pNavigationCom);  //  씬 전환해도 덮어쓰일 것
+
 	return S_OK;
 }
 

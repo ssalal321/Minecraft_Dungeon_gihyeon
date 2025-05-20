@@ -182,6 +182,8 @@ HRESULT CMonster::Ready_Components()
 	}
 	}
 
+	m_pTransformCom->Set_Navigation(m_pNavigationCom);
+
 	return S_OK;
 }
 

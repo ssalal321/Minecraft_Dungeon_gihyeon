@@ -44,24 +44,20 @@ void CCauldronBoss_StrongAttack::State_Update(_float fTimeDelta)
 {
     __super::State_Update(fTimeDelta);
 
+    // 플레이어 위치를 기준으로 랜덤하게 발사할 위치를 계산
+    _float4  playerPos = m_pCauldronBoss->Get_Player_Position(TEXT("GameObject_Player"), m_pGameInstance->Get_CurrentLevelIndex());
+
     if (!m_bShot)
     {
-        // 플레이어 위치를 기준으로 랜덤하게 발사할 위치를 계산
-        //_float4  playerPos = m_pCauldronBoss->Get_Player_Position(TEXT("GameObject_Player"), m_pGameInstance->Get_CurrentLevelIndex());
-
         // 슬라임 발사
-        for (_int i = 0; i < 1; ++i)  // 한 번에 1마리 발사
+        for (_int i = 0; i < 2; ++i)  // 한 번에 1마리 발사
         {
             // 랜덤한 방향으로 발사
-            //_float angle = static_cast<_float>(rand() % 360);  // 0~360도 범위에서 랜덤 각도 생성
-            //_float radius = 3.0f + rand() % 3;  // 플레이어 주변 3~5 범위 내에서 랜덤 거리 생성
+            _float angle = static_cast<_float>(rand() % 360);  // 0~360도 범위에서 랜덤 각도 생성
+            _float radius = 3.0f + rand() % 3;  // 플레이어 주변 3~5 범위 내에서 랜덤 거리 생성
 
-            //_vector vOffset = XMVectorSet(radius * cosf(XMConvertToRadians(angle)), 0.0f, radius * sinf(XMConvertToRadians(angle)), 0.0f);
-            //_vector vLandingPosition = XMLoadFloat4(&playerPos) + vOffset;
-
-            // 발사된 슬라임의 초기 속도 설정
-            //_float fJumpVelocity = 10.0f;  // 예시로 속도를 설정
-
+            _vector vOffset = XMVectorSet(radius * cosf(XMConvertToRadians(angle)), 0.0f, radius * sinf(XMConvertToRadians(angle)), 0.0f);
+            _vector vLandingPosition = XMLoadFloat4(&playerPos) + vOffset;
 
             CSlime_Cauldron::SLIME_CAULDRON_DESC    slimeCauldronDesc = {};
             _float4     cauldronBossPos;
@@ -76,10 +72,9 @@ void CCauldronBoss_StrongAttack::State_Update(_float fTimeDelta)
                 return;
 
             CSlime_Cauldron*  pSlimeCauldron = dynamic_cast<CSlime_Cauldron*>(pGameObject);
-            dynamic_cast<CTransform*>(pSlimeCauldron->Find_Component(TEXT("Com_Transform")))->Jump_Start(10.f);
-
+         
         	// 목표 위치로 점프 시작 신호 보내기
-        	//pSlimeCauldron->Jump_To_Target(vLandingPosition);
+        	pSlimeCauldron->Jump_To_Target(vLandingPosition);
             
         }
 
@@ -91,9 +86,6 @@ void CCauldronBoss_StrongAttack::State_Update(_float fTimeDelta)
         if (Change_State_To_Idle())
             return;
     }
-
-    _float4 playerPos = m_pCauldronBoss->Get_Player_Position(TEXT("GameObject_Player"),
-        m_pGameInstance->Get_CurrentLevelIndex());
 
     m_pTransformCom->LookAt(XMLoadFloat4(&playerPos));
 }
