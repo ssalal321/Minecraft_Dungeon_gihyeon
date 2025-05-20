@@ -1,14 +1,13 @@
 #pragma once
 #include "Client_Defines.h"
-#include "State_BabyZombie.h"
+#include "State_Zombie.h"
 
 BEGIN(Client)
-
-class CBabyZombie_Dead final: public CState_BabyZombie
+	class CZombie_Dead final: public CState_Zombie
 {
 private:
-    CBabyZombie_Dead(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
-	~CBabyZombie_Dead() override = default;
+    CZombie_Dead(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
+	~CZombie_Dead() override = default;
 
 public:
     HRESULT     Init_State()                                override;

@@ -1,14 +1,13 @@
 #pragma once
 #include "Client_Defines.h"
-#include "State_BabyZombie.h"
+#include "State_Skeleton.h"
 
 BEGIN(Client)
-
-class CBabyZombie_Dead final: public CState_BabyZombie
+	class CSkeleton_Dead final: public CState_Skeleton
 {
 private:
-    CBabyZombie_Dead(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
-	~CBabyZombie_Dead() override = default;
+    CSkeleton_Dead(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATE_SKELETON_DESC* pDesc);
+	~CSkeleton_Dead() override = default;
 
 public:
     HRESULT     Init_State()                                override;
@@ -37,7 +36,7 @@ private:
     _bool        m_bCurveFinished = { false };
 
 public:
-    static CState_Monster*  Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
+    static CState_Monster*  Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATE_SKELETON_DESC* pDesc);
     void   Free()    override;
 };
 

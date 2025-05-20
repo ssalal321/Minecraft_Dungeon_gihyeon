@@ -5,6 +5,7 @@
 
 #include "FSM.h"
 #include "Zombie_Attack.h"
+#include "Zombie_Dead.h"
 #include "Zombie_GetHit.h"
 #include "Zombie_Idle.h"
 #include "Zombie_Sleep.h"
@@ -134,6 +135,7 @@ HRESULT CZombie::Ready_States()
 	m_StatesVec[static_cast<_uint>(ZOMBIE_STATE::GET_HIT_FRONT)] = CZombie_GetHit::Create(this, m_pMonsterInfo, &pStateMonsterDesc);  // Get_Hit_Left/Rightµµ Æ÷ÇÔ
 	m_StatesVec[static_cast<_uint>(ZOMBIE_STATE::STUN)]			 = CZombie_Stun::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
 	m_StatesVec[static_cast<_uint>(ZOMBIE_STATE::NOVELTY_SLEEP)] = CZombie_Sleep::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
+	m_StatesVec[static_cast<_uint>(ZOMBIE_STATE::DEAD)]			 = CZombie_Dead::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
 
 	m_pMonsterFSM = FSM::Create();
 

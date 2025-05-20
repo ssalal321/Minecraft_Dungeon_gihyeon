@@ -35,7 +35,8 @@ void CState_Skeleton::State_Update(_float fTimeDelta)
 {
 	__super::State_Update(fTimeDelta);
 
-	// 공격 받았을 때 스턴 걸리기
+	if (Change_State_To_Dead())
+		return;
 }
 
 void CState_Skeleton::State_Late_Update(_float fTimeDelta)
@@ -119,6 +120,17 @@ _bool CState_Skeleton::Change_State_To_HeadSpin()
 	if (dist(gen) < 0.5f) // 50% 확률
 	{
 		m_pSkeleton->Change_State(Make_SkeletonState(SKELETON_STATE::HEAD_SPIN));
+		return true;
+	}
+
+	return false;
+}
+
+_bool CState_Skeleton::Change_State_To_Dead()
+{
+	if (m_pMonsterInfo->Get_CurrentHP() <= 0)
+	{
+		m_pSkeleton->Change_State(Make_SkeletonState(SKELETON_STATE::DEAD));
 		return true;
 	}
 

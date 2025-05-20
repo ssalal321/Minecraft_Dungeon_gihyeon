@@ -31,6 +31,9 @@ void CState_Vindicator::State_Priority_Update(_float fTimeDelta)
 void CState_Vindicator::State_Update(_float fTimeDelta)
 {
 	__super::State_Update(fTimeDelta);
+
+	if (Change_State_To_Dead())
+		return;
 }
 
 void CState_Vindicator::State_Late_Update(_float fTimeDelta)
@@ -104,6 +107,17 @@ _bool CState_Vindicator::Change_State_To_Idle()
 	if (!playerInRange)
 	{
 		m_pVindicator->Change_State(Make_VindicatorState(VINDICATOR_STATE::IDLE));
+		return true;
+	}
+
+	return false;
+}
+
+_bool CState_Vindicator::Change_State_To_Dead()
+{
+	if (m_pMonsterInfo->Get_CurrentHP() <= 0)
+	{
+		m_pVindicator->Change_State(Make_VindicatorState(VINDICATOR_STATE::DEAD));
 		return true;
 	}
 

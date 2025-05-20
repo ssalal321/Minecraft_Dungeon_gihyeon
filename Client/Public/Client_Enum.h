@@ -48,6 +48,7 @@ namespace Client
 		NOVELTY_SLEEP,
 		STUN,
 		WALK,
+		DEAD,
 		STATE_END
 	};
 
@@ -69,6 +70,7 @@ namespace Client
 		IDLE,
 		HEAD_SPIN,  // Novelty
 		WALK,
+		DEAD,
 		STATE_END
 	};
 
@@ -113,6 +115,7 @@ namespace Client
 		IDLE,
 		NOVELTY,
 		WALK,
+		DEAD,
 		STATE_END
 	};
 
@@ -122,7 +125,7 @@ namespace Client
 		IDLE,
 		INTENSE_SPIN,
 		STRONG_ATTACK,
-		TPOSE,
+		DEAD,
 		STATE_END
 	};
 

@@ -64,7 +64,7 @@ void CBabyZombie_Walk::State_Update(_float fTimeDelta)
         _vector start = XMLoadFloat4(&m_vRetreatStartPos);
         _vector moved = XMVectorSubtract(curPos, start);
         _float dist = XMVectorGetX(XMVector3Length(moved));
-        if (dist >= RETREAT_DISTANCE)
+        if (dist >= RETREAT_DISTANCE || false == m_pNavigationCom->Can_Move(start + moved))
         {
             // ÈÄÅğ ¿Ï·á
             m_pBabyZombie->Set_Retreating(false);

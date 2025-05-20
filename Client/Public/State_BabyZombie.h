@@ -27,8 +27,6 @@ public:
 protected:
     CBabyZombie* m_pBabyZombie = { nullptr };
 
-    _bool        m_bCurveFinished = { false };
-
 protected:
     _bool     Change_State_To_Attack();
     _bool     Change_State_To_Walk();

@@ -174,6 +174,7 @@
     <ClInclude Include="..\Public\CauldronBoss_IntenseSpin.h" />
     <ClInclude Include="..\Public\CauldronBoss_StrongAttack.h" />
     <ClInclude Include="..\Public\ChestIcon.h" />
+    <ClInclude Include="..\Public\Skeleton_Dead.h" />
     <ClInclude Include="..\Public\Slime_Cauldron.h" />
     <ClInclude Include="..\Public\Slime_Cauldron_Attack.h" />
     <ClInclude Include="..\Public\Level_SoggySwamp.h" />
@@ -255,6 +256,7 @@
     <ClInclude Include="..\Public\Item.h" />
     <ClInclude Include="..\Public\Vindicator.h" />
     <ClInclude Include="..\Public\Vindicator_Attack.h" />
+    <ClInclude Include="..\Public\Vindicator_Dead.h" />
     <ClInclude Include="..\Public\Vindicator_Idle.h" />
     <ClInclude Include="..\Public\Vindicator_Novelty.h" />
     <ClInclude Include="..\Public\Vindicator_Walk.h" />
@@ -271,6 +273,7 @@
     <ClInclude Include="..\Public\Wolf_Armor.h" />
     <ClInclude Include="..\Public\Zombie.h" />
     <ClInclude Include="..\Public\Zombie_Attack.h" />
+    <ClInclude Include="..\Public\Zombie_Dead.h" />
     <ClInclude Include="..\Public\Zombie_GetHit.h" />
     <ClInclude Include="..\Public\Zombie_Idle.h" />
     <ClInclude Include="..\Public\Zombie_Sleep.h" />
@@ -305,6 +308,7 @@
     <ClCompile Include="..\Private\CauldronBoss_IntenseSpin.cpp" />
     <ClCompile Include="..\Private\CauldronBoss_StrongAttack.cpp" />
     <ClCompile Include="..\Private\ChestIcon.cpp" />
+    <ClCompile Include="..\Private\Skeleton_Dead.cpp" />
     <ClCompile Include="..\Private\Slime_Cauldron.cpp" />
     <ClCompile Include="..\Private\Slime_Cauldron_Attack.cpp" />
     <ClCompile Include="..\Private\Level_SoggySwamp.cpp" />
@@ -383,6 +387,7 @@
     <ClCompile Include="..\Private\Item.cpp" />
     <ClCompile Include="..\Private\Vindicator.cpp" />
     <ClCompile Include="..\Private\Vindicator_Attack.cpp" />
+    <ClCompile Include="..\Private\Vindicator_Dead.cpp" />
     <ClCompile Include="..\Private\Vindicator_Idle.cpp" />
     <ClCompile Include="..\Private\Vindicator_Novelty.cpp" />
     <ClCompile Include="..\Private\Vindicator_Walk.cpp" />
@@ -399,6 +404,7 @@
     <ClCompile Include="..\Private\Wolf_Armor.cpp" />
     <ClCompile Include="..\Private\Zombie.cpp" />
     <ClCompile Include="..\Private\Zombie_Attack.cpp" />
+    <ClCompile Include="..\Private\Zombie_Dead.cpp" />
     <ClCompile Include="..\Private\Zombie_GetHit.cpp" />
     <ClCompile Include="..\Private\Zombie_Idle.cpp" />
     <ClCompile Include="..\Private\Zombie_Sleep.cpp" />

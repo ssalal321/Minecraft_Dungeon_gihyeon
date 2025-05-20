@@ -1,22 +1,22 @@
-#include "BabyZombie_Dead.h"
+#include "Vindicator_Dead.h"
 
 #include <random>
 
-#include "BabyZombie.h"
+#include "Vindicator.h"
 
 #include "AnimationCurve.h"
 
-CBabyZombie_Dead::CBabyZombie_Dead(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
-	: CState_BabyZombie(pActor, pGameObjectDesc, pDesc)
+CVindicator_Dead::CVindicator_Dead(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
+	: CState_Vindicator(pActor, pGameObjectDesc, pDesc)
 {
 }
 
-HRESULT CBabyZombie_Dead::Init_State()
+HRESULT CVindicator_Dead::Init_State()
 {
 	__super::Init_State();
 
-	m_pBabyZombie = dynamic_cast<CBabyZombie*>(m_pActor);
-	if (nullptr == m_pBabyZombie)
+	m_pVindicator = dynamic_cast<CVindicator*>(m_pActor);
+	if (nullptr == m_pVindicator)
 		return E_FAIL;
 
 	m_fCurrentTime  = 0.f;
@@ -25,7 +25,7 @@ HRESULT CBabyZombie_Dead::Init_State()
 	return S_OK;
 }
 
-void CBabyZombie_Dead::State_Enter()
+void CVindicator_Dead::State_Enter()
 {
 	m_pActorModelCom->Set_Animation(static_cast<_uint>(BABYZOMBIE_STATE::IDLE), false, 1.0f);
 
@@ -56,12 +56,12 @@ void CBabyZombie_Dead::State_Enter()
 	m_bDowned = false;
 }
 
-void CBabyZombie_Dead::State_Priority_Update(_float fTimeDelta)
+void CVindicator_Dead::State_Priority_Update(_float fTimeDelta)
 {
 	__super::State_Priority_Update(fTimeDelta);
 }
 
-void CBabyZombie_Dead::State_Update(_float fTimeDelta)
+void CVindicator_Dead::State_Update(_float fTimeDelta)
 {
 	// Play_Animation 안할랫
 	//__super::State_Update(fTimeDelta);
@@ -94,23 +94,23 @@ void CBabyZombie_Dead::State_Update(_float fTimeDelta)
 		return;
 	}
 
-	if (false == m_pBabyZombie->Get_Can_be_Eaten())
+	if (false == m_pVindicator->Get_Can_be_Eaten())
 	{
 		m_pActor->Set_GameObject_Active(false);
 		m_pBigColliderCom->Set_ColliderActive(false);
 		m_pSmallColliderCom->Set_ColliderActive(false);
 	}
 
-	else if (true == m_pBabyZombie->Get_Can_be_Eaten())
+	else if (true == m_pVindicator->Get_Can_be_Eaten())
 	{
 		// 빨려들어갈 목표 위치 (예: CauldronBoss 위치)
-		CTransform*		pBossTransformCom = dynamic_cast<CTransform*>(m_pBabyZombie->Get_Eating_BossMonster()->Find_Component(TEXT("Com_Transform")));
+		CTransform*		pBossTransformCom = dynamic_cast<CTransform*>(m_pVindicator->Get_Eating_BossMonster()->Find_Component(TEXT("Com_Transform")));
 		_vector			vTargetPos = pBossTransformCom->Get_State(CTransform::STATE_POSITION);  // CauldronBoss 위치를 목표로 설정
 		_float			fSpeed = 2.0f; // 빨려들어가는 속도
 
 		// EaseOutBack 커브를 사용하여 점차적으로 빨려들어가도록 설정
-		_float	fProgressRatio = m_fCurrentTime / m_fDurationTime;  // 0 ~ 1
-		_float	fEaseOutBackProgress = CAnimationCurve::EaseOutBack(fProgressRatio);
+		_float		fProgressRatio = m_fCurrentTime / m_fDurationTime;  // 0 ~ 1
+		_float		fEaseOutBackProgress = CAnimationCurve::EaseOutBack(fProgressRatio);
 
 		// 목표 위치로 이동 (커브 적용)
 		 // 이동 거리 계산 (목표 위치와 현재 위치의 차이)
@@ -132,16 +132,16 @@ void CBabyZombie_Dead::State_Update(_float fTimeDelta)
 	}
 }
 
-void CBabyZombie_Dead::State_Late_Update(_float fTimeDelta)
+void CVindicator_Dead::State_Late_Update(_float fTimeDelta)
 {
 	__super::State_Late_Update(fTimeDelta);
 }
 
-void CBabyZombie_Dead::State_Exit()
+void CVindicator_Dead::State_Exit()
 {
 }
 
-void CBabyZombie_Dead::Collision_Enter(CCollider* pOther)
+void CVindicator_Dead::Collision_Enter(CCollider* pOther)
 {
 	__super::Collision_Enter(pOther);
 
@@ -154,30 +154,30 @@ void CBabyZombie_Dead::Collision_Enter(CCollider* pOther)
 	}
 }
 
-void CBabyZombie_Dead::Collision_Stay(CCollider* pOther)
+void CVindicator_Dead::Collision_Stay(CCollider* pOther)
 {
 	__super::Collision_Stay(pOther);
 }
 
-void CBabyZombie_Dead::Collision_Exit(CCollider* pOther)
+void CVindicator_Dead::Collision_Exit(CCollider* pOther)
 {
 	__super::Collision_Exit(pOther);
 }
 
-CState_Monster* CBabyZombie_Dead::Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
+CState_Monster* CVindicator_Dead::Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
 {
-	CBabyZombie_Dead* pGameInstance = new CBabyZombie_Dead(pActor, pGameObjectDesc, pDesc);
+	CVindicator_Dead* pGameInstance = new CVindicator_Dead(pActor, pGameObjectDesc, pDesc);
 
 	if (FAILED(pGameInstance->Init_State()))
 	{
-		MSG_BOX("Failed to Create : CBabyZombie_Dead");
+		MSG_BOX("Failed to Create : CVindicator_Dead");
 		Safe_Release(pGameInstance);
 	}
 
 	return pGameInstance;
 }
 
-void CBabyZombie_Dead::Free()
+void CVindicator_Dead::Free()
 {
 	__super::Free();
 }

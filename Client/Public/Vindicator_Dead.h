@@ -1,14 +1,13 @@
 #pragma once
 #include "Client_Defines.h"
-#include "State_BabyZombie.h"
+#include "State_Vindicator.h"
 
 BEGIN(Client)
-
-class CBabyZombie_Dead final: public CState_BabyZombie
+	class CVindicator_Dead final: public CState_Vindicator
 {
 private:
-    CBabyZombie_Dead(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
-	~CBabyZombie_Dead() override = default;
+    CVindicator_Dead(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
+	~CVindicator_Dead() override = default;
 
 public:
     HRESULT     Init_State()                                override;
@@ -34,7 +33,7 @@ private:
 
     _vector     m_vFallAxis = {};
 
-    _bool        m_bCurveFinished = { false };
+    _bool       m_bCurveFinished = { false };
 
 public:
     static CState_Monster*  Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);

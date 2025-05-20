@@ -6,6 +6,7 @@
 #include "FSM.h"
 #include "Item.h"
 #include "Vindicator_Attack.h"
+#include "Vindicator_Dead.h"
 #include "Vindicator_Idle.h"
 #include "Vindicator_Novelty.h"
 #include "Vindicator_Walk.h"
@@ -160,6 +161,7 @@ HRESULT CVindicator::Ready_States()
 	m_StatesVec[static_cast<_uint>(VINDICATOR_STATE::WALK)]		= CVindicator_Walk::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
 	m_StatesVec[static_cast<_uint>(VINDICATOR_STATE::ATTACK)]	= CVindicator_Attack::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
 	m_StatesVec[static_cast<_uint>(VINDICATOR_STATE::NOVELTY)]	= CVindicator_Novelty::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
+	m_StatesVec[static_cast<_uint>(VINDICATOR_STATE::DEAD)]		= CVindicator_Dead::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
 
 	m_pMonsterFSM = FSM::Create();
 

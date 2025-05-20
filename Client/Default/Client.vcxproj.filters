@@ -394,6 +394,15 @@
     <Filter Include="02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Attack\BabyZombie_Idle">
       <UniqueIdentifier>{76e92df8-fa7f-4785-8567-93a869c1e8f4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster\Zombie\01. State\Zombie_Dead">
+      <UniqueIdentifier>{bddc1dcf-46a2-4560-aa95-6108f8c3e2aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Vindicator\01. State\Vindicator_Dead">
+      <UniqueIdentifier>{8af04970-2cc5-44f4-ae26-e575e8f48c83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Skeleton\01. State\Skeleton_Dead">
+      <UniqueIdentifier>{a0a46f7e-5a4d-4815-85b3-85395488f5e9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -783,6 +792,15 @@
     <ClInclude Include="..\Public\BabyZombie_Dead.h">
       <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Dead</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Zombie_Dead.h">
+      <Filter>02.GameObjects\Monster\Zombie\01. State\Zombie_Dead</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Vindicator_Dead.h">
+      <Filter>02.GameObjects\Monster\Vindicator\01. State\Vindicator_Dead</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Skeleton_Dead.h">
+      <Filter>02.GameObjects\Monster\Skeleton\01. State\Skeleton_Dead</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1166,6 +1184,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\BabyZombie_Dead.cpp">
       <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Dead</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Zombie_Dead.cpp">
+      <Filter>02.GameObjects\Monster\Zombie\01. State\Zombie_Dead</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Vindicator_Dead.cpp">
+      <Filter>02.GameObjects\Monster\Vindicator\01. State\Vindicator_Dead</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Skeleton_Dead.cpp">
+      <Filter>02.GameObjects\Monster\Skeleton\01. State\Skeleton_Dead</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

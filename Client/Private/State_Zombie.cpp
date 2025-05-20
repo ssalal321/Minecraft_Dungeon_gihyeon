@@ -35,7 +35,8 @@ void CState_Zombie::State_Update(_float fTimeDelta)
 {
 	__super::State_Update(fTimeDelta);
 
-	// 공격 받았을 때 스턴 걸리기
+	if (Change_State_To_Dead())
+		return;
 }
 
 void CState_Zombie::State_Late_Update(_float fTimeDelta)
@@ -97,6 +98,17 @@ _bool CState_Zombie:: Change_State_To_Idle()
 	if (!playerInRange)
 	{
 		m_pZombie->Change_State(Make_ZombieState(ZOMBIE_STATE::IDLE));
+		return true;
+	}
+
+	return false;
+}
+
+_bool CState_Zombie::Change_State_To_Dead()
+{
+	if (m_pMonsterInfo->Get_CurrentHP() <= 0)
+	{
+		m_pZombie->Change_State(Make_ZombieState(ZOMBIE_STATE::DEAD));
 		return true;
 	}
 
