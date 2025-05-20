@@ -32,6 +32,13 @@ void CState_Slime_Cauldron::State_Update(_float fTimeDelta)
 {
 	__super::State_Update(fTimeDelta);
 
+	if (m_pMonsterInfo->Get_CurrentHP() <= 0)
+	{
+		m_pActor->Set_GameObject_Active(false);
+		m_pBigColliderCom->Set_ColliderActive(false);
+		m_pSmallColliderCom->Set_ColliderActive(false);
+	}
+
 	m_pTransformCom->Jump(fTimeDelta, m_pNavigationCom);
 	if (m_pTransformCom->Get_Is_Jumping())
 		m_pTransformCom->Go_Straight(fTimeDelta, m_pNavigationCom);

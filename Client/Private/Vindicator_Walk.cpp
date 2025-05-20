@@ -3,7 +3,7 @@
 
 #include "Player.h"
 
-#define RETREAT_DISTANCE 3.5f
+#define RETREAT_DISTANCE 5.f
 
 CVindicator_Walk::CVindicator_Walk(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
 	: CState_Vindicator(pActor, pGameObjectDesc, pDesc)

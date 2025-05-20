@@ -141,7 +141,7 @@ void CPlayer_Arrow::Shoot(_float4 startPos, _float4 lookPos)
 void CPlayer_Arrow::Return_To_Pool()
 {
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, { 0.f, 200.f, 0.f, 1.f});
-	m_pTransformCom->LookAt({ 0.f, 0.f, 0.f, 1.f });
+	//m_pTransformCom->LookAt({ 0.f, 0.f, 0.f, 1.f });
 
 	m_fResetTimer = 0.f;
 	m_iDealPoint = 0;

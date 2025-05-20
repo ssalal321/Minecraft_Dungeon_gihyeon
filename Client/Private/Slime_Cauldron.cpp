@@ -74,7 +74,14 @@ void CSlime_Cauldron::Update(_float fTimeDelta)
 		return;
 
 	if (20.f <= m_fLifeTime)
+	{
+		CCollider* pBigCollider = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_BigSphere")));
+		CCollider* pSmallCollider = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_SmallSphere")));
+
 		m_bActive = false;
+		pBigCollider->Set_ColliderActive(false);
+		pSmallCollider->Set_ColliderActive(false);
+	}
 
 	m_fLifeTime += fTimeDelta;
 
@@ -127,7 +134,7 @@ HRESULT CSlime_Cauldron::Ready_States()
 
 	CModel* pSlimeCorruptedModel = dynamic_cast<CModel*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Model")));
 	CCollider* pBigCollider = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_BigSphere")));
-	CCollider* pSmallCollider = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_SmallSphere")));\
+	CCollider* pSmallCollider = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_SmallSphere")));
 
 	CState_Slime_Cauldron::STATE_SLIME_CAULDRON_DESC	pStateSlimeCauldronDesc = {};
 	pStateSlimeCauldronDesc.pBigColliderCom		= pBigCollider;
