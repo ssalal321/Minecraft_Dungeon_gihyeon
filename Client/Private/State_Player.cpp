@@ -288,6 +288,12 @@ void CState_Player::Reset_Combo()
 
 	m_fPrevAnimTrackPosition = 0.f;
 
+	CItem* pMeleeItem = dynamic_cast<CItem*>(m_pPlayer->Find_PartObject(TEXT("Part_Weapon_Melee")));
+	if (nullptr != pMeleeItem)
+	{
+		pMeleeItem->Reset_DealPoint();
+	}
+
 	//m_pPlayer->Set_Attacking(false);
 
 	//std::wcerr << "[콤보 초기화 딩딩딩딩딩~]" << std::endl;

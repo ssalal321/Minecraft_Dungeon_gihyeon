@@ -47,6 +47,8 @@ public:
 	const _wstring&		Get_ColliderTag() { return m_strColliderTag; }
 
 	void	Set_ItemActive(_bool bActive) { m_bItemActive = bActive; }
+	void	DealPoint_Combo_Plus(_int comboPlusPoint) { m_iDealPoint += comboPlusPoint; }
+	void	Reset_DealPoint() { m_iDealPoint = m_iInitialDealPoint; }
 
 public:
 	HRESULT		Initialize_Prototype()				override;
@@ -68,6 +70,7 @@ protected:
 
 	_int		m_iHealPoint = { 0 };
 	_int		m_iDealPoint = { 0 };
+	_int		m_iInitialDealPoint = { 0 };
 	_wstring	m_strTexPrototypeTag = {};
 	_wstring	m_strIconGameObjectTag = {};
 	_wstring	m_strObjectPrototypeTag = {};

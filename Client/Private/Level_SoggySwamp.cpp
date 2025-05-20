@@ -51,45 +51,45 @@ void CLevel_SoggySwamp::Update(_float fTimeDelta)
         bMouseClickLock = !bMouseClickLock;
 #endif
 
-    // 얘네도 여러 level에서 써야 하니까 state_monster로 빼는 게 나을지도..
-    _float4     fWorldMousePos = {};
-    _float3     fWorldMouseRay = {};
-    m_pGameInstance->Compute_MouseRay(fWorldMousePos, fWorldMouseRay);
+    //// 얘네도 여러 level에서 써야 하니까 state_monster로 빼는 게 나을지도..
+    //_float4     fWorldMousePos = {};
+    //_float3     fWorldMouseRay = {};
+    //m_pGameInstance->Compute_MouseRay(fWorldMousePos, fWorldMouseRay);
 
-    // 1. 현재 가장 가까운 Monster collider 찾기
-    CCollider* pClosestCollider = Get_Closest_Collider(fWorldMousePos, fWorldMouseRay);
-    if (nullptr == pClosestCollider)  // 아래에 다른 코드 없기도 하고 나중에 함수로 뺄 생각 하고 넣은 것
-        return;
+    //// 1. 현재 가장 가까운 Monster collider 찾기
+    //CCollider* pClosestCollider = Get_Closest_Collider(fWorldMousePos, fWorldMouseRay);
+    //if (nullptr == pClosestCollider)  // 아래에 다른 코드 없기도 하고 나중에 함수로 뺄 생각 하고 넣은 것
+    //    return;
 
-    CMonster* pPrevMonster = m_pPickedMonster;
-    CMonster* pCurrMonster = dynamic_cast<CMonster*>(dynamic_cast<CPartObject*>(pClosestCollider->Get_OwnerObject())->Get_ContainerObject());
+    //CMonster* pPrevMonster = m_pPickedMonster;
+    //CMonster* pCurrMonster = dynamic_cast<CMonster*>(dynamic_cast<CPartObject*>(pClosestCollider->Get_OwnerObject())->Get_ContainerObject());
 
-    // 2. 이전 Hovered 상태 해제
-    if (pPrevMonster && pPrevMonster != pCurrMonster)
-    {
-        pPrevMonster->Set_Hovered(false);
+    //// 2. 이전 Hovered 상태 해제
+    //if (pPrevMonster && pPrevMonster != pCurrMonster)
+    //{
+    //    pPrevMonster->Set_Hovered(false);
 
-        //std::wcerr << "[휘바 끝XXXXXXXXXXX]" << std::endl;
-    }
+    //    //std::wcerr << "[휘바 끝XXXXXXXXXXX]" << std::endl;
+    //}
 
-    // 3. 현재 Hovered 상태 설정 및 클릭 처리
-    if (pCurrMonster)
-    {
-        pCurrMonster->Set_Hovered(true);
-        m_pPickedMonster = pCurrMonster;
+    //// 3. 현재 Hovered 상태 설정 및 클릭 처리
+    //if (pCurrMonster)
+    //{
+    //    pCurrMonster->Set_Hovered(true);
+    //    m_pPickedMonster = pCurrMonster;
 
-        //std::wcerr << "[휘바휘바]" << std::endl;
+    //    //std::wcerr << "[휘바휘바]" << std::endl;
 
-        if (m_pGameInstance->Get_Key(VK_LBUTTON) && !bMouseClickLock)
-        {
-            Click_Chase_Monster(pCurrMonster);
-        }
-    }
+    //    if (m_pGameInstance->Get_Key(VK_LBUTTON) && !bMouseClickLock)
+    //    {
+    //        Click_Chase_Monster(pCurrMonster);
+    //    }
+    //}
 
-    if (m_pGameInstance->Key_Up(VK_LBUTTON) && !bMouseClickLock)
-    {
-        m_pPlayer->Set_Chasing(false);
-    }
+    //if (m_pGameInstance->Key_Up(VK_LBUTTON) && !bMouseClickLock)
+    //{
+    //    m_pPlayer->Set_Chasing(false);
+    //}
 }
 
 CCollider* CLevel_SoggySwamp::Get_Closest_Collider(const _float4& mousePos, const _float3& mouseRay)

@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "Body_Player.h"
+#include "Weapon_Glaive.h"
 
 #define GLAIVE_COMBO1_AttackOn  10.f
 #define GLAIVE_COMBO1_AttackOff  19.f
@@ -29,13 +30,11 @@ HRESULT CPlayer_Glaive_Combo::Init_State()
 
 void CPlayer_Glaive_Combo::State_Enter()
 {
-	//m_fAnimTimer = 0.f;
-
-	//std::cerr << "Player_Glaive_Combo" << "\n";
+	if (nullptr == m_pGlaive)
+		m_pGlaive = dynamic_cast<CWeapon_Glaive*>(m_pPlayer->Find_PartObject(TEXT("Part_Weapon_Melee")));
 
 	if (nullptr == m_pGlaiveCollider)
-		m_pGlaiveCollider = dynamic_cast<CCollider*>(m_pPlayer->Find_Part_Component(TEXT("Part_Weapon_Melee"),
-																		TEXT("Com_Collider_Sphere")));
+		m_pGlaiveCollider = dynamic_cast<CCollider*>(m_pGlaive->Find_Component(TEXT("Com_Collider_Sphere")));
 
 	m_pTransformCom->LookAt(m_pPlayer->Get_MonsterTransformCom()->Get_State(CTransform::STATE_POSITION));
 
@@ -82,9 +81,12 @@ void CPlayer_Glaive_Combo::State_Update(_float fTimeDelta)
 
 	if (!m_bCombo2_ColliderOn && GLAIVE_COMBO2_AttackOn <= fAnimCurTrackPos)
 	{
+		m_pGlaive->DealPoint_Combo_Plus(m_pGlaive->Get_DealPoint());
 		m_pPlayer->Set_Attacking(true);
 		m_pGlaiveCollider->Set_ColliderActive(true);
 		m_bCombo2_ColliderOn = true;
+
+		std::cerr << "2Combo_Point : " << m_pGlaive->Get_DealPoint() << "\n";
 	}
 
 	if (!m_bCombo2_ColliderOff && GLAIVE_COMBO2_AttackOff <= fAnimCurTrackPos)
@@ -96,9 +98,12 @@ void CPlayer_Glaive_Combo::State_Update(_float fTimeDelta)
 
 	if (!m_bCombo3_ColliderOn && GLAIVE_COMBO3_AttackOn <= fAnimCurTrackPos)
 	{
+		m_pGlaive->DealPoint_Combo_Plus(m_pGlaive->Get_DealPoint());
 		m_pPlayer->Set_Attacking(true);
 		m_pGlaiveCollider->Set_ColliderActive(true);
 		m_bCombo3_ColliderOn = true;
+
+		std::cerr << "3Combo_Point : " << m_pGlaive->Get_DealPoint() << "\n";
 	}
 
 	if (!m_bCombo3_ColliderOff && GLAIVE_COMBO3_AttackOff <= fAnimCurTrackPos)
@@ -139,7 +144,6 @@ void CPlayer_Glaive_Combo::State_Update(_float fTimeDelta)
 		if (m_bCombo1_Finished && fAnimCurTrackPos < GLAIVE_COMBO1_Finish + 1.5f)
 		{
 			m_pPlayer->Change_State(PLAYER_STATE::IDLE);
-			//std::wcerr << "[안녕히 계세요 여러분]" << std::endl;
 
 			m_bComboInitiating = true;
 			m_fCombo_ElapsedTime = 0.f;
@@ -148,7 +152,6 @@ void CPlayer_Glaive_Combo::State_Update(_float fTimeDelta)
 		if (m_bCombo2_Finished && fAnimCurTrackPos < GLAIVE_COMBO2_Finish + 1.5f)
 		{
 			m_pPlayer->Change_State(PLAYER_STATE::IDLE);
-			//std::wcerr << "[안녕히 계세요 여러분]" << std::endl;
 
 			m_bComboInitiating = true;
 			m_fCombo_ElapsedTime = 0.f;

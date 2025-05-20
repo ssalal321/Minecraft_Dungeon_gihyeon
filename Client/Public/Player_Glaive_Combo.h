@@ -2,6 +2,11 @@
 #include "Client_Defines.h"
 #include "State_Player.h"
 
+namespace Client
+{
+	class CWeapon_Glaive;
+}
+
 BEGIN(Client)
 	class CPlayer_Glaive_Combo final: public CState_Player
 {
@@ -23,8 +28,9 @@ public:
     void        Collision_Exit(CCollider* pOther)           override;
 
 private:
-    _float      m_fAnimTimer = 0.f;
-    CCollider*  m_pGlaiveCollider = { nullptr };
+    _float              m_fAnimTimer = 0.f;
+    CCollider*          m_pGlaiveCollider = { nullptr };
+    CWeapon_Glaive*     m_pGlaive = { nullptr };
 
 
 public:

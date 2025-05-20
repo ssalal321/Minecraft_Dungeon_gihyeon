@@ -134,7 +134,7 @@ void CPlayer::Hover_and_Chase_Monster()
 		pCurrMonster->Set_Hovered(true);
 		m_pPickedMonster = pCurrMonster;
 
-		std::wcerr << "[ÈÖ¹ÙÈÖ¹Ù]" << std::endl;
+		//std::wcerr << "[ÈÖ¹ÙÈÖ¹Ù]" << std::endl;
 
 		if (m_pGameInstance->Get_Key(VK_LBUTTON) && !bMouseClickLock)
 		{

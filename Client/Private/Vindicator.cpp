@@ -34,7 +34,7 @@ HRESULT CVindicator::Initialize(void* pArg)
 {
 	const _wstring& zombieGameObjectTag = TEXT("GameObject_Vindicator_") + to_wstring(m_iVindicatorID++);
 
-	m_pMonsterInfo = new MONSTER_DESC(zombieGameObjectTag, 100, 100, 10, 3.f, 12.f, false, 90.f, 3.5f);
+	m_pMonsterInfo = new MONSTER_DESC(zombieGameObjectTag, 100, 100, 50, 3.f, 12.f, false, 90.f, 3.5f);
 
 	if (FAILED(__super::Initialize(m_pMonsterInfo)))
 		return E_FAIL;

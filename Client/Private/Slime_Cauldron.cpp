@@ -31,7 +31,7 @@ HRESULT CSlime_Cauldron::Initialize(void* pArg)
 {
 	const _wstring& SlimeCauldronGameObjectTag = TEXT("GameObject_Slime_Cauldron_") + to_wstring(m_iSlimeCauldronID++);
 
-	m_pMonsterInfo = new MONSTER_DESC(SlimeCauldronGameObjectTag, 30, 30, 2, 3.f, 5.5f, false, 90.f, 3.5f);
+	m_pMonsterInfo = new MONSTER_DESC(SlimeCauldronGameObjectTag, 150, 150, 50, 3.f, 5.5f, false, 90.f, 3.5f);
 
 	if (FAILED(__super::Initialize(m_pMonsterInfo)))
 		return E_FAIL;
