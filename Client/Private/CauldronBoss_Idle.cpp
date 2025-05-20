@@ -1,4 +1,7 @@
 #include "CauldronBoss_Idle.h"
+
+#include <iostream>
+
 #include "State_CauldronBoss.h"
 #include "CauldronBoss.h"
 
@@ -23,6 +26,8 @@ HRESULT CCauldronBoss_Idle::Init_State()
 void CCauldronBoss_Idle::State_Enter()
 {
 	m_pActorModelCom->Set_Animation(static_cast<_uint>(CAULDRONBOSS_STATE::IDLE), false);
+
+	std::cerr << "[CauldronBoss_Idle]" << std::endl;
 }
 
 void CCauldronBoss_Idle::State_Priority_Update(_float fTimeDelta)

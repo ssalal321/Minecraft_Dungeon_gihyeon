@@ -40,7 +40,9 @@ void CSkeleton_BowAction::State_Priority_Update(_float fTimeDelta)
 void CSkeleton_BowAction::State_Update(_float fTimeDelta)
 {
     __super::State_Update(fTimeDelta);
-   
+
+	_float fAnimCurTrackPos = m_pActorModelCom->Get_AnimCurrentTrackPosition();
+
     if (m_bAnimationFinished)
     {
         /*if (Change_State_To_Idle())
@@ -54,8 +56,6 @@ void CSkeleton_BowAction::State_Update(_float fTimeDelta)
 
 		m_bShotArrow = false;
     }
-
-	_float fAnimCurTrackPos = m_pActorModelCom->Get_AnimCurrentTrackPosition();
 
 	if (!m_bShotArrow && SHOOT_ARROW <= fAnimCurTrackPos)
 		Shoot_Arrow();

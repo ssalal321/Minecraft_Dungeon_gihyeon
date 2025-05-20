@@ -19,7 +19,7 @@ HRESULT CSlime_Cauldron_Idle::Init_State()
 
 void CSlime_Cauldron_Idle::State_Enter()
 {
-	m_pActorModelCom->Set_Animation(static_cast<_uint>(SLIME_CAULDRON_STATE::IDLE), false, 0.6f);
+	m_pActorModelCom->Set_Animation(static_cast<_uint>(SLIME_CAULDRON_STATE::IDLE), false, 1.f);
 }
 
 void CSlime_Cauldron_Idle::State_Priority_Update(_float fTimeDelta)
@@ -41,7 +41,8 @@ void CSlime_Cauldron_Idle::State_Update(_float fTimeDelta)
 	_float4 playerPos = m_pSlime_Cauldron->Get_Player_Position(TEXT("GameObject_Player"),
 		m_pGameInstance->Get_CurrentLevelIndex());
 
-	m_pTransformCom->LookAt(XMLoadFloat4(&playerPos));
+	if (false == m_pTransformCom->Get_Is_Jumping())
+		m_pTransformCom->LookAt(XMLoadFloat4(&playerPos));
 }
 
 void CSlime_Cauldron_Idle::State_Late_Update(_float fTimeDelta)

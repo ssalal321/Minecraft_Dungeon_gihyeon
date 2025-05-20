@@ -45,8 +45,8 @@ HRESULT CLevel_Lounge::Initialize()
     if (FAILED(Ready_Layer_PlayerSlotUI(TEXT("Layer_PlayerSlotUI"))))
         return E_FAIL;
 
-    if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
-        return E_FAIL;
+    /*if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
+        return E_FAIL;*/
 
 
 #pragma region MELEE

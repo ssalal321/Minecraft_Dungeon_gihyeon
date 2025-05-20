@@ -27,7 +27,13 @@ public:
 private:
     CPlayer*    m_pPlayer = { nullptr };
 
+    _float4     m_PlayerPosition = { 0.f, 0.f, 0.f, 1.f };
+
     _bool       m_bShot = { false };
+
+private:
+    void        Fire_Bullet();
+
 
 public:
     static CState_Monster*  Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATE_SLIME_CAULDRON_DESC* pDesc);

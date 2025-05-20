@@ -1,4 +1,8 @@
 #include "CauldronBoss_IntenseSpin.h"
+
+#include <iostream>
+#include <ostream>
+
 #include "CauldronBoss.h"
 
 #include "Player.h"
@@ -26,6 +30,8 @@ void CCauldronBoss_IntenseSpin::State_Enter()
 	m_pMonsterInfo->Modify_CurrentHp(+20);
 
 	m_pActorModelCom->Set_Animation(static_cast<_uint>(CAULDRONBOSS_STATE::INTENSE_SPIN), false);
+
+	std::cerr << "[CauldronBoss_IntenseSpin]" << std::endl;
 }
 
 void CCauldronBoss_IntenseSpin::State_Priority_Update(_float fTimeDelta)

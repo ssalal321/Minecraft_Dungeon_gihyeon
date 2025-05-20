@@ -51,9 +51,11 @@ HRESULT CCauldronBoss::Initialize(void* pArg)
 	CAULDRONBOSS_DESC* pDesc = static_cast<CAULDRONBOSS_DESC*>(pArg);
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
 		XMLoadFloat4(&pDesc->slimeCauldronPosition));
+
 	if (m_pNavigationCom)
 		m_pNavigationCom->SetUp_CurrentCellIndex(869);
 
+	m_bStationary = true;
 	/*if (m_pNavigationCom)
 		m_pNavigationCom->SetUp_CurrentCellIndex(m_pNavigationCom->Find_CellIndex(m_pTransformCom->Get_State(CTransform::STATE_POSITION)));*/
 

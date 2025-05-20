@@ -1,4 +1,8 @@
 #include "CauldronBoss_StrongAttack.h"
+
+#include <iostream>
+#include <ostream>
+
 #include "State_CauldronBoss.h"
 #include "CauldronBoss.h"
 
@@ -31,7 +35,9 @@ void CCauldronBoss_StrongAttack::State_Enter()
 {
 	m_bShot = false;
 
-	m_pActorModelCom->Set_Animation(static_cast<_uint>(SLIME_CAULDRON_STATE::ATTACK), false, 1.f);
+	m_pActorModelCom->Set_Animation(static_cast<_uint>(CAULDRONBOSS_STATE::STRONG_ATTACK), false, 1.f);
+
+    std::cerr << "[CauldronBoss_StrongAttack]" << std::endl;
 }
 
 void CCauldronBoss_StrongAttack::State_Priority_Update(_float fTimeDelta)

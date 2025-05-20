@@ -342,7 +342,7 @@ _int CNavigation::Find_CellIndex(_fvector vWorldPos)
 	// 2. 모든 셀을 검사해서 포함 여부 확인
 	for (_int i = 0; i < m_Cells.size(); ++i)
 	{
-		_int dummyNeighbor = -1;
+		_int dummyNeighbor = {};
 		if (m_Cells[i]->Is_In(vLocalPos, &dummyNeighbor, nullptr))
 		{
 			return i;  // 위치가 포함된 셀 인덱스 반환
@@ -361,7 +361,7 @@ _bool CNavigation::Can_Move(_fvector vWorldPos)
 	_int iCellIndex = m_iCurrentCellIndex;
 	_int iNextNeighbor = -1;
 
-	for (_int depth = 0; depth < 100; ++depth)  // 8.........
+	for (_int depth = 0; depth < 10; ++depth)  // 8.........
 	{
 		CCell* pCurrent = m_Cells[iCellIndex];
 

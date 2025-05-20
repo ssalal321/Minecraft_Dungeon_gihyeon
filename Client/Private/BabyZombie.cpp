@@ -54,8 +54,10 @@ HRESULT CBabyZombie::Initialize(void* pArg)
 	BABYZOMBIE_DESC* pDesc = static_cast<BABYZOMBIE_DESC*>(pArg);
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&pDesc->babyZombiePosition));
 
+	m_pTransformCom->SetUp_Scale(1.f, 1.f, 1.f);
+
 	if (m_pNavigationCom)
-		m_pNavigationCom->SetUp_CurrentCellIndex(m_pNavigationCom->Find_CellIndex(m_pTransformCom->Get_State(CTransform::STATE_POSITION)));
+		m_pNavigationCom->SetUp_CurrentCellIndex(pDesc->currentCellIndex);
 
 	return S_OK;
 }
@@ -101,11 +103,11 @@ HRESULT CBabyZombie::Ready_PartObjects()
 	CBody_BabyZombie::BODY_BABYZOMBIE_DESC		BodyDesc{};
 
 	BodyDesc.strGameObjectTag = TEXT("GameObject_Body_BabyZombie");
-	BodyDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
-	BodyDesc.pState = &m_iState;
-	BodyDesc.pContainerObject = this;
-	BodyDesc.pBigCollisionActivating = &m_bAttacking;
-	BodyDesc.pSmallCollisionActivating = &m_bAlwaysActivated;
+	BodyDesc.pParentWorldMatrix			= m_pTransformCom->Get_WorldMatrix_Ptr();
+	BodyDesc.pState						= &m_iState;
+	BodyDesc.pContainerObject			= this;
+	BodyDesc.pBigCollisionActivating	= &m_bAttacking;
+	BodyDesc.pSmallCollisionActivating	= &m_bAlwaysActivated;
 
 	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Body_BabyZombie"), TEXT("Part_Body"), &BodyDesc)))
 		return E_FAIL;

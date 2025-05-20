@@ -42,7 +42,7 @@ void CState_Slime_Cauldron::State_Update(_float fTimeDelta)
 
 	if (m_pSlime_Cauldron->Get_Is_Jumping())
 	{
-		m_pTransformCom->Jump_Start(10.f);
+		m_pTransformCom->Jump_Start(8.f);
 		m_pTransformCom->LookAt(m_pSlime_Cauldron->Get_Jump_LandPos());
 		m_pSlime_Cauldron->Set_Is_Jumping(false);
 	}

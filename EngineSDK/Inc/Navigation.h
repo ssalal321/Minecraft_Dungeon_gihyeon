@@ -20,6 +20,7 @@ public:
 	HRESULT		Initialize(void* pArg)		override;
 	void		Update(const _float4x4* pWorldMatrix);
 	
+	_int	Get_CurrentCellIndex() const { return m_iCurrentCellIndex; }
 
 	void	SetUp_CurrentCellIndex(_int iCellIndex)
 	{

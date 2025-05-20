@@ -49,6 +49,8 @@ HRESULT CSlime_Large::Initialize(void* pArg)
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
 								XMVectorSet(3.f, 0.f, -10.f, 1.f));
 
+	m_pTransformCom->SetUp_Scale(1.f, 1.f, 1.f);
+
 	return S_OK;
 }
 

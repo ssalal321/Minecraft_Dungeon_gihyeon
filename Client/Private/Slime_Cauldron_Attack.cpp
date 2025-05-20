@@ -8,6 +8,8 @@
 #include "Player.h"
 #include "Slime_Cauldron_Bullet.h"
 
+#define FIRE_BULLET  5.f
+
 CSlime_Cauldron_Attack::CSlime_Cauldron_Attack(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATE_SLIME_CAULDRON_DESC* pDesc)
 	: Client::CState_Slime_Cauldron(pActor, pGameObjectDesc, pDesc)
 {
@@ -45,32 +47,7 @@ void CSlime_Cauldron_Attack::State_Update(_float fTimeDelta)
 {
 	__super::State_Update(fTimeDelta);
 
-	_float  fAnimCurTrackPos = m_pActorModelCom->Get_AnimCurrentTrackPosition();
-
-	if (!m_bShot && 5.f <= fAnimCurTrackPos)
-	{
-		CSlime_Cauldron_Bullet* pBullet = m_pBulletPool_Monster->Get_Bullet(m_pMonsterInfo->Get_DealPoint());
-		if (nullptr == pBullet)
-			return;
-
-		CTransform* pPlayerTransform = dynamic_cast<CTransform*>(m_pPlayer->Find_Component(TEXT("Com_Transform")));
-
-		_float4 startPos = {};
-		XMStoreFloat4(&startPos, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
-		startPos.y += 0.5f; // 위에서 떨어지게
-
-		_float4 endPos = {};
-		XMStoreFloat4(&endPos, pPlayerTransform->Get_State(CTransform::STATE_POSITION));
-		endPos.y += 1.2f; // 살짝 위로 타겟팅
-
-		_float3 startPosition = { startPos.x, startPos.y, startPos.z };
-		_float3 endPosition = { endPos.x, endPos.y, endPos.z };
-
-		// 4. 총알에게 베지어 시작
-		pBullet->Shoot(startPosition, endPosition);
-
-		m_bShot = true;
-	}
+	_float fAnimCurTrackPos = m_pActorModelCom->Get_AnimCurrentTrackPosition();
 
 	if (m_bAnimationFinished)
 	{
@@ -78,12 +55,18 @@ void CSlime_Cauldron_Attack::State_Update(_float fTimeDelta)
 		return;
 	}
 
+	if (!m_bShot && FIRE_BULLET <= fAnimCurTrackPos)
+		Fire_Bullet();
 
-	_float4 playerPos = m_pSlime_Cauldron->Get_Player_Position(TEXT("GameObject_Player"),
-		m_pGameInstance->Get_CurrentLevelIndex());
+	if (m_bShot)
+		return;
 
-	m_pTransformCom->LookAt(XMLoadFloat4(&playerPos));
+	m_PlayerPosition = m_pSlime_Cauldron->Get_Player_Position(TEXT("GameObject_Player"),
+															  m_pGameInstance->Get_CurrentLevelIndex());
+
+	m_pTransformCom->LookAt(XMLoadFloat4(&m_PlayerPosition));
 }
+
 
 void CSlime_Cauldron_Attack::State_Late_Update(_float fTimeDelta)
 {
@@ -109,6 +92,19 @@ void CSlime_Cauldron_Attack::Collision_Stay(CCollider* pOther)
 void CSlime_Cauldron_Attack::Collision_Exit(CCollider* pOther)
 {
 	__super::Collision_Exit(pOther);
+}
+
+void CSlime_Cauldron_Attack::Fire_Bullet()
+{
+	CSlime_Cauldron_Bullet* pBullet = m_pBulletPool_Monster->Get_Bullet(m_pMonsterInfo->Get_DealPoint());
+	if (nullptr == pBullet)
+		return;
+
+	m_bShot = true;
+
+	_float4	 monsterPos = {};
+	XMStoreFloat4(&monsterPos, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+	pBullet->Fire(monsterPos, m_PlayerPosition);
 }
 
 CState_Monster* CSlime_Cauldron_Attack::Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATE_SLIME_CAULDRON_DESC* pDesc)

@@ -391,9 +391,6 @@
     <Filter Include="02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Dead">
       <UniqueIdentifier>{cf91a26d-b31e-432e-a422-37bd046f3e22}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Attack\BabyZombie_Idle">
-      <UniqueIdentifier>{76e92df8-fa7f-4785-8567-93a869c1e8f4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\Monster\Zombie\01. State\Zombie_Dead">
       <UniqueIdentifier>{bddc1dcf-46a2-4560-aa95-6108f8c3e2aa}</UniqueIdentifier>
     </Filter>
@@ -402,6 +399,9 @@
     </Filter>
     <Filter Include="02.GameObjects\Monster\Skeleton\01. State\Skeleton_Dead">
       <UniqueIdentifier>{a0a46f7e-5a4d-4815-85b3-85395488f5e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Idle">
+      <UniqueIdentifier>{76e92df8-fa7f-4785-8567-93a869c1e8f4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -613,7 +613,7 @@
       <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_GetHit</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\BabyZombie_Idle.h">
-      <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Attack\BabyZombie_Idle</Filter>
+      <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Idle</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\BabyZombie_Walk.h">
       <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Walk</Filter>
@@ -1009,7 +1009,7 @@
       <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_GetHit</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BabyZombie_Idle.cpp">
-      <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Attack\BabyZombie_Idle</Filter>
+      <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Idle</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BabyZombie_Walk.cpp">
       <Filter>02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Walk</Filter>

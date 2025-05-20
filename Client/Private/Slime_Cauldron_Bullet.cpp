@@ -24,7 +24,7 @@ HRESULT CSlime_Cauldron_Bullet::Initialize(void* pArg)
 {
 	const _wstring& arrowGameObjectTag = TEXT("GameObject_SlimeCauldronBullet_") + to_wstring(m_iBulletID++);
 
-	m_pBulletDesc = new GAMEOBJECT_DESC(arrowGameObjectTag, 0.f, 22.f);
+	m_pBulletDesc = new GAMEOBJECT_DESC(arrowGameObjectTag, 0.f, 10.f);
 
 	if (FAILED(__super::Initialize(m_pBulletDesc)))
 		return E_FAIL;
@@ -51,22 +51,19 @@ void CSlime_Cauldron_Bullet::Update(_float fTimeDelta)
 
 	if (m_bAttacking)
 	{
-		// Transform이 베지어 곡선을 따라 이동
-		m_pTransformCom->Update_BezierFlight(fTimeDelta);
+		m_pTransformCom->Go_Straight(fTimeDelta);
 
 		m_fResetTimer += fTimeDelta;
-
-		// 끝났는지 확인 (도달했는지 또는 y 위치)
-		_float4 pos = {};
-		XMStoreFloat4(&pos, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
-
-		if (m_fResetTimer >= 2.5f)
+		if (m_fResetTimer >= 2.f)
 			Return_To_Pool();
 	}
 		
 	if (m_bCollided)
 	{
-		Return_To_Pool();
+		m_fResetTimer += fTimeDelta;
+
+		if (m_fResetTimer >= 0.2f)
+			Return_To_Pool();
 	}
 }
 
@@ -120,20 +117,12 @@ HRESULT CSlime_Cauldron_Bullet::Bind_ShaderResources()
 	return S_OK;
 }
 
-void CSlime_Cauldron_Bullet::Shoot(_float3 startPos, _float3 endPos)
+void CSlime_Cauldron_Bullet::Fire(_float4 startPos, _float4 lookPos)
 {
-	// 제어점: 시작과 끝의 중간 + 높이 튀게
-	_float3 controlPos = {
-		(startPos.x + endPos.x) * 0.5f,
-		max(startPos.y, endPos.y) + 1.f,
-		(startPos.z + endPos.z) * 0.5f
-	};
+	startPos.y += 1.f;
 
-	_float speed = 1.f; // or 랜덤값도 가능
-	
-	m_pTransformCom->Start_BezierFlight(startPos, controlPos, endPos, speed);
-
-	m_EndPos		= endPos;
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&startPos));
+	m_pTransformCom->LookAt(XMLoadFloat4(&lookPos));
 	m_bAttacking	= true;
 	m_bActive		= true;
 	m_pColliderCom->Set_ColliderActive(true);
