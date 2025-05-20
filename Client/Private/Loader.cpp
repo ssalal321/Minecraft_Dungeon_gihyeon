@@ -324,7 +324,7 @@ HRESULT CLoader::Ready_Prototype_ModelCom_Static()
 	//PreTransformMatrix = XMMatrixScaling(0.5f, 0.5f, 0.5f);
 	/* For.Prototype_Component_Model_BabyZombie */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_BabyZombie"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Monster/Zombie/BabyZombie2.fbx", PreTransformMatrix))))
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Monster/Zombie/BabyZombie.fbx", PreTransformMatrix))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Model_Slime_Large */

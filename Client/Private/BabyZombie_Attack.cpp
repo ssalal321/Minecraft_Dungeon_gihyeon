@@ -66,8 +66,11 @@ void CBabyZombie_Attack::State_Update(_float fTimeDelta)
         m_bHitMode_Activated = false;*/
     }
 
-    _float4 playerPos = m_pBabyZombie->Get_Player_Position(TEXT("GameObject_Player"), m_pGameInstance->Get_CurrentLevelIndex());
-    m_pTransformCom->LookAt(XMLoadFloat4(&playerPos));
+    if (false == m_pTransformCom->Get_Is_Jumping())
+    {
+        _float4 playerPos = m_pBabyZombie->Get_Player_Position(TEXT("GameObject_Player"), m_pGameInstance->Get_CurrentLevelIndex());
+        m_pTransformCom->LookAt(XMLoadFloat4(&playerPos));
+    }
 }
 
 

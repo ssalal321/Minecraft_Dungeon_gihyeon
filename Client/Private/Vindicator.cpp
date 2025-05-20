@@ -39,21 +39,18 @@ HRESULT CVindicator::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(m_pMonsterInfo)))
 		return E_FAIL;
 
-	if (m_pNavigationCom)
-		m_pNavigationCom->SetUp_CurrentCellIndex(363);
-
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;
 
 	if (FAILED(Ready_States()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
-								XMVectorSet(-6.f, 0.05f, -6.5f, 1.f));
 
+	VINDICATOR_DESC* pDesc = static_cast<VINDICATOR_DESC*>(pArg);
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&pDesc->vindicatorPosition));
 
-	/*VINDICATOR_DESC* pDesc = static_cast<VINDICATOR_DESC*>(pArg);
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&pDesc->babyZombiePosition));*/
+	if (m_pNavigationCom)
+		m_pNavigationCom->SetUp_CurrentCellIndex(pDesc->currentCellIndex);
 
 	return S_OK;
 }

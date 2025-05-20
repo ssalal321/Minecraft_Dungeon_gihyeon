@@ -51,7 +51,6 @@ HRESULT CBabyZombie::Initialize(void* pArg)
 	BABYZOMBIE_DESC* pDesc = static_cast<BABYZOMBIE_DESC*>(pArg);
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&pDesc->babyZombiePosition));
 
-
 	if (m_pNavigationCom)
 		m_pNavigationCom->SetUp_CurrentCellIndex(pDesc->currentCellIndex);
 

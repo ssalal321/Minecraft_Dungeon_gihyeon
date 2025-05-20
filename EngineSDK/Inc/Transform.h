@@ -31,6 +31,10 @@ public:
 
 		virtual ~tagTransformDesc() = default;
 
+
+
+		_float		Get_SpeedPerSec() { return fSpeedPerSec; }
+
 	}TRANSFORM_DESC;
 
 private:

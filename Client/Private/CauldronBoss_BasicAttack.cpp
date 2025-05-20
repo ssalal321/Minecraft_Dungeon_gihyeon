@@ -5,6 +5,7 @@
 
 #include "BabyZombie.h"
 #include "CauldronBoss.h"
+#include "Vindicator.h"
 
 #define ATTACKSTART 7.f
 #define ATTACKFINISH 13.f
@@ -44,45 +45,13 @@ void CCauldronBoss_BasicAttack::State_Update(_float fTimeDelta)
     __super::State_Update(fTimeDelta);
 
     _float4 playerPos = m_pCauldronBoss->Get_Player_Position(TEXT("GameObject_Player"),
-        m_pGameInstance->Get_CurrentLevelIndex());
+															 m_pGameInstance->Get_CurrentLevelIndex());
 
     if (!m_bSummoned)
     {
-        for (_int i = 0; i < 2; ++i)  // 한 번에 2마리 생성
-        {
-            // 랜덤 각도 및 거리
-            _float angle = static_cast<_float>(rand() % 360);
-            _float radius = 3.0f + rand() % 3;
-
-            _vector vOffset = XMVectorSet(radius * cosf(XMConvertToRadians(angle)), 0.0f, radius * sinf(XMConvertToRadians(angle)), 0.0f);
-            _vector vLandingPosition = XMLoadFloat4(&playerPos) + vOffset;
-
-            // 생성 정보 설정
-            CBabyZombie::BABYZOMBIE_DESC    babyZombieDesc = {};
-            _float4     cauldronBossPos;
-            XMStoreFloat4(&cauldronBossPos, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
-            cauldronBossPos.y += 3.f;
-
-            babyZombieDesc.babyZombiePosition   = cauldronBossPos;
-            babyZombieDesc.currentCellIndex     = m_pNavigationCom->Get_CurrentCellIndex();
-
-            // 몬스터 생성
-            CGameObject* pGameObject = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_BabyZombie"),
-														  m_pGameInstance->Get_CurrentLevelIndex(), TEXT("Layer_Monster"), &babyZombieDesc);
-            if (nullptr == pGameObject)
-                return;
-
-            // 추가 설정
-            CMonster* pMonster = dynamic_cast<CMonster*>(pGameObject);
-
-        	pMonster->Set_Can_be_Eaten(true, m_pCauldronBoss);
-
-            pMonster->Jump_To_Target(vLandingPosition);
-        }
-
+        Spawn_Monsters(playerPos);
         m_bSummoned = true;
     }
-
 
     if (m_bAnimationFinished)
     {
@@ -122,6 +91,60 @@ void CCauldronBoss_BasicAttack::Collision_Exit(CCollider* pOther)
 {
     __super::Collision_Exit(pOther);
 }
+
+void CCauldronBoss_BasicAttack::Spawn_Monsters(const _float4& playerPos)
+{
+    _float4 bossPos;
+    XMStoreFloat4(&bossPos, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+    bossPos.y += 3.f; // 위로 띄우기
+
+    // BabyZombie 2마리 생성
+    for (_int i = 0; i < 2; ++i)
+    {
+        _float angle = static_cast<_float>(rand() % 360);
+        _float radius = 3.f + static_cast<_float>(rand() % 3);
+
+        _vector vOffset = XMVectorSet(radius * cosf(XMConvertToRadians(angle)), 0.f, radius * sinf(XMConvertToRadians(angle)), 0.f);
+        _vector vLandingPos = XMLoadFloat4(&playerPos) + vOffset;
+
+        CBabyZombie::BABYZOMBIE_DESC desc{};
+        desc.babyZombiePosition = bossPos;
+        desc.currentCellIndex = m_pNavigationCom->Get_CurrentCellIndex();
+
+        CGameObject* pZombieObj = m_pGameInstance->Add_GameObject(
+            LEVEL_STATIC, TEXT("Prototype_GameObject_BabyZombie"),
+            m_pGameInstance->Get_CurrentLevelIndex(), TEXT("Layer_Monster"), &desc);
+
+        if (nullptr == pZombieObj)
+            continue;
+
+        CMonster* pMonster = dynamic_cast<CMonster*>(pZombieObj);
+        pMonster->Set_Can_be_Eaten(true, m_pCauldronBoss);
+        pMonster->Jump_To_Target(vLandingPos);
+    }
+
+    // Vindicator 1마리 생성
+    _float angle = static_cast<_float>(rand() % 360);
+    _float radius = 3.f + static_cast<_float>(rand() % 3);
+    _vector vOffset = XMVectorSet(radius * cosf(XMConvertToRadians(angle)), 0.f, radius * sinf(XMConvertToRadians(angle)), 0.f);
+    _vector vLandingPos = XMLoadFloat4(&playerPos) + vOffset;
+
+    CVindicator::VINDICATOR_DESC vDesc{};
+    vDesc.vindicatorPosition = bossPos;
+    vDesc.currentCellIndex = m_pNavigationCom->Get_CurrentCellIndex();
+
+    CGameObject* pVindicatorObj = m_pGameInstance->Add_GameObject(
+        LEVEL_STATIC, TEXT("Prototype_GameObject_Vindicator"),
+        m_pGameInstance->Get_CurrentLevelIndex(), TEXT("Layer_Monster"), &vDesc);
+
+    if (pVindicatorObj)
+    {
+        CMonster* pMonster = dynamic_cast<CMonster*>(pVindicatorObj);
+        pMonster->Set_Can_be_Eaten(true, m_pCauldronBoss);
+        pMonster->Jump_To_Target(vLandingPos);
+    }
+}
+
 
 CState_Monster* CCauldronBoss_BasicAttack::Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
 {

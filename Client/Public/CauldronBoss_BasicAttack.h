@@ -27,6 +27,9 @@ private:
     _bool       m_bAttackFinished = { false };
     _bool       m_bSummoned = { false };
 
+private:
+    void        Spawn_Monsters(const _float4& playerPos);
+
 public:
     static CState_Monster*  Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
     void   Free()    override;

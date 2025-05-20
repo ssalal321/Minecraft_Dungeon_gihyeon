@@ -12,7 +12,8 @@ class CVindicator final : public CMonster
 public:
 	struct VINDICATOR_DESC
 	{
-		_float4  babyZombiePosition = { 0.f, 0.f, 0.f, 1.f };
+		_float4  vindicatorPosition = { 0.f, 0.f, 0.f, 1.f };
+		_int	 currentCellIndex = { 800 };
 	};
 
 private:
