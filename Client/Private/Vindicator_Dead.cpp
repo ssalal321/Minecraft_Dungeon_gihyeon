@@ -101,12 +101,12 @@ void CVindicator_Dead::State_Update(_float fTimeDelta)
 		m_pSmallColliderCom->Set_ColliderActive(false);
 	}
 
-	else if (true == m_pVindicator->Get_Can_be_Eaten())
+	else if (true == m_pVindicator->Get_Can_be_Eaten() && !m_bCurveFinished)
 	{
 		// 빨려들어갈 목표 위치 (예: CauldronBoss 위치)
 		CTransform*		pBossTransformCom = dynamic_cast<CTransform*>(m_pVindicator->Get_Eating_BossMonster()->Find_Component(TEXT("Com_Transform")));
 		_vector			vTargetPos = pBossTransformCom->Get_State(CTransform::STATE_POSITION);  // CauldronBoss 위치를 목표로 설정
-		_float			fSpeed = 2.0f; // 빨려들어가는 속도
+		_float			fSpeed = 0.5f; // 빨려들어가는 속도
 
 		// EaseOutBack 커브를 사용하여 점차적으로 빨려들어가도록 설정
 		_float		fProgressRatio = m_fCurrentTime / m_fDurationTime;  // 0 ~ 1
@@ -124,10 +124,12 @@ void CVindicator_Dead::State_Update(_float fTimeDelta)
 
 		// 이동을 계속하면서 점차적으로 목표에 가까워짐
 		m_fCurrentTime += fTimeDelta;
-		if (m_fCurrentTime >= m_fDurationTime)
+		if (fProgressRatio >= 1.f)
 		{
 			// 이동이 완료되었으면, 추가적인 처리
 			m_bCurveFinished = true;
+
+			m_pActor->Set_GameObject_Active(false);
 		}
 	}
 }
@@ -146,9 +148,9 @@ void CVindicator_Dead::Collision_Enter(CCollider* pOther)
 	__super::Collision_Enter(pOther);
 
 	//빨려들어가다가 CauldronBoss랑 부딪히면 먹히고 사라지기
-	if (m_bCurveFinished && pOther->Get_ColliderTag() == TEXT("Boss_Body_Small"))
+	//빨려들어가다가 CauldronBoss랑 부딪히면 먹히고 사라지기
+	if (pOther->Get_ColliderTag() == TEXT("Boss_Body_Small"))
 	{
-		m_pActor->Set_GameObject_Active(false);
 		m_pBigColliderCom->Set_ColliderActive(false);
 		m_pSmallColliderCom->Set_ColliderActive(false);
 	}

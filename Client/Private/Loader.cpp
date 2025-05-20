@@ -360,7 +360,7 @@ HRESULT CLoader::Ready_Prototype_ModelCom_Static()
 
 	/* For.Prototype_Component_Model_CauldronBoss */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_CauldronBoss"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Monster/CauldronBoss/CauldronBoss.fbx", PreTransformMatrix))))
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Monster/CauldronBoss/CauldronBoss3.fbx", PreTransformMatrix))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Model_Cube */

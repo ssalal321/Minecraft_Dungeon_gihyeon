@@ -27,9 +27,9 @@ HRESULT CCauldronBoss_IntenseSpin::Init_State()
 void CCauldronBoss_IntenseSpin::State_Enter()
 {
 	m_fSpinTime = 0.f;
-	m_pMonsterInfo->Modify_CurrentHp(+20);
+	m_pMonsterInfo->Modify_CurrentHp(+30);
 
-	m_pActorModelCom->Set_Animation(static_cast<_uint>(CAULDRONBOSS_STATE::INTENSE_SPIN), false);
+	m_pActorModelCom->Set_Animation(static_cast<_uint>(CAULDRONBOSS_STATE::INTENSE_SPIN), false, 1.3f);
 
 	std::cerr << "[CauldronBoss_IntenseSpin]" << std::endl;
 }
@@ -43,13 +43,16 @@ void CCauldronBoss_IntenseSpin::State_Update(_float fTimeDelta)
 {
     __super::State_Update(fTimeDelta);
 
-	if (m_fSpinTime > 2.f)
+	if (m_fSpinTime > 5.f)
 	{
 		if (Change_State_To_Idle())
 			return;
 	}
 
 	m_fSpinTime += fTimeDelta;
+
+	_float4 playerPos = m_pCauldronBoss->Get_Player_Position(TEXT("GameObject_Player"), m_pGameInstance->Get_CurrentLevelIndex());
+	m_pTransformCom->LookAt(XMLoadFloat4(&playerPos));
 }
 
 

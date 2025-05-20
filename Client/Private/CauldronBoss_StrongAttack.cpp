@@ -35,7 +35,7 @@ void CCauldronBoss_StrongAttack::State_Enter()
 {
 	m_bShot = false;
 
-	m_pActorModelCom->Set_Animation(static_cast<_uint>(CAULDRONBOSS_STATE::STRONG_ATTACK), false, 1.f);
+	m_pActorModelCom->Set_Animation(static_cast<_uint>(CAULDRONBOSS_STATE::STRONG_ATTACK), false, 1.1f);
 
     std::cerr << "[CauldronBoss_StrongAttack]" << std::endl;
 }
@@ -43,7 +43,6 @@ void CCauldronBoss_StrongAttack::State_Enter()
 void CCauldronBoss_StrongAttack::State_Priority_Update(_float fTimeDelta)
 {
 	__super::State_Priority_Update(fTimeDelta);
-	
 }
 
 void CCauldronBoss_StrongAttack::State_Update(_float fTimeDelta)

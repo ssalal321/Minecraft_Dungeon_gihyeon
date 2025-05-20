@@ -269,7 +269,7 @@ HRESULT CLevel_SoggySwamp::Ready_Layer_Monster(const _wstring& strLayerTag)
 		return E_FAIL;*/
 
     CCauldronBoss::CAULDRONBOSS_DESC  cauldronBossDesc = {};
-    cauldronBossDesc.slimeCauldronPosition = { 0.45f, 0, 30.f, 1.f };
+    cauldronBossDesc.slimeCauldronPosition = { 0.45f, 0, 29.8f, 1.f };
 
     CGameObject* pCauldronBoss = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_CauldronBoss"),
 																 LEVEL_SOGGYSWAMP, strLayerTag, &cauldronBossDesc);

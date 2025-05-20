@@ -61,6 +61,9 @@ void CCauldronBoss_Idle::State_Update(_float fTimeDelta)
 			}
 		}
 	}
+
+	_float4 playerPos = m_pCauldronBoss->Get_Player_Position(TEXT("GameObject_Player"), m_pGameInstance->Get_CurrentLevelIndex());
+	m_pTransformCom->LookAt(XMLoadFloat4(&playerPos));
 }
 
 void CCauldronBoss_Idle::State_Late_Update(_float fTimeDelta)
