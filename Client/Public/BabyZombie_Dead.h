@@ -25,9 +25,14 @@ public:
 
 private:
     _bool       m_bDowned = { false };
+    _bool       m_bDelayFinished = { false };
+	_float      m_fAccumulatedRotation = {};
+    _float      m_fDelayTime = {};
 
     _float      m_fCurrentTime  = {};  // 초기화
     _float      m_fDurationTime = {}; // 애니메이션 지속 시간 (예: 3초)
+
+    _vector     m_vFallAxis = {};
 
 public:
     static CState_Monster*  Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);

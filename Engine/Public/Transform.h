@@ -60,6 +60,8 @@ public:
 
 	_bool	Get_Is_Jumping() const { return m_bIsJumping; }
 
+	_float	Get_Rotation_perSec() const { return m_fRotationPerSec; }
+
 	void	Set_Is_Jumping(_bool bJumping) { m_bIsJumping = bJumping; }
 
 	void	Set_State(STATE eState, _fvector vState)

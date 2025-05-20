@@ -56,6 +56,8 @@ void CSlime_Cauldron_Idle::State_Exit()
 void CSlime_Cauldron_Idle::Collision_Enter(CCollider* pOther)
 {
 	__super::Collision_Enter(pOther);
+
+	Modify_HP(pOther);
 }
 
 void CSlime_Cauldron_Idle::Collision_Stay(CCollider* pOther)

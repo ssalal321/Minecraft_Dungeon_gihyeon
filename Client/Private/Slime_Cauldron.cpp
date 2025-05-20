@@ -73,6 +73,11 @@ void CSlime_Cauldron::Update(_float fTimeDelta)
 	if (!m_bActive)
 		return;
 
+	if (20.f <= m_fLifeTime)
+		m_bActive = false;
+
+	m_fLifeTime += fTimeDelta;
+
 	__super::Update(fTimeDelta);
 }
 

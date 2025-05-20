@@ -75,7 +75,7 @@ CPlayer_Arrow* CArrowPool_Player::Get_Arrow(_uint uiAttackPoint)
 
 void CArrowPool_Player::Return_Arrow(CPlayer_Arrow* pArrow)
 {
-	if (pArrow)
+	if (false == pArrow->Get_GameObject_Active())
 	{
 		m_PlayerArrowPool.push(pArrow);
 	}

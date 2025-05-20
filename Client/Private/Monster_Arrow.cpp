@@ -161,7 +161,7 @@ void CMonster_Arrow::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE
 		TEXT("Player_Body_Small") == pOther->Get_ColliderTag())
 	{
 		m_bCollided = true;
-		//m_fResetTimer = 0.f;
+		m_fResetTimer = 0.f;
 	}
 }
 

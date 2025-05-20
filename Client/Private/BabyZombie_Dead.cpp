@@ -1,4 +1,7 @@
 #include "BabyZombie_Dead.h"
+
+#include <random>
+
 #include "BabyZombie.h"
 
 #include "AnimationCurve.h"
@@ -24,7 +27,33 @@ HRESULT CBabyZombie_Dead::Init_State()
 
 void CBabyZombie_Dead::State_Enter()
 {
-	//m_pActorModelCom->Set_Animation(static_cast<_uint>(BABYZOMBIE_STATE::IDLE), false, 1.0f);
+	m_pActorModelCom->Set_Animation(static_cast<_uint>(BABYZOMBIE_STATE::IDLE), false, 1.0f);
+
+	// 고품질 랜덤 방향 설정
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	uniform_int_distribution<int> dist(0, 3);
+
+	int dir = dist(gen);
+
+	switch (dir)
+	{
+	case 0:
+		m_vFallAxis = XMVectorSet(-1.f, 0.f, 0.f, 0.f); // -X
+		break;
+	case 1:
+		m_vFallAxis = XMVectorSet(1.f, 0.f, 0.f, 0.f);  // +X
+		break;
+	case 2:
+		m_vFallAxis = XMVectorSet(0.f, 0.f, -1.f, 0.f); // -Z
+		break;
+	case 3:
+		m_vFallAxis = XMVectorSet(0.f, 0.f, 1.f, 0.f);  // +Z
+		break;
+	}
+
+	m_fAccumulatedRotation = 0.f;
+	m_bDowned = false;
 }
 
 void CBabyZombie_Dead::State_Priority_Update(_float fTimeDelta)
@@ -40,10 +69,14 @@ void CBabyZombie_Dead::State_Update(_float fTimeDelta)
 	//옆으로 먼저 쓰러진다음!
 	if (!m_bDowned)
 	{
-		m_pTransformCom->Rotation({ 0.f, 0.f, 1.f }, 10.f);
+		// 누적 회전량 (라디안) 계산
+		m_fAccumulatedRotation += XMConvertToRadians(m_pTransformCom->Get_Rotation_perSec() * fTimeDelta);
 
-		// 90도 기울었으면 쓰러졌다고 판단
-		if (XMVectorGetX(m_pTransformCom->Get_State(CTransform::STATE_LOOK)) >= 90.f)
+		// Z축 회전 수행 (라디안 단위)
+		m_pTransformCom->Rotation(m_vFallAxis, XMConvertToRadians(m_pTransformCom->Get_Rotation_perSec() * fTimeDelta));
+
+		// 90도(= π/2 라디안) 이상 회전했으면 멈춤
+		if (m_fAccumulatedRotation >= XM_PIDIV2)
 		{
 			m_bDowned = true;
 		}
@@ -51,6 +84,15 @@ void CBabyZombie_Dead::State_Update(_float fTimeDelta)
 		return;
 	}
 
+	if (!m_bDelayFinished)
+	{
+		m_fDelayTime += fTimeDelta;
+
+		if (m_fDelayTime >= 2.f)
+			m_bDelayFinished = true;
+
+		return;
+	}
 
 	if (false == m_pBabyZombie->Get_Can_be_Eaten())
 	{

@@ -32,8 +32,8 @@ public:
 
 		~MONSTER_DESC() override = default;
 
-		const _int&	Get_CurrentHP()			const { return iCurrentHP; }
-		const _int&	Get_MaxHP()				const { return iMaxHP; }
+		const _int&		Get_CurrentHP()			const { return iCurrentHP; }
+		const _int&		Get_MaxHP()				const { return iMaxHP; }
 		const _int&		Get_DealPoint()		const { return iDealPoint; }
 		const _float&	Get_AttackRange()	const { return fAttackableRange; }
 		const _float&	Get_DetectRange()	const { return fDetectableRange; }

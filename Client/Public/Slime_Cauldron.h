@@ -47,6 +47,8 @@ private:
 
 	static _int		m_iSlimeCauldronID;
 
+	_float		m_fLifeTime = {};
+
 	_bool		m_bIsJumping = { false };
 	_float		m_fJumpVelocity = {};
 	_vector		m_vJumpTarget = {};

@@ -4,6 +4,7 @@
 #include <UI_Image.h>
 
 #include "Armor.h"
+#include "BabyZombie.h"
 #include "GameInstance.h"
 #include "PartObject.h"
 #include "Level_Loading.h"
@@ -17,6 +18,7 @@
 #include "Player.h"
 #include "Zombie.h"
 #include "PlayerHP.h"
+#include "Slime_Cauldron.h"
 
 CLevel_Lounge::CLevel_Lounge(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : CLevel { pDevice, pContext }
@@ -43,8 +45,8 @@ HRESULT CLevel_Lounge::Initialize()
     if (FAILED(Ready_Layer_PlayerSlotUI(TEXT("Layer_PlayerSlotUI"))))
         return E_FAIL;
 
-    /*if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
-        return E_FAIL;*/
+    if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
+        return E_FAIL;
 
 
 #pragma region MELEE
@@ -268,16 +270,21 @@ HRESULT CLevel_Lounge::Ready_Layer_Monster(const _wstring& strLayerTag)
         LEVEL_LOUNGE, strLayerTag);
     if (nullptr == pSkeleton)     return E_FAIL;
 
+
+    CBabyZombie::BABYZOMBIE_DESC   babyZombieDesc = {};
+    babyZombieDesc.babyZombiePosition = { -3.f, 0.f, -15.f, 1.f };
     CGameObject* pBabyZombie = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_BabyZombie"),
-        LEVEL_LOUNGE, strLayerTag);
+        LEVEL_LOUNGE, strLayerTag, &babyZombieDesc);
     if (nullptr == pBabyZombie)     return E_FAIL;
 
     CGameObject* pSlimeLarge = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Slime_Large"),
         LEVEL_LOUNGE, strLayerTag);
     if (nullptr == pSlimeLarge)     return E_FAIL;
 
+    CSlime_Cauldron::SLIME_CAULDRON_DESC    slimeCauldronDesc = {};
+    slimeCauldronDesc.slimeCauldronPosition = { -0.f, 0.f, -15.f, 1.f };
     CGameObject* pSlimeCauldron = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Slime_Cauldron"),
-        LEVEL_LOUNGE, strLayerTag);
+        LEVEL_LOUNGE, strLayerTag, &slimeCauldronDesc);
     if (nullptr == pSlimeCauldron)     return E_FAIL;
 
     CGameObject* pVindicator = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Vindicator"),
