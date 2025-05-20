@@ -39,9 +39,6 @@ HRESULT CBabyZombie::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(m_pMonsterInfo)))
 		return E_FAIL;
 
-	/*if (m_pNavigationCom)
-		m_pNavigationCom->SetUp_CurrentCellIndex(800);*/
-
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;
 
@@ -54,7 +51,6 @@ HRESULT CBabyZombie::Initialize(void* pArg)
 	BABYZOMBIE_DESC* pDesc = static_cast<BABYZOMBIE_DESC*>(pArg);
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&pDesc->babyZombiePosition));
 
-	m_pTransformCom->SetUp_Scale(1.f, 1.f, 1.f);
 
 	if (m_pNavigationCom)
 		m_pNavigationCom->SetUp_CurrentCellIndex(pDesc->currentCellIndex);
@@ -102,7 +98,7 @@ HRESULT CBabyZombie::Ready_PartObjects()
 	/* 몸통을 추가한다. */
 	CBody_BabyZombie::BODY_BABYZOMBIE_DESC		BodyDesc{};
 
-	BodyDesc.strGameObjectTag = TEXT("GameObject_Body_BabyZombie");
+	BodyDesc.strGameObjectTag			= TEXT("GameObject_Body_BabyZombie");
 	BodyDesc.pParentWorldMatrix			= m_pTransformCom->Get_WorldMatrix_Ptr();
 	BodyDesc.pState						= &m_iState;
 	BodyDesc.pContainerObject			= this;

@@ -65,6 +65,7 @@ void CCauldronBoss_StrongAttack::State_Update(_float fTimeDelta)
             _vector vOffset = XMVectorSet(radius * cosf(XMConvertToRadians(angle)), 0.0f, radius * sinf(XMConvertToRadians(angle)), 0.0f);
             _vector vLandingPosition = XMLoadFloat4(&playerPos) + vOffset;
 
+
             CSlime_Cauldron::SLIME_CAULDRON_DESC    slimeCauldronDesc = {};
             _float4     cauldronBossPos;
             XMStoreFloat4(&cauldronBossPos, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
@@ -73,7 +74,8 @@ void CCauldronBoss_StrongAttack::State_Update(_float fTimeDelta)
             slimeCauldronDesc.slimeCauldronPosition = cauldronBossPos;
 
             // 슬라임 생성
-            CGameObject* pGameObject = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Slime_Cauldron"), m_pGameInstance->Get_CurrentLevelIndex(), TEXT("Layer_Monster"), &slimeCauldronDesc);
+            CGameObject* pGameObject = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Slime_Cauldron"),
+														m_pGameInstance->Get_CurrentLevelIndex(), TEXT("Layer_Monster"), &slimeCauldronDesc);
             if (nullptr == pGameObject)
                 return;
 
@@ -95,7 +97,6 @@ void CCauldronBoss_StrongAttack::State_Update(_float fTimeDelta)
 
     m_pTransformCom->LookAt(XMLoadFloat4(&playerPos));
 }
-
 
 
 void CCauldronBoss_StrongAttack::State_Late_Update(_float fTimeDelta)

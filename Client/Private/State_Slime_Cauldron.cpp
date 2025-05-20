@@ -73,6 +73,7 @@ void CState_Slime_Cauldron::Collision_Stay(CCollider* pOther)
 
 void CState_Slime_Cauldron::Collision_Exit(CCollider* pOther)
 {
+	__super::Collision_Exit(pOther);
 }
 
 _bool CState_Slime_Cauldron::Modify_HP(CCollider* pOther)

@@ -46,11 +46,11 @@ HRESULT CCauldronBoss::Initialize(void* pArg)
 	if (FAILED(Ready_States()))
 		return E_FAIL;
 
-	m_pTransformCom->SetUp_Scale(0.5f, 0.5f, 0.5f);
-
 	CAULDRONBOSS_DESC* pDesc = static_cast<CAULDRONBOSS_DESC*>(pArg);
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
 		XMLoadFloat4(&pDesc->slimeCauldronPosition));
+
+	m_pTransformCom->SetUp_Scale(0.5f, 0.5f, 0.5f);
 
 	if (m_pNavigationCom)
 		m_pNavigationCom->SetUp_CurrentCellIndex(869);

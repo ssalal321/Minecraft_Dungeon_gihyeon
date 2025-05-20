@@ -318,9 +318,6 @@ void CCollision_Manager::Resolve_Penetration_And_Slide(CCollider* pColA, CCollid
 
     if (!pContainerObjB->Get_Stationary())
 		pContainerObjB->Apply_Penetration_Momentum(vFinalPushB);
-
-    m_iCallNumber++;
-    std::cerr << m_iCallNumber << "\n";
 }
 
 

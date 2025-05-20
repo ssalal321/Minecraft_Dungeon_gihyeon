@@ -26,25 +26,12 @@ private:
 	~CSlime_Cauldron() override = default;
 
 public:
-	_bool		Get_Is_Jumping() const { return m_bIsJumping; }
-	_vector		Get_Jump_LandPos() const { return m_vJumpTarget; }
-
-	void		Set_Is_Jumping(_bool bJumping) { m_bIsJumping = bJumping; }
-
-public:
 	HRESULT		Initialize_Prototype()				override;
 	HRESULT		Initialize(void* pArg)				override;
 	void		Priority_Update(_float fTimeDelta)	override;
 	void		Update(_float fTimeDelta)			override;
 	void		Late_Update(_float fTimeDelta)		override;
 	HRESULT		Render()							override;
-
-public:
-	void	Jump_To_Target(_vector vTargetPos)
-	{
-		m_bIsJumping	= true;
-		m_vJumpTarget	= vTargetPos;
-	}
 
 private:
 	CBulletPool_Monster*	m_pBulletPool_Monster = { nullptr };
@@ -54,10 +41,6 @@ private:
 	static _int		m_iSlimeCauldronID;
 
 	_float		m_fLifeTime = {};
-
-	_bool		m_bIsJumping = { false };
-	_float		m_fJumpVelocity = {};
-	_vector		m_vJumpTarget = {};
 
 private:
 	HRESULT		Ready_PartObjects()  override;

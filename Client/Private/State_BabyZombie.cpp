@@ -32,6 +32,17 @@ void CState_BabyZombie::State_Update(_float fTimeDelta)
 
 	if (Change_State_To_Dead())
 		return;
+
+	if (m_pBabyZombie->Get_Is_Jumping())
+	{
+		m_pTransformCom->Jump_Start(8.f);
+		m_pTransformCom->LookAt(m_pBabyZombie->Get_Jump_LandPos());
+		m_pBabyZombie->Set_Is_Jumping(false);
+	}
+
+	m_pTransformCom->Jump(fTimeDelta, m_pNavigationCom);
+	if (m_pTransformCom->Get_Is_Jumping())
+		m_pTransformCom->Go_Straight(fTimeDelta, m_pNavigationCom);
 }
 
 void CState_BabyZombie::State_Late_Update(_float fTimeDelta)
@@ -46,8 +57,6 @@ void CState_BabyZombie::State_Exit()
 void CState_BabyZombie::Collision_Enter(CCollider* pOther)
 {
 	__super::Collision_Enter(pOther);
-
-	
 }
 
 void CState_BabyZombie::Collision_Stay(CCollider* pOther)
