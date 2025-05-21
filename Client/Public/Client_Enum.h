@@ -125,7 +125,7 @@ namespace Client
 		IDLE,
 		INTENSE_SPIN,
 		STRONG_ATTACK,
-		DEAD,
+		TPOSE,
 		STATE_END
 	};
 

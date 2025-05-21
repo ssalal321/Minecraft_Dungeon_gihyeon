@@ -364,18 +364,6 @@
     <Filter Include="02.GameObjects\Monster\CauldronBoss\01. State">
       <UniqueIdentifier>{cd9b72c6-82f6-4fc0-b889-df930e6fba9b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss Idle">
-      <UniqueIdentifier>{d243c7c1-b145-4202-8737-cdeefed16b6c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss BasicAttack">
-      <UniqueIdentifier>{d88192de-6859-463a-b5ae-da36fa948802}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss IntenseSpin">
-      <UniqueIdentifier>{0fc64abd-d455-4626-a422-7c8c36728479}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss StrongAttack">
-      <UniqueIdentifier>{5dc2f529-1942-474b-8faa-2ef3502697b9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\Monster\Slime\Slime_Cauldron\01. State">
       <UniqueIdentifier>{efd2f0dc-60d8-40d0-b6b8-a8cf9775add4}</UniqueIdentifier>
     </Filter>
@@ -402,6 +390,24 @@
     </Filter>
     <Filter Include="02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Idle">
       <UniqueIdentifier>{76e92df8-fa7f-4785-8567-93a869c1e8f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Boss_Trigger">
+      <UniqueIdentifier>{3c6d32c3-a20e-4b52-b246-181a5e98ed27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss_Idle">
+      <UniqueIdentifier>{d243c7c1-b145-4202-8737-cdeefed16b6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss_BasicAttack">
+      <UniqueIdentifier>{d88192de-6859-463a-b5ae-da36fa948802}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss_IntenseSpin">
+      <UniqueIdentifier>{0fc64abd-d455-4626-a422-7c8c36728479}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss_StrongAttack">
+      <UniqueIdentifier>{5dc2f529-1942-474b-8faa-2ef3502697b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss_TPose">
+      <UniqueIdentifier>{9f7b4541-2435-4d46-9a32-ac36238ad832}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -772,19 +778,19 @@
       <Filter>02.GameObjects\Monster\CauldronBoss</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CauldronBoss_BasicAttack.h">
-      <Filter>02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss BasicAttack</Filter>
+      <Filter>02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss_BasicAttack</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CauldronBoss_Idle.h">
-      <Filter>02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss Idle</Filter>
+      <Filter>02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss_Idle</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CauldronBoss_StrongAttack.h">
-      <Filter>02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss StrongAttack</Filter>
+      <Filter>02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss_StrongAttack</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_CauldronBoss.h">
       <Filter>02.GameObjects\Monster\CauldronBoss\01. State</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CauldronBoss_IntenseSpin.h">
-      <Filter>02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss IntenseSpin</Filter>
+      <Filter>02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss_IntenseSpin</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Body_CauldronBoss.h">
       <Filter>02.GameObjects\Monster\CauldronBoss\00. Body</Filter>
@@ -800,6 +806,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\Skeleton_Dead.h">
       <Filter>02.GameObjects\Monster\Skeleton\01. State\Skeleton_Dead</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Boss_Trigger.h">
+      <Filter>02.GameObjects\Boss_Trigger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CauldronBoss_TPose.h">
+      <Filter>02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss_TPose</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1168,16 +1180,16 @@
       <Filter>02.GameObjects\Monster\CauldronBoss\00. Body</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CauldronBoss_BasicAttack.cpp">
-      <Filter>02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss BasicAttack</Filter>
+      <Filter>02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss_BasicAttack</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CauldronBoss_Idle.cpp">
-      <Filter>02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss Idle</Filter>
+      <Filter>02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss_Idle</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CauldronBoss_IntenseSpin.cpp">
-      <Filter>02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss IntenseSpin</Filter>
+      <Filter>02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss_IntenseSpin</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CauldronBoss_StrongAttack.cpp">
-      <Filter>02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss StrongAttack</Filter>
+      <Filter>02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss_StrongAttack</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_CauldronBoss.cpp">
       <Filter>02.GameObjects\Monster\CauldronBoss\01. State</Filter>
@@ -1193,6 +1205,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Skeleton_Dead.cpp">
       <Filter>02.GameObjects\Monster\Skeleton\01. State\Skeleton_Dead</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Boss_Trigger.cpp">
+      <Filter>02.GameObjects\Boss_Trigger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CauldronBoss_TPose.cpp">
+      <Filter>02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss_TPose</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

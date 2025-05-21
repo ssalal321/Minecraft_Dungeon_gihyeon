@@ -8,6 +8,7 @@
 #include "CauldronBoss_Idle.h"
 #include "CauldronBoss_IntenseSpin.h"
 #include "CauldronBoss_StrongAttack.h"
+#include "CauldronBoss_TPose.h"
 
 _int  CCauldronBoss::m_iCauldronBossID = 0;
 
@@ -50,6 +51,8 @@ HRESULT CCauldronBoss::Initialize(void* pArg)
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
 		XMLoadFloat4(&pDesc->slimeCauldronPosition));
 
+	m_bBossTriggerOn = pDesc->bossActivated;
+
 	m_pTransformCom->SetUp_Scale(0.8f, 0.8f, 0.8f);
 
 	if (m_pNavigationCom)
@@ -64,7 +67,7 @@ HRESULT CCauldronBoss::Initialize(void* pArg)
 
 void CCauldronBoss::Priority_Update(_float fTimeDelta)
 {
-	if (!m_bActive)
+	if (!m_bActive || false == *m_bBossTriggerOn)
 		return;
 
 	__super::Priority_Update(fTimeDelta);
@@ -72,7 +75,7 @@ void CCauldronBoss::Priority_Update(_float fTimeDelta)
 
 void CCauldronBoss::Update(_float fTimeDelta)
 {
-	if (!m_bActive)
+	if (!m_bActive || false == *m_bBossTriggerOn)
 		return;
 
 	__super::Update(fTimeDelta);
@@ -80,7 +83,7 @@ void CCauldronBoss::Update(_float fTimeDelta)
 
 void CCauldronBoss::Late_Update(_float fTimeDelta)
 {
-	if (!m_bActive)
+	if (!m_bActive || false == *m_bBossTriggerOn)
 		return;
 
 	__super::Late_Update(fTimeDelta);
@@ -88,7 +91,7 @@ void CCauldronBoss::Late_Update(_float fTimeDelta)
 
 HRESULT CCauldronBoss::Render()
 {
-	if (!m_bActive)
+	if (!m_bActive || false == *m_bBossTriggerOn)
 		return S_OK;
 
 	__super::Render();
@@ -137,6 +140,7 @@ HRESULT CCauldronBoss::Ready_States()
 	m_StatesVec[static_cast<_uint>(CAULDRONBOSS_STATE::STRONG_ATTACK)]	= CCauldronBoss_StrongAttack::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
 	m_StatesVec[static_cast<_uint>(CAULDRONBOSS_STATE::BASIC_ATTACK)]	= CCauldronBoss_BasicAttack::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
 	m_StatesVec[static_cast<_uint>(CAULDRONBOSS_STATE::INTENSE_SPIN)]	= CCauldronBoss_IntenseSpin::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
+	m_StatesVec[static_cast<_uint>(CAULDRONBOSS_STATE::TPOSE)]			= CCauldronBoss_TPose::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
 
 	m_pMonsterFSM = FSM::Create();
 

@@ -12,6 +12,8 @@ class CCauldronBoss final : public CMonster
 public:
 	struct CAULDRONBOSS_DESC
 	{
+		_bool*	 bossActivated = { nullptr };
+
 		_float4  slimeCauldronPosition = { 0.f, 0.f, 0.f, 1.f };
 	};
 
@@ -19,6 +21,9 @@ private:
 	CCauldronBoss(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CCauldronBoss(const CCauldronBoss& Prototype);
 	~CCauldronBoss() override = default;
+
+public:
+	//_bool		Get_BossTriggerActivated() const { return &m_bBossTriggerOn; }
 
 public:
 	HRESULT		Initialize_Prototype()				override;
@@ -32,6 +37,8 @@ private:
 	_uint			m_iState = { static_cast<_uint>(CAULDRONBOSS_STATE::STATE_END) };
 
 	static _int		m_iCauldronBossID;
+
+	_bool*			m_bBossTriggerOn = { nullptr };
 
 private:
 	HRESULT		Ready_PartObjects()  override;

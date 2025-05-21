@@ -5,6 +5,11 @@
 #include "Client_Defines.h"
 #include "Level.h"
 
+namespace Client
+{
+	class CBoss_Trigger;
+}
+
 BEGIN(Client)
 	class CPlayer;
 	class CMonster;
@@ -34,11 +39,12 @@ public:
 
 private:
 	_bool	bShowInventory = { false };
-	//_bool   m_bClickLock = { false };
 	_bool	m_bHoveringMonster = { false };
 
 	CPlayer*	m_pPlayer = { nullptr };
 	CMonster*	m_pPickedMonster = { nullptr };
+
+	CBoss_Trigger*	m_pBoss_Trigger = { nullptr };
 
 public:
 	static CLevel_SoggySwamp* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

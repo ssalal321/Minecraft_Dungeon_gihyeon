@@ -150,7 +150,7 @@ HRESULT CLevel_Lounge::Initialize()
 
 void CLevel_Lounge::Update(_float fTimeDelta)
 {
-    if (m_pLevel_Trigger->Get_Level_Change())
+    if (m_pLevel_Trigger->Get_Level_Changed())
     {
         if (SUCCEEDED(m_pGameInstance->Open_Level(LEVEL_LOADING,
             CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_SOGGYSWAMP))))

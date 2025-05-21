@@ -3,6 +3,7 @@
 #include <iostream>
 #include <UI_Image.h>
 
+#include "Boss_Trigger.h"
 #include "GameInstance.h"
 #include "PartObject.h"
 #include "Level_Loading.h"
@@ -37,6 +38,12 @@ HRESULT CLevel_SoggySwamp::Initialize()
     if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
         return E_FAIL;
 
+    CBoss_Trigger::BOSS_TRIGGER_DESC   pLevelTriggerDesc = {};
+    pLevelTriggerDesc.triggerPosition = { -4.f, 0.f, 20.5 };
+    m_pBoss_Trigger = CBoss_Trigger::Create(m_pDevice, m_pContext, &pLevelTriggerDesc);
+    if (nullptr == m_pBoss_Trigger)
+        return E_FAIL;
+
     if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
         return E_FAIL;
 
@@ -50,46 +57,6 @@ void CLevel_SoggySwamp::Update(_float fTimeDelta)
     if (m_pGameInstance->Key_Down(VK_F1))  // 아예 전체 전역변수로 만들어야겠다
         bMouseClickLock = !bMouseClickLock;
 #endif
-
-    //// 얘네도 여러 level에서 써야 하니까 state_monster로 빼는 게 나을지도..
-    //_float4     fWorldMousePos = {};
-    //_float3     fWorldMouseRay = {};
-    //m_pGameInstance->Compute_MouseRay(fWorldMousePos, fWorldMouseRay);
-
-    //// 1. 현재 가장 가까운 Monster collider 찾기
-    //CCollider* pClosestCollider = Get_Closest_Collider(fWorldMousePos, fWorldMouseRay);
-    //if (nullptr == pClosestCollider)  // 아래에 다른 코드 없기도 하고 나중에 함수로 뺄 생각 하고 넣은 것
-    //    return;
-
-    //CMonster* pPrevMonster = m_pPickedMonster;
-    //CMonster* pCurrMonster = dynamic_cast<CMonster*>(dynamic_cast<CPartObject*>(pClosestCollider->Get_OwnerObject())->Get_ContainerObject());
-
-    //// 2. 이전 Hovered 상태 해제
-    //if (pPrevMonster && pPrevMonster != pCurrMonster)
-    //{
-    //    pPrevMonster->Set_Hovered(false);
-
-    //    //std::wcerr << "[휘바 끝XXXXXXXXXXX]" << std::endl;
-    //}
-
-    //// 3. 현재 Hovered 상태 설정 및 클릭 처리
-    //if (pCurrMonster)
-    //{
-    //    pCurrMonster->Set_Hovered(true);
-    //    m_pPickedMonster = pCurrMonster;
-
-    //    //std::wcerr << "[휘바휘바]" << std::endl;
-
-    //    if (m_pGameInstance->Get_Key(VK_LBUTTON) && !bMouseClickLock)
-    //    {
-    //        Click_Chase_Monster(pCurrMonster);
-    //    }
-    //}
-
-    //if (m_pGameInstance->Key_Up(VK_LBUTTON) && !bMouseClickLock)
-    //{
-    //    m_pPlayer->Set_Chasing(false);
-    //}
 }
 
 CCollider* CLevel_SoggySwamp::Get_Closest_Collider(const _float4& mousePos, const _float3& mouseRay)
@@ -270,6 +237,9 @@ HRESULT CLevel_SoggySwamp::Ready_Layer_Monster(const _wstring& strLayerTag)
 
     CCauldronBoss::CAULDRONBOSS_DESC  cauldronBossDesc = {};
     cauldronBossDesc.slimeCauldronPosition = { 0.45f, 0, 29.8f, 1.f };
+    if (nullptr == m_pBoss_Trigger)
+        return E_FAIL;
+	cauldronBossDesc.bossActivated = m_pBoss_Trigger->Get_Boss_Activated();
 
     CGameObject* pCauldronBoss = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_CauldronBoss"),
 																 LEVEL_SOGGYSWAMP, strLayerTag, &cauldronBossDesc);
@@ -296,4 +266,6 @@ CLevel_SoggySwamp* CLevel_SoggySwamp::Create(ID3D11Device* pDevice, ID3D11Device
 void CLevel_SoggySwamp::Free()
 {
     __super::Free();
+
+    Safe_Release(m_pBoss_Trigger);
 }
