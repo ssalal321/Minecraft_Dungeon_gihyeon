@@ -9,6 +9,7 @@
 #include "Level_Loading.h"
 #include "Camera_Free.h"
 #include "CauldronBoss.h"
+#include "CauldronBossHP.h"
 #include "InventoryBase.h"
 #include "InventoryData.h"
 #include "Item.h"
@@ -38,15 +39,15 @@ HRESULT CLevel_SoggySwamp::Initialize()
     if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
         return E_FAIL;
 
-    CBoss_Trigger::BOSS_TRIGGER_DESC   pLevelTriggerDesc = {};
-    pLevelTriggerDesc.triggerPosition = { -4.f, 0.f, 20.5 };
-    m_pBoss_Trigger = CBoss_Trigger::Create(m_pDevice, m_pContext, &pLevelTriggerDesc);
-    if (nullptr == m_pBoss_Trigger)
-        return E_FAIL;
-
     if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
         return E_FAIL;
 
+    if (FAILED(Ready_Layer_Trigger(TEXT("Layer_Trigger"))))
+        return E_FAIL;
+
+    if (FAILED(Ready_Layer_UI(TEXT("Layer_UI"))))
+        return E_FAIL;
+    
 
     return S_OK;
 }
@@ -223,6 +224,28 @@ HRESULT CLevel_SoggySwamp::Ready_Layer_Player(const _wstring& strLayerTag)
     return S_OK;
 }
 
+HRESULT CLevel_SoggySwamp::Ready_Layer_UI(const _wstring& strLayerTag)
+{
+    _float fCauldronBossHPX = g_iWinSizeX * 0.5f;
+    _float fCauldronBossHPY = 105.f;
+
+    CCauldronBossHP::CAULDRONBOSS_HP_DESC  cauldronBossHPDesc
+    (TEXT("GameObject_CauldronBoss_HPBar"), CUIObject::UNCLICKABLE,
+        fCauldronBossHPX, fCauldronBossHPY, 0.8f, 480.f, 17.f,
+        L"Prototype_Component_Texture_CauldronBossHP", m_pCauldronBoss, true);
+
+    CUIObject* pCauldronBossHP = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_STATIC,
+        TEXT("Prototype_GameObject_CauldronBoss_HPbar"),
+        CUI_Manager::TEMPORARY, &cauldronBossHPDesc);
+
+    if (nullptr == pCauldronBossHP)
+        return E_FAIL;
+
+    m_pCauldronBoss->Set_My_HPUIObject(pCauldronBossHP);
+
+    return S_OK;
+}
+
 HRESULT CLevel_SoggySwamp::Ready_Layer_Monster(const _wstring& strLayerTag)
 {
     /*CGameObject* pZombie = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Zombie"),
@@ -237,17 +260,30 @@ HRESULT CLevel_SoggySwamp::Ready_Layer_Monster(const _wstring& strLayerTag)
 
     CCauldronBoss::CAULDRONBOSS_DESC  cauldronBossDesc = {};
     cauldronBossDesc.slimeCauldronPosition = { 0.45f, 0, 29.8f, 1.f };
-    if (nullptr == m_pBoss_Trigger)
-        return E_FAIL;
-	cauldronBossDesc.bossActivated = m_pBoss_Trigger->Get_Boss_Activated();
 
     CGameObject* pCauldronBoss = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_CauldronBoss"),
 																 LEVEL_SOGGYSWAMP, strLayerTag, &cauldronBossDesc);
     if (nullptr == pCauldronBoss)
         return E_FAIL;
 
+    m_pCauldronBoss = dynamic_cast<CCauldronBoss*>(pCauldronBoss);
+
     return S_OK;
 }
+
+HRESULT CLevel_SoggySwamp::Ready_Layer_Trigger(const _wstring& strLayerTag)
+{
+    CBoss_Trigger::BOSS_TRIGGER_DESC   bossTriggerDesc = {};
+    bossTriggerDesc.triggerPosition = { -4.f, 0.f, 20.5 };
+    bossTriggerDesc.pBoss = m_pCauldronBoss;
+
+    m_pBoss_Trigger = CBoss_Trigger::Create(m_pDevice, m_pContext, &bossTriggerDesc);
+    if (nullptr == m_pBoss_Trigger)
+        return E_FAIL;
+
+    return S_OK;
+}
+
 
 CLevel_SoggySwamp* CLevel_SoggySwamp::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {

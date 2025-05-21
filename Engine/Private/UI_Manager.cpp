@@ -116,11 +116,23 @@ void CUI_Manager::Late_Update(_float fDeltaTime)
 
 HRESULT CUI_Manager::Render_UI()
 {
+	// NonBlend 먼저
 	for (int i = 0; i < LIFETIME_END; ++i)
 	{
-		for (auto& uiObject : m_CurrentUIObjects[i])
+		for (auto& pair : m_CurrentUIObjects[i])
 		{
-			uiObject.second->Render();
+			if (!pair.second->Is_AlphaBlend())
+				pair.second->Render();
+		}
+	}
+
+	// AlphaBlend 나중에
+	for (int i = 0; i < LIFETIME_END; ++i)
+	{
+		for (auto& pair : m_CurrentUIObjects[i])
+		{
+			if (pair.second->Is_AlphaBlend())
+				pair.second->Render();
 		}
 	}
 

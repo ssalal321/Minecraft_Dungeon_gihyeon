@@ -26,6 +26,12 @@ protected:
 public:
 	CContainerObject* Get_ContainerObject() { return m_pContainerObject; }
 
+	_bool		Get_Appearing() const { return m_bAppearing; }
+	_bool		Get_Dying() const { return m_bDying; }
+
+	void		Set_Appearing(_bool bAppearing) { m_bAppearing = bAppearing; }
+	void		Set_Dying(_bool bDying) { m_bDying = bDying; }
+
 public:
 	HRESULT		Initialize_Prototype()				override;
 	HRESULT		Initialize(void* pArg)				override;
@@ -42,6 +48,10 @@ protected:
 
 	_bool*				m_pBigCollisionActivating	= { nullptr };
 	_bool*				m_pSmallCollisionActivating = { nullptr };
+
+
+	_bool				m_bAppearing = { false };
+	_bool				m_bDying	 = { false };
 
 public:
 	CGameObject* Clone(void* pArg)	override = 0;

@@ -252,6 +252,8 @@ void CTransform::Add_Momentum(_vector vImpulse)
 	_vector vOld = XMLoadFloat3(&m_Velocity);
 	vOld += vImpulse;
 	XMStoreFloat3(&m_Velocity, vOld);
+
+	std::cerr << "velocity x: " << m_Velocity.x << ", " << "velocity y: " << m_Velocity.y << ", " << "velocity z: " << m_Velocity.z << endl;
 }
 
 void CTransform::Update_Momentum(_float fTimeDelta)

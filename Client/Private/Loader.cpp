@@ -16,6 +16,7 @@
 #include "Body_Vindicator.h"
 #include "Body_Zombie.h"
 #include "CauldronBoss.h"
+#include "CauldronBossHP.h"
 #include "ChestIcon.h"
 #include "InventoryBase.h"
 #include "InventoryGearSlot.h"
@@ -234,6 +235,11 @@ HRESULT CLoader::Ready_Prototype_TextureCom_Static()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerHP.png"), 1))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_CauldronBossHP */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_CauldronBossHP"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Boss_HP.png"), 1))))
+		return E_FAIL;
+
 	/* For.Prototype_Component_Texture_InventoryBase */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_InventoryBase"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/InventoryBase.png"), 1))))
@@ -292,6 +298,11 @@ HRESULT CLoader::Ready_Prototype_ShaderCom_Static()
 	/* For.Prototype_Component_Shader_VtxAnimMesh */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxAnimMesh"),
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxAnimMesh.hlsl"), VTXANIMMESH::Elements, VTXANIMMESH::iNumElements))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Shader_BossAnimMesh */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_BossAnimMesh"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_BossAnimMesh.hlsl"), VTXANIMMESH::Elements, VTXANIMMESH::iNumElements))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Shader_VtxNorTex */
@@ -360,7 +371,7 @@ HRESULT CLoader::Ready_Prototype_ModelCom_Static()
 
 	/* For.Prototype_Component_Model_CauldronBoss */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_CauldronBoss"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Monster/CauldronBoss/CauldronBoss.fbx", PreTransformMatrix))))
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Monster/CauldronBoss/CauldronBoss2.fbx", PreTransformMatrix))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Model_Cube */
@@ -454,6 +465,11 @@ HRESULT CLoader::Ready_Prototype_GameObject_Static()
 	/* For.Prototype_GameObject_Player_HPbar */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Player_HPbar"),
 		CPlayerHP::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_CauldronBoss_HPbar */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_CauldronBoss_HPbar"),
+		CCauldronBossHP::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_InventoryBase */

@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 
 #include "Body_CauldronBoss.h"
+#include "Boss_Trigger.h"
 
 #include "FSM.h"
 #include "CauldronBoss_BasicAttack.h"
@@ -51,23 +52,20 @@ HRESULT CCauldronBoss::Initialize(void* pArg)
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
 		XMLoadFloat4(&pDesc->slimeCauldronPosition));
 
-	m_bBossTriggerOn = pDesc->bossActivated;
-
 	m_pTransformCom->SetUp_Scale(0.8f, 0.8f, 0.8f);
 
 	if (m_pNavigationCom)
 		m_pNavigationCom->SetUp_CurrentCellIndex(869);
 
 	m_bStationary = true;
-	/*if (m_pNavigationCom)
-		m_pNavigationCom->SetUp_CurrentCellIndex(m_pNavigationCom->Find_CellIndex(m_pTransformCom->Get_State(CTransform::STATE_POSITION)));*/
+	m_bActive = false;
 
 	return S_OK;
 }
 
 void CCauldronBoss::Priority_Update(_float fTimeDelta)
 {
-	if (!m_bActive || false == *m_bBossTriggerOn)
+	if (!m_bActive)
 		return;
 
 	__super::Priority_Update(fTimeDelta);
@@ -75,7 +73,7 @@ void CCauldronBoss::Priority_Update(_float fTimeDelta)
 
 void CCauldronBoss::Update(_float fTimeDelta)
 {
-	if (!m_bActive || false == *m_bBossTriggerOn)
+	if (!m_bActive)
 		return;
 
 	__super::Update(fTimeDelta);
@@ -83,7 +81,7 @@ void CCauldronBoss::Update(_float fTimeDelta)
 
 void CCauldronBoss::Late_Update(_float fTimeDelta)
 {
-	if (!m_bActive || false == *m_bBossTriggerOn)
+	if (!m_bActive)
 		return;
 
 	__super::Late_Update(fTimeDelta);
@@ -91,7 +89,7 @@ void CCauldronBoss::Late_Update(_float fTimeDelta)
 
 HRESULT CCauldronBoss::Render()
 {
-	if (!m_bActive || false == *m_bBossTriggerOn)
+	if (!m_bActive)
 		return S_OK;
 
 	__super::Render();
@@ -115,7 +113,6 @@ HRESULT CCauldronBoss::Ready_PartObjects()
 	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Body_CauldronBoss"), TEXT("Part_Body"), &BodyDesc)))
 		return E_FAIL;
 
-	
 	/* 이펙트를 추가한다. */
 
 	return S_OK;
@@ -144,7 +141,7 @@ HRESULT CCauldronBoss::Ready_States()
 
 	m_pMonsterFSM = FSM::Create();
 
-	m_pMonsterFSM->Init_State(m_StatesVec[static_cast<_uint>(CAULDRONBOSS_STATE::IDLE)]);
+	m_pMonsterFSM->Init_State(m_StatesVec[static_cast<_uint>(CAULDRONBOSS_STATE::TPOSE)]);
 
 	return S_OK;
 }

@@ -2,7 +2,13 @@
 #include "Client_Defines.h"
 #include "State_CauldronBoss.h"
 
+namespace Client
+{
+	
+}
+
 BEGIN(Client)
+class CBody_CauldronBoss;
 
 class CCauldronBoss_Idle final: public CState_CauldronBoss
 {

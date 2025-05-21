@@ -4,7 +4,23 @@
 
 /* 플레이어라는 객체를 구성하기위한 파츠들을 모아서 쥐고 있는 객체. */
 
+namespace Engine
+{
+	class CUIObject;
+}
+
+namespace Client
+{
+	class CCauldronBossHP;
+}
+
+namespace Client
+{
+	class CBody_CauldronBoss;
+}
+
 BEGIN(Client)
+	class CBoss_Trigger;
 class CState;
 
 class CCauldronBoss final : public CMonster
@@ -12,8 +28,6 @@ class CCauldronBoss final : public CMonster
 public:
 	struct CAULDRONBOSS_DESC
 	{
-		_bool*	 bossActivated = { nullptr };
-
 		_float4  slimeCauldronPosition = { 0.f, 0.f, 0.f, 1.f };
 	};
 
@@ -23,7 +37,9 @@ private:
 	~CCauldronBoss() override = default;
 
 public:
-	//_bool		Get_BossTriggerActivated() const { return &m_bBossTriggerOn; }
+	CUIObject*	Get_My_HPUIObject() { return m_pCauldronBossHP; }
+
+	void		Set_My_HPUIObject(CUIObject* pHPUIObject) { m_pCauldronBossHP = pHPUIObject; }
 
 public:
 	HRESULT		Initialize_Prototype()				override;
@@ -38,7 +54,7 @@ private:
 
 	static _int		m_iCauldronBossID;
 
-	_bool*			m_bBossTriggerOn = { nullptr };
+	CUIObject*		m_pCauldronBossHP = { nullptr };
 
 private:
 	HRESULT		Ready_PartObjects()  override;

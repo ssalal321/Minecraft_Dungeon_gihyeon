@@ -3,8 +3,9 @@
 #include "State_CauldronBoss.h"
 
 BEGIN(Client)
+	class CBody_CauldronBoss;
 
-class CCauldronBoss_TPose final: public CState_CauldronBoss
+	class CCauldronBoss_TPose final: public CState_CauldronBoss
 {
 private:
 	CCauldronBoss_TPose(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);
@@ -24,7 +25,7 @@ public:
     void        Collision_Exit(CCollider* pOther)         override;
 
 private:
-    _bool       m_bNextIsBasicAttack = true;
+    CBody_CauldronBoss* m_pBody_CauldronBoss = { nullptr };
 
 public:
     static CState_Monster*  Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);

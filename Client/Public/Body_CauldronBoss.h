@@ -16,7 +16,8 @@ class CBody_CauldronBoss final : public CPartObject
 public:
 	typedef struct tagBodyCauldronBossDesc : public CPartObject::PARTOBJECT_DESC
 	{
-		const _uint* pState = { nullptr };
+		const _uint*	pState = { nullptr };
+
 	}BODY_CAULDRONBOSS_DESC;
 
 private:
@@ -42,15 +43,21 @@ private:
 	CCollider*		m_pBigColliderCom	= { nullptr };
 	CCollider*		m_pSmallColliderCom = { nullptr };
 
-	_uint			m_iPassIndex = {};
+	_uint			m_iPassIndex	= {};
 
-private:
-	const _uint*	m_pTargetState = { nullptr };
+	const _uint*	m_pTargetState	= { nullptr };
 
+#pragma region SHADER
+	_float			m_fAppearTime	= {};
+	_float			m_fAppearDuration = {};  // 몇 초 걸릴지
+
+	_float			m_fDeathTime = {};
+	_float			m_fDeathDuration = {};
+#pragma endregion
 
 private:
 	HRESULT		Ready_Components();
-	HRESULT		Bind_ShaderResources();
+	HRESULT		Bind_ShaderResources(_uint iPassIndex);
 
 public:
 	static	CBody_CauldronBoss*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

@@ -4,6 +4,7 @@
 #include "Player_Arrow.h"
 #include "Item.h"
 #include "Slime_Small.h"
+#include "UIObject.h"
 
 
 CState_CauldronBoss::CState_CauldronBoss(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
@@ -32,6 +33,18 @@ void CState_CauldronBoss::State_Priority_Update(_float fTimeDelta)
 void CState_CauldronBoss::State_Update(_float fTimeDelta)
 {
 	__super::State_Update(fTimeDelta);
+
+	if (m_pMonsterInfo->Get_CurrentHP() <= 0)
+	{
+		m_pBigColliderCom->Set_ColliderActive(false);
+		m_pSmallColliderCom->Set_ColliderActive(false);
+		m_pCauldronBoss->Get_My_HPUIObject()->Set_GameObject_Active(false);
+
+		m_pCauldronBoss->Find_PartObject(TEXT("Part_Body"))->Set_Dying(true);
+
+		Change_State_To_Idle();
+		return;
+	}
 
 }
 

@@ -18,7 +18,7 @@ HRESULT CPlayer_Idle::Init_State()
 
 void CPlayer_Idle::State_Enter()
 {
-	std::cerr << "Player_Idle" << "\n";
+	//std::cerr << "Player_Idle" << "\n";
 	/*CPartObject* pItem = m_pPlayer->Find_PartObject(TEXT("Part_Weapon_Melee"));
 
 	if (pItem && pItem->Get_GameObjectTag() == TEXT("GameObject_GlaiveSteel"))

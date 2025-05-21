@@ -86,7 +86,7 @@ void CPlayer_Glaive_Combo::State_Update(_float fTimeDelta)
 		m_pGlaiveCollider->Set_ColliderActive(true);
 		m_bCombo2_ColliderOn = true;
 
-		std::cerr << "2Combo_Point : " << m_pGlaive->Get_DealPoint() << "\n";
+		//std::cerr << "2Combo_Point : " << m_pGlaive->Get_DealPoint() << "\n";
 	}
 
 	if (!m_bCombo2_ColliderOff && GLAIVE_COMBO2_AttackOff <= fAnimCurTrackPos)
@@ -103,7 +103,7 @@ void CPlayer_Glaive_Combo::State_Update(_float fTimeDelta)
 		m_pGlaiveCollider->Set_ColliderActive(true);
 		m_bCombo3_ColliderOn = true;
 
-		std::cerr << "3Combo_Point : " << m_pGlaive->Get_DealPoint() << "\n";
+		//std::cerr << "3Combo_Point : " << m_pGlaive->Get_DealPoint() << "\n";
 	}
 
 	if (!m_bCombo3_ColliderOff && GLAIVE_COMBO3_AttackOff <= fAnimCurTrackPos)

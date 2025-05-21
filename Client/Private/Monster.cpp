@@ -58,7 +58,7 @@ void CMonster::Update(_float fTimeDelta)
 
 	XMStoreFloat2(&m_vScreenPos,
 		XMVector3Project(
-			m_pTransformCom->Get_State(CTransform::STATE_POSITION) + XMVectorSet(0.f, 2.5f, 0.f, 1.f),
+			m_pTransformCom->Get_State(CTransform::STATE_POSITION) + XMVectorSet(0.f, 3.f, 0.f, 1.f),
 			0.f,
 			0.f,
 			static_cast<_float>(g_iWinSizeX),

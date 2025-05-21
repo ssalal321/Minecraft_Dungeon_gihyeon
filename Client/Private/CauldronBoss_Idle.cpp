@@ -33,7 +33,6 @@ void CCauldronBoss_Idle::State_Enter()
 void CCauldronBoss_Idle::State_Priority_Update(_float fTimeDelta)
 {
 	__super::State_Priority_Update(fTimeDelta);
-	
 }
 
 void CCauldronBoss_Idle::State_Update(_float fTimeDelta)
@@ -41,6 +40,9 @@ void CCauldronBoss_Idle::State_Update(_float fTimeDelta)
 	// basicAttack과 StrongAttack 번갈아 나오게 할까..
 
 	__super::State_Update(fTimeDelta);
+
+	if (m_pMonsterInfo->Get_CurrentHP() <= 0)
+		return;
 
 	if (m_bAnimationFinished)
 	{

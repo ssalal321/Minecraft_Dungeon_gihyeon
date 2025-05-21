@@ -1,5 +1,7 @@
 #include "Boss_Trigger.h"
 #include "GameInstance.h"
+#include "Monster.h"
+#include "PartObject.h"
 
 CBoss_Trigger::CBoss_Trigger(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject(pDevice, pContext)
@@ -20,7 +22,8 @@ HRESULT CBoss_Trigger::Initialize(void* pArg)
 {
 	BOSS_TRIGGER_DESC* pDesc = static_cast<BOSS_TRIGGER_DESC*>(pArg);
 	m_TriggerPosition = pDesc->triggerPosition;
-
+	m_pMyBoss = pDesc->pBoss;
+	
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
@@ -62,7 +65,8 @@ void CBoss_Trigger::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE 
 	if (CCollider::COLLISION_STATE::ENTER == eCollisionState &&
 		TEXT("Player_Body") == pOther->Get_ColliderTag())
 	{
-		m_bBossActivate = true;
+		m_pMyBoss->Set_GameObject_Active(true);
+		m_pMyBoss->Find_PartObject(TEXT("Part_Body"))->Set_Appearing(true);
 	}
 }
 
@@ -73,9 +77,9 @@ HRESULT CBoss_Trigger::Ready_Components()
 
 	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereCollDesc{};
 
-	SphereCollDesc.fRadius = 1.6f;
-	SphereCollDesc.vCenter = m_TriggerPosition;  // 2.5f, 5.5f, 19.f
-	SphereCollDesc.pGameObject = this;
+	SphereCollDesc.fRadius		= 1.6f;
+	SphereCollDesc.vCenter		= m_TriggerPosition;  // 2.5f, 5.5f, 19.f
+	SphereCollDesc.pGameObject	= this;
 	SphereCollDesc.CombinedWorldMatrix = &m_IdentityWorldMatrix;
 	SphereCollDesc.pCollisionActivated = &m_bActivated;
 

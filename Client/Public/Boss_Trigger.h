@@ -3,23 +3,21 @@
 #include "GameObject.h"
 
 BEGIN(Client)
+	class CMonster;
 	class CBoss_Trigger : public CGameObject
 {
 public:
 	struct BOSS_TRIGGER_DESC : public GAMEOBJECT_DESC
 	{
 		_float3 triggerPosition = { 0.f, 200.f, 0.f };
+
+		CMonster* pBoss = { nullptr };
 	};
 
 private:
 	CBoss_Trigger(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CBoss_Trigger(const CBoss_Trigger& Prototype);
 	~CBoss_Trigger() override = default;
-
-public:
-	_bool*		Get_Boss_Activated() { return &m_bBossActivate; }
-
-	void		Set_Boss_Activate(_bool bSceneChanged) { m_bBossActivate = bSceneChanged; }
 
 public:
 	HRESULT		Initialize_Prototype()				override;
@@ -36,10 +34,11 @@ private:
 	CCollider*		m_pColliderCom = { nullptr };
 
 	_bool			m_bActivated = { true };
-	_bool			m_bBossActivate = { false };
+	//_bool			m_bBossActivate = { false };
 	_float4x4		m_IdentityWorldMatrix = {};
 
 	_float3			m_TriggerPosition = { 0.f, 0.f, 0.f };
+	CMonster*		m_pMyBoss = { nullptr };
 
 private:
 	HRESULT		Ready_Components();

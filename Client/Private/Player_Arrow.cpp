@@ -147,7 +147,7 @@ void CPlayer_Arrow::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE 
 {
 	if (pOther->Get_ColliderActive() &&
 		CCollider::COLLISION_STATE::ENTER == eCollisionState &&
-		(TEXT("Monster_Body_Small") == pOther->Get_ColliderTag()))
+		(TEXT("Monster_Body_Small") == pOther->Get_ColliderTag() || TEXT("Boss_Body_Small") == pOther->Get_ColliderTag()))
 	{
 		m_bCollided = true;
 		m_fResetTimer = 0.f;

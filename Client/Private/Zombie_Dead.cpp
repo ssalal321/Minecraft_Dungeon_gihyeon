@@ -94,7 +94,7 @@ void CZombie_Dead::State_Update(_float fTimeDelta)
 		return;
 	}
 
-	if (false == m_pZombie->Get_Can_be_Eaten())
+	if (false == m_pZombie->Get_Can_be_Eaten() || 0 >= m_pZombie->Get_Eating_BossMonster()->Get_MonsterInfo()->Get_CurrentHP())
 	{
 		m_pActor->Set_GameObject_Active(false);
 		m_pBigColliderCom->Set_ColliderActive(false);

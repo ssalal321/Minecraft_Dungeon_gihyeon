@@ -39,7 +39,7 @@ HRESULT CPlayer::Initialize_Prototype()
 
 HRESULT CPlayer::Initialize(void* pArg)
 {
-	m_pPlayerInfo = new PLAYER_DESC(TEXT("GameObject_Player"), 500, 500, 5, 3.5f, 40, false, 90.f, 3.f);
+	m_pPlayerInfo = new PLAYER_DESC(TEXT("GameObject_Player"), 1000, 1000, 15, 3.5f, 100, false, 90.f, 3.f);
 
 	if (FAILED(__super::Initialize(m_pPlayerInfo)))
 		return E_FAIL;
@@ -114,7 +114,7 @@ void CPlayer::Hover_and_Chase_Monster()
 
 	// 1. 현재 가장 가까운 Monster collider 찾기
 	CCollider* pClosestCollider = Get_Closest_Collider(fWorldMousePos, fWorldMouseRay);
-	if (nullptr == pClosestCollider || false == pClosestCollider->Get_ColliderActive())  // 아래에 다른 코드 없기도 하고 나중에 함수로 뺄 생각 하고 넣은 것
+	if (nullptr == pClosestCollider || false == pClosestCollider->Get_ColliderActive())
 		return;
 
 	CMonster* pPrevMonster = m_pPickedMonster;

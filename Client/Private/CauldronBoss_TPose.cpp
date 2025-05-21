@@ -4,6 +4,7 @@
 
 #include "State_CauldronBoss.h"
 #include "CauldronBoss.h"
+#include "Body_CauldronBoss.h"
 
 
 CCauldronBoss_TPose::CCauldronBoss_TPose(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
@@ -18,6 +19,10 @@ HRESULT CCauldronBoss_TPose::Init_State()
 	m_pCauldronBoss = dynamic_cast<CCauldronBoss*>(m_pActor);
 	if (nullptr == m_pCauldronBoss)
 		return E_FAIL;
+
+	m_pBody_CauldronBoss = dynamic_cast<CBody_CauldronBoss*>(m_pCauldronBoss->Find_PartObject(TEXT("Part_Body")));
+
+	m_pTransformCom->Rotation({ 0.f, 1.f, 0.f }, 135.1f);
 
 	return S_OK;
 }
@@ -36,7 +41,11 @@ void CCauldronBoss_TPose::State_Priority_Update(_float fTimeDelta)
 
 void CCauldronBoss_TPose::State_Update(_float fTimeDelta)
 {
-	// basicAttack과 StrongAttack 번갈아 나오게 할까..
+	if (false == m_pBody_CauldronBoss->Get_Appearing())
+	{
+		Change_State_To_Idle();
+		return;
+	}
 
 	__super::State_Update(fTimeDelta);
 }
@@ -63,6 +72,8 @@ void CCauldronBoss_TPose::Collision_Stay(CCollider* pOther)
 void CCauldronBoss_TPose::Collision_Exit(CCollider* pOther)
 {
 	__super::Collision_Exit(pOther);
+
+	m_pTransformCom->Rotation({ 0.f, 1.f, 0.f }, -135.1f);
 }
 
 CState_Monster* CCauldronBoss_TPose::Create(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
