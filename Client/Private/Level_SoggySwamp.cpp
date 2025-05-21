@@ -227,7 +227,7 @@ HRESULT CLevel_SoggySwamp::Ready_Layer_Player(const _wstring& strLayerTag)
 HRESULT CLevel_SoggySwamp::Ready_Layer_UI(const _wstring& strLayerTag)
 {
     _float fCauldronBossHPX = g_iWinSizeX * 0.5f;
-    _float fCauldronBossHPY = 105.f;
+    _float fCauldronBossHPY = 75.f;
 
     CCauldronBossHP::CAULDRONBOSS_HP_DESC  cauldronBossHPDesc
     (TEXT("GameObject_CauldronBoss_HPBar"), CUIObject::UNCLICKABLE,

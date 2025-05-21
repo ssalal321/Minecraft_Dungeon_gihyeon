@@ -34,7 +34,7 @@ HRESULT CCauldronBoss::Initialize(void* pArg)
 {
 	const _wstring& CauldronBossGameObjectTag = TEXT("GameObject_CauldronBoss_") + to_wstring(m_iCauldronBossID++);
 
-	m_pMonsterInfo = new MONSTER_DESC(CauldronBossGameObjectTag, 4000, 4000, 75, 3.f, 5.5f, false, 90.f, 3.f);
+	m_pMonsterInfo = new MONSTER_DESC(CauldronBossGameObjectTag, 2000, 2000, 75, 3.f, 5.5f, false, 90.f, 3.f);
 
 	if (FAILED(__super::Initialize(m_pMonsterInfo)))
 		return E_FAIL;

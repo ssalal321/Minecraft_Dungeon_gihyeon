@@ -84,7 +84,6 @@ HRESULT CMonster::Render()
 	std::wstring strHP = std::to_wstring(m_pMonsterInfo->Get_CurrentHP());
 	m_pGameInstance->Draw_Text(TEXT("Font_Minecraft"), strHP.c_str(), m_vScreenPos/*, Colors::White, 0.f, { 0.f, 0.f }, 1.f*/);
 
-
 #ifdef _DEBUG
 	if (m_pNavigationCom)
 		m_pNavigationCom->Render();

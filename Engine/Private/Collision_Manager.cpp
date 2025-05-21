@@ -131,7 +131,7 @@ void CCollision_Manager::Update()
                         if (pColliderA->Get_Role() == CCollider::SMALL && pColliderB->Get_Role() == CCollider::SMALL 
                             && pColliderA < pColliderB)
                         {
-                            Resolve_Penetration_And_Slide(pColliderA, pColliderB, 10.f);
+                            Resolve_Penetration_And_Slide(pColliderA, pColliderB, 9.f);
                         }
                     }
                 }
@@ -163,7 +163,7 @@ void CCollision_Manager::Update()
                     if (pColliderA->Get_Role() == CCollider::SMALL && pColliderB->Get_Role() == CCollider::SMALL
                         && pColliderA < pColliderB)
                     {
-                        Resolve_Penetration_And_Slide(pColliderA, pColliderB, 10.f);
+                        Resolve_Penetration_And_Slide(pColliderA, pColliderB, 9.f);
                     }
                 }
             }

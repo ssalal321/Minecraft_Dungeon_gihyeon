@@ -42,6 +42,21 @@ HRESULT CCauldronBossHP::Initialize(void* pArg)
 
 	m_bActive = false;
 
+
+	m_vScreenPos = { m_pDesc->fX - 55.f, m_pDesc->fY - 60.f };
+	/*XMStoreFloat2(&m_vScreenPos,
+		XMVector3Project(
+			m_pTransformCom->Get_State(CTransform::STATE_POSITION) + XMVectorSet(0.f, -10.f, 0.f, 1.f),
+			0.f,
+			0.f,
+			static_cast<_float>(g_iWinSizeX),
+			static_cast<_float>(g_iWinSizeY),
+			0.f,
+			1.f,
+			m_pGameInstance->Get_Transform_Matrix(CPipeLine::D3DTS_PROJ),
+			m_pGameInstance->Get_Transform_Matrix(CPipeLine::D3DTS_VIEW),
+			XMMatrixIdentity()));*/
+
 	return S_OK;
 }
 
@@ -75,6 +90,8 @@ HRESULT CCauldronBossHP::Render()
 {
 	if (!m_bActive)
 		return S_OK;
+
+	m_pGameInstance->Draw_Text(TEXT("Font_Interop"), TEXT("타락한 가마솥"), m_vScreenPos, Colors::White, 0.f, { 0.f, 0.f }, 0.7f);
 
 	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;

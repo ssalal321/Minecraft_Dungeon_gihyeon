@@ -128,6 +128,7 @@ HRESULT CWeapon_Glaive::Ready_Components()
 	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), pColliderSphereCom, TEXT("Player_Weapon"), TEXT("Player"), true);
 	CCollider* pWeaponCollider = dynamic_cast<CCollider*>(pColliderSphereCom);
 	pWeaponCollider->Set_ColliderActive(false);
+	pWeaponCollider->Set_ColliderRole(CCollider::ETC);
 
 	return S_OK;
 }

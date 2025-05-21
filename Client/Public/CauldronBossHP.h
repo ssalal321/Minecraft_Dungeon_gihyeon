@@ -66,6 +66,8 @@ private:
 	CShader*			m_pShaderCom	= { nullptr };
 	CVIBuffer_Rect*		m_pVIBufferCom	= { nullptr };
 
+	_float2				m_vScreenPos = {};
+
 private:
 	HRESULT		Ready_CauldronBossHP_Components();
 

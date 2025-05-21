@@ -73,6 +73,9 @@ HRESULT CMainApp::Ready_Fonts()
     if (FAILED(m_pGameInstance->Add_Font(TEXT("Font_Minecraft"), TEXT("../Bin/Resources/Fonts/Minecraft.spritefont"))))
         return E_FAIL;
 
+    if (FAILED(m_pGameInstance->Add_Font(TEXT("Font_Interop"), TEXT("../Bin/Resources/Fonts/Interop.spritefont"))))
+        return E_FAIL;
+
     return S_OK;
 }
 
