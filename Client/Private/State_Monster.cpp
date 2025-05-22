@@ -40,14 +40,11 @@ void CState_Monster::State_Priority_Update(_float fTimeDelta)
 
 void CState_Monster::State_Update(_float fTimeDelta)
 {
-	if (m_pMonsterInfo->Get_CurrentHP() <= 0)
+	/*if (m_pMonsterInfo->Get_CurrentHP() > 0)
 	{
-		m_pActor->Set_GameObject_Active(false);
-		m_pBigColliderCom->Set_ColliderActive(false);
-		m_pSmallColliderCom->Set_ColliderActive(false);
-	}
-
-	m_bAnimationFinished = m_pActorModelCom->Play_Animation(fTimeDelta);
+		*/m_bAnimationFinished = m_pActorModelCom->Play_Animation(fTimeDelta);
+	/*}*/
+	
 }
 
 void CState_Monster::State_Late_Update(_float fTimeDelta)

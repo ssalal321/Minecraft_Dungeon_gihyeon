@@ -6,6 +6,7 @@
 #include "FSM.h"
 #include "Item.h"
 #include "Vindicator_Attack.h"
+#include "Vindicator_Dead.h"
 #include "Vindicator_Idle.h"
 #include "Vindicator_Novelty.h"
 #include "Vindicator_Walk.h"
@@ -33,13 +34,10 @@ HRESULT CVindicator::Initialize(void* pArg)
 {
 	const _wstring& zombieGameObjectTag = TEXT("GameObject_Vindicator_") + to_wstring(m_iVindicatorID++);
 
-	m_pMonsterInfo = new MONSTER_DESC(zombieGameObjectTag, 100, 100, 10, 3.f, 12.f, false, 90.f, 3.5f);
+	m_pMonsterInfo = new MONSTER_DESC(zombieGameObjectTag, 100, 100, 50, 3.f, 12.f, false, 90.f, 3.5f);
 
 	if (FAILED(__super::Initialize(m_pMonsterInfo)))
 		return E_FAIL;
-
-	if (m_pNavigationCom)
-		m_pNavigationCom->SetUp_CurrentCellIndex(363);
 
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;
@@ -47,12 +45,12 @@ HRESULT CVindicator::Initialize(void* pArg)
 	if (FAILED(Ready_States()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
-								XMVectorSet(-6.f, 0.05f, -6.5f, 1.f));
 
+	VINDICATOR_DESC* pDesc = static_cast<VINDICATOR_DESC*>(pArg);
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&pDesc->vindicatorPosition));
 
-	/*VINDICATOR_DESC* pDesc = static_cast<VINDICATOR_DESC*>(pArg);
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&pDesc->babyZombiePosition));*/
+	if (m_pNavigationCom)
+		m_pNavigationCom->SetUp_CurrentCellIndex(pDesc->currentCellIndex);
 
 	return S_OK;
 }
@@ -160,6 +158,7 @@ HRESULT CVindicator::Ready_States()
 	m_StatesVec[static_cast<_uint>(VINDICATOR_STATE::WALK)]		= CVindicator_Walk::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
 	m_StatesVec[static_cast<_uint>(VINDICATOR_STATE::ATTACK)]	= CVindicator_Attack::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
 	m_StatesVec[static_cast<_uint>(VINDICATOR_STATE::NOVELTY)]	= CVindicator_Novelty::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
+	m_StatesVec[static_cast<_uint>(VINDICATOR_STATE::DEAD)]		= CVindicator_Dead::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
 
 	m_pMonsterFSM = FSM::Create();
 

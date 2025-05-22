@@ -24,13 +24,25 @@ void CState_BabyZombie::State_Enter()
 void CState_BabyZombie::State_Priority_Update(_float fTimeDelta)
 {
 	__super::State_Priority_Update(fTimeDelta);
-
-	// 체력 0이면 죽엇
 }
 
 void CState_BabyZombie::State_Update(_float fTimeDelta)
 {
 	__super::State_Update(fTimeDelta);
+
+	if (Change_State_To_Dead())
+		return;
+
+	if (m_pBabyZombie->Get_Is_Jumping())
+	{
+		m_pTransformCom->Jump_Start(8.f);
+		m_pTransformCom->LookAt(m_pBabyZombie->Get_Jump_LandPos());
+		m_pBabyZombie->Set_Is_Jumping(false);
+	}
+
+	m_pTransformCom->Jump(fTimeDelta, m_pNavigationCom);
+	if (m_pTransformCom->Get_Is_Jumping())
+		m_pTransformCom->Go_Straight(fTimeDelta, m_pNavigationCom);
 }
 
 void CState_BabyZombie::State_Late_Update(_float fTimeDelta)
@@ -45,27 +57,16 @@ void CState_BabyZombie::State_Exit()
 void CState_BabyZombie::Collision_Enter(CCollider* pOther)
 {
 	__super::Collision_Enter(pOther);
-
-//#ifdef DEBUG
-//	_wstring other = pOther->Get_ColliderTag();
-//	std::wcerr << "[좀비와 " << other << " 충돌 Enter]" << std::endl;
-//#endif
 }
 
 void CState_BabyZombie::Collision_Stay(CCollider* pOther)
 {
 	__super::Collision_Stay(pOther);
-
-	/*_wstring other = pOther->Get_CollidergGroupTag();
-
-	std::wcerr << "[좀비와 " << other << " 충돌 Stay]" << std::endl;*/
 }
 
 void CState_BabyZombie::Collision_Exit(CCollider* pOther)
 {
-	/*_wstring other = pOther->Get_CollidergGroupTag();
-
-	std::wcerr << "[좀비와 " << other << " 충돌 Exit]" << std::endl;*/
+	__super::Collision_Exit(pOther);
 }
 
 _bool CState_BabyZombie::Change_State_To_Attack()
@@ -107,6 +108,17 @@ _bool CState_BabyZombie::Change_State_To_Idle()
 		return true;
 	}
 
+	return false;
+}
+
+_bool CState_BabyZombie::Change_State_To_Dead()
+{
+	if (m_pMonsterInfo->Get_CurrentHP() <= 0)
+	{
+		m_pBabyZombie->Change_State(Make_BabyZombieState(BABYZOMBIE_STATE::DEAD));
+		return true;
+	}
+	
 	return false;
 }
 

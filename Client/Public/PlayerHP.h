@@ -15,22 +15,21 @@ BEGIN(Client)
 {
 public:
 
-	typedef struct PLAYERHP_DESC : public CUIObject::UIOBJECT_DESC
+	typedef struct PLAYER_HP_DESC : public CUIObject::UIOBJECT_DESC
 	{
 		_float			fPlayTime;
 
-		PLAYERHP_DESC(const _tchar* GameObjectTag, UI_STATE uiState,
+		PLAYER_HP_DESC(const _tchar* GameObjectTag, UI_STATE uiState,
 			_float x, _float y, _float z, _float sizeX, _float sizeY,
-			const wstring& textureTag, _float speedPerSec = 0.f, _float rotationPerSec = 0.f, _float playTime = 0.f)
-			: UIOBJECT_DESC(GameObjectTag, uiState, x, y, z, sizeX, sizeY, textureTag,
-							speedPerSec, rotationPerSec),  // 부모 생성자 호출
+			const wstring& textureTag, _bool alphaBlend = true, _float speedPerSec = 0.f, _float rotationPerSec = 0.f, _float playTime = 0.f)
+			: UIOBJECT_DESC(GameObjectTag, uiState, x, y, z, sizeX, sizeY, textureTag, alphaBlend, rotationPerSec, speedPerSec),
 			  fPlayTime(playTime) { }
 
 		//// 복사 생성자
-		//PLAYERHP_DESC(const PLAYERHP_DESC& other)
+		//PLAYER_HP_DESC(const PLAYER_HP_DESC& other)
 		//	: UIOBJECT_DESC(other), fPlayTime(other.fPlayTime) { }
 
-		~PLAYERHP_DESC() override = default;
+		~PLAYER_HP_DESC() override = default;
 
 	}PLAYERHP_DESC;
 

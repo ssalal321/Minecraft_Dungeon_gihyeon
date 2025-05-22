@@ -4,6 +4,7 @@
 #include <UI_Image.h>
 
 #include "Armor.h"
+#include "BabyZombie.h"
 #include "GameInstance.h"
 #include "PartObject.h"
 #include "Level_Loading.h"
@@ -17,6 +18,8 @@
 #include "Player.h"
 #include "Zombie.h"
 #include "PlayerHP.h"
+#include "RollIcon.h"
+#include "Slime_Cauldron.h"
 
 CLevel_Lounge::CLevel_Lounge(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : CLevel { pDevice, pContext }
@@ -43,8 +46,8 @@ HRESULT CLevel_Lounge::Initialize()
     if (FAILED(Ready_Layer_PlayerSlotUI(TEXT("Layer_PlayerSlotUI"))))
         return E_FAIL;
 
-    if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
-        return E_FAIL;
+    /*if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
+        return E_FAIL;*/
 
 
 #pragma region MELEE
@@ -60,7 +63,7 @@ HRESULT CLevel_Lounge::Initialize()
     GlaiveDesc.strObjectPrototypeTag    = TEXT("Prototype_GameObject_Glaive_Steel");
     GlaiveDesc.strIconTexPrototypeTag   = TEXT("Prototype_Component_Texture_Glaive_Steel");
     GlaiveDesc.strPartObjectTag         = TEXT("Part_Weapon_Melee");
-	GlaiveDesc.iDealPoint               = 5;
+	GlaiveDesc.iDealPoint               = 10;
     GlaiveDesc.eItemtype                = ITEM_TYPE::MELEE;;
     GlaiveDesc.strIconGameObjectTag     = TEXT("UIGameObject_Glaive_Steel");
 
@@ -148,7 +151,7 @@ HRESULT CLevel_Lounge::Initialize()
 
 void CLevel_Lounge::Update(_float fTimeDelta)
 {
-    if (m_pLevel_Trigger->Get_Level_Change())
+    if (m_pLevel_Trigger->Get_Level_Changed())
     {
         if (SUCCEEDED(m_pGameInstance->Open_Level(LEVEL_LOADING,
             CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_SOGGYSWAMP))))
@@ -268,16 +271,21 @@ HRESULT CLevel_Lounge::Ready_Layer_Monster(const _wstring& strLayerTag)
         LEVEL_LOUNGE, strLayerTag);
     if (nullptr == pSkeleton)     return E_FAIL;
 
+
+    CBabyZombie::BABYZOMBIE_DESC   babyZombieDesc = {};
+    babyZombieDesc.babyZombiePosition = { -3.f, 0.f, -15.f, 1.f };
     CGameObject* pBabyZombie = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_BabyZombie"),
-        LEVEL_LOUNGE, strLayerTag);
+        LEVEL_LOUNGE, strLayerTag, &babyZombieDesc);
     if (nullptr == pBabyZombie)     return E_FAIL;
 
     CGameObject* pSlimeLarge = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Slime_Large"),
         LEVEL_LOUNGE, strLayerTag);
     if (nullptr == pSlimeLarge)     return E_FAIL;
 
+    CSlime_Cauldron::SLIME_CAULDRON_DESC    slimeCauldronDesc = {};
+    slimeCauldronDesc.slimeCauldronPosition = { -0.f, 0.f, -15.f, 1.f };
     CGameObject* pSlimeCauldron = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Slime_Cauldron"),
-        LEVEL_LOUNGE, strLayerTag);
+        LEVEL_LOUNGE, strLayerTag, &slimeCauldronDesc);
     if (nullptr == pSlimeCauldron)     return E_FAIL;
 
     CGameObject* pVindicator = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Vindicator"),
@@ -312,7 +320,8 @@ HRESULT CLevel_Lounge::Ready_Layer_InventoryUI(const _wstring& strLayerTag)
         TEXT("Prototype_GameObject_InventoryBase"),
         CUI_Manager::PERSISTENT, &InventoryBaseDesc);
 
-    if (nullptr == pInventoryBase) return E_FAIL;
+    if (nullptr == pInventoryBase)
+        return E_FAIL;
 
     return S_OK;
 }
@@ -331,7 +340,8 @@ HRESULT CLevel_Lounge::Ready_Layer_PlayerSlotUI(const _wstring& strLayerTag)
         TEXT("Prototype_GameObject_UIImage"),
         CUI_Manager::PERSISTENT, &PlayerStateSlotDesc);
 
-    if (nullptr == pPlayerStateSlot) return E_FAIL;
+    if (nullptr == pPlayerStateSlot)
+        return E_FAIL;
 
 
     CPlayerHP::PLAYERHP_DESC  PlayerHPDesc
@@ -343,7 +353,25 @@ HRESULT CLevel_Lounge::Ready_Layer_PlayerSlotUI(const _wstring& strLayerTag)
         TEXT("Prototype_GameObject_Player_HPbar"),
         CUI_Manager::PERSISTENT, &PlayerHPDesc);
 
-    if (nullptr == pPlayerHP) return E_FAIL;
+    if (nullptr == pPlayerHP)
+        return E_FAIL;
+
+    pPlayerHP->Set_Parent(pPlayerStateSlot);
+
+
+    CRollIcon::ROLL_ICON_DESC  RollIconDesc
+    (TEXT("GameObject_RollIcon"), CUIObject::UNCLICKABLE,
+        fPlayerStateSlotX + 202.f, fPlayerStateSlotY + 7.f, 0.7f,32.f, 22.5f,
+        L"Prototype_Component_Texture_RollIcon");
+
+    CUIObject* pRollIcon = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_STATIC,
+        TEXT("Prototype_GameObject_RollIcon"),
+        CUI_Manager::PERSISTENT, &RollIconDesc);
+
+    if (nullptr == pRollIcon)
+        return E_FAIL;
+    pRollIcon->Set_Parent(pPlayerStateSlot);
+
 
     return S_OK;
 }

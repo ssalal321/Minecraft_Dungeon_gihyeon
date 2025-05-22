@@ -3,10 +3,13 @@
 #include <iostream>
 #include <UI_Image.h>
 
+#include "Boss_Trigger.h"
 #include "GameInstance.h"
 #include "PartObject.h"
 #include "Level_Loading.h"
 #include "Camera_Free.h"
+#include "CauldronBoss.h"
+#include "CauldronBossHP.h"
 #include "InventoryBase.h"
 #include "InventoryData.h"
 #include "Item.h"
@@ -36,9 +39,15 @@ HRESULT CLevel_SoggySwamp::Initialize()
     if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
         return E_FAIL;
 
-    /*if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
-        return E_FAIL;*/
+    if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
+        return E_FAIL;
 
+    if (FAILED(Ready_Layer_Trigger(TEXT("Layer_Trigger"))))
+        return E_FAIL;
+
+    if (FAILED(Ready_Layer_UI(TEXT("Layer_UI"))))
+        return E_FAIL;
+    
 
     return S_OK;
 }
@@ -49,46 +58,6 @@ void CLevel_SoggySwamp::Update(_float fTimeDelta)
     if (m_pGameInstance->Key_Down(VK_F1))  // 아예 전체 전역변수로 만들어야겠다
         bMouseClickLock = !bMouseClickLock;
 #endif
-
-    // 얘네도 여러 level에서 써야 하니까 state_monster로 빼는 게 나을지도..
-    _float4     fWorldMousePos = {};
-    _float3     fWorldMouseRay = {};
-    m_pGameInstance->Compute_MouseRay(fWorldMousePos, fWorldMouseRay);
-
-    // 1. 현재 가장 가까운 Monster collider 찾기
-    CCollider* pClosestCollider = Get_Closest_Collider(fWorldMousePos, fWorldMouseRay);
-    if (nullptr == pClosestCollider)  // 아래에 다른 코드 없기도 하고 나중에 함수로 뺄 생각 하고 넣은 것
-        return;
-
-    CMonster* pPrevMonster = m_pPickedMonster;
-    CMonster* pCurrMonster = dynamic_cast<CMonster*>(dynamic_cast<CPartObject*>(pClosestCollider->Get_OwnerObject())->Get_ContainerObject());
-
-    // 2. 이전 Hovered 상태 해제
-    if (pPrevMonster && pPrevMonster != pCurrMonster)
-    {
-        pPrevMonster->Set_Hovered(false);
-
-        //std::wcerr << "[휘바 끝XXXXXXXXXXX]" << std::endl;
-    }
-
-    // 3. 현재 Hovered 상태 설정 및 클릭 처리
-    if (pCurrMonster)
-    {
-        pCurrMonster->Set_Hovered(true);
-        m_pPickedMonster = pCurrMonster;
-
-        //std::wcerr << "[휘바휘바]" << std::endl;
-
-        if (m_pGameInstance->Get_Key(VK_LBUTTON) && !bMouseClickLock)
-        {
-            Click_Chase_Monster(pCurrMonster);
-        }
-    }
-
-    if (m_pGameInstance->Key_Up(VK_LBUTTON) && !bMouseClickLock)
-    {
-        m_pPlayer->Set_Chasing(false);
-    }
 }
 
 CCollider* CLevel_SoggySwamp::Get_Closest_Collider(const _float4& mousePos, const _float3& mouseRay)
@@ -103,7 +72,7 @@ CCollider* CLevel_SoggySwamp::Get_Closest_Collider(const _float4& mousePos, cons
 
     for (auto& pCollider : it->second)
     {
-        if (pCollider->Get_ColliderType() != COLLIDER_TYPE::TYPE_SPHERE)
+        if (pCollider->Get_ColliderType() != COLLIDER_TYPE::TYPE_SPHERE || pCollider->Get_Role() == CCollider::ETC || pCollider->Get_Role() == CCollider::SMALL)
             continue;
 
         _float fDist = 0.f;
@@ -163,7 +132,10 @@ HRESULT CLevel_SoggySwamp::Ready_PrePlayer()
     m_pGameInstance->Attach_Persistent_Colliders_To_Level(m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Player"));
 
     m_pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("GameObject_Player"), m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_Player")));
-    m_pPlayer->Erase_Component(TEXT("Com_Navigation"));
+    CCollider* pCollider = dynamic_cast<CCollider*>(m_pPlayer->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_BigSphere")));
+    pCollider->Set_IsCollision(false);  // 이전 트리거와 부딪히고 남은 거 지워줌
+
+	m_pPlayer->Erase_Component(TEXT("Com_Navigation"));
     m_pPlayer->Delete_NavigationCom();
 
     return S_OK;
@@ -245,23 +217,73 @@ HRESULT CLevel_SoggySwamp::Ready_Layer_Player(const _wstring& strLayerTag)
 
     _float4 currentPosition = {};
     XMStoreFloat4(&currentPosition, pTransformCom->Get_State(CTransform::STATE_POSITION));
-    //m_pPlayer->Set_NextPosition(currentPosition);
+    m_pPlayer->Set_NextPosition(currentPosition);
+
+    m_pPlayer->Change_State(PLAYER_STATE::IDLE);
+
+    return S_OK;
+}
+
+HRESULT CLevel_SoggySwamp::Ready_Layer_UI(const _wstring& strLayerTag)
+{
+    _float fCauldronBossHPX = g_iWinSizeX * 0.5f;
+    _float fCauldronBossHPY = 78.f;
+
+    CCauldronBossHP::CAULDRONBOSS_HP_DESC  cauldronBossHPDesc
+    (TEXT("GameObject_CauldronBoss_HPBar"), CUIObject::UNCLICKABLE,
+        fCauldronBossHPX, fCauldronBossHPY, 0.8f, 500.f, 17.f,
+        L"Prototype_Component_Texture_CauldronBossHP", m_pCauldronBoss, true);
+
+    CUIObject* pCauldronBossHP = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_STATIC,
+        TEXT("Prototype_GameObject_CauldronBoss_HPbar"),
+        CUI_Manager::TEMPORARY, &cauldronBossHPDesc);
+
+    if (nullptr == pCauldronBossHP)
+        return E_FAIL;
+
+    m_pCauldronBoss->Set_My_HPUIObject(pCauldronBossHP);
 
     return S_OK;
 }
 
 HRESULT CLevel_SoggySwamp::Ready_Layer_Monster(const _wstring& strLayerTag)
 {
-    CGameObject* pZombie = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Zombie"),
+    /*CGameObject* pZombie = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Zombie"),
         LEVEL_SOGGYSWAMP, strLayerTag);
-    if (nullptr == pZombie)     return E_FAIL;
+    if (nullptr == pZombie)
+		return E_FAIL;
 
     CGameObject* pSkeleton = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Skeleton"),
         LEVEL_SOGGYSWAMP, strLayerTag);
-    if (nullptr == pSkeleton)     return E_FAIL;
+    if (nullptr == pSkeleton)
+		return E_FAIL;*/
+
+    CCauldronBoss::CAULDRONBOSS_DESC  cauldronBossDesc = {};
+    cauldronBossDesc.slimeCauldronPosition = { 0.45f, 0, 29.8f, 1.f };
+
+    CGameObject* pCauldronBoss = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_CauldronBoss"),
+																 LEVEL_SOGGYSWAMP, strLayerTag, &cauldronBossDesc);
+    if (nullptr == pCauldronBoss)
+        return E_FAIL;
+
+    m_pCauldronBoss = dynamic_cast<CCauldronBoss*>(pCauldronBoss);
 
     return S_OK;
 }
+
+HRESULT CLevel_SoggySwamp::Ready_Layer_Trigger(const _wstring& strLayerTag)
+{
+    CBoss_Trigger::BOSS_TRIGGER_DESC   bossTriggerDesc = {};
+    bossTriggerDesc.triggerPosition = { -4.f, 0.f, 20.5 };
+    bossTriggerDesc.pBoss = m_pCauldronBoss;
+
+    m_pBoss_Trigger = CBoss_Trigger::Create(m_pDevice, m_pContext, &bossTriggerDesc);
+    if (nullptr == m_pBoss_Trigger)
+        return E_FAIL;
+
+    return S_OK;
+}
+
 
 CLevel_SoggySwamp* CLevel_SoggySwamp::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
@@ -280,4 +302,6 @@ CLevel_SoggySwamp* CLevel_SoggySwamp::Create(ID3D11Device* pDevice, ID3D11Device
 void CLevel_SoggySwamp::Free()
 {
     __super::Free();
+
+    Safe_Release(m_pBoss_Trigger);
 }

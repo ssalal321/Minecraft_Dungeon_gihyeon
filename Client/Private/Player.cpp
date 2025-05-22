@@ -39,7 +39,7 @@ HRESULT CPlayer::Initialize_Prototype()
 
 HRESULT CPlayer::Initialize(void* pArg)
 {
-	m_pPlayerInfo = new PLAYER_DESC(TEXT("GameObject_Player"), 500, 500, 5, 3.5f, 40, false, 90.f, 3.f);
+	m_pPlayerInfo = new PLAYER_DESC(TEXT("GameObject_Player"), 1000, 1000, 15, 3.5f, 0.f, 5.f, 100, false, 90.f, 3.f);
 
 	if (FAILED(__super::Initialize(m_pPlayerInfo)))
 		return E_FAIL;
@@ -82,6 +82,9 @@ void CPlayer::Update(_float fTimeDelta)
 	if (m_pNavigationCom)
 		m_pNavigationCom->SetUp_On_Navigation(m_pTransformCom);
 
+	if (m_pPlayerInfo->Get_RollCoolDowning())
+		m_pPlayerInfo->Roll_CoolDown(fTimeDelta);
+
 	m_pPlayerFSM->Update_State(fTimeDelta);
 }
 
@@ -114,7 +117,7 @@ void CPlayer::Hover_and_Chase_Monster()
 
 	// 1. 현재 가장 가까운 Monster collider 찾기
 	CCollider* pClosestCollider = Get_Closest_Collider(fWorldMousePos, fWorldMouseRay);
-	if (nullptr == pClosestCollider || false == pClosestCollider->Get_ColliderActive())  // 아래에 다른 코드 없기도 하고 나중에 함수로 뺄 생각 하고 넣은 것
+	if (nullptr == pClosestCollider || false == pClosestCollider->Get_ColliderActive())
 		return;
 
 	CMonster* pPrevMonster = m_pPickedMonster;
@@ -134,7 +137,7 @@ void CPlayer::Hover_and_Chase_Monster()
 		pCurrMonster->Set_Hovered(true);
 		m_pPickedMonster = pCurrMonster;
 
-		std::wcerr << "[휘바휘바]" << std::endl;
+		//std::wcerr << "[휘바휘바]" << std::endl;
 
 		if (m_pGameInstance->Get_Key(VK_LBUTTON) && !bMouseClickLock)
 		{
@@ -201,6 +204,8 @@ HRESULT CPlayer::Ready_Components()
 	break;
 	}
 
+	m_pTransformCom->Set_Navigation(m_pNavigationCom);  //  씬 전환해도 덮어쓰일 것
+
 	return S_OK;
 }
 
@@ -222,7 +227,7 @@ HRESULT CPlayer::Ready_PartObjects()
 	BodyDesc.pParentWorldMatrix			= m_pTransformCom->Get_WorldMatrix_Ptr();
 	BodyDesc.pState						= &m_iState;
 	BodyDesc.pContainerObject			= this;
-	BodyDesc.pBigCollisionActivating	= &m_bAttacking;
+	BodyDesc.pBigCollisionActivating	= &m_bAlwaysNotActivated;
 	BodyDesc.pSmallCollisionActivating	= &m_bAlwaysActivated;
 
 	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Body_Player"), TEXT("Part_Body"), &BodyDesc)))

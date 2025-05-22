@@ -19,7 +19,7 @@ HRESULT CBabyZombie_GetHit::Init_State()
 
 void CBabyZombie_GetHit::State_Enter()
 {
-	m_pActorModelCom->Set_Animation(static_cast<_uint>(ZOMBIE_STATE::GET_HIT_FRONT), false, 1.0f);
+	m_pActorModelCom->Set_Animation(static_cast<_uint>(BABYZOMBIE_STATE::GET_HIT), false, 1.0f);
 }
 
 void CBabyZombie_GetHit::State_Priority_Update(_float fTimeDelta)

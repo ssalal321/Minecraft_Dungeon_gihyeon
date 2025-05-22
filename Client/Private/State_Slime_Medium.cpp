@@ -33,6 +33,13 @@ void CState_Slime_Medium::State_Update(_float fTimeDelta)
 {
 	__super::State_Update(fTimeDelta);
 
+	if (m_pMonsterInfo->Get_CurrentHP() <= 0)
+	{
+		m_pActor->Set_GameObject_Active(false);
+		m_pBigColliderCom->Set_ColliderActive(false);
+		m_pSmallColliderCom->Set_ColliderActive(false);
+	}
+
 	if (false == m_pActor->Get_GameObject_Active())
 	{
 		_vector vPosition = m_pTransformCom->Get_State(CTransform::STATE_POSITION);  // Á×Àº À§Ä¡

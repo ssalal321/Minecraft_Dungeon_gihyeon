@@ -34,7 +34,7 @@ public:
 	HRESULT		Render()							override;
 
 public:
-	void	Shoot(_float3 startPos, _float3 endPos);
+	void	Fire(_float4 startPos, _float4 lookPos);
 	void	Return_To_Pool(); // 풀로 돌아갈 때 초기화할 함수
 
 	void	Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState) override;

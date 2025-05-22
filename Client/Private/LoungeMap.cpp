@@ -95,7 +95,7 @@ void CLoungeMap::Update(_float fTimeDelta)
 			/*CPlayer* pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("GameObject_Player"),
 							LEVEL_LOUNGE, TEXT("Layer_Player")));
 						pPlayer->Set_NextPosition({ fWorldPickedPos.x, fWorldPickedPos.y, fWorldPickedPos.z, 1.f });
-						pPlayer->Change_State(PLAYER_STATE::WALK);*/
+						pPlayer->Change_State(PLAYER_STATE::STRONG_ATTACK);*/
 		}
 	}
 

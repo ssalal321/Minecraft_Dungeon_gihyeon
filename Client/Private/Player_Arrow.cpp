@@ -113,17 +113,6 @@ HRESULT CPlayer_Arrow::Bind_ShaderResources()
 	if (FAILED(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4))))
 		return E_FAIL;
 
-	const LIGHT_DESC* pLightDesc = m_pGameInstance->Get_LightDesc(0);
-	if (nullptr == pLightDesc)
-		return E_FAIL;
-
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightDiffuse", &pLightDesc->vDiffuse, sizeof(_float4))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightAmbient", &pLightDesc->vAmbient, sizeof(_float4))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightSpecular", &pLightDesc->vSpecular, sizeof(_float4))))
-		return E_FAIL;
-
 	return S_OK;
 }
 
@@ -141,7 +130,7 @@ void CPlayer_Arrow::Shoot(_float4 startPos, _float4 lookPos)
 void CPlayer_Arrow::Return_To_Pool()
 {
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, { 0.f, 200.f, 0.f, 1.f});
-	m_pTransformCom->LookAt({ 0.f, 0.f, 0.f, 1.f });
+	//m_pTransformCom->LookAt({ 0.f, 0.f, 0.f, 1.f });
 
 	m_fResetTimer = 0.f;
 	m_iDealPoint = 0;
@@ -158,7 +147,7 @@ void CPlayer_Arrow::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE 
 {
 	if (pOther->Get_ColliderActive() &&
 		CCollider::COLLISION_STATE::ENTER == eCollisionState &&
-		(TEXT("Monster_Body_Small") == pOther->Get_ColliderTag()))
+		(TEXT("Monster_Body_Small") == pOther->Get_ColliderTag() || TEXT("Boss_Body_Small") == pOther->Get_ColliderTag()))
 	{
 		m_bCollided = true;
 		m_fResetTimer = 0.f;

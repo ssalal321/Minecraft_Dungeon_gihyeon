@@ -60,6 +60,7 @@ void CBabyZombie_Idle::State_Update(_float fTimeDelta)
 			m_fLoopTime = 0.f;
 		}
 	}
+
 }
 
 void CBabyZombie_Idle::State_Late_Update(_float fTimeDelta)

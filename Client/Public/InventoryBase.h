@@ -24,9 +24,9 @@ public:
 
 		INVENTORY_BASE_DESC(const _tchar* GameObjectTag, UI_STATE uiState,
 			_float x, _float y, _float z, _float sizeX, _float sizeY,
-			const wstring& textureTag, _float speedPerSec = 0.f, _float rotationPerSec = 0.f, _float playTime = 0.f)
-			: UIOBJECT_DESC(GameObjectTag, uiState, x, y, z, sizeX, sizeY, textureTag,
-							speedPerSec, rotationPerSec),  // 부모 생성자 호출
+			const wstring& textureTag, _bool alphaBlend = false, _float speedPerSec = 0.f, _float rotationPerSec = 0.f, _float playTime = 0.f)
+			: UIOBJECT_DESC(GameObjectTag, uiState, x, y, z, sizeX, sizeY, textureTag, alphaBlend,
+							rotationPerSec, speedPerSec),  // 부모 생성자 호출
 			  fPlayTime(playTime) { }
 
 		//// 복사 생성자

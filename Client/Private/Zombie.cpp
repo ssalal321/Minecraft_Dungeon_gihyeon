@@ -5,6 +5,7 @@
 
 #include "FSM.h"
 #include "Zombie_Attack.h"
+#include "Zombie_Dead.h"
 #include "Zombie_GetHit.h"
 #include "Zombie_Idle.h"
 #include "Zombie_Sleep.h"
@@ -34,7 +35,7 @@ HRESULT CZombie::Initialize(void* pArg)
 {
 	const _wstring& zombieGameObjectTag = TEXT("GameObject_Zombie_") + to_wstring(m_iZombieID++);
 
-	m_pMonsterInfo = new MONSTER_DESC(zombieGameObjectTag, 20, 20, 2, 3.f, 10.f, false, 90.f, 1.5f);
+	m_pMonsterInfo = new MONSTER_DESC(zombieGameObjectTag, 55, 55, 70, 3.f, 10.f, false, 90.f, 1.5f);
 
 	if (FAILED(__super::Initialize(m_pMonsterInfo)))
 		return E_FAIL;
@@ -134,6 +135,7 @@ HRESULT CZombie::Ready_States()
 	m_StatesVec[static_cast<_uint>(ZOMBIE_STATE::GET_HIT_FRONT)] = CZombie_GetHit::Create(this, m_pMonsterInfo, &pStateMonsterDesc);  // Get_Hit_Left/Rightµµ Æ÷ÇÔ
 	m_StatesVec[static_cast<_uint>(ZOMBIE_STATE::STUN)]			 = CZombie_Stun::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
 	m_StatesVec[static_cast<_uint>(ZOMBIE_STATE::NOVELTY_SLEEP)] = CZombie_Sleep::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
+	m_StatesVec[static_cast<_uint>(ZOMBIE_STATE::DEAD)]			 = CZombie_Dead::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
 
 	m_pMonsterFSM = FSM::Create();
 

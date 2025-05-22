@@ -38,6 +38,7 @@ HRESULT CItem::Initialize(void* pArg)
 		m_strPartObjectTag		= pDesc->strPartObjectTag;
 		m_eItemtype				= pDesc->eItemtype;
 		m_iDealPoint			= pDesc->iDealPoint;
+		m_iInitialDealPoint		= pDesc->iDealPoint;
 		m_iHealPoint			= pDesc->iHealPoint;
 	}
 	

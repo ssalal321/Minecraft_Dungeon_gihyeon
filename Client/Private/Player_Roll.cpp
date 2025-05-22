@@ -19,6 +19,8 @@ void CPlayer_Roll::State_Enter()
 	m_pColliderSmallCom->Set_ColliderActive(false);
 	m_pColliderBigCom->Set_ColliderActive(false);
 
+	m_pPlayerInfo->Start_RollCoolDown(true);
+
 	m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::ROLL), false, 1.1f);
 }
 

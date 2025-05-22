@@ -14,6 +14,7 @@ class CAnimation final : public CBase
 {
 private:
 	CAnimation();
+	CAnimation(const CAnimation& Prototype);
 	~CAnimation() override = default;
 
 public:
@@ -37,11 +38,13 @@ private:
 	/* 각 뼈의 정보를 가진다. */
 	/* 정보 : 해당 뼈가 시간별로 취해야할 상태들. */
 	vector<class CChannel*>		m_Channels;
+	vector<_uint>				m_ChannelCurrentKeyFrameIndices;
 
 	_bool		m_StartLerp = { false };
 
 public:
 	static CAnimation* Create(const aiAnimation* pAIAnimation, const vector<class CBone*>& Bones);
+	CAnimation*	 Clone();
 	void	Free()	override;
 };
 

@@ -8,6 +8,7 @@
 
 #include "FSM.h"
 #include "Skeleton_BowAction.h"
+#include "Skeleton_Dead.h"
 #include "Skeleton_GetHit.h"
 #include "Skeleton_HeadSpin.h"
 #include "Skeleton_Idle.h"
@@ -37,7 +38,7 @@ HRESULT CSkeleton::Initialize(void* pArg)
 {
 	const _wstring& skeletonGameObjectTag = TEXT("GameObject_Skeleton") + to_wstring(m_iSkeletonID++);
 
-	m_pMonsterInfo = new MONSTER_DESC(skeletonGameObjectTag, 30, 30, 2, 8.f, 12.f, false, 90.f, 1.5f);
+	m_pMonsterInfo = new MONSTER_DESC(skeletonGameObjectTag, 60, 60, 10, 8.f, 12.f, false, 90.f, 1.5f);
 
 	if (FAILED(__super::Initialize(m_pMonsterInfo)))
 		return E_FAIL;
@@ -165,6 +166,7 @@ HRESULT CSkeleton::Ready_States()
 	m_StatesVec[static_cast<_uint>(SKELETON_STATE::BOW_ACTION)]		 = CSkeleton_BowAction::Create(this, m_pMonsterInfo, &pStateSkeletonDesc);
 	m_StatesVec[static_cast<_uint>(SKELETON_STATE::GET_HIT_FRONT)]	 = CSkeleton_GetHit::Create(this, m_pMonsterInfo, &pStateSkeletonDesc);
 	m_StatesVec[static_cast<_uint>(SKELETON_STATE::HEAD_SPIN)]		 = CSkeleton_HeadSpin::Create(this, m_pMonsterInfo, &pStateSkeletonDesc);
+	m_StatesVec[static_cast<_uint>(SKELETON_STATE::DEAD)]			 = CSkeleton_Dead::Create(this, m_pMonsterInfo, &pStateSkeletonDesc);
 
 	m_pMonsterFSM = FSM::Create();
 

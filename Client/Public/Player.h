@@ -21,13 +21,19 @@ public:
 		_float    fAttackableRange;
 		_bool     bStunned;
 
+		_float	  fRollCoolTimeRemain;
+		_float	  fRollCoolTimeTotal;
+		_bool	  bRollCoolDowning = { false };
+
 		_uint	 iArrowNum;
 
+
 		PLAYER_DESC(const _wstring& GameObjectTag, _int currentHP, const _int& maxHP, _int arrowDealPoint,
-			const _float&  attackableRange, _uint arrowNum, _bool stunned = false,
+			const _float&  attackableRange, _float rollCoolTimeRemain, _float rollCoolTimeTotal, _uint arrowNum, _bool stunned = false,
 			_float rotationPerSec = 0.f, _float speedPerSec = 0.f)
-			: GAMEOBJECT_DESC(GameObjectTag, rotationPerSec, speedPerSec), iCurrentHP(currentHP), iMaxHP(maxHP), iArrowDealPoint(arrowDealPoint),
-			fAttackableRange(attackableRange), bStunned(stunned), iArrowNum(arrowNum) {
+			: GAMEOBJECT_DESC(GameObjectTag, rotationPerSec, speedPerSec), iCurrentHP(currentHP), iMaxHP(maxHP),
+				iArrowDealPoint(arrowDealPoint), fAttackableRange(attackableRange), bStunned(stunned),
+				fRollCoolTimeRemain(rollCoolTimeRemain), fRollCoolTimeTotal(rollCoolTimeTotal), iArrowNum(arrowNum) {
 		}
 
 		~PLAYER_DESC() override = default;
@@ -37,7 +43,17 @@ public:
 		const _int&		Get_Arrow_DealPoint() const { return iArrowDealPoint; }
 		const _float&	Get_AttackableRange() const { return fAttackableRange; }
 
-		void Modify_CurrentHp(_int iDamageOrHeal)
+		_float	Get_RollCooldown_RemainTime() const { return fRollCoolTimeRemain; }
+		_float	Get_RollCooldown_TotalTime()  const { return fRollCoolTimeTotal; }
+
+		_bool	Get_RollCoolDowning() const { return bRollCoolDowning; }
+		void	Start_RollCoolDown(_bool bStartCoolDown)
+		{
+			bRollCoolDowning = bStartCoolDown;
+			fRollCoolTimeRemain = fRollCoolTimeTotal;
+		}
+
+		void	Modify_CurrentHp(_int iDamageOrHeal)
 		{
 			_int iModifiedHP = iCurrentHP + iDamageOrHeal;
 
@@ -56,12 +72,27 @@ public:
 			iCurrentHP = iModifiedHP;
 		}
 
+		void	Roll_CoolDown(_float fTimeDelta)
+		{
+			if (fRollCoolTimeRemain > 0.f)
+			{
+				fRollCoolTimeRemain = max(0.f, fRollCoolTimeRemain - fTimeDelta);
+
+				// 쿨타임이 0이 되면 즉시 알림 처리 등 추가 가능
+				if (fRollCoolTimeRemain <= 0.f)
+				{
+					fRollCoolTimeRemain = 0.f;
+					bRollCoolDowning = false;
+				}
+			}
+		};
+
 	};
 
 	/*enum PLAYERSTATE
 	{
 		IDLE, IDLE_CLAYMORE, IDLE_GLAIVE, IDLE_HAMMER, IDLE_KATANA, IDLE_LOOKAROUND,
-		WALK, WALK_CLAYMORE, WALK_GLAIVE, WALK_HAMMER, WALK_KATANA,
+		STRONG_ATTACK, WALK_CLAYMORE, WALK_GLAIVE, WALK_HAMMER, WALK_KATANA,
 		RUN,  RUN_CLAYMORE,  RUN_GLAIVE,  RUN_HAMMER,  RUN_KATANA,
 		BOWACTION, DODGEROLL, STUN, FALLING, GETHITFRONT, DOWNEDFLOOR,
 		DRINK, EATFAST, HORNBLOW, LASERPOSE,
@@ -159,8 +190,9 @@ private:
 	_bool				m_bHoveringMonster	= { false };
 	CMonster*			m_pPickedMonster	= { nullptr };
 
-	_bool				m_bAttacking		= { false };
-	_bool				m_bAlwaysActivated	= { true };
+	_bool				m_bAttacking			= { false };
+	_bool				m_bAlwaysNotActivated	= { false };
+	_bool				m_bAlwaysActivated		= { true };
 
 	_bool				m_bChasing			= { false };
 	CTransform*			m_pMonsterTransformCom = { nullptr };
@@ -169,6 +201,10 @@ private:
 
 	_bool				m_bShootArrow	= { false };
 	_float4				m_ClickPickedPos	= { 0.f, 0.f, 0.f, 1.f };
+#pragma endregion
+
+#pragma region STATE
+	
 #pragma endregion
 
 private:

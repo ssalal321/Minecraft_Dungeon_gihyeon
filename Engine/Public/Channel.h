@@ -15,7 +15,7 @@ private:
 
 public:
 	HRESULT		Initialize(const aiNodeAnim* pAIChannel, const vector<class CBone*>& Bones);
-	void		Update_TransformationMatrix(_float& fCurrentTrackPosition, const vector<class CBone*>& Bones, _bool animationChanged);
+	void		Update_TransformationMatrix(_float fCurrentTrackPosition, const vector<CBone*>& Bones, _uint* pCurrentKeyFrameIndex, _bool animationChanged, _float fTimeDelta);
 private:
 	_char				m_szName[MAX_PATH] = {};
 
@@ -36,6 +36,8 @@ private:
 
 	_float4x4 m_PrevTransformMatrix = {};
 
+	_float	 m_fBlendElapsedTime = 0.f;
+	_bool	 m_bInBlending = false;
 
 public:
 	static CChannel* Create(const aiNodeAnim* pAIChannel, const vector<class CBone*>& Bones);

@@ -26,7 +26,7 @@ void CPlayer_Walk::State_Enter()
 	if (pItem && pItem->Get_GameObjectTag() == TEXT("GameObject_GlaiveSteel"))
 		m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::WALK_GLAIVE), true, 1.6f);
 	else
-		m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::WALK), true, 1.6f);*/
+		m_pActorModelCom->Set_Animation(static_cast<_uint>(PLAYER_STATE::STRONG_ATTACK), true, 1.6f);*/
 }
 
 void CPlayer_Walk::State_Priority_Update(_float fTimeDelta)

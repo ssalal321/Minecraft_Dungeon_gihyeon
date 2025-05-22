@@ -32,7 +32,12 @@ void CState_Slime_Small::State_Update(_float fTimeDelta)
 {
 	__super::State_Update(fTimeDelta);
 
-	// 공격 받았을 때 스턴 걸리기
+	if (m_pMonsterInfo->Get_CurrentHP() <= 0)
+	{
+		m_pActor->Set_GameObject_Active(false);
+		m_pBigColliderCom->Set_ColliderActive(false);
+		m_pSmallColliderCom->Set_ColliderActive(false);
+	}
 }
 
 void CState_Slime_Small::State_Late_Update(_float fTimeDelta)

@@ -1,6 +1,7 @@
 #include "Engine_Shader_Defines.hlsli"
 
 float       g_fCutoffY = 0.f; // 닳은 정도를 나타내는 값 (0.0 ~ 1.0)
+float       g_fCutoffX = 1.f; // Boss HP
 float       g_fYGradationFactor;
 matrix      g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 texture2D   g_HPTexture;
@@ -97,6 +98,24 @@ PS_OUT PS_PlayerHP(PS_IN In)
 }
 
 
+PS_OUT PS_BossHP(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+
+    vector vTexColor = g_HPTexture.Sample(g_LinearSampler, In.vTexcoord);
+
+    // 오른쪽부터 깎이는 로직
+    if (In.vTexcoord.x > g_fCutoffX)
+    {
+        // 반투명 검은 느낌 (깎인 영역)
+        vTexColor.rgb = float3(0.1f, 0.1f, 0.1f);
+        vTexColor.a = 0.7f;
+    }
+
+    Out.vColor = vTexColor;
+    return Out;
+}
+
 
 technique11 DefaultTechnique
 {
@@ -108,6 +127,17 @@ technique11 DefaultTechnique
 
         VertexShader    = compile vs_5_0 VS_MAIN();
         PixelShader     = compile ps_5_0 PS_PlayerHP();
+    }
+
+
+    pass BossHP
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        PixelShader = compile ps_5_0 PS_BossHP();
     }
 }
 

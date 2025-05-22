@@ -13,6 +13,11 @@ protected:
 	~CContainerObject() override = default;
 
 public:
+	_bool		Get_Stationary() const { return m_bStationary; }
+
+	void		Set_Stationary(_bool bStationary) { m_bStationary = bStationary; }
+
+public:
 	HRESULT		Initialize_Prototype()				override;
 	HRESULT		Initialize(void* pArg)				override;
 	void		Priority_Update(_float fTimeDelta)	override;
@@ -35,6 +40,7 @@ protected:
 	map<const _wstring, class CPartObject*>		m_PartObjects;
 	_bool*		m_pCollisionActivating = { nullptr };
 
+	_bool		m_bStationary = { false };
 
 public:
 	CGameObject* Clone(void* pArg)	override = 0;

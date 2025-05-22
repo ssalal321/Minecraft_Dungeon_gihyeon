@@ -17,7 +17,7 @@ private:
 	~CLevel_Trigger() override = default;
 
 public:
-	_bool		Get_Level_Change() const { return m_bSceneChanged; }
+	_bool		Get_Level_Changed() const { return m_bSceneChanged; }
 
 	void		Set_Level_Change(_bool bSceneChanged) { m_bSceneChanged = bSceneChanged; }
 

@@ -31,13 +31,10 @@ HRESULT CSlime_Cauldron::Initialize(void* pArg)
 {
 	const _wstring& SlimeCauldronGameObjectTag = TEXT("GameObject_Slime_Cauldron_") + to_wstring(m_iSlimeCauldronID++);
 
-	m_pMonsterInfo = new MONSTER_DESC(SlimeCauldronGameObjectTag, 30, 30, 2, 3.f, 5.5f, false, 90.f, 3.f);
+	m_pMonsterInfo = new MONSTER_DESC(SlimeCauldronGameObjectTag, 150, 150, 50, 3.f, 5.5f, false, 90.f, 3.5f);
 
 	if (FAILED(__super::Initialize(m_pMonsterInfo)))
 		return E_FAIL;
-
-	if (m_pNavigationCom)
-		m_pNavigationCom->SetUp_CurrentCellIndex(0);
 
 	m_pBulletPool_Monster = CBulletPool_Monster::Create();
 	if (nullptr == m_pBulletPool_Monster)
@@ -51,11 +48,14 @@ HRESULT CSlime_Cauldron::Initialize(void* pArg)
 
 	m_pTransformCom->SetUp_Scale(0.85f, 0.85f, 0.85f);
 
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
-		XMVectorSet(-0.f, 0.f, -15.f, 1.f));
+	/*m_pTransformCom->Set_State(CTransform::STATE_POSITION,
+		XMVectorSet(-0.f, 0.f, -15.f, 1.f));*/
 
-	/*SLIME_CORRUPTED_DESC* pDesc = static_cast<SLIME_CORRUPTED_DESC*>(pArg);
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&pDesc->slimeCauldronPosition));*/
+	SLIME_CAULDRON_DESC* pDesc = static_cast<SLIME_CAULDRON_DESC*>(pArg);
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&pDesc->slimeCauldronPosition));
+
+	if (m_pNavigationCom)
+		m_pNavigationCom->SetUp_CurrentCellIndex(869);
 
 	return S_OK;
 }
@@ -72,6 +72,18 @@ void CSlime_Cauldron::Update(_float fTimeDelta)
 {
 	if (!m_bActive)
 		return;
+
+	if (20.f <= m_fLifeTime)
+	{
+		CCollider* pBigCollider = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_BigSphere")));
+		CCollider* pSmallCollider = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_SmallSphere")));
+
+		m_bActive = false;
+		pBigCollider->Set_ColliderActive(false);
+		pSmallCollider->Set_ColliderActive(false);
+	}
+
+	m_fLifeTime += fTimeDelta;
 
 	__super::Update(fTimeDelta);
 }
@@ -122,7 +134,7 @@ HRESULT CSlime_Cauldron::Ready_States()
 
 	CModel* pSlimeCorruptedModel = dynamic_cast<CModel*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Model")));
 	CCollider* pBigCollider = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_BigSphere")));
-	CCollider* pSmallCollider = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_SmallSphere")));\
+	CCollider* pSmallCollider = dynamic_cast<CCollider*>(Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_SmallSphere")));
 
 	CState_Slime_Cauldron::STATE_SLIME_CAULDRON_DESC	pStateSlimeCauldronDesc = {};
 	pStateSlimeCauldronDesc.pBigColliderCom		= pBigCollider;

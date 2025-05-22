@@ -32,7 +32,7 @@ HRESULT CSlime_Large::Initialize(void* pArg)
 {
 	const _wstring& Slime_LargeGameObjectTag = TEXT("GameObject_Slime_Large_") + to_wstring(m_iSlime_LargeID++);
 
-	m_pMonsterInfo = new MONSTER_DESC(Slime_LargeGameObjectTag, 20, 20, 3, 3.5f, 10.f, false, 90.f, 0.5f);
+	m_pMonsterInfo = new MONSTER_DESC(Slime_LargeGameObjectTag, 100, 100, 10, 3.5f, 10.f, false, 90.f, 0.5f);
 
 	if (FAILED(__super::Initialize(m_pMonsterInfo)))
 		return E_FAIL;
@@ -48,6 +48,8 @@ HRESULT CSlime_Large::Initialize(void* pArg)
 
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
 								XMVectorSet(3.f, 0.f, -10.f, 1.f));
+
+	m_pTransformCom->SetUp_Scale(1.f, 1.f, 1.f);
 
 	return S_OK;
 }

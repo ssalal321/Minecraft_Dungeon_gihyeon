@@ -16,8 +16,8 @@ class CMonster abstract : public CContainerObject
 public:
 	struct MONSTER_DESC : public GAMEOBJECT_DESC
 	{
-		_int     iCurrentHP;
-		_int     iMaxHP;
+		_int      iCurrentHP;
+		_int      iMaxHP;
 		_int      iDealPoint;
 		_float    fAttackableRange;
 		_float	  fDetectableRange;
@@ -32,8 +32,8 @@ public:
 
 		~MONSTER_DESC() override = default;
 
-		const _int&	Get_CurrentHP()			const { return iCurrentHP; }
-		const _int&	Get_MaxHP()				const { return iMaxHP; }
+		const _int&		Get_CurrentHP()			const { return iCurrentHP; }
+		const _int&		Get_MaxHP()				const { return iMaxHP; }
 		const _int&		Get_DealPoint()		const { return iDealPoint; }
 		const _float&	Get_AttackRange()	const { return fAttackableRange; }
 		const _float&	Get_DetectRange()	const { return fDetectableRange; }
@@ -79,6 +79,15 @@ public:
 
 	const _float4& Get_NextPosition() const { return m_NextPosition; }
 
+	_bool		Get_Can_be_Eaten() { return m_bCanbeEaten; }
+	CMonster*	Get_Eating_BossMonster() { return m_pBossMonster; }
+
+	_bool		Get_Is_Jumping() const { return m_bIsJumping; }
+	_vector		Get_Jump_LandPos() const { return m_vJumpTarget; }
+
+	void		Set_Is_Jumping(_bool bJumping) { m_bIsJumping = bJumping; }
+
+
 	void	Set_Attacking(_bool bAttacking) { m_bAttacking = bAttacking; }
 
 	void	Set_NextPosition(const _float4& nextPosition)
@@ -87,6 +96,18 @@ public:
 	}
 
 	void	Set_Hovered(_bool bPicked) { m_bHovered = bPicked; }
+	void	Set_Can_be_Eaten(_bool bCanbeEaten, CMonster* pBossMonster)
+	{
+		m_bCanbeEaten = bCanbeEaten;
+		m_pBossMonster = pBossMonster;
+	}
+
+	void	Jump_To_Target(_vector vTargetPos)
+	{
+		m_bIsJumping = true;
+		m_vJumpTarget = vTargetPos;
+	}
+
 
 	void		Change_State(const MonsterState& state);
 	void		Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)	override;
@@ -107,10 +128,15 @@ protected:
 	_float4				m_NextPosition = { 0.f, 0.f, 0.f, 1.f };
 	_bool				m_bAttacking = { false };
 	_bool				m_bAlwaysActivated = { true };
-	//_bool				m_bHoveringColl = { false };
+	
 	_bool				m_bHovered = { false };
+	_bool				m_bCanbeEaten = { false };
+	CMonster*			m_pBossMonster = { nullptr };
 
 	_float2				m_vScreenPos = {};
+
+	_bool				m_bIsJumping = { false };
+	_vector				m_vJumpTarget = {};
 
 protected:
 	HRESULT				Ready_Components();

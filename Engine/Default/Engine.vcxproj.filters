@@ -160,6 +160,9 @@
     <Filter Include="01.Utility\11. EventBus">
       <UniqueIdentifier>{240c367b-fb5d-46a7-be33-01ca7ea212c6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\12. AnimationCurve">
+      <UniqueIdentifier>{7d119ddb-5eb0-4dec-b715-0ada3710c6f3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Base.h">
@@ -330,6 +333,9 @@
     <ClInclude Include="..\Public\CustomFont.h">
       <Filter>01.Utility\09. Fonts</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\AnimationCurve.h">
+      <Filter>01.Utility\12. AnimationCurve</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -484,6 +490,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CustomFont.cpp">
       <Filter>01.Utility\09. Fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\AnimationCurve.cpp">
+      <Filter>01.Utility\12. AnimationCurve</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -20,11 +20,11 @@ CModel::CModel(const CModel& Prototype)
 	, m_iNumMaterials { Prototype.m_iNumMaterials }
 	, m_Materials{ Prototype.m_Materials }
 	, m_iNumAnimations{ Prototype.m_iNumAnimations }
-	, m_Animations{ Prototype.m_Animations }
+	/*, m_Animations{ Prototype.m_Animations }*/
 	, m_PreTransformMatrix{ Prototype.m_PreTransformMatrix }
 {
-	for (auto& pAnimation : m_Animations)
-		Safe_AddRef(pAnimation);
+	for (auto& pAnimation : Prototype.m_Animations)
+		m_Animations.push_back(pAnimation->Clone());
 
 	for (auto& pMaterial : m_Materials)
 		Safe_AddRef(pMaterial);
@@ -34,17 +34,18 @@ CModel::CModel(const CModel& Prototype)
 
 	for (auto& pPrototypeBone : Prototype.m_Bones)
 		m_Bones.push_back(pPrototypeBone->Clone());
+
 }
 
 const _float4x4* CModel::Get_CombinedTransformationMatrix(const _char* pBoneName) const
 {
 	auto	iter = find_if(m_Bones.begin(), m_Bones.end(), [&](CBone* pBone)
-		{
-			if (false == strcmp(pBone->Get_Name(), pBoneName))
-				return true;
+	{
+		if (false == strcmp(pBone->Get_Name(), pBoneName))
+			return true;
 
-			return false;
-		});
+		return false;
+	});
 
 	if (iter == m_Bones.end())
 		return nullptr;
@@ -349,6 +350,8 @@ void CModel::Free()
 
 	for (auto& pAnimation : m_Animations)
 		Safe_Release(pAnimation);
+
+	m_Animations.clear();
 
 	for (auto& pBone : m_Bones)
 		Safe_Release(pBone);

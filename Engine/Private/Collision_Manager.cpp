@@ -131,7 +131,7 @@ void CCollision_Manager::Update()
                         if (pColliderA->Get_Role() == CCollider::SMALL && pColliderB->Get_Role() == CCollider::SMALL 
                             && pColliderA < pColliderB)
                         {
-                            Resolve_Penetration_And_Slide(pColliderA, pColliderB, 10.f);
+                            Resolve_Penetration_And_Slide(pColliderA, pColliderB, 9.f);
                         }
                     }
                 }
@@ -163,7 +163,7 @@ void CCollision_Manager::Update()
                     if (pColliderA->Get_Role() == CCollider::SMALL && pColliderB->Get_Role() == CCollider::SMALL
                         && pColliderA < pColliderB)
                     {
-                        Resolve_Penetration_And_Slide(pColliderA, pColliderB, 10.f);
+                        Resolve_Penetration_And_Slide(pColliderA, pColliderB, 9.f);
                     }
                 }
             }
@@ -313,11 +313,11 @@ void CCollision_Manager::Resolve_Penetration_And_Slide(CCollider* pColA, CCollid
     _vector vFinalPushA = vBouncePushA;/*XMVectorLerp(, vSlidePushA, 0.7f);*/  // 슬라이딩 위주
     _vector vFinalPushB = vBouncePushB; // 그냥 밀리기만
 
-	pContainerObjA->Apply_Penetration_Momentum(vFinalPushA);
-	pContainerObjB->Apply_Penetration_Momentum(vFinalPushB);
+    if (!pContainerObjA->Get_Stationary())
+		pContainerObjA->Apply_Penetration_Momentum(vFinalPushA);
 
-    m_iCallNumber++;
-    std::cerr << m_iCallNumber << "\n";
+    if (!pContainerObjB->Get_Stationary())
+		pContainerObjB->Apply_Penetration_Momentum(vFinalPushB);
 }
 
 

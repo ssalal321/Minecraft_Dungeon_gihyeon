@@ -119,7 +119,7 @@ void CTransform::Jump_Start(_float fJumpVelocity)
 		m_bIsJumping = true;
 		m_fJumpVelocity = fJumpVelocity;
 
-		// 슬라임의 현재 y 위치를 기준으로 점프 시작 위치 초기화
+		// 현재 y 위치를 기준으로 점프 시작 위치 초기화
 		_vector vPos = Get_State(STATE_POSITION);
 		m_fCurrentY = XMVectorGetY(vPos);
 	}
@@ -131,8 +131,8 @@ void CTransform::Jump(_float fTimeDelta, CNavigation* pNavigation)
         return;
 
     // 현재 위치 정보
-    _vector vPosition = Get_State(STATE_POSITION);  // 슬라임 현재 위치 정보
-    _float4 position = {};
+    _vector		vPosition = Get_State(STATE_POSITION);  // 현재 위치 정보
+    _float4		position = {};
     XMStoreFloat4(&position, vPosition);
 
     // 중력 반영: 점프 높이 증가 → 속도 감소
@@ -159,9 +159,7 @@ void CTransform::Jump(_float fTimeDelta, CNavigation* pNavigation)
     }
 
     // 점프 중 위치 갱신
-
 }
-
 
 void CTransform::Turn(_fvector vAxis, _float fTimeDelta)
 {
@@ -251,28 +249,54 @@ void CTransform::LookAt(_fvector vAt)
 
 void CTransform::Add_Momentum(_vector vImpulse)
 {
-	_vector vOld = XMLoadFloat3(&m_vVelocity);
+	_vector vOld = XMLoadFloat3(&m_Velocity);
 	vOld += vImpulse;
-	XMStoreFloat3(&m_vVelocity, vOld);
+	XMStoreFloat3(&m_Velocity, vOld);
+
+	std::cerr << "velocity x: " << m_Velocity.x << ", " << "velocity y: " << m_Velocity.y << ", " << "velocity z: " << m_Velocity.z << endl;
 }
 
 void CTransform::Update_Momentum(_float fTimeDelta)
 {
-	_vector vVel = XMLoadFloat3(&m_vVelocity);
+	_vector vVel = XMLoadFloat3(&m_Velocity);
 	if (XMVector3Equal(vVel, XMVectorZero()))
 		return;
 
-	_vector vPos = Get_State(STATE_POSITION);
-	vPos += vVel * fTimeDelta;
+	_vector vCurrPos = Get_State(STATE_POSITION);
+	_vector vNextPos = vCurrPos + vVel * fTimeDelta;
+	_vector vSlidePos = vCurrPos;
 
-	Set_State(STATE_POSITION, vPos);
+	if (m_pNavigationCom)
+	{
+		if (m_pNavigationCom->Can_Move(vNextPos))
+		{
+			Set_State(STATE_POSITION, vNextPos);
+		}
+		else if (m_pNavigationCom->Can_Slide(vCurrPos, vNextPos, vSlidePos))
+		{
+			Set_State(STATE_POSITION, vSlidePos);
+		}
+		else
+		{
+			// 아무것도 안 됐으면 멈춘다.
+			vVel = XMVectorZero();
+			XMStoreFloat3(&m_Velocity, vVel);
+			return;
+		}
+	}
+	else
+	{
+		Set_State(STATE_POSITION, vNextPos);
+	}
 
+	// 감쇠
 	vVel *= 0.85f;
 	if (XMVectorGetX(XMVector3Length(vVel)) < 0.001f)
 		vVel = XMVectorZero();
 
-	XMStoreFloat3(&m_vVelocity, vVel);
+	XMStoreFloat3(&m_Velocity, vVel);
 }
+
 
 void CTransform::Start_BezierFlight(const XMFLOAT3& vStart, const XMFLOAT3& vControl, const XMFLOAT3& vEnd, _float fSpeed)
 {

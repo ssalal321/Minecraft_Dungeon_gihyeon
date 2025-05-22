@@ -5,6 +5,7 @@
 
 #include "FSM.h"
 #include "BabyZombie_Attack.h"
+#include "BabyZombie_Dead.h"
 #include "BabyZombie_GetHit.h"
 #include "BabyZombie_Idle.h"
 #include "BabyZombie_Novelty.h"
@@ -33,13 +34,10 @@ HRESULT CBabyZombie::Initialize(void* pArg)
 {
 	const _wstring& zombieGameObjectTag = TEXT("GameObject_BabyZombie_") + to_wstring(m_iBabyZombieID++);
 
-	m_pMonsterInfo = new MONSTER_DESC(zombieGameObjectTag, 20, 20, 3, 2.5f, 12.f, false, 90.f, 3.5f);
+	m_pMonsterInfo = new MONSTER_DESC(zombieGameObjectTag, 85, 85, 30, 2.5f, 12.f, false, 90.f, 3.5f);
 
 	if (FAILED(__super::Initialize(m_pMonsterInfo)))
 		return E_FAIL;
-
-	if (m_pNavigationCom)
-		m_pNavigationCom->SetUp_CurrentCellIndex(0);
 
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;
@@ -47,12 +45,14 @@ HRESULT CBabyZombie::Initialize(void* pArg)
 	if (FAILED(Ready_States()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
-								XMVectorSet(-3.f, 0.f, -15.f, 1.f));
+	/*m_pTransformCom->Set_State(CTransform::STATE_POSITION,
+								XMVectorSet(-3.f, 0.f, -15.f, 1.f));*/
 
+	BABYZOMBIE_DESC* pDesc = static_cast<BABYZOMBIE_DESC*>(pArg);
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&pDesc->babyZombiePosition));
 
-	/*BABYZOMBIE_DESC* pDesc = static_cast<BABYZOMBIE_DESC*>(pArg);
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&pDesc->babyZombiePosition));*/
+	if (m_pNavigationCom)
+		m_pNavigationCom->SetUp_CurrentCellIndex(pDesc->currentCellIndex);
 
 	return S_OK;
 }
@@ -97,12 +97,12 @@ HRESULT CBabyZombie::Ready_PartObjects()
 	/* 몸통을 추가한다. */
 	CBody_BabyZombie::BODY_BABYZOMBIE_DESC		BodyDesc{};
 
-	BodyDesc.strGameObjectTag = TEXT("GameObject_Body_BabyZombie");
-	BodyDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
-	BodyDesc.pState = &m_iState;
-	BodyDesc.pContainerObject = this;
-	BodyDesc.pBigCollisionActivating = &m_bAttacking;
-	BodyDesc.pSmallCollisionActivating = &m_bAlwaysActivated;
+	BodyDesc.strGameObjectTag			= TEXT("GameObject_Body_BabyZombie");
+	BodyDesc.pParentWorldMatrix			= m_pTransformCom->Get_WorldMatrix_Ptr();
+	BodyDesc.pState						= &m_iState;
+	BodyDesc.pContainerObject			= this;
+	BodyDesc.pBigCollisionActivating	= &m_bAttacking;
+	BodyDesc.pSmallCollisionActivating	= &m_bAlwaysActivated;
 
 	if (FAILED(__super::Add_PartObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Body_BabyZombie"), TEXT("Part_Body"), &BodyDesc)))
 		return E_FAIL;
@@ -133,6 +133,7 @@ HRESULT CBabyZombie::Ready_States()
 	m_StatesVec[static_cast<_uint>(BABYZOMBIE_STATE::ATTACK)]	= CBabyZombie_Attack::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
 	m_StatesVec[static_cast<_uint>(BABYZOMBIE_STATE::GET_HIT)]	= CBabyZombie_GetHit::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
 	m_StatesVec[static_cast<_uint>(BABYZOMBIE_STATE::NOVELTY)]	= CBabyZombie_Novelty::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
+	m_StatesVec[static_cast<_uint>(BABYZOMBIE_STATE::DEAD)]		= CBabyZombie_Dead::Create(this, m_pMonsterInfo, &pStateMonsterDesc);
 
 	m_pMonsterFSM = FSM::Create();
 

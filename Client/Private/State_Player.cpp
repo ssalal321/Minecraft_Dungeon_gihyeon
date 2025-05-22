@@ -63,7 +63,6 @@ void CState_Player::State_Priority_Update(_float fTimeDelta)
 
 void CState_Player::State_Update(_float fTimeDelta)
 {
-
 	m_bAnimationFinished = m_pActorModelCom->Play_Animation(fTimeDelta);
 
 	Check_Combo_Timeout(fTimeDelta);
@@ -133,7 +132,7 @@ _bool CState_Player::Change_State_To_Walk()
 
 _bool CState_Player::Change_State_To_Roll()
 {
-	if (m_pGameInstance->Key_Down(VK_SPACE))
+	if (m_pGameInstance->Key_Down(VK_SPACE) && false == m_pPlayerInfo->Get_RollCoolDowning())
 	{
 		m_pPlayer->Change_State(PLAYER_STATE::ROLL);
 
@@ -288,6 +287,12 @@ void CState_Player::Reset_Combo()
 	m_bCombo3_Finished = false;
 
 	m_fPrevAnimTrackPosition = 0.f;
+
+	CItem* pMeleeItem = dynamic_cast<CItem*>(m_pPlayer->Find_PartObject(TEXT("Part_Weapon_Melee")));
+	if (nullptr != pMeleeItem)
+	{
+		pMeleeItem->Reset_DealPoint();
+	}
 
 	//m_pPlayer->Set_Attacking(false);
 

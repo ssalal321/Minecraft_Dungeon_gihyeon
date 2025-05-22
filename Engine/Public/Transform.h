@@ -31,6 +31,10 @@ public:
 
 		virtual ~tagTransformDesc() = default;
 
+
+
+		_float		Get_SpeedPerSec() { return fSpeedPerSec; }
+
 	}TRANSFORM_DESC;
 
 private:
@@ -60,11 +64,18 @@ public:
 
 	_bool	Get_Is_Jumping() const { return m_bIsJumping; }
 
+	_float	Get_Rotation_perSec() const { return m_fRotationPerSec; }
+
 	void	Set_Is_Jumping(_bool bJumping) { m_bIsJumping = bJumping; }
 
 	void	Set_State(STATE eState, _fvector vState)
 	{
 		XMStoreFloat4(reinterpret_cast<_float4*>(&m_WorldMatrix.m[eState][0]), vState);
+	}
+
+	void	Set_Navigation(CNavigation* pNavigationCom)
+	{
+		m_pNavigationCom = pNavigationCom;
 	}
 
 public:
@@ -110,7 +121,13 @@ private:
 	_float		m_fGravity		= { -9.8f };    // 중력 가속도 (m/s²)
 	_float		m_fCurrentY		= {};			// 현재 Y 위치
 
-	_float3		m_vVelocity = { 0.f, 0.f, 0.f };
+	_float3		m_Velocity = { 0.f, 0.f, 0.f };
+
+	_vector		m_vJumpDirection = {};
+
+
+	CNavigation* m_pNavigationCom = nullptr;
+
 
 #pragma region BEZIER CURVE
 	_bool       m_bBezierFlying = { false };

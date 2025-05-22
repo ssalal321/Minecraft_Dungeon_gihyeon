@@ -3,7 +3,7 @@
 
 #include "Player.h"
 
-#define RETREAT_DISTANCE 3.5f
+#define RETREAT_DISTANCE 5.f
 
 CVindicator_Walk::CVindicator_Walk(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
 	: CState_Vindicator(pActor, pGameObjectDesc, pDesc)
@@ -64,7 +64,10 @@ void CVindicator_Walk::State_Update(_float fTimeDelta)
         _vector start = XMLoadFloat4(&m_vRetreatStartPos);
         _vector moved = XMVectorSubtract(curPos, start);
         _float dist = XMVectorGetX(XMVector3Length(moved));
-        if (dist >= RETREAT_DISTANCE)
+
+        // 예상 이동 위치 (다음 프레임 이동 거리 포함)
+        _vector vExpected = curPos + m_vRetreatDir * (m_pMonsterInfo->Get_SpeedPerSec() * fTimeDelta);
+        if (dist >= RETREAT_DISTANCE || false == m_pNavigationCom->Can_Move(vExpected))
         {
             // 후퇴 완료
             m_pVindicator->Set_Retreating(false);
@@ -82,9 +85,11 @@ void CVindicator_Walk::State_Update(_float fTimeDelta)
     }
 
     // ** 4) 그 외에는 플레이어 쫓아가기 **
-    _float4 playerPos = m_pVindicator->Get_Player_Position(TEXT("GameObject_Player"),
-															m_pGameInstance->Get_CurrentLevelIndex());
-    m_pTransformCom->LookAt(XMLoadFloat4(&playerPos));
+    if (false == m_pTransformCom->Get_Is_Jumping())
+    {
+        _float4 playerPos = m_pVindicator->Get_Player_Position(TEXT("GameObject_Player"), m_pGameInstance->Get_CurrentLevelIndex());
+        m_pTransformCom->LookAt(XMLoadFloat4(&playerPos));
+    }
     m_pTransformCom->Go_Straight(fTimeDelta, m_pNavigationCom);
 }
 

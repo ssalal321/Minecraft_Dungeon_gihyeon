@@ -19,10 +19,10 @@ public:
 
 		tagUIImageDesc(const _tchar* GameObjectTag, UI_STATE uiState,
 			_float x, _float y, _float z, _float sizeX, _float sizeY, const wstring& texPrototypeTag,
-			_uint PrototypeLevelIndex, _uint LayerLevelIndex,
-			_float rotationPerSec = 0.f, _float speedPerSec = 0.f, _float playTime = 0.f)
+			_uint PrototypeLevelIndex, _uint LayerLevelIndex, _bool alphaBlend = false,
+			_float rotationPerSec = 0.f, _float speedPerSec = 0.f)
 			: UIOBJECT_DESC(GameObjectTag, uiState,
-				x, y, z, sizeX, sizeY, texPrototypeTag, rotationPerSec, speedPerSec),  // 부모 생성자 호출
+				x, y, z, sizeX, sizeY, texPrototypeTag, alphaBlend, rotationPerSec, speedPerSec),  // 부모 생성자 호출
 			 iPrototypeLevelIndex(PrototypeLevelIndex), iLayerLevelIndex(LayerLevelIndex) {
 		}
 

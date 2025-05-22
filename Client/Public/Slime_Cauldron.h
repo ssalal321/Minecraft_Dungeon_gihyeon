@@ -15,7 +15,7 @@ BEGIN(Client)
 class CSlime_Cauldron final : public CMonster
 {
 public:
-	struct SLIME_CORRUPTED_DESC
+	struct SLIME_CAULDRON_DESC
 	{
 		_float4  slimeCauldronPosition = { 0.f, 0.f, 0.f, 1.f };
 	};
@@ -32,13 +32,15 @@ public:
 	void		Update(_float fTimeDelta)			override;
 	void		Late_Update(_float fTimeDelta)		override;
 	HRESULT		Render()							override;
-	
+
 private:
 	CBulletPool_Monster*	m_pBulletPool_Monster = { nullptr };
 
 	_uint			m_iState = { static_cast<_uint>(SLIME_CAULDRON_STATE::STATE_END) };
 
 	static _int		m_iSlimeCauldronID;
+
+	_float		m_fLifeTime = {};
 
 private:
 	HRESULT		Ready_PartObjects()  override;
