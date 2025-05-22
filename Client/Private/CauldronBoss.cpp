@@ -39,9 +39,6 @@ HRESULT CCauldronBoss::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(m_pMonsterInfo)))
 		return E_FAIL;
 
-	/*if (m_pNavigationCom)
-		m_pNavigationCom->SetUp_CurrentCellIndex(0);*/
-
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;
 
@@ -52,7 +49,7 @@ HRESULT CCauldronBoss::Initialize(void* pArg)
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
 		XMLoadFloat4(&pDesc->slimeCauldronPosition));
 
-	m_pTransformCom->SetUp_Scale(0.7f, 0.7f, 0.7f);
+	m_pTransformCom->SetUp_Scale(0.5f, 0.5f, 0.5f);
 
 	if (m_pNavigationCom)
 		m_pNavigationCom->SetUp_CurrentCellIndex(869);

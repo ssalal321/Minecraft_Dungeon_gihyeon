@@ -19,6 +19,7 @@
 #include "Zombie.h"
 #include "PlayerHP.h"
 #include "RollIcon.h"
+#include "Sky.h"
 #include "Slime_Cauldron.h"
 
 CLevel_Lounge::CLevel_Lounge(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -299,12 +300,14 @@ HRESULT CLevel_Lounge::Ready_Layer_BackGround(const _wstring& strLayerTag)
 {
     CGameObject* pLoungeMap = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_LoungeMap"),
         LEVEL_LOUNGE, strLayerTag);
-    if (nullptr == pLoungeMap)      return E_FAIL;
-
-    /*if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_LOUNGE, TEXT("Prototype_GameObject_Sky"),
-        LEVEL_LOUNGE, strLayerTag)))
+    if (nullptr == pLoungeMap)
         return E_FAIL;
-    }*/
+
+    CSky::SKY_DESC desc = {};
+    desc.strTexPrototypeTag = TEXT("Prototype_Component_Texture_LoungeSky");
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_LOUNGE, TEXT("Prototype_GameObject_Sky"),
+        LEVEL_LOUNGE, strLayerTag, &desc)))
+        return E_FAIL;
 
     return S_OK;
 }
