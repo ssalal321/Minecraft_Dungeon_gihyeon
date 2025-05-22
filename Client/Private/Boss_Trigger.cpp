@@ -1,5 +1,6 @@
 #include "Boss_Trigger.h"
 #include "GameInstance.h"
+#include "GateFence.h"
 #include "Monster.h"
 #include "PartObject.h"
 
@@ -67,6 +68,17 @@ void CBoss_Trigger::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE 
 	{
 		m_pMyBoss->Set_GameObject_Active(true);
 		m_pMyBoss->Find_PartObject(TEXT("Part_Body"))->Set_Appearing(true);
+
+		CGameObject* pGateFence = m_pGameInstance->Find_GameObject(TEXT("GameObject_GateFence_0"),
+																	m_pGameInstance->Get_CurrentLevelIndex(), TEXT("Layer_BackGround"));
+		pGateFence->Set_GameObject_Active(true);
+		dynamic_cast<CGateFence*>(pGateFence)->Set_Appearing(true);
+
+
+		CContainerObject* pPlayer = dynamic_cast<CPartObject*>(pOther->Get_OwnerObject())->Get_ContainerObject();
+		CNavigation* pPlayerNav = dynamic_cast<CNavigation*>(pPlayer->Find_Component(TEXT("Com_Navigation")));
+		pPlayerNav->Lock_Cell(899);
+		pPlayerNav->Lock_Cell(900);
 	}
 }
 

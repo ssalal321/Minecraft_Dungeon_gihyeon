@@ -43,7 +43,7 @@ HRESULT CCauldronBossHP::Initialize(void* pArg)
 	m_bActive = false;
 
 
-	m_vScreenPos = { m_pDesc->fX - 55.f, m_pDesc->fY - 50.f };
+	m_vScreenPos = { m_pDesc->fX - 53.f, m_pDesc->fY - 45.f };
 	/*XMStoreFloat2(&m_vScreenPos,
 		XMVector3Project(
 			m_pTransformCom->Get_State(CTransform::STATE_POSITION) + XMVectorSet(0.f, -10.f, 0.f, 1.f),

@@ -46,6 +46,13 @@ public:
 	_bool		Check_If_Grounded(CTransform* pObjectTransformCom);
 
 
+	void		Lock_Cell(_int iCellIndex) { m_LockedCells.insert(iCellIndex); }
+	void		Unlock_Cell(_int iCellIndex) { m_LockedCells.erase(iCellIndex); }
+	_bool		Is_Locked(_int iCellIndex) const {
+		return m_LockedCells.find(iCellIndex) != m_LockedCells.end();
+	}
+
+
 #ifdef _DEBUG
 public:
 	HRESULT		Render();
@@ -62,6 +69,8 @@ private:
 	static	_uint					m_iShaderPass;  // ¼±¾ð
 
 	std::unordered_set<std::string>		m_TriangleSet = {};
+
+	std::unordered_set<_int>			m_LockedCells;  // Àá±ä ¼¿
 
 #ifdef _DEBUG
 	class CShader* m_pShader = { nullptr };

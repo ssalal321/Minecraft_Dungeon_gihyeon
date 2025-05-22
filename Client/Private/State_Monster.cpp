@@ -43,8 +43,7 @@ void CState_Monster::State_Update(_float fTimeDelta)
 	/*if (m_pMonsterInfo->Get_CurrentHP() > 0)
 	{
 		*/m_bAnimationFinished = m_pActorModelCom->Play_Animation(fTimeDelta);
-	/*}*/
-	
+	/*}*/	
 }
 
 void CState_Monster::State_Late_Update(_float fTimeDelta)
@@ -57,7 +56,7 @@ void CState_Monster::State_Exit()
 
 void CState_Monster::Collision_Enter(CCollider* pOther)
 {
-	
+	                                                                  
 }
 
 void CState_Monster::Collision_Stay(CCollider* pOther)

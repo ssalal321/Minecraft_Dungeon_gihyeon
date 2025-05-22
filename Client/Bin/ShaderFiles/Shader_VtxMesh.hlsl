@@ -9,6 +9,13 @@ vector      g_vLightDiffuse;
 vector      g_vLightAmbient;
 vector      g_vLightSpecular;
 
+float       g_fAppearTime;
+float       g_fAppearDuration;
+
+float       g_fDeathTime;
+float       g_fDeathDuration;
+
+
 texture2D   g_DiffuseTexture;
 vector      g_vMtrlAmbient = vector(0.3f, 0.3f, 0.3f, 0.3f);
 vector      g_vMtrlSpecular = vector(1.f, 1.f, 1.f, 1.f);
@@ -46,13 +53,13 @@ VS_OUT VS_MAIN(VS_IN In)
     
     matrix matWV, matWVP;
     
-    matWV = mul(g_WorldMatrix, g_ViewMatrix);
-    matWVP = mul(matWV, g_ProjMatrix);
+    matWV   = mul(g_WorldMatrix, g_ViewMatrix);
+    matWVP  = mul(matWV, g_ProjMatrix);
     
-    Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
-    Out.vNormal = normalize(mul(vector(In.vNormal, 0.f), g_WorldMatrix));
-    Out.vTexcoord = In.vTexcoord;
-    Out.vWorldPos = mul(vector(In.vPosition, 1.f), g_WorldMatrix);
+    Out.vPosition   = mul(vector(In.vPosition, 1.f), matWVP);
+    Out.vNormal     = normalize(mul(vector(In.vNormal, 0.f), g_WorldMatrix));
+    Out.vTexcoord   = In.vTexcoord;
+    Out.vWorldPos   = mul(vector(In.vPosition, 1.f), g_WorldMatrix);
     
     return Out;
 }
@@ -74,26 +81,21 @@ struct PS_OUT
 PS_OUT PS_MAIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
-    
+
     vector vMtrlDiffuse = g_DiffuseTexture.Sample(g_LinearSampler, In.vTexcoord);
-    
     if (vMtrlDiffuse.a < 0.3f)
         discard;
-    
-    float fShade = max(dot(normalize(g_vLightDir) * -1.f, In.vNormal), 0.f);
-    
-    vector vReflect = reflect(normalize(g_vLightDir), normalize(In.vNormal));
-    vector vLook = normalize(In.vWorldPos - g_vCamPosition);
-    float fSpecular = pow(max(dot(normalize(vReflect) * -1.f, vLook), 0.f), 50.f);
-    
-    Out.vColor = g_vLightDiffuse * vMtrlDiffuse * saturate(fShade + (g_vLightAmbient * g_vMtrlAmbient)) +
-        (g_vLightSpecular * g_vMtrlSpecular) * fSpecular;
 
-    // Out.vColor.a = 0.7f;
+    float   fShade      = max(dot(normalize(g_vLightDir) * -1.f, In.vNormal), 0.f);
+    vector  vReflect    = reflect(normalize(g_vLightDir), normalize(In.vNormal));
+    vector  vLook       = normalize(In.vWorldPos - g_vCamPosition);
+    float   fSpecular   = pow(max(dot(normalize(vReflect) * -1.f, vLook), 0.f), 50.f);
+
+    Out.vColor = g_vLightDiffuse * vMtrlDiffuse * saturate(fShade + g_vLightAmbient * g_vMtrlAmbient)
+				 + g_vLightSpecular * g_vMtrlSpecular * fSpecular;
 
     return Out;
 }
-
 
 PS_OUT PS_AlphaBrown(PS_IN In)
 {
@@ -120,7 +122,27 @@ PS_OUT PS_AlphaBrown(PS_IN In)
     return Out;
 }
 
+// 등장 연출
+PS_OUT PS_Appear(PS_IN In)
+{
+    PS_OUT  Out     = PS_MAIN(In); // 공통 조명 계산 재사용
+    float   fAlpha  = saturate(g_fAppearTime / g_fAppearDuration);
 
+	Out.vColor.a *= fAlpha;
+    return  Out;
+}
+
+// 사라짐 연출
+PS_OUT PS_Disappear(PS_IN In)
+{
+    PS_OUT Out      = PS_MAIN(In); // 공통 조명 계산 재사용
+    float fAlpha    = 1.f - saturate(g_fDeathTime / g_fDeathDuration);
+
+	Out.vColor.a *= fAlpha;
+    return Out;
+}
+
+// Technique 정의
 technique11 DefaultTechnique
 {
     pass Solid
@@ -152,5 +174,24 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         PixelShader = compile ps_5_0 PS_AlphaBrown();
     }
-}
 
+    pass Appear
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        PixelShader = compile ps_5_0 PS_Appear();
+    }
+
+    pass Disappear
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        PixelShader = compile ps_5_0 PS_Disappear();
+    }
+}

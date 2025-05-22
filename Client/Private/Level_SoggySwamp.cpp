@@ -10,6 +10,7 @@
 #include "Camera_Free.h"
 #include "CauldronBoss.h"
 #include "CauldronBossHP.h"
+#include "GateFence.h"
 #include "InventoryBase.h"
 #include "InventoryData.h"
 #include "Item.h"
@@ -193,8 +194,34 @@ HRESULT CLevel_SoggySwamp::Ready_Layer_BackGround(const _wstring& strLayerTag)
 {
     CGameObject* pSoggySwampMap = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_SoggySwampMap"),
         LEVEL_SOGGYSWAMP, strLayerTag);
-    if (nullptr == pSoggySwampMap)      return E_FAIL;
+    if (nullptr == pSoggySwampMap)
+        return E_FAIL;
 
+
+    CGateFence::GATEFENCE_DESC  gateFenceDesc0 = {};
+    gateFenceDesc0.worldPosition = { 5.5f, 0.f, 51.75f, 1.f };
+    gateFenceDesc0.strGameObjectTag = TEXT("GameObject_GateFence_0");
+    CGameObject* pGateFence0 = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_GateFence"),
+        LEVEL_SOGGYSWAMP, strLayerTag, &gateFenceDesc0);
+    if (nullptr == pGateFence0)
+        return E_FAIL;
+
+    CGateFence::GATEFENCE_DESC  gateFenceDesc1 = {};
+    gateFenceDesc1.worldPosition = { 21.5f, -4.f, 150.75f, 1.f };
+    gateFenceDesc1.strGameObjectTag = TEXT("GameObject_GateFence_1");
+    CGameObject* pGateFence1 = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_GateFence"),
+        LEVEL_SOGGYSWAMP, strLayerTag, &gateFenceDesc1);
+    if (nullptr == pGateFence1)
+        return E_FAIL;
+
+    CGateFence::GATEFENCE_DESC  gateFenceDesc2 = {};
+    gateFenceDesc2.worldPosition = { 21.5f, -4.f, 181.75f, 1.f };
+    gateFenceDesc2.strGameObjectTag = TEXT("GameObject_GateFence_2");
+    CGameObject* pGateFence2 = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_GateFence"),
+        LEVEL_SOGGYSWAMP, strLayerTag, &gateFenceDesc2);
+    if (nullptr == pGateFence2)
+        return E_FAIL;
+  
     /*if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_SOGGYSWAMP, TEXT("Prototype_GameObject_Sky"),
         LEVEL_LOUNGE, strLayerTag)))
         return E_FAIL;

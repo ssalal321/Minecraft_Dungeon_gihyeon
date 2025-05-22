@@ -108,7 +108,6 @@ public:
 		m_vJumpTarget = vTargetPos;
 	}
 
-
 	void		Change_State(const MonsterState& state);
 	void		Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)	override;
 
@@ -116,6 +115,8 @@ public:
 	_vector		Vec_To_Player(const _wstring& strPlayerGameObjectTag, _uint iPlayerLayerLevelIndex) const;
 	_float		Length_To_Player() const;
 	_bool		Player_In_DetectRange() const;
+
+	void		Render_DamageFont(_int iDealPoint);
 
 protected:
 	_uint				m_iState = { static_cast<_uint>(ZOMBIE_STATE::STATE_END) };
@@ -137,6 +138,10 @@ protected:
 
 	_bool				m_bIsJumping = { false };
 	_vector				m_vJumpTarget = {};
+
+	_bool				m_bRenderDamageFont = { false };
+	_int				m_bDealPoint = {};
+	_float				m_fFontRenderedTime = {};
 
 protected:
 	HRESULT				Ready_Components();

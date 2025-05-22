@@ -145,7 +145,7 @@ HRESULT CInventoryBase::Ready_UISlots()
 
 		CInventoryBase::INVENTORY_BASE_DESC  InventoryStoreSlotDesc
 		(strSlotName.c_str(), CUIObject::CLICKABLE,
-			fXPosition, fYPosition, 0.5f, fRightSlotWidth, fRightSlotWidth,
+			fXPosition, fYPosition, 0.3f, fRightSlotWidth, fRightSlotWidth,
 			L"Prototype_Component_Texture_InventoryStoreSlot");
 
 		CUIObject* pInventoryStoreSlot = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_LOUNGE,
@@ -164,7 +164,7 @@ HRESULT CInventoryBase::Ready_UISlots()
 	// ±ÙÁ¢ ¹«±â ½½·Ô
 	CInventorySlot::INVENTORY_SLOT_DESC     InventoryMeleeSlot
 	(TEXT("GameObject_InventoryMeleeSlot"), CUIObject::UNCLICKABLE,
-		92.f, 202.2f, 0.4f, fLeftSlotsWidth, fLeftSlotsWidth,
+		92.f, 202.2f, 0.3f, fLeftSlotsWidth, fLeftSlotsWidth,
 		L"Prototype_Component_Texture_InventoryGearSlot");
 
 	CUIObject* pInventoryGearSlot = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_LOUNGE,
@@ -179,7 +179,7 @@ HRESULT CInventoryBase::Ready_UISlots()
 	// °©¿Ê ½½·Ô
 	CInventorySlot::INVENTORY_SLOT_DESC     InventoryArmorSlotDesc
 	(TEXT("GameObject_InventoryArmorSlot"), CUIObject::UNCLICKABLE,
-		237.7f, 174.7f, 0.4f, fLeftSlotsWidth, fLeftSlotsWidth,
+		237.7f, 174.7f, 0.3f, fLeftSlotsWidth, fLeftSlotsWidth,
 		L"Prototype_Component_Texture_InventoryGearSlot");
 
 	pInventoryGearSlot = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_LOUNGE,
@@ -195,7 +195,7 @@ HRESULT CInventoryBase::Ready_UISlots()
 	// ¿ø°Å¸® ¹«±â ½½·Ô
 	CInventorySlot::INVENTORY_SLOT_DESC     InventoryRangedSlotDesc
 	(TEXT("GameObject_InventoryRangedSlot"), CUIObject::UNCLICKABLE,
-		383.5f, 202.2f, 0.4f, fLeftSlotsWidth, fLeftSlotsWidth,
+		383.5f, 202.2f, 0.3f, fLeftSlotsWidth, fLeftSlotsWidth,
 		L"Prototype_Component_Texture_InventoryGearSlot");
 
 	pInventoryGearSlot = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_LOUNGE,
@@ -221,7 +221,7 @@ HRESULT CInventoryBase::Ready_UISlots()
 
 		CInventorySlot::INVENTORY_SLOT_DESC     InventoryArtifactSlotDesc
 		(strSlotName.c_str(), CUIObject::UNCLICKABLE,
-			fSlotX, 626.f, 0.4f, 80.f, 80.f,
+			fSlotX, 626.f, 0.3f, 80.f, 80.f,
 			L"Prototype_Component_Texture_InventoryArtifactSlot_Empty");
 
 		CUIObject* pInventoryArtifactSlot = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_LOUNGE,

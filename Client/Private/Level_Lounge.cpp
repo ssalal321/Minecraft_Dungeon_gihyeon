@@ -313,7 +313,7 @@ HRESULT CLevel_Lounge::Ready_Layer_InventoryUI(const _wstring& strLayerTag)
 {
     CInventoryBase::INVENTORY_BASE_DESC  InventoryBaseDesc
     (TEXT("GameObject_InventoryBase"), CUIObject::UNCLICKABLE,
-        g_iWinSizeX * 0.5f, g_iWinSizeY * 0.5f, 0.6f, 1280.f, 720.f,
+        g_iWinSizeX * 0.5f, g_iWinSizeY * 0.5f, 0.4f, 1280.f, 720.f,
         L"Prototype_Component_Texture_InventoryBase");
 
     CUIObject* pInventoryBase = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_STATIC,
@@ -333,7 +333,7 @@ HRESULT CLevel_Lounge::Ready_Layer_PlayerSlotUI(const _wstring& strLayerTag)
 
     CUI_Image::UIIMAGE_DESC  PlayerStateSlotDesc
     (TEXT("GameObject_PlayerStateSlot"), CUI_Image::UNCLICKABLE,
-        fPlayerStateSlotX, fPlayerStateSlotY, 0.9f, 713.f, 105.f,
+        fPlayerStateSlotX, fPlayerStateSlotY, 0.7f, 713.f, 105.f,
         L"Prototype_Component_Texture_PlayerStateSlot", LEVEL_STATIC, LEVEL_STATIC);
 
     CUIObject* pPlayerStateSlot = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_STATIC,
@@ -346,7 +346,7 @@ HRESULT CLevel_Lounge::Ready_Layer_PlayerSlotUI(const _wstring& strLayerTag)
 
     CPlayerHP::PLAYERHP_DESC  PlayerHPDesc
     (TEXT("GameObject_PlayerHPBar"), CUIObject::UNCLICKABLE,
-        fPlayerStateSlotX + 0.3f, fPlayerStateSlotY - 7.f, 0.7f, 86.f, 65.f,
+        fPlayerStateSlotX + 0.3f, fPlayerStateSlotY - 7.f, 0.6f, 86.f, 65.f,
         L"Prototype_Component_Texture_PlayerHP");
 
     CUIObject* pPlayerHP = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_STATIC,
@@ -361,7 +361,7 @@ HRESULT CLevel_Lounge::Ready_Layer_PlayerSlotUI(const _wstring& strLayerTag)
 
     CRollIcon::ROLL_ICON_DESC  RollIconDesc
     (TEXT("GameObject_RollIcon"), CUIObject::UNCLICKABLE,
-        fPlayerStateSlotX + 202.f, fPlayerStateSlotY + 7.f, 0.7f,32.f, 22.5f,
+        fPlayerStateSlotX + 202.f, fPlayerStateSlotY + 7.f, 0.6f,32.f, 22.5f,
         L"Prototype_Component_Texture_RollIcon");
 
     CUIObject* pRollIcon = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_STATIC,

@@ -56,7 +56,7 @@ void CMonster::Update(_float fTimeDelta)
 
 	m_pMonsterFSM->Update_State(fTimeDelta);
 
-	XMStoreFloat2(&m_vScreenPos,
+	/*XMStoreFloat2(&m_vScreenPos,
 		XMVector3Project(
 			m_pTransformCom->Get_State(CTransform::STATE_POSITION) + XMVectorSet(0.f, 3.f, 0.f, 1.f),
 			0.f,
@@ -67,7 +67,7 @@ void CMonster::Update(_float fTimeDelta)
 			1.f,
 			m_pGameInstance->Get_Transform_Matrix(CPipeLine::D3DTS_PROJ),
 			m_pGameInstance->Get_Transform_Matrix(CPipeLine::D3DTS_VIEW),
-			XMMatrixIdentity()));
+			XMMatrixIdentity()));*/
 }
 
 void CMonster::Late_Update(_float fTimeDelta)
@@ -81,8 +81,11 @@ void CMonster::Late_Update(_float fTimeDelta)
 
 HRESULT CMonster::Render()
 {
-	std::wstring strHP = std::to_wstring(m_pMonsterInfo->Get_CurrentHP());
-	m_pGameInstance->Draw_Text(TEXT("Font_Minecraft"), strHP.c_str(), m_vScreenPos/*, Colors::White, 0.f, { 0.f, 0.f }, 1.f*/);
+	if (!m_bActive)
+		return S_OK;
+
+	//std::wstring strHP = std::to_wstring(m_pMonsterInfo->Get_CurrentHP());
+	//m_pGameInstance->Draw_Text(TEXT("Font_Minecraft"), strHP.c_str(), m_vScreenPos/*, Colors::White, 0.f, { 0.f, 0.f }, 1.f*/);
 
 #ifdef _DEBUG
 	if (m_pNavigationCom)
@@ -232,6 +235,13 @@ _bool CMonster::Player_In_DetectRange() const
 	_float	 vecToPlayer = Length_To_Player();
 
 	return	vecToPlayer < m_pMonsterInfo->Get_DetectRange();
+}
+
+void CMonster::Render_DamageFont(_int iDealPoint)
+{
+	m_bDealPoint = iDealPoint;
+	m_bRenderDamageFont = true;
+	m_fFontRenderedTime = 0.f;
 }
 
 void CMonster::Free()

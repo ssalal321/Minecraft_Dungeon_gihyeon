@@ -415,6 +415,9 @@
     <Filter Include="02.GameObjects\UIObjects\PlayerSlotIcon\RollIcon">
       <UniqueIdentifier>{6896111a-22df-4972-b669-85b019c69d4f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\GateFence">
+      <UniqueIdentifier>{07f05a4f-8f36-453e-9665-4b403baaa055}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -825,6 +828,9 @@
     <ClInclude Include="..\Public\RollIcon.h">
       <Filter>02.GameObjects\UIObjects\PlayerSlotIcon\RollIcon</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\GateFence.h">
+      <Filter>02.GameObjects\GateFence</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1229,6 +1235,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\RollIcon.cpp">
       <Filter>02.GameObjects\UIObjects\PlayerSlotIcon\RollIcon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\GateFence.cpp">
+      <Filter>02.GameObjects\GateFence</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
