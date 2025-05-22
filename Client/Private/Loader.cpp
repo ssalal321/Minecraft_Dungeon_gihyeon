@@ -30,6 +30,7 @@
 #include "Player.h"
 #include "UI_Image.h"
 #include "PlayerHP.h"
+#include "RollIcon.h"
 #include "Skeleton.h"
 #include "Slime_Cauldron.h"
 #include "Slime_Cauldron_Bullet.h"
@@ -235,6 +236,11 @@ HRESULT CLoader::Ready_Prototype_TextureCom_Static()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerHP.png"), 1))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_RollIcon */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_RollIcon"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/rolling_icon.png"), 1))))
+		return E_FAIL;
+
 	/* For.Prototype_Component_Texture_CauldronBossHP */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_CauldronBossHP"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Boss_HP.png"), 1))))
@@ -288,6 +294,11 @@ HRESULT CLoader::Ready_Prototype_ShaderCom_Static()
 	/* For.Prototype_Component_Shader_VtxPosTex_HPbar */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex_HPbar"),
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPosTex_HPbar.hlsl"), VTXPOSTEX::Elements, VTXPOSTEX::iNumElements))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Shader_VtxPosTex_HPbar */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex_CoolDownIcon"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPosTex_CoolDownIcon.hlsl"), VTXPOSTEX::Elements, VTXPOSTEX::iNumElements))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Shader_VtxPosTex */
@@ -465,6 +476,11 @@ HRESULT CLoader::Ready_Prototype_GameObject_Static()
 	/* For.Prototype_GameObject_Player_HPbar */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Player_HPbar"),
 		CPlayerHP::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_RollIcon */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_RollIcon"),
+		CRollIcon::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_CauldronBoss_HPbar */

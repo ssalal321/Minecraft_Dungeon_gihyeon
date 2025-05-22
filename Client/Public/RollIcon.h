@@ -1,5 +1,6 @@
 #pragma once
 #include "Client_Defines.h"
+#include "Player.h"
 #include "UIObject.h"
 
 BEGIN(Engine)
@@ -9,34 +10,34 @@ class CVIBuffer_Rect;
 END
 
 BEGIN(Client)
-	class CPlayer;
+class CPlayer;
 
-	class CPlayerHP final : public CUIObject
+class CRollIcon final : public CUIObject
 {
 public:
 
-	typedef struct PLAYER_HP_DESC : public CUIObject::UIOBJECT_DESC
+	typedef struct ROLL_ICON_DESC : public CUIObject::UIOBJECT_DESC
 	{
 		_float			fPlayTime;
 
-		PLAYER_HP_DESC(const _tchar* GameObjectTag, UI_STATE uiState,
+		ROLL_ICON_DESC(const _tchar* GameObjectTag, UI_STATE uiState,
 			_float x, _float y, _float z, _float sizeX, _float sizeY,
 			const wstring& textureTag, _bool alphaBlend = true, _float speedPerSec = 0.f, _float rotationPerSec = 0.f, _float playTime = 0.f)
 			: UIOBJECT_DESC(GameObjectTag, uiState, x, y, z, sizeX, sizeY, textureTag, alphaBlend, rotationPerSec, speedPerSec),
 			  fPlayTime(playTime) { }
 
 		//// 복사 생성자
-		//PLAYER_HP_DESC(const PLAYER_HP_DESC& other)
+		//ROLL_ICON_DESC(const ROLL_ICON_DESC& other)
 		//	: UIOBJECT_DESC(other), fPlayTime(other.fPlayTime) { }
 
-		~PLAYER_HP_DESC() override = default;
+		~ROLL_ICON_DESC() override = default;
 
-	}PLAYERHP_DESC;
+	}ROLL_ICON_DESC;
 
 private:
-	CPlayerHP(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CPlayerHP(const CPlayerHP& Prototype);
-	~CPlayerHP() override = default;
+	CRollIcon(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CRollIcon(const CRollIcon& Prototype);
+	~CRollIcon() override = default;
 
 
 public:
@@ -51,21 +52,22 @@ public:
 
 private:
 	CPlayer*			m_pPlayer = { nullptr };
+	CPlayer::PLAYER_DESC*	m_pPlayerInfo = { nullptr };
 
-	_float				m_fInverseMaxHP = {};
-	_float				m_CutOffY		= {};
+	_float				m_fInverseMaxHP  = {};
+	_float				m_fCooldownRatio = {};
 
-	PLAYERHP_DESC*		m_pDesc			= { nullptr };
+	ROLL_ICON_DESC*		m_pDesc			= { nullptr };
 
 	CTexture*			m_pTextureCom	= { nullptr };
 	CShader*			m_pShaderCom	= { nullptr };
 	CVIBuffer_Rect*		m_pVIBufferCom	= { nullptr };
 
 private:
-	HRESULT		Ready_PlayerHP_Components();
+	HRESULT		Ready_Components();
 
 public:
-	static	 CPlayerHP*		Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static	 CRollIcon*		Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CGameObject*			Clone(void* pArg)	override;
 	void					Free()				override;
 };

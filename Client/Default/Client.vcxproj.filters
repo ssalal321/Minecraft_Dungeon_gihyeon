@@ -409,6 +409,12 @@
     <Filter Include="02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss_TPose">
       <UniqueIdentifier>{9f7b4541-2435-4d46-9a32-ac36238ad832}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UIObjects\PlayerSlotIcon">
+      <UniqueIdentifier>{61c14878-49b7-403a-ac2a-9c5860d4c4f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObjects\PlayerSlotIcon\RollIcon">
+      <UniqueIdentifier>{6896111a-22df-4972-b669-85b019c69d4f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -816,6 +822,9 @@
     <ClInclude Include="..\Public\CauldronBossHP.h">
       <Filter>02.GameObjects\UIObjects\HPbar</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\RollIcon.h">
+      <Filter>02.GameObjects\UIObjects\PlayerSlotIcon\RollIcon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1218,6 +1227,9 @@
     <ClCompile Include="..\Private\CauldronBossHP.cpp">
       <Filter>02.GameObjects\UIObjects\HPbar</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\RollIcon.cpp">
+      <Filter>02.GameObjects\UIObjects\PlayerSlotIcon\RollIcon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">
@@ -1242,6 +1254,9 @@
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_BossAnimMesh.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex_CoolDownIcon.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

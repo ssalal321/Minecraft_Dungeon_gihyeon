@@ -132,7 +132,7 @@ _bool CState_Player::Change_State_To_Walk()
 
 _bool CState_Player::Change_State_To_Roll()
 {
-	if (m_pGameInstance->Key_Down(VK_SPACE))
+	if (m_pGameInstance->Key_Down(VK_SPACE) && false == m_pPlayerInfo->Get_RollCoolDowning())
 	{
 		m_pPlayer->Change_State(PLAYER_STATE::ROLL);
 

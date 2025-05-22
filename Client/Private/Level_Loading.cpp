@@ -96,7 +96,7 @@ HRESULT CLevel_Loading::Ready_Layer_BackGround()
     CUI_Image::UIIMAGE_DESC  LoungeLoadingDesc
     (TEXT("GameObject_LoungeLoading"), CUI_Image::UNCLICKABLE, 
         g_iWinSizeX * 0.5f, g_iWinSizeY * 0.5f, 0.9f, g_iWinSizeX, g_iWinSizeY,
-        L"Prototype_Component_Texture_LoungeLoading", LEVEL_LOADING, LEVEL_LOADING, 180.f);
+        L"Prototype_Component_Texture_LoungeLoading", LEVEL_LOADING, LEVEL_LOADING, false, 180.f);
 
     CUIObject* pLoungeLoading = m_pGameInstance->Add_UIObject(LEVEL_LOADING, LEVEL_LOADING,
         TEXT("Prototype_GameObject_UIImage"),

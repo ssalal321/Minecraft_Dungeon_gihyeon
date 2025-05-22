@@ -18,6 +18,7 @@
 #include "Player.h"
 #include "Zombie.h"
 #include "PlayerHP.h"
+#include "RollIcon.h"
 #include "Slime_Cauldron.h"
 
 CLevel_Lounge::CLevel_Lounge(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -319,7 +320,8 @@ HRESULT CLevel_Lounge::Ready_Layer_InventoryUI(const _wstring& strLayerTag)
         TEXT("Prototype_GameObject_InventoryBase"),
         CUI_Manager::PERSISTENT, &InventoryBaseDesc);
 
-    if (nullptr == pInventoryBase) return E_FAIL;
+    if (nullptr == pInventoryBase)
+        return E_FAIL;
 
     return S_OK;
 }
@@ -338,7 +340,8 @@ HRESULT CLevel_Lounge::Ready_Layer_PlayerSlotUI(const _wstring& strLayerTag)
         TEXT("Prototype_GameObject_UIImage"),
         CUI_Manager::PERSISTENT, &PlayerStateSlotDesc);
 
-    if (nullptr == pPlayerStateSlot) return E_FAIL;
+    if (nullptr == pPlayerStateSlot)
+        return E_FAIL;
 
 
     CPlayerHP::PLAYERHP_DESC  PlayerHPDesc
@@ -350,7 +353,25 @@ HRESULT CLevel_Lounge::Ready_Layer_PlayerSlotUI(const _wstring& strLayerTag)
         TEXT("Prototype_GameObject_Player_HPbar"),
         CUI_Manager::PERSISTENT, &PlayerHPDesc);
 
-    if (nullptr == pPlayerHP) return E_FAIL;
+    if (nullptr == pPlayerHP)
+        return E_FAIL;
+
+    pPlayerHP->Set_Parent(pPlayerStateSlot);
+
+
+    CRollIcon::ROLL_ICON_DESC  RollIconDesc
+    (TEXT("GameObject_RollIcon"), CUIObject::UNCLICKABLE,
+        fPlayerStateSlotX + 202.f, fPlayerStateSlotY + 7.f, 0.7f,32.f, 22.5f,
+        L"Prototype_Component_Texture_RollIcon");
+
+    CUIObject* pRollIcon = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_STATIC,
+        TEXT("Prototype_GameObject_RollIcon"),
+        CUI_Manager::PERSISTENT, &RollIconDesc);
+
+    if (nullptr == pRollIcon)
+        return E_FAIL;
+    pRollIcon->Set_Parent(pPlayerStateSlot);
+
 
     return S_OK;
 }

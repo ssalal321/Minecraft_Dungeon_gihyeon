@@ -39,7 +39,7 @@ HRESULT CPlayer::Initialize_Prototype()
 
 HRESULT CPlayer::Initialize(void* pArg)
 {
-	m_pPlayerInfo = new PLAYER_DESC(TEXT("GameObject_Player"), 1000, 1000, 15, 3.5f, 100, false, 90.f, 3.f);
+	m_pPlayerInfo = new PLAYER_DESC(TEXT("GameObject_Player"), 1000, 1000, 15, 3.5f, 0.f, 5.f, 100, false, 90.f, 3.f);
 
 	if (FAILED(__super::Initialize(m_pPlayerInfo)))
 		return E_FAIL;
@@ -81,6 +81,9 @@ void CPlayer::Update(_float fTimeDelta)
 
 	if (m_pNavigationCom)
 		m_pNavigationCom->SetUp_On_Navigation(m_pTransformCom);
+
+	if (m_pPlayerInfo->Get_RollCoolDowning())
+		m_pPlayerInfo->Roll_CoolDown(fTimeDelta);
 
 	m_pPlayerFSM->Update_State(fTimeDelta);
 }
