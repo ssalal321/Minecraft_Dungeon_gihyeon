@@ -3,19 +3,25 @@
 #include <iostream>
 #include <UI_Image.h>
 
-#include "Boss_Trigger.h"
+#include "BabyZombie.h"
+#include "CauldronBoss_Trigger.h"
 #include "GameInstance.h"
 #include "PartObject.h"
 #include "Level_Loading.h"
 #include "Camera_Free.h"
 #include "CauldronBoss.h"
 #include "CauldronBossHP.h"
+#include "GateFence.h"
 #include "InventoryBase.h"
 #include "InventoryData.h"
 #include "Item.h"
+#include "MonsterRush_Trigger.h"
 #include "Player.h"
 #include "Zombie.h"
 #include "PlayerHP.h"
+#include "Skeleton.h"
+#include "Slime_Large.h"
+#include "Vindicator.h"
 
 CLevel_SoggySwamp::CLevel_SoggySwamp(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : CLevel { pDevice, pContext }
@@ -39,10 +45,13 @@ HRESULT CLevel_SoggySwamp::Initialize()
     if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
         return E_FAIL;
 
-    if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
+    if (FAILED(Ready_Layer_Boss(TEXT("Layer_Monster"))))
         return E_FAIL;
 
     if (FAILED(Ready_Layer_Trigger(TEXT("Layer_Trigger"))))
+        return E_FAIL;
+
+    if (FAILED(Ready_Layer_MonsterRush(TEXT("Layer_Monster"))))
         return E_FAIL;
 
     if (FAILED(Ready_Layer_UI(TEXT("Layer_UI"))))
@@ -193,8 +202,34 @@ HRESULT CLevel_SoggySwamp::Ready_Layer_BackGround(const _wstring& strLayerTag)
 {
     CGameObject* pSoggySwampMap = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_SoggySwampMap"),
         LEVEL_SOGGYSWAMP, strLayerTag);
-    if (nullptr == pSoggySwampMap)      return E_FAIL;
+    if (nullptr == pSoggySwampMap)
+        return E_FAIL;
 
+
+    CGateFence::GATEFENCE_DESC  gateFenceDesc0 = {};
+    gateFenceDesc0.worldPosition = { 5.5f, 0.f, 51.75f, 1.f };
+    gateFenceDesc0.strGameObjectTag = TEXT("GameObject_GateFence_0");
+    CGameObject* pGateFence0 = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_GateFence"),
+        LEVEL_SOGGYSWAMP, strLayerTag, &gateFenceDesc0);
+    if (nullptr == pGateFence0)
+        return E_FAIL;
+
+    CGateFence::GATEFENCE_DESC  gateFenceDesc1 = {};
+    gateFenceDesc1.worldPosition = { 21.5f, -4.f, 150.75f, 1.f };
+    gateFenceDesc1.strGameObjectTag = TEXT("GameObject_GateFence_1");
+    CGameObject* pGateFence1 = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_GateFence"),
+        LEVEL_SOGGYSWAMP, strLayerTag, &gateFenceDesc1);
+    if (nullptr == pGateFence1)
+        return E_FAIL;
+
+    CGateFence::GATEFENCE_DESC  gateFenceDesc2 = {};
+    gateFenceDesc2.worldPosition = { 21.5f, -4.f, 181.75f, 1.f };
+    gateFenceDesc2.strGameObjectTag = TEXT("GameObject_GateFence_2");
+    CGameObject* pGateFence2 = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_GateFence"),
+        LEVEL_SOGGYSWAMP, strLayerTag, &gateFenceDesc2);
+    if (nullptr == pGateFence2)
+        return E_FAIL;
+  
     /*if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_SOGGYSWAMP, TEXT("Prototype_GameObject_Sky"),
         LEVEL_LOUNGE, strLayerTag)))
         return E_FAIL;
@@ -246,18 +281,595 @@ HRESULT CLevel_SoggySwamp::Ready_Layer_UI(const _wstring& strLayerTag)
     return S_OK;
 }
 
-HRESULT CLevel_SoggySwamp::Ready_Layer_Monster(const _wstring& strLayerTag)
+HRESULT CLevel_SoggySwamp::Ready_BabyZombie(const _wstring& strLayerTag)
 {
-    /*CGameObject* pZombie = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Zombie"),
-        LEVEL_SOGGYSWAMP, strLayerTag);
-    if (nullptr == pZombie)
-		return E_FAIL;
+    CBabyZombie::BABYZOMBIE_DESC desc{};
+    desc.babyZombiePosition = { 20.f, -4.f, 155.25f, 1.f };
+    desc.currentCellIndex = 1682;
 
-    CGameObject* pSkeleton = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Skeleton"),
-        LEVEL_SOGGYSWAMP, strLayerTag);
-    if (nullptr == pSkeleton)
-		return E_FAIL;*/
+    CGameObject* pBabyZombie0 = m_pGameInstance->Add_GameObject(
+        LEVEL_STATIC, TEXT("Prototype_GameObject_BabyZombie"),
+        m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_Monster"), &desc);
 
+    if (pBabyZombie0)
+    {
+        CMonster* pMonster = dynamic_cast<CMonster*>(pBabyZombie0);
+        CNavigation* pNavigation = dynamic_cast<CNavigation*>(pMonster->Find_Component(TEXT("Com_Navigation")));
+        pNavigation->Lock_Cell(1569);
+        pNavigation->Lock_Cell(1688);
+
+        m_pMonsterRush_Trigger->Add_Monster(pMonster);
+        pMonster->Set_MyRushTrigger(m_pMonsterRush_Trigger);
+        
+
+        CCollider* pColliderBig = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_BigSphere")));
+        pColliderBig->Set_ColliderActive(false);
+
+        CCollider* pColliderSmall = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_SmallSphere")));
+        pColliderSmall->Set_ColliderActive(false);
+
+        pMonster->Set_GameObject_Active(false);
+    }
+    else
+        return E_FAIL;
+
+    
+    desc.babyZombiePosition = { 29.f, -4.f, 171.25f, 1.f };
+    desc.currentCellIndex = 1682;
+
+    CGameObject* pBabyZombie1 = m_pGameInstance->Add_GameObject(
+        LEVEL_STATIC, TEXT("Prototype_GameObject_BabyZombie"),
+        m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_Monster"), &desc);
+
+    if (pBabyZombie1)
+    {
+        CMonster* pMonster = dynamic_cast<CMonster*>(pBabyZombie1);
+        CNavigation* pNavigation = dynamic_cast<CNavigation*>(pMonster->Find_Component(TEXT("Com_Navigation")));
+        pNavigation->Lock_Cell(1569);
+        pNavigation->Lock_Cell(1688);
+
+        m_pMonsterRush_Trigger->Add_Monster(pMonster);
+        pMonster->Set_MyRushTrigger(m_pMonsterRush_Trigger);
+        pMonster->Set_GameObject_Active(false);
+
+        CCollider* pColliderBig = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_BigSphere")));
+        pColliderBig->Set_ColliderActive(false);
+
+        CCollider* pColliderSmall = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_SmallSphere")));
+        pColliderSmall->Set_ColliderActive(false);
+    }
+    else
+        return E_FAIL;
+
+
+    desc.babyZombiePosition = { 14.f, -4.f, 177.25f, 1.f };
+    desc.currentCellIndex = 1682;
+
+    CGameObject* pBabyZombie2 = m_pGameInstance->Add_GameObject(
+        LEVEL_STATIC, TEXT("Prototype_GameObject_BabyZombie"),
+        m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_Monster"), &desc);
+
+    if (pBabyZombie2)
+    {
+        CMonster* pMonster = dynamic_cast<CMonster*>(pBabyZombie2);
+        CNavigation* pNavigation = dynamic_cast<CNavigation*>(pMonster->Find_Component(TEXT("Com_Navigation")));
+        pNavigation->Lock_Cell(1569);
+        pNavigation->Lock_Cell(1688);
+
+        m_pMonsterRush_Trigger->Add_Monster(pMonster);
+        pMonster->Set_MyRushTrigger(m_pMonsterRush_Trigger);
+        pMonster->Set_GameObject_Active(false);
+
+        CCollider* pColliderBig = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_BigSphere")));
+        pColliderBig->Set_ColliderActive(false);
+
+        CCollider* pColliderSmall = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_SmallSphere")));
+        pColliderSmall->Set_ColliderActive(false);
+    }
+    else
+        return E_FAIL;
+
+
+    desc.babyZombiePosition = { 5.f, -4.f, 161.25f, 1.f };
+    desc.currentCellIndex = 1682;
+
+    CGameObject* pBabyZombie3 = m_pGameInstance->Add_GameObject(
+        LEVEL_STATIC, TEXT("Prototype_GameObject_BabyZombie"),
+        m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_Monster"), &desc);
+
+    if (pBabyZombie3)
+    {
+        CMonster* pMonster = dynamic_cast<CMonster*>(pBabyZombie3);
+        CNavigation* pNavigation = dynamic_cast<CNavigation*>(pMonster->Find_Component(TEXT("Com_Navigation")));
+        pNavigation->Lock_Cell(1569);
+        pNavigation->Lock_Cell(1688);
+
+        m_pMonsterRush_Trigger->Add_Monster(pMonster);
+        pMonster->Set_MyRushTrigger(m_pMonsterRush_Trigger);
+        pMonster->Set_GameObject_Active(false);
+
+        CCollider* pColliderBig = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_BigSphere")));
+        pColliderBig->Set_ColliderActive(false);
+
+        CCollider* pColliderSmall = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_SmallSphere")));
+        pColliderSmall->Set_ColliderActive(false);
+    }
+    else
+        return E_FAIL;
+
+    return S_OK;
+}
+
+HRESULT CLevel_SoggySwamp::Ready_Slime(const _wstring& strLayerTag)
+{
+    CSlime_Large::SLIME_LARGE_DESC  desc{};
+    desc.slimeLargePosition = { 21.f, -4.f, 162.25f, 1.f };
+    desc.currentCellIndex = 1682;
+
+    CGameObject* pSlimeLarge0 = m_pGameInstance->Add_GameObject(
+        LEVEL_STATIC, TEXT("Prototype_GameObject_Slime_Large"),
+        m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_Monster"), &desc);
+
+    if (pSlimeLarge0)
+    {
+        CMonster* pMonster = dynamic_cast<CMonster*>(pSlimeLarge0);
+        CNavigation* pNavigation = dynamic_cast<CNavigation*>(pMonster->Find_Component(TEXT("Com_Navigation")));
+        pNavigation->Lock_Cell(1569);
+        pNavigation->Lock_Cell(1688);
+
+        m_pMonsterRush_Trigger->Add_Monster(pMonster);
+        pMonster->Set_MyRushTrigger(m_pMonsterRush_Trigger);
+        pMonster->Set_GameObject_Active(false);
+
+        CCollider* pColliderBig = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_BigSphere")));
+        pColliderBig->Set_ColliderActive(false);
+
+        CCollider* pColliderSmall = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_SmallSphere")));
+        pColliderSmall->Set_ColliderActive(false);
+    }
+    else
+        return E_FAIL;
+
+
+    desc.slimeLargePosition = { 21.f, -4.f, 170.25f, 1.f };
+    desc.currentCellIndex = 1682;
+
+    CGameObject* pSlimeLarge1 = m_pGameInstance->Add_GameObject(
+        LEVEL_STATIC, TEXT("Prototype_GameObject_Slime_Large"),
+        m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_Monster"), &desc);
+
+    if (pSlimeLarge1)
+    {
+        CMonster* pMonster = dynamic_cast<CMonster*>(pSlimeLarge1);
+        CNavigation* pNavigation = dynamic_cast<CNavigation*>(pMonster->Find_Component(TEXT("Com_Navigation")));
+        pNavigation->Lock_Cell(1569);
+        pNavigation->Lock_Cell(1688);
+
+        m_pMonsterRush_Trigger->Add_Monster(pMonster);
+        pMonster->Set_MyRushTrigger(m_pMonsterRush_Trigger);
+        pMonster->Set_GameObject_Active(false);
+
+        CCollider* pColliderBig = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_BigSphere")));
+        pColliderBig->Set_ColliderActive(false);
+
+        CCollider* pColliderSmall = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_SmallSphere")));
+        pColliderSmall->Set_ColliderActive(false);
+    }
+    else
+        return E_FAIL;
+
+
+    desc.slimeLargePosition = { 13.f, -4.f, 170.25f, 1.f };
+    desc.currentCellIndex = 1682;
+
+    CGameObject* pSlimeLarge2 = m_pGameInstance->Add_GameObject(
+        LEVEL_STATIC, TEXT("Prototype_GameObject_Slime_Large"),
+        m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_Monster"), &desc);
+
+    if (pSlimeLarge2)
+    {
+        CMonster* pMonster = dynamic_cast<CMonster*>(pSlimeLarge2);
+        CNavigation* pNavigation = dynamic_cast<CNavigation*>(pMonster->Find_Component(TEXT("Com_Navigation")));
+        pNavigation->Lock_Cell(1569);
+        pNavigation->Lock_Cell(1688);
+
+        m_pMonsterRush_Trigger->Add_Monster(pMonster);
+        pMonster->Set_MyRushTrigger(m_pMonsterRush_Trigger);
+        pMonster->Set_GameObject_Active(false);
+
+        CCollider* pColliderBig = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_BigSphere")));
+        pColliderBig->Set_ColliderActive(false);
+
+        CCollider* pColliderSmall = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_SmallSphere")));
+        pColliderSmall->Set_ColliderActive(false);
+    }
+    else
+        return E_FAIL;
+
+
+    desc.slimeLargePosition = { 13.f, -4.f, 162.25f, 1.f };
+    desc.currentCellIndex = 1682;
+
+    CGameObject* pSlimeLarge3 = m_pGameInstance->Add_GameObject(
+        LEVEL_STATIC, TEXT("Prototype_GameObject_Slime_Large"),
+        m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_Monster"), &desc);
+
+    if (pSlimeLarge3)
+    {
+        CMonster* pMonster = dynamic_cast<CMonster*>(pSlimeLarge3);
+        CNavigation* pNavigation = dynamic_cast<CNavigation*>(pMonster->Find_Component(TEXT("Com_Navigation")));
+        pNavigation->Lock_Cell(1569);
+        pNavigation->Lock_Cell(1688);
+
+        m_pMonsterRush_Trigger->Add_Monster(pMonster);
+        pMonster->Set_MyRushTrigger(m_pMonsterRush_Trigger);
+        pMonster->Set_GameObject_Active(false);
+
+        CCollider* pColliderBig = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_BigSphere")));
+        pColliderBig->Set_ColliderActive(false);
+
+        CCollider* pColliderSmall = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_SmallSphere")));
+        pColliderSmall->Set_ColliderActive(false);
+    }
+    else
+        return E_FAIL;
+
+    return S_OK;
+}
+
+HRESULT CLevel_SoggySwamp::Ready_Skeleton(const _wstring& strLayerTag)
+{
+    CSkeleton::SKELETON_DESC  desc{};
+    desc.skeletonPosition = { 25.f, -4.f, 166.25f, 1.f };
+    desc.currentCellIndex = 1682;
+
+    CGameObject* pSkeleton0 = m_pGameInstance->Add_GameObject(
+        LEVEL_STATIC, TEXT("Prototype_GameObject_Skeleton"),
+        m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_Monster"), &desc);
+
+    if (pSkeleton0)
+    {
+        CMonster* pMonster = dynamic_cast<CMonster*>(pSkeleton0);
+        CNavigation* pNavigation = dynamic_cast<CNavigation*>(pMonster->Find_Component(TEXT("Com_Navigation")));
+        pNavigation->Lock_Cell(1569);
+        pNavigation->Lock_Cell(1688);
+
+        m_pMonsterRush_Trigger->Add_Monster(pMonster);
+        pMonster->Set_MyRushTrigger(m_pMonsterRush_Trigger);
+        pMonster->Set_GameObject_Active(false);
+
+        CCollider* pColliderBig = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_BigSphere")));
+        pColliderBig->Set_ColliderActive(false);
+
+        CCollider* pColliderSmall = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_SmallSphere")));
+        pColliderSmall->Set_ColliderActive(false);
+    }
+    else
+        return E_FAIL;
+
+
+    desc.skeletonPosition = { 17.f, -4.f, 174.25f, 1.f };
+    desc.currentCellIndex = 1682;
+
+    CGameObject* pSkeleton1 = m_pGameInstance->Add_GameObject(
+        LEVEL_STATIC, TEXT("Prototype_GameObject_Skeleton"),
+        m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_Monster"), &desc);
+
+    if (pSkeleton1)
+    {
+        CMonster* pMonster = dynamic_cast<CMonster*>(pSkeleton1);
+        CNavigation* pNavigation = dynamic_cast<CNavigation*>(pMonster->Find_Component(TEXT("Com_Navigation")));
+        pNavigation->Lock_Cell(1569);
+        pNavigation->Lock_Cell(1688);
+
+        m_pMonsterRush_Trigger->Add_Monster(pMonster);
+        pMonster->Set_MyRushTrigger(m_pMonsterRush_Trigger);
+        pMonster->Set_GameObject_Active(false);
+
+        CCollider* pColliderBig = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_BigSphere")));
+        pColliderBig->Set_ColliderActive(false);
+
+        CCollider* pColliderSmall = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_SmallSphere")));
+        pColliderSmall->Set_ColliderActive(false);
+    }
+    else
+        return E_FAIL;
+
+
+    desc.skeletonPosition = { 9.f, -4.f, 166.25f, 1.f };
+    desc.currentCellIndex = 1682;
+
+    CGameObject* pSkeleton2 = m_pGameInstance->Add_GameObject(
+        LEVEL_STATIC, TEXT("Prototype_GameObject_Skeleton"),
+        m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_Monster"), &desc);
+
+    if (pSkeleton2)
+    {
+        CMonster* pMonster = dynamic_cast<CMonster*>(pSkeleton2);
+        CNavigation* pNavigation = dynamic_cast<CNavigation*>(pMonster->Find_Component(TEXT("Com_Navigation")));
+        pNavigation->Lock_Cell(1569);
+        pNavigation->Lock_Cell(1688);
+
+        m_pMonsterRush_Trigger->Add_Monster(pMonster);
+        pMonster->Set_MyRushTrigger(m_pMonsterRush_Trigger);
+        pMonster->Set_GameObject_Active(false);
+
+        CCollider* pColliderBig = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_BigSphere")));
+        pColliderBig->Set_ColliderActive(false);
+
+        CCollider* pColliderSmall = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_SmallSphere")));
+        pColliderSmall->Set_ColliderActive(false);
+    }
+    else
+        return E_FAIL;
+
+
+    desc.skeletonPosition = { 17.f, -4.f, 158.25f, 1.f };
+    desc.currentCellIndex = 1682;
+
+    CGameObject* pSkeleton3 = m_pGameInstance->Add_GameObject(
+        LEVEL_STATIC, TEXT("Prototype_GameObject_Skeleton"),
+        m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_Monster"), &desc);
+
+    if (pSkeleton3)
+    {
+        CMonster* pMonster = dynamic_cast<CMonster*>(pSkeleton3);
+        CNavigation* pNavigation = dynamic_cast<CNavigation*>(pMonster->Find_Component(TEXT("Com_Navigation")));
+        pNavigation->Lock_Cell(1569);
+        pNavigation->Lock_Cell(1688);
+
+        m_pMonsterRush_Trigger->Add_Monster(pMonster);
+        pMonster->Set_MyRushTrigger(m_pMonsterRush_Trigger);
+        pMonster->Set_GameObject_Active(false);
+
+        CCollider* pColliderBig = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_BigSphere")));
+        pColliderBig->Set_ColliderActive(false);
+
+        CCollider* pColliderSmall = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_SmallSphere")));
+        pColliderSmall->Set_ColliderActive(false);
+    }
+    else
+        return E_FAIL;
+
+    return S_OK;
+}
+
+HRESULT CLevel_SoggySwamp::Ready_Vindicator(const _wstring& strLayerTag)
+{
+    CVindicator::VINDICATOR_DESC  desc{};
+    desc.vindicatorPosition = { 29.f, -4.f, 161.25f, 1.f };
+    desc.currentCellIndex = 1682;
+
+    CGameObject* pVindicator0 = m_pGameInstance->Add_GameObject(
+        LEVEL_STATIC, TEXT("Prototype_GameObject_Vindicator"),
+        m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_Monster"), &desc);
+
+    if (pVindicator0)
+    {
+        CMonster* pMonster = dynamic_cast<CMonster*>(pVindicator0);
+        CNavigation* pNavigation = dynamic_cast<CNavigation*>(pMonster->Find_Component(TEXT("Com_Navigation")));
+        pNavigation->Lock_Cell(1569);
+        pNavigation->Lock_Cell(1688);
+
+        m_pMonsterRush_Trigger->Add_Monster(pMonster);
+        pMonster->Set_MyRushTrigger(m_pMonsterRush_Trigger);
+        pMonster->Set_GameObject_Active(false);
+
+        CCollider* pColliderBig = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_BigSphere")));
+        pColliderBig->Set_ColliderActive(false);
+
+        CCollider* pColliderSmall = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_SmallSphere")));
+        pColliderSmall->Set_ColliderActive(false);
+    }
+    else
+        return E_FAIL;
+
+
+    desc.vindicatorPosition = { 20.f, -4.f, 177.25f, 1.f };
+    desc.currentCellIndex = 1682;
+
+    CGameObject* pVindicator1 = m_pGameInstance->Add_GameObject(
+        LEVEL_STATIC, TEXT("Prototype_GameObject_Vindicator"),
+        m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_Monster"), &desc);
+
+    if (pVindicator1)
+    {
+        CMonster* pMonster = dynamic_cast<CMonster*>(pVindicator1);
+        CNavigation* pNavigation = dynamic_cast<CNavigation*>(pMonster->Find_Component(TEXT("Com_Navigation")));
+        pNavigation->Lock_Cell(1569);
+        pNavigation->Lock_Cell(1688);
+
+        m_pMonsterRush_Trigger->Add_Monster(pMonster);
+        pMonster->Set_MyRushTrigger(m_pMonsterRush_Trigger);
+        pMonster->Set_GameObject_Active(false);
+
+        CCollider* pColliderBig = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_BigSphere")));
+        pColliderBig->Set_ColliderActive(false);
+
+        CCollider* pColliderSmall = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_SmallSphere")));
+        pColliderSmall->Set_ColliderActive(false);
+    }
+    else
+        return E_FAIL;
+
+
+    desc.vindicatorPosition = { 5.f, -4.f, 171.25f, 1.f };
+    desc.currentCellIndex = 1682;
+
+    CGameObject* pVindicator2 = m_pGameInstance->Add_GameObject(
+        LEVEL_STATIC, TEXT("Prototype_GameObject_Vindicator"),
+        m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_Monster"), &desc);
+
+    if (pVindicator2)
+    {
+        CMonster* pMonster = dynamic_cast<CMonster*>(pVindicator2);
+        CNavigation* pNavigation = dynamic_cast<CNavigation*>(pMonster->Find_Component(TEXT("Com_Navigation")));
+        pNavigation->Lock_Cell(1569);
+        pNavigation->Lock_Cell(1688);
+
+        m_pMonsterRush_Trigger->Add_Monster(pMonster);
+        pMonster->Set_MyRushTrigger(m_pMonsterRush_Trigger);
+        pMonster->Set_GameObject_Active(false);
+
+        CCollider* pColliderBig = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_BigSphere")));
+        pColliderBig->Set_ColliderActive(false);
+
+        CCollider* pColliderSmall = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_SmallSphere")));
+        pColliderSmall->Set_ColliderActive(false);
+    }
+    else
+        return E_FAIL;
+
+
+    desc.vindicatorPosition = { 14.f, -4.f, 155.25f, 1.f };
+    desc.currentCellIndex = 1682;
+
+    CGameObject* pVindicator3 = m_pGameInstance->Add_GameObject(
+        LEVEL_STATIC, TEXT("Prototype_GameObject_Vindicator"),
+        m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_Monster"), &desc);
+
+    if (pVindicator3)
+    {
+        CMonster* pMonster = dynamic_cast<CMonster*>(pVindicator3);
+        CNavigation* pNavigation = dynamic_cast<CNavigation*>(pMonster->Find_Component(TEXT("Com_Navigation")));
+        pNavigation->Lock_Cell(1569);
+        pNavigation->Lock_Cell(1688);
+
+        m_pMonsterRush_Trigger->Add_Monster(pMonster);
+        pMonster->Set_MyRushTrigger(m_pMonsterRush_Trigger);
+        pMonster->Set_GameObject_Active(false);
+
+        CCollider* pColliderBig = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_BigSphere")));
+        pColliderBig->Set_ColliderActive(false);
+
+        CCollider* pColliderSmall = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_SmallSphere")));
+        pColliderSmall->Set_ColliderActive(false);
+    }
+    else
+        return E_FAIL;
+
+    return S_OK;
+}
+
+HRESULT CLevel_SoggySwamp::Ready_Zombie(const _wstring& strLayerTag)
+{
+    CZombie::ZOMBIE_DESC  desc{};
+    desc.zombiePosition     = { 25.f, -4.f, 163.25f, 1.f };
+    desc.currentCellIndex   = 1682;
+
+    CGameObject* pZombie0 = m_pGameInstance->Add_GameObject(
+        LEVEL_STATIC, TEXT("Prototype_GameObject_Zombie"),
+        m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_Monster"), &desc);
+
+    if (pZombie0)
+    {
+        CMonster* pMonster = dynamic_cast<CMonster*>(pZombie0);
+        CNavigation* pNavigation = dynamic_cast<CNavigation*>(pMonster->Find_Component(TEXT("Com_Navigation")));
+        pNavigation->Lock_Cell(1569);
+        pNavigation->Lock_Cell(1688);
+
+        m_pMonsterRush_Trigger->Add_Monster(pMonster);
+        pMonster->Set_MyRushTrigger(m_pMonsterRush_Trigger);
+        pMonster->Set_GameObject_Active(false);
+
+        CCollider* pColliderBig = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_BigSphere")));
+        pColliderBig->Set_ColliderActive(false);
+
+        CCollider* pColliderSmall = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_SmallSphere")));
+        pColliderSmall->Set_ColliderActive(false);
+    }
+    else
+        return E_FAIL;
+
+
+    desc.zombiePosition = { 25.f, -4.f, 169.25f, 1.f };
+    desc.currentCellIndex = 1682;
+
+    CGameObject* pZombie1 = m_pGameInstance->Add_GameObject(
+        LEVEL_STATIC, TEXT("Prototype_GameObject_Zombie"),
+        m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_Monster"), &desc);
+
+    if (pZombie1)
+    {
+        CMonster* pMonster = dynamic_cast<CMonster*>(pZombie1);
+        CNavigation* pNavigation = dynamic_cast<CNavigation*>(pMonster->Find_Component(TEXT("Com_Navigation")));
+        pNavigation->Lock_Cell(1569);
+        pNavigation->Lock_Cell(1688);
+
+        m_pMonsterRush_Trigger->Add_Monster(pMonster);
+        pMonster->Set_MyRushTrigger(m_pMonsterRush_Trigger);
+        pMonster->Set_GameObject_Active(false);
+
+        CCollider* pColliderBig = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_BigSphere")));
+        pColliderBig->Set_ColliderActive(false);
+
+        CCollider* pColliderSmall = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_SmallSphere")));
+        pColliderSmall->Set_ColliderActive(false);
+    }
+    else
+        return E_FAIL;
+
+
+    desc.zombiePosition = { 9.f, -4.f, 169.25f, 1.f };
+    desc.currentCellIndex = 1682;
+
+    CGameObject* pZombie2 = m_pGameInstance->Add_GameObject(
+        LEVEL_STATIC, TEXT("Prototype_GameObject_Zombie"),
+        m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_Monster"), &desc);
+
+    if (pZombie2)
+    {
+        CMonster* pMonster = dynamic_cast<CMonster*>(pZombie2);
+        CNavigation* pNavigation = dynamic_cast<CNavigation*>(pMonster->Find_Component(TEXT("Com_Navigation")));
+        pNavigation->Lock_Cell(1569);
+        pNavigation->Lock_Cell(1688);
+
+        m_pMonsterRush_Trigger->Add_Monster(pMonster);
+        pMonster->Set_MyRushTrigger(m_pMonsterRush_Trigger);
+        pMonster->Set_GameObject_Active(false);
+
+        CCollider* pColliderBig = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_BigSphere")));
+        pColliderBig->Set_ColliderActive(false);
+
+        CCollider* pColliderSmall = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_SmallSphere")));
+        pColliderSmall->Set_ColliderActive(false);
+    }
+    else
+        return E_FAIL;
+
+
+    desc.zombiePosition = { 9.f, -4.f, 163.25f, 1.f };
+    desc.currentCellIndex = 1682;
+
+    CGameObject* pZombie3 = m_pGameInstance->Add_GameObject(
+        LEVEL_STATIC, TEXT("Prototype_GameObject_Zombie"),
+        m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_Monster"), &desc);
+
+    if (pZombie3)
+    {
+        CMonster* pMonster = dynamic_cast<CMonster*>(pZombie3);
+        CNavigation* pNavigation = dynamic_cast<CNavigation*>(pMonster->Find_Component(TEXT("Com_Navigation")));
+        pNavigation->Lock_Cell(1569);
+        pNavigation->Lock_Cell(1688);
+
+        m_pMonsterRush_Trigger->Add_Monster(pMonster);
+        pMonster->Set_MyRushTrigger(m_pMonsterRush_Trigger);
+        pMonster->Set_GameObject_Active(false);
+
+        CCollider* pColliderBig = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_BigSphere")));
+        pColliderBig->Set_ColliderActive(false);
+
+        CCollider* pColliderSmall = dynamic_cast<CCollider*>(pMonster->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_SmallSphere")));
+        pColliderSmall->Set_ColliderActive(false);
+    }
+    else
+        return E_FAIL;
+
+    return S_OK;
+}
+
+HRESULT CLevel_SoggySwamp::Ready_Layer_Boss(const _wstring& strLayerTag)
+{
     CCauldronBoss::CAULDRONBOSS_DESC  cauldronBossDesc = {};
     cauldronBossDesc.slimeCauldronPosition = { 0.45f, 0, 29.8f, 1.f };
 
@@ -268,17 +880,50 @@ HRESULT CLevel_SoggySwamp::Ready_Layer_Monster(const _wstring& strLayerTag)
 
     m_pCauldronBoss = dynamic_cast<CCauldronBoss*>(pCauldronBoss);
 
+    CCollider* pColliderBig = dynamic_cast<CCollider*>(m_pCauldronBoss->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_BigSphere")));
+    pColliderBig->Set_ColliderActive(false);
+
+    CCollider* pColliderSmall = dynamic_cast<CCollider*>(m_pCauldronBoss->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_SmallSphere")));
+    pColliderSmall->Set_ColliderActive(false);
+
+    return S_OK;
+}
+
+HRESULT CLevel_SoggySwamp::Ready_Layer_MonsterRush(const _wstring& strLayerTag)
+{
+    if (FAILED(Ready_BabyZombie(strLayerTag)))
+        return E_FAIL;
+
+    if (FAILED(Ready_Slime(strLayerTag)))
+        return E_FAIL;
+
+    if (FAILED(Ready_Skeleton(strLayerTag)))
+        return E_FAIL;
+
+    if (FAILED(Ready_Vindicator(strLayerTag)))
+        return E_FAIL;
+
+    if (FAILED(Ready_Zombie(strLayerTag)))
+        return E_FAIL;
+
     return S_OK;
 }
 
 HRESULT CLevel_SoggySwamp::Ready_Layer_Trigger(const _wstring& strLayerTag)
 {
-    CBoss_Trigger::BOSS_TRIGGER_DESC   bossTriggerDesc = {};
-    bossTriggerDesc.triggerPosition = { -4.f, 0.f, 20.5 };
+    CCauldronBoss_Trigger::BOSS_TRIGGER_DESC   bossTriggerDesc = {};
+    bossTriggerDesc.triggerPosition = { -4.f, 0.f, 20.5f };
     bossTriggerDesc.pBoss = m_pCauldronBoss;
 
-    m_pBoss_Trigger = CBoss_Trigger::Create(m_pDevice, m_pContext, &bossTriggerDesc);
+    m_pBoss_Trigger = CCauldronBoss_Trigger::Create(m_pDevice, m_pContext, &bossTriggerDesc);
     if (nullptr == m_pBoss_Trigger)
+        return E_FAIL;
+
+    CMonsterRush_Trigger::MONSTERRUSH_TRIGGER_DESC   monsterTriggerDesc = {};
+    monsterTriggerDesc.triggerPosition = { 17.f, -2.f, 166.25f };
+
+    m_pMonsterRush_Trigger = CMonsterRush_Trigger::Create(m_pDevice, m_pContext, &monsterTriggerDesc);
+    if (nullptr == m_pMonsterRush_Trigger)
         return E_FAIL;
 
     return S_OK;

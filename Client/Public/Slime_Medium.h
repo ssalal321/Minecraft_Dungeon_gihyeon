@@ -13,6 +13,7 @@ public:
 	struct SLIME_MEDIUM_DESC
 	{
 		_float4  slimeMediumPosition = { 0.f, 0.f, 0.f, 1.f };
+		_int	 currentCellIndex = {};
 	};
 
 private:

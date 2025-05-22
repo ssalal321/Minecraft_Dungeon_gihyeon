@@ -367,6 +367,9 @@ _bool CNavigation::Can_Move(_fvector vWorldPos)
 
 		if (pCurrent->Is_In(vLocalPos, &iNextNeighbor, nullptr))
 		{
+			if (Is_Locked(iCellIndex))
+				return false;
+
 			_vector vNormal = XMLoadFloat3(&pCurrent->Get_PlaneNormal());
 
 			// 평면이 걷기에 적당한지 확인
@@ -422,6 +425,9 @@ _bool CNavigation::Can_Slide(_fvector vPrevWorldPos, _fvector vMovingWorldPos, _
 	{
 		if (iNextNeighbor == -1)
 		{
+			if (Is_Locked(iCellIndex))
+				return false;
+
 			_vector vMoveDir = XMVector3Normalize(vMovingLocalPos - vPrevLocalPos);
 			_vector vEdgeNormal = pCurrent->Get_EdgeNormal(iHitEdgeIndex);
 
@@ -442,12 +448,18 @@ _bool CNavigation::Can_Slide(_fvector vPrevWorldPos, _fvector vMovingWorldPos, _
 				_vector vSlideTargetLocal = XMVector3TransformCoord(vSlideTargetWorld, WorldMatrixInv);
 				if (m_Cells[iCellIndex]->Is_In(vSlideTargetLocal, &iNextNeighbor, &iHitEdgeIndex))
 				{
+					if (Is_Locked(iCellIndex))
+						return false;
+
 					vSlidingPosition = vSlideTargetWorld;
 					m_iCurrentCellIndex = iCellIndex;
 					return true;
 				}
 				else if (iNextNeighbor != -1)
 				{
+					if (Is_Locked(iNextNeighbor))
+						return false;
+
 					iCellIndex = iNextNeighbor;
 				}
 				else

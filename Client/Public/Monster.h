@@ -2,14 +2,16 @@
 #include "Client_Defines.h"
 #include "ContainerObject.h"
 
+
 BEGIN(Engine)
 class	CShader;
 class	CModel;
 END
 
 BEGIN(Client)
-	class CArrowPool_Monster;
-	class CState;
+class CArrowPool_Monster;
+class CState;
+class CMonsterRush_Trigger;
 
 class CMonster abstract : public CContainerObject
 {
@@ -83,6 +85,9 @@ public:
 	CMonster*	Get_Eating_BossMonster() { return m_pBossMonster; }
 
 	_bool		Get_Is_Jumping() const { return m_bIsJumping; }
+
+	CMonsterRush_Trigger*	Get_MonsterRush_Trigger() { return m_pMonsterRush_Trigger; }
+
 	_vector		Get_Jump_LandPos() const { return m_vJumpTarget; }
 
 	void		Set_Is_Jumping(_bool bJumping) { m_bIsJumping = bJumping; }
@@ -102,12 +107,13 @@ public:
 		m_pBossMonster = pBossMonster;
 	}
 
+	void	Set_MyRushTrigger(CMonsterRush_Trigger* pTrigger) { m_pMonsterRush_Trigger = pTrigger; }
+
 	void	Jump_To_Target(_vector vTargetPos)
 	{
 		m_bIsJumping = true;
 		m_vJumpTarget = vTargetPos;
 	}
-
 
 	void		Change_State(const MonsterState& state);
 	void		Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)	override;
@@ -116,6 +122,8 @@ public:
 	_vector		Vec_To_Player(const _wstring& strPlayerGameObjectTag, _uint iPlayerLayerLevelIndex) const;
 	_float		Length_To_Player() const;
 	_bool		Player_In_DetectRange() const;
+
+	void		Render_DamageFont(_int iDealPoint, _float fStartY);
 
 protected:
 	_uint				m_iState = { static_cast<_uint>(ZOMBIE_STATE::STATE_END) };
@@ -133,10 +141,20 @@ protected:
 	_bool				m_bCanbeEaten = { false };
 	CMonster*			m_pBossMonster = { nullptr };
 
-	_float2				m_vScreenPos = {};
-
 	_bool				m_bIsJumping = { false };
 	_vector				m_vJumpTarget = {};
+
+#pragma region DAMAGE_FONT
+	_bool				m_bRenderDamageFont = { false };
+	_int				m_iDealPoint = {};
+	_float				m_fFontRenderedTime = {};
+
+	_float2				m_vFontStartScreenPos = {};   // 시작 위치
+	_float2				m_vFontOffset = {};           // 현재까지 올라온 오프셋
+	_float2				m_vFontCurrentScreenPos = {};  // 매 프레임 최종 위치 계산해놓는 변수
+#pragma endregion
+
+	CMonsterRush_Trigger*	m_pMonsterRush_Trigger = { nullptr };
 
 protected:
 	HRESULT				Ready_Components();

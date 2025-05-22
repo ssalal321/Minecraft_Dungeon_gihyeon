@@ -13,6 +13,7 @@ public:
 	struct ZOMBIE_DESC
 	{
 		_float4  zombiePosition = { 0.f, 0.f, 0.f, 1.f };
+		_int	 currentCellIndex = {};
 	};
 
 private:

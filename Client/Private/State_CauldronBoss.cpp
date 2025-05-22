@@ -1,8 +1,10 @@
 #include "State_CauldronBoss.h"
 #include "CauldronBoss.h"
+#include "GateFence.h"
 
 #include "Player_Arrow.h"
 #include "Item.h"
+#include "Player.h"
 #include "Slime_Small.h"
 #include "UIObject.h"
 
@@ -41,6 +43,15 @@ void CState_CauldronBoss::State_Update(_float fTimeDelta)
 		m_pCauldronBoss->Get_My_HPUIObject()->Set_GameObject_Active(false);
 
 		m_pCauldronBoss->Find_PartObject(TEXT("Part_Body"))->Set_Dying(true);
+
+		CGameObject* pGateFence = m_pGameInstance->Find_GameObject(TEXT("GameObject_GateFence_0"),
+			m_pGameInstance->Get_CurrentLevelIndex(), TEXT("Layer_BackGround"));
+		dynamic_cast<CGateFence*>(pGateFence)->Set_Dying(true);
+
+		CPlayer* pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("GameObject_Player"), m_pGameInstance->Get_CurrentLevelIndex(), TEXT("Layer_Player")));
+		CNavigation* pPlayerNav = dynamic_cast<CNavigation*>(pPlayer->Find_Component(TEXT("Com_Navigation")));
+		pPlayerNav->Unlock_Cell(899);
+		pPlayerNav->Unlock_Cell(900);
 
 		Change_State_To_Idle();
 		return;
@@ -116,6 +127,8 @@ _bool CState_CauldronBoss::Modify_HP(CCollider* pOther)
 		CItem* pItem = dynamic_cast<CItem*>(pOther->Get_OwnerObject());
 		m_pMonsterInfo->Modify_CurrentHp(-pItem->Get_DealPoint());
 
+		m_pCauldronBoss->Render_DamageFont(pItem->Get_DealPoint(), 7.f);
+
 		return true;
 	}
 
@@ -124,6 +137,8 @@ _bool CState_CauldronBoss::Modify_HP(CCollider* pOther)
 	{
 		CPlayer_Arrow* pPlayerArrow = dynamic_cast<CPlayer_Arrow*>(pOther->Get_OwnerObject());
 		m_pMonsterInfo->Modify_CurrentHp(-pPlayerArrow->Get_DealPoint());
+
+		m_pCauldronBoss->Render_DamageFont(pPlayerArrow->Get_DealPoint(), 7.f);
 
 		return true;
 	}

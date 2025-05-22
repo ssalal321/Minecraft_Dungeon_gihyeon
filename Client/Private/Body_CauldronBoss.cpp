@@ -36,8 +36,8 @@ HRESULT CBody_CauldronBoss::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_fAppearDuration = 5.f;
-	m_fDeathDuration  = 5.f;
+	m_fAppearDuration = 3.f;
+	m_fDeathDuration  = 3.f;
 
 	m_bActive = false;
 
@@ -56,7 +56,7 @@ void CBody_CauldronBoss::Update(_float fTimeDelta)
 		m_fAppearTime += fTimeDelta;
 		if (m_fAppearTime >= m_fAppearDuration)
 		{
-			m_bAppearing	  = false;
+			m_bAppearing  = false;
 			m_fAppearTime = m_fAppearDuration;
 			dynamic_cast<CCauldronBoss*>(m_pContainerObject)->Get_My_HPUIObject()->Set_GameObject_Active(true);  // 체력바 보이기
 		}
@@ -67,12 +67,11 @@ void CBody_CauldronBoss::Update(_float fTimeDelta)
 		m_fDeathTime += fTimeDelta;
 		if (m_fDeathTime >= m_fDeathDuration)
 		{
-			m_bDying = false;
+			m_bDying	 = false;
 			m_fDeathTime = m_fDeathDuration;
 			dynamic_cast<CCauldronBoss*>(m_pContainerObject)->Get_My_HPUIObject()->Set_GameObject_Active(false);  // 체력바 숨기기
 		}
 	}
-
 }
 
 void CBody_CauldronBoss::Late_Update(_float fTimeDelta)
@@ -209,11 +208,9 @@ HRESULT CBody_CauldronBoss::Bind_ShaderResources(_uint iPassIndex)
 	case 0: // Appear
 		if (FAILED(m_pShaderCom->Bind_RawValue("g_fAppearTime", &m_fAppearTime, sizeof(_float)))) return E_FAIL;
 		if (FAILED(m_pShaderCom->Bind_RawValue("g_fAppearDuration", &m_fAppearDuration, sizeof(_float)))) return E_FAIL;
-		if (FAILED(m_pShaderCom->Bind_RawValue("g_bAppearing", &m_bAppearing, sizeof(_bool)))) return E_FAIL;
 		break;
 
 	case 2: // Disappear
-		if (FAILED(m_pShaderCom->Bind_RawValue("g_bDying", &m_bDying, sizeof(_bool)))) return E_FAIL;
 		if (FAILED(m_pShaderCom->Bind_RawValue("g_fDeathTime", &m_fDeathTime, sizeof(_float)))) return E_FAIL;
 		if (FAILED(m_pShaderCom->Bind_RawValue("g_fDeathDuration", &m_fDeathDuration, sizeof(_float)))) return E_FAIL;
 		break;

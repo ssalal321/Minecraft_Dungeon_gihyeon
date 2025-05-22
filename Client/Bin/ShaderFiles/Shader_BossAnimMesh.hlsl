@@ -19,11 +19,9 @@ vector g_vCamPosition;
 // 연출 제어용
 float g_fAppearTime;
 float g_fAppearDuration;
-bool g_bAppearing;
 
 float g_fDeathTime;
 float g_fDeathDuration;
-bool g_bDying;
 
 sampler g_LinearSampler = sampler_state
 {

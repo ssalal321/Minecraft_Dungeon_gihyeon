@@ -2,6 +2,7 @@
 #include "Vindicator.h"
 
 #include "Item.h"
+#include "MonsterRush_Trigger.h"
 #include "Player_Arrow.h"
 
 
@@ -128,6 +129,9 @@ _bool CState_Vindicator::Change_State_To_Dead()
 {
 	if (m_pMonsterInfo->Get_CurrentHP() <= 0)
 	{
+		if (nullptr != m_pVindicator->Get_MonsterRush_Trigger())
+			m_pVindicator->Get_MonsterRush_Trigger()->Notify_Monster_Died(m_pVindicator);
+
 		m_pVindicator->Change_State(Make_VindicatorState(VINDICATOR_STATE::DEAD));
 		return true;
 	}
@@ -143,6 +147,8 @@ _bool CState_Vindicator::Modify_HP(CCollider* pOther)
 		CItem* pItem = dynamic_cast<CItem*>(pOther->Get_OwnerObject());
 		m_pMonsterInfo->Modify_CurrentHp(-pItem->Get_DealPoint());
 
+		m_pVindicator->Render_DamageFont(pItem->Get_DealPoint(), 4.f);
+
 		return true;
 	}
 
@@ -151,6 +157,8 @@ _bool CState_Vindicator::Modify_HP(CCollider* pOther)
 	{
 		CPlayer_Arrow* pPlayerArrow = dynamic_cast<CPlayer_Arrow*>(pOther->Get_OwnerObject());
 		m_pMonsterInfo->Modify_CurrentHp(-pPlayerArrow->Get_DealPoint());
+
+		m_pVindicator->Render_DamageFont(pPlayerArrow->Get_DealPoint(), 4.f);
 
 		return true;
 	}

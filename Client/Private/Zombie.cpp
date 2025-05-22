@@ -49,11 +49,11 @@ HRESULT CZombie::Initialize(void* pArg)
 	if (FAILED(Ready_States()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
-								XMVectorSet(0.f, 0.f, -10.f, 1.f));
+	ZOMBIE_DESC* pDesc = static_cast<ZOMBIE_DESC*>(pArg);
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&pDesc->zombiePosition));
 
-	/*ZOMBIE_DESC* pDesc = static_cast<ZOMBIE_DESC*>(pArg);
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&pDesc->zombiePosition));*/
+	if (m_pNavigationCom)
+		m_pNavigationCom->SetUp_CurrentCellIndex(pDesc->currentCellIndex);
 
 	return S_OK;
 }

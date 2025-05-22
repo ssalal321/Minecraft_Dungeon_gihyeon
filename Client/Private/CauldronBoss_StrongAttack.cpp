@@ -55,7 +55,7 @@ void CCauldronBoss_StrongAttack::State_Update(_float fTimeDelta)
     if (!m_bShot)
     {
         // 슬라임 발사
-        for (_int i = 0; i < 0; ++i)  // 한 번에 1마리 발사
+        for (_int i = 0; i < 0; ++i)  // 한 번에 3마리 발사
         {
             // 랜덤한 방향으로 발사
             _float angle = static_cast<_float>(rand() % 360);  // 0~360도 범위에서 랜덤 각도 생성
@@ -82,7 +82,9 @@ void CCauldronBoss_StrongAttack::State_Update(_float fTimeDelta)
          
         	// 목표 위치로 점프 시작 신호 보내기
         	pSlimeCauldron->Jump_To_Target(vLandingPosition);
-            
+            CNavigation* pNavigation = dynamic_cast<CNavigation*>(pSlimeCauldron->Find_Component(TEXT("Com_Navigation")));
+            pNavigation->Lock_Cell(899);
+            pNavigation->Lock_Cell(900);
         }
 
         m_bShot = true;

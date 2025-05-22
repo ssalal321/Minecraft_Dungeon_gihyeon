@@ -170,6 +170,8 @@ public:
 
 	void	Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState) override;
 
+	void	Render_DamageFont(_int iDealPoint, _float fStartY);
+
 private:
 	PLAYER_DESC*		m_pPlayerInfo = { nullptr };
 	_float4				m_NextPosition = { 0.f, 0.f, 0.f, 1.f };
@@ -203,8 +205,15 @@ private:
 	_float4				m_ClickPickedPos	= { 0.f, 0.f, 0.f, 1.f };
 #pragma endregion
 
-#pragma region STATE
-	
+#pragma region DAMAGE_FONT
+	_bool				m_bRenderDamageFont = { false };
+	_int				m_iDealPoint = {};
+	_float				m_fFontRenderedTime = {};
+
+	_float2				m_vFontStartScreenPos = {};   // 시작 위치
+	_float2				m_vFontOffset = {};           // 현재까지 올라온 오프셋
+	_float2				m_vFontCurrentScreenPos = {};  // 매 프레임 최종 위치 계산해놓는 변수
+
 #pragma endregion
 
 private:

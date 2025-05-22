@@ -4,23 +4,14 @@
 
 /* 플레이어라는 객체를 구성하기위한 파츠들을 모아서 쥐고 있는 객체. */
 
-namespace Engine
-{
-	class CUIObject;
-}
-
-namespace Client
-{
-	class CCauldronBossHP;
-}
-
-namespace Client
-{
-	class CBody_CauldronBoss;
-}
+BEGIN(Engine)
+class CUIObject;
+END
 
 BEGIN(Client)
-	class CBoss_Trigger;
+class CCauldronBoss_Trigger;
+class CBody_CauldronBoss;
+class CCauldronBossHP;
 class CState;
 
 class CCauldronBoss final : public CMonster

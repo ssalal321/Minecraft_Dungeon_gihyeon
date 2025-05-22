@@ -43,9 +43,6 @@ HRESULT CSkeleton::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(m_pMonsterInfo)))
 		return E_FAIL;
 
-	if (m_pNavigationCom)
-		m_pNavigationCom->SetUp_CurrentCellIndex(0);
-
 	m_pArrowPool_Monster = CArrowPool_Monster::Create();
 	if (nullptr == m_pArrowPool_Monster)	
 		return E_FAIL;
@@ -56,8 +53,11 @@ HRESULT CSkeleton::Initialize(void* pArg)
 	if (FAILED(Ready_States()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
-								XMVectorSet(-5.f, 0.f, -15.f, 1.f));
+	SKELETON_DESC*	pDesc = static_cast<SKELETON_DESC*>(pArg);
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&pDesc->skeletonPosition));
+
+	if (m_pNavigationCom)
+		m_pNavigationCom->SetUp_CurrentCellIndex(pDesc->currentCellIndex);
 
 	return S_OK;
 }

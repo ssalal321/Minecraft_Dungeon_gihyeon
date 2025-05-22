@@ -82,10 +82,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>;../../FMod</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>;../../FMod</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);fmod_vc.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -96,12 +99,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>;../../FMod</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>;../../FMod</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);fmod_vc.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -110,13 +116,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NOMINMAX;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../../EngineSDK/Inc/;../Public/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../EngineSDK/Inc/;../Public/;../../FMod</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../EngineSDK/Lib/</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../../EngineSDK/Lib/;../../FMod</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Engine.lib;%(AdditionalDependencies);fmod_vc.lib</AdditionalDependencies>
     </Link>
     <FxCompile>
       <ShaderType>Effect</ShaderType>
@@ -133,15 +139,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NOMINMAX;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../../EngineSDK/Inc/;../Public/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../EngineSDK/Inc/;../Public/;../../FMod</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../EngineSDK/Lib/</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../../EngineSDK/Lib/;../../FMod</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Engine.lib;%(AdditionalDependencies);fmod_vc.lib</AdditionalDependencies>
     </Link>
     <FxCompile>
       <ShaderType>Effect</ShaderType>
@@ -168,7 +174,7 @@
     <ClInclude Include="..\Public\Body_Slime_Small.h" />
     <ClInclude Include="..\Public\Body_Vindicator.h" />
     <ClInclude Include="..\Public\CauldronBossHP.h" />
-    <ClInclude Include="..\Public\Boss_Trigger.h" />
+    <ClInclude Include="..\Public\CauldronBoss_Trigger.h" />
     <ClInclude Include="..\Public\BulletPool_Monster.h" />
     <ClInclude Include="..\Public\CauldronBoss.h" />
     <ClInclude Include="..\Public\CauldronBoss_BasicAttack.h" />
@@ -177,6 +183,8 @@
     <ClInclude Include="..\Public\CauldronBoss_StrongAttack.h" />
     <ClInclude Include="..\Public\CauldronBoss_TPose.h" />
     <ClInclude Include="..\Public\ChestIcon.h" />
+    <ClInclude Include="..\Public\GateFence.h" />
+    <ClInclude Include="..\Public\MonsterRush_Trigger.h" />
     <ClInclude Include="..\Public\RollIcon.h" />
     <ClInclude Include="..\Public\Skeleton_Dead.h" />
     <ClInclude Include="..\Public\Slime_Cauldron.h" />
@@ -306,7 +314,7 @@
     <ClCompile Include="..\Private\Body_Slime_Small.cpp" />
     <ClCompile Include="..\Private\Body_Vindicator.cpp" />
     <ClCompile Include="..\Private\CauldronBossHP.cpp" />
-    <ClCompile Include="..\Private\Boss_Trigger.cpp" />
+    <ClCompile Include="..\Private\CauldronBoss_Trigger.cpp" />
     <ClCompile Include="..\Private\BulletPool_Monster.cpp" />
     <ClCompile Include="..\Private\CauldronBoss.cpp" />
     <ClCompile Include="..\Private\CauldronBoss_BasicAttack.cpp" />
@@ -315,6 +323,8 @@
     <ClCompile Include="..\Private\CauldronBoss_StrongAttack.cpp" />
     <ClCompile Include="..\Private\CauldronBoss_TPose.cpp" />
     <ClCompile Include="..\Private\ChestIcon.cpp" />
+    <ClCompile Include="..\Private\GateFence.cpp" />
+    <ClCompile Include="..\Private\MonsterRush_Trigger.cpp" />
     <ClCompile Include="..\Private\RollIcon.cpp" />
     <ClCompile Include="..\Private\Skeleton_Dead.cpp" />
     <ClCompile Include="..\Private\Slime_Cauldron.cpp" />

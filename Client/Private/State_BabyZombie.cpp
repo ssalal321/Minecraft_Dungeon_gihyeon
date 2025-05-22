@@ -3,7 +3,7 @@
 
 #include "Player_Arrow.h"
 #include "Item.h"
-
+#include "MonsterRush_Trigger.h"
 
 CState_BabyZombie::CState_BabyZombie(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
 	: CState_Monster(pActor, pGameObjectDesc, pDesc)
@@ -115,6 +115,9 @@ _bool CState_BabyZombie::Change_State_To_Dead()
 {
 	if (m_pMonsterInfo->Get_CurrentHP() <= 0)
 	{
+		if (nullptr != m_pBabyZombie->Get_MonsterRush_Trigger())
+			m_pBabyZombie->Get_MonsterRush_Trigger()->Notify_Monster_Died(m_pBabyZombie);
+
 		m_pBabyZombie->Change_State(Make_BabyZombieState(BABYZOMBIE_STATE::DEAD));
 		return true;
 	}
@@ -130,6 +133,8 @@ _bool CState_BabyZombie::Modify_HP(CCollider* pOther)
 		CItem* pItem = dynamic_cast<CItem*>(pOther->Get_OwnerObject());
 		m_pMonsterInfo->Modify_CurrentHp(-pItem->Get_DealPoint());
 
+		m_pBabyZombie->Render_DamageFont(pItem->Get_DealPoint(), 3.f);
+
 		return true;
 	}
 
@@ -138,6 +143,8 @@ _bool CState_BabyZombie::Modify_HP(CCollider* pOther)
 	{
 		CPlayer_Arrow* pPlayerArrow = dynamic_cast<CPlayer_Arrow*>(pOther->Get_OwnerObject());
 		m_pMonsterInfo->Modify_CurrentHp(-pPlayerArrow->Get_DealPoint());
+
+		m_pBabyZombie->Render_DamageFont(pPlayerArrow->Get_DealPoint(), 3.f);
 
 		return true;
 	}

@@ -18,6 +18,7 @@
 #include "CauldronBoss.h"
 #include "CauldronBossHP.h"
 #include "ChestIcon.h"
+#include "GateFence.h"
 #include "InventoryBase.h"
 #include "InventoryGearSlot.h"
 #include "InventoryArtifactSlot.h"
@@ -385,6 +386,8 @@ HRESULT CLoader::Ready_Prototype_ModelCom_Static()
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Monster/CauldronBoss/CauldronBoss2.fbx", PreTransformMatrix))))
 		return E_FAIL;
 
+
+	// NONANIM
 	/* For.Prototype_Component_Model_Cube */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Cube"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Cube/CubeMesh.fbx", PreTransformMatrix))))
@@ -424,6 +427,11 @@ HRESULT CLoader::Ready_Prototype_ModelCom_Static()
 	/* For.Prototype_Component_Model_LobbyChest_Opened */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_LobbyChest_Opened"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Chest/LobbyChest/Lobby_Chest_Opened.fbx", PreTransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_GateFence */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_GateFence"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Fence/GateFence.fbx", PreTransformMatrix))))
 		return E_FAIL;
 
 
@@ -638,7 +646,6 @@ HRESULT CLoader::Ready_Prototype_GameObject_Static()
 		CWeapon_Bow::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-
 	/* For.Prototype_GameObject_Arrow */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerArrow"),
 		CPlayer_Arrow::Create(m_pDevice, m_pContext))))
@@ -669,7 +676,10 @@ HRESULT CLoader::Ready_Prototype_GameObject_Static()
 		CSoggySwampMap::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-
+	/* For.Prototype_GameObject_GateFence */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_GateFence"),
+		CGateFence::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	return S_OK;
 }

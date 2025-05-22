@@ -52,10 +52,10 @@ void CPlayer_Roll::State_Update(_float fTimeDelta)
 		m_bRollStarted = true;
 	}
 
-	if (m_bRollStarted && fAnimCurTrackPos <= 19.f)
+	if (m_bRollStarted && fAnimCurTrackPos <= 21.f)
 	{
 		CNavigation* pNavigationCom = dynamic_cast<CNavigation*>(m_pPlayer->Find_Component(TEXT("Com_Navigation")));
-		m_pTransformCom->Go_Straight(fTimeDelta, pNavigationCom, 1.7f);
+		m_pTransformCom->Go_Straight(fTimeDelta, pNavigationCom, 2.f);
 	}
 }
 

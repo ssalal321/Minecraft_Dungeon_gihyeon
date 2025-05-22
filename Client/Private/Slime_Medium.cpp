@@ -37,8 +37,8 @@ HRESULT CSlime_Medium::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(m_pMonsterInfo)))
 		return E_FAIL;
 
-	if (m_pNavigationCom)
-		m_pNavigationCom->SetUp_CurrentCellIndex(0);
+	/*if (m_pNavigationCom)
+		m_pNavigationCom->SetUp_CurrentCellIndex(0);*/
 
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;
@@ -50,6 +50,9 @@ HRESULT CSlime_Medium::Initialize(void* pArg)
 
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
 								XMLoadFloat4(&pDesc->slimeMediumPosition));
+
+	if (m_pNavigationCom)
+		m_pNavigationCom->SetUp_CurrentCellIndex(pDesc->currentCellIndex);
 
 	return S_OK;
 }

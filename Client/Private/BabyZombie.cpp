@@ -45,9 +45,6 @@ HRESULT CBabyZombie::Initialize(void* pArg)
 	if (FAILED(Ready_States()))
 		return E_FAIL;
 
-	/*m_pTransformCom->Set_State(CTransform::STATE_POSITION,
-								XMVectorSet(-3.f, 0.f, -15.f, 1.f));*/
-
 	BABYZOMBIE_DESC* pDesc = static_cast<BABYZOMBIE_DESC*>(pArg);
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&pDesc->babyZombiePosition));
 

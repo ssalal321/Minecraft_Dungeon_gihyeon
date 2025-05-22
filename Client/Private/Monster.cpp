@@ -1,4 +1,7 @@
 #include "Monster.h"
+
+#include <random>
+
 #include "MonsterState.h"
 
 #include "GameInstance.h"
@@ -56,18 +59,18 @@ void CMonster::Update(_float fTimeDelta)
 
 	m_pMonsterFSM->Update_State(fTimeDelta);
 
-	XMStoreFloat2(&m_vScreenPos,
-		XMVector3Project(
-			m_pTransformCom->Get_State(CTransform::STATE_POSITION) + XMVectorSet(0.f, 3.f, 0.f, 1.f),
-			0.f,
-			0.f,
-			static_cast<_float>(g_iWinSizeX),
-			static_cast<_float>(g_iWinSizeY),
-			0.f,
-			1.f,
-			m_pGameInstance->Get_Transform_Matrix(CPipeLine::D3DTS_PROJ),
-			m_pGameInstance->Get_Transform_Matrix(CPipeLine::D3DTS_VIEW),
-			XMMatrixIdentity()));
+
+	if (m_bRenderDamageFont)
+	{
+		m_fFontRenderedTime += fTimeDelta;
+
+		// 오프셋 누적
+		m_vFontOffset.y -= 35.f * fTimeDelta;
+		m_vFontCurrentScreenPos.y = m_vFontStartScreenPos.y + m_vFontOffset.y;
+
+		if (m_fFontRenderedTime >= 1.f)
+			m_bRenderDamageFont = false;
+	}
 }
 
 void CMonster::Late_Update(_float fTimeDelta)
@@ -81,8 +84,14 @@ void CMonster::Late_Update(_float fTimeDelta)
 
 HRESULT CMonster::Render()
 {
-	std::wstring strHP = std::to_wstring(m_pMonsterInfo->Get_CurrentHP());
-	m_pGameInstance->Draw_Text(TEXT("Font_Minecraft"), strHP.c_str(), m_vScreenPos/*, Colors::White, 0.f, { 0.f, 0.f }, 1.f*/);
+	if (m_bRenderDamageFont)
+	{
+		std::wstring strHP = std::to_wstring(m_iDealPoint);
+		m_pGameInstance->Draw_Text(TEXT("Font_Minecraft"), strHP.c_str(), m_vFontCurrentScreenPos);
+	}
+
+	//std::wstring strHP = std::to_wstring(m_pMonsterInfo->Get_CurrentHP());
+	//m_pGameInstance->Draw_Text(TEXT("Font_Minecraft"), strHP.c_str(), m_vScreenPos/*, Colors::White, 0.f, { 0.f, 0.f }, 1.f*/);
 
 #ifdef _DEBUG
 	if (m_pNavigationCom)
@@ -233,6 +242,38 @@ _bool CMonster::Player_In_DetectRange() const
 
 	return	vecToPlayer < m_pMonsterInfo->Get_DetectRange();
 }
+
+void CMonster::Render_DamageFont(_int iDealPoint, _float fStartY)
+{
+	m_iDealPoint = iDealPoint;
+	m_bRenderDamageFont = true;
+	m_fFontRenderedTime = 0.f;
+
+	_vector vWorldPos = m_pTransformCom->Get_State(CTransform::STATE_POSITION) + XMVectorSet(0.f, fStartY, 0.f, 1.f);
+
+	XMStoreFloat2(&m_vFontStartScreenPos,
+		XMVector3Project(
+			vWorldPos,
+			0.f, 0.f,
+			static_cast<_float>(g_iWinSizeX),
+			static_cast<_float>(g_iWinSizeY),
+			0.f, 1.f,
+			m_pGameInstance->Get_Transform_Matrix(CPipeLine::D3DTS_PROJ),
+			m_pGameInstance->Get_Transform_Matrix(CPipeLine::D3DTS_VIEW),
+			XMMatrixIdentity()));
+
+	m_vFontOffset = { 0.f, 0.f };
+
+	// 더 정교한 랜덤 흔들림
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	uniform_real_distribution<_float> dist(-3.0f, 3.0f);
+	m_vFontOffset.x += dist(gen);
+
+	m_vFontCurrentScreenPos.x = m_vFontStartScreenPos.x + m_vFontOffset.x;
+	m_vFontCurrentScreenPos.y = m_vFontStartScreenPos.y + m_vFontOffset.y;
+}
+
 
 void CMonster::Free()
 {
