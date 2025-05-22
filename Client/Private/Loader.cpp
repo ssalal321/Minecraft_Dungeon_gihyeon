@@ -15,6 +15,7 @@
 #include "Body_Slime_Small.h"
 #include "Body_Vindicator.h"
 #include "Body_Zombie.h"
+#include "Camera_Target.h"
 #include "CauldronBoss.h"
 #include "CauldronBossHP.h"
 #include "ChestIcon.h"
@@ -659,6 +660,11 @@ HRESULT CLoader::Ready_Prototype_GameObject_Static()
 	/* For.Prototype_GameObject_Camera_Free */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Free"),
 		CCamera_Free::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Camera_Target */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Target"),
+		CCamera_Target::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Glaive_Steel */

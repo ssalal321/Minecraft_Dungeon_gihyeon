@@ -247,6 +247,24 @@ void CTransform::LookAt(_fvector vAt)
 	Set_State(STATE_LOOK, XMVector3Normalize(vLook) * vScaled.z);
 }
 
+void CTransform::LookAt_Full(_fvector vAt)
+{
+	_float3		vScaled = Compute_Scaled();
+
+	_vector		vPosition = Get_State(STATE_POSITION);
+
+	_vector		vLook = vAt - vPosition;
+	
+	_vector		vRight = XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLook);
+
+	_vector		vUp = XMVector3Cross(vLook, vRight);
+
+	Set_State(STATE_RIGHT, XMVector3Normalize(vRight) * vScaled.x);
+	Set_State(STATE_UP, XMVector3Normalize(vUp) * vScaled.y);
+	Set_State(STATE_LOOK, XMVector3Normalize(vLook) * vScaled.z);
+}
+
+
 void CTransform::Add_Momentum(_vector vImpulse)
 {
 	_vector vOld = XMLoadFloat3(&m_Velocity);

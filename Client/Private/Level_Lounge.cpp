@@ -9,6 +9,7 @@
 #include "PartObject.h"
 #include "Level_Loading.h"
 #include "Camera_Free.h"
+#include "Camera_Target.h"
 #include "HealthPotion.h"
 #include "InventoryBase.h"
 #include "InventoryData.h"
@@ -33,9 +34,6 @@ HRESULT CLevel_Lounge::Initialize()
     if (FAILED(Ready_Lights()))
         return E_FAIL;
 
-    if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
-        return E_FAIL;
-
     if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
         return E_FAIL;
 
@@ -43,6 +41,9 @@ HRESULT CLevel_Lounge::Initialize()
         return E_FAIL;
 
     if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
+        return E_FAIL;
+
+    if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
         return E_FAIL;
 
     if (FAILED(Ready_Layer_PlayerSlotUI(TEXT("Layer_PlayerSlotUI"))))
@@ -202,27 +203,6 @@ HRESULT CLevel_Lounge::Ready_Lights()
     return S_OK;
 }
 
-HRESULT CLevel_Lounge::Ready_Layer_Camera(const _wstring& strLayerTag)
-{
-    CCamera_Free::CAMERA_FREE_DESC            Desc{};
-
-    Desc.strGameObjectTag = TEXT("GameObject_Camera_Free");
-    Desc.vEye = _float3(0.f, 20.f, -15.f);
-    Desc.vAt = _float3(0.f, 0.f, 0.f);
-    Desc.fFov = XMConvertToRadians(60.f);
-    Desc.fNear = 0.01f;
-    Desc.fFar = 500.f;
-    Desc.fKeySensor = 0.03f;
-    Desc.fSpeedPerSec = 8.f;
-    Desc.fRotationPerSec = XMConvertToRadians(180.f);
-
-    CGameObject* pCameraObject = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Free"),
-        LEVEL_LOUNGE, strLayerTag, &Desc);
-    if (nullptr == pCameraObject)     return E_FAIL;
-
-    return S_OK;
-}
-
 HRESULT CLevel_Lounge::Ready_Layer_Player(const _wstring& strLayerTag)
 {
     const _uint currentLevel = m_pGameInstance->Get_ChangedLevelIndex();
@@ -248,8 +228,8 @@ HRESULT CLevel_Lounge::Ready_Layer_Player(const _wstring& strLayerTag)
 
     // 3. 어디에도 없으면 생성
     CGameObject* pPlayerObject = m_pGameInstance->Add_GameObject(LEVEL_STATIC,
-													TEXT("Prototype_GameObject_PlayerHex"),
-												LEVEL_LOUNGE, strLayerTag);
+        TEXT("Prototype_GameObject_PlayerHex"),
+        LEVEL_LOUNGE, strLayerTag);
     if (nullptr == pPlayerObject)
         return E_FAIL;
 
@@ -257,6 +237,36 @@ HRESULT CLevel_Lounge::Ready_Layer_Player(const _wstring& strLayerTag)
 
     // 생성 후 persistent 등록
     if (FAILED(m_pGameInstance->Set_Layer_Persistent(LEVEL_LOUNGE, strLayerTag)))
+        return E_FAIL;
+
+    return S_OK;
+}
+
+
+HRESULT CLevel_Lounge::Ready_Layer_Camera(const _wstring& strLayerTag)
+{
+    // 플레이어가 먼저 준비되어 있어야 함
+    if (!m_pPlayer)
+        return E_FAIL;
+
+    CTransform* pTargetTransform = dynamic_cast<CTransform*>(m_pPlayer->Find_Component(TEXT("Com_Transform")));
+    if (!pTargetTransform)
+        return E_FAIL;
+
+    CCamera_Target::CAMERA_TARGET_DESC desc{};
+    desc.strGameObjectTag = TEXT("GameObject_Camera_Target");
+    desc.pTargetTransform = pTargetTransform;                   // 추적 대상 지정
+    desc.vOffset    = _float3(-14.f, 18.f, -14.f);            // 뒤쪽 위에서 바라보게
+    desc.fLagSpeed  = 5.f;
+    desc.fFov       = XMConvertToRadians(60.f);
+    desc.fNear      = 0.01f;
+    desc.fFar       = 500.f;
+
+    CGameObject* pCamera = m_pGameInstance->Add_GameObject(
+        LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Target"),
+        LEVEL_LOUNGE, strLayerTag, &desc);
+
+    if (!pCamera)
         return E_FAIL;
 
     return S_OK;
