@@ -27,7 +27,7 @@ HRESULT CCauldronBoss_IntenseSpin::Init_State()
 void CCauldronBoss_IntenseSpin::State_Enter()
 {
 	m_fSpinTime = 0.f;
-	m_pMonsterInfo->Modify_CurrentHp(+30);
+	m_pMonsterInfo->Modify_CurrentHp(+100);
 
 	m_pActorModelCom->Set_Animation(static_cast<_uint>(CAULDRONBOSS_STATE::INTENSE_SPIN), false, 1.3f);
 

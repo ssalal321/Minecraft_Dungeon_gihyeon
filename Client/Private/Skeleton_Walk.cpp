@@ -70,7 +70,7 @@ void CSkeleton_Walk::State_Update(_float fTimeDelta)
 		_vector vTargetPos = vCurPos + m_vOppositeDir;
 
 		m_pTransformCom->LookAt(vTargetPos);
-		m_pTransformCom->Go_Straight(fTimeDelta, m_pNavigationCom);
+		m_pTransformCom->Go_Straight(fTimeDelta, m_pNavigationCom, 1.2f);
 
 		// 일정 거리 이상 도망쳤으면 공격 상태 전환
 		_vector vMoved = vCurPos - m_vRetreatStartPos;

@@ -23,17 +23,25 @@ public:
 
 		_float	  fRollCoolTimeRemain;
 		_float	  fRollCoolTimeTotal;
+
+		_float	  fHPCoolTimeRemain;
+		_float	  fHPCoolTimeTotal;
+
 		_bool	  bRollCoolDowning = { false };
+		_bool	  bHPCoolDowning = { false };
 
 		_uint	 iArrowNum;
 
 
 		PLAYER_DESC(const _wstring& GameObjectTag, _int currentHP, const _int& maxHP, _int arrowDealPoint,
-			const _float&  attackableRange, _float rollCoolTimeRemain, _float rollCoolTimeTotal, _uint arrowNum, _bool stunned = false,
+			const _float&  attackableRange, _float rollCoolTimeRemain, _float rollCoolTimeTotal,
+			_float HPCoolTimeRemain, _float HPCoolTimeTotal,
+			_uint arrowNum, _bool stunned = false,
 			_float rotationPerSec = 0.f, _float speedPerSec = 0.f)
 			: GAMEOBJECT_DESC(GameObjectTag, rotationPerSec, speedPerSec), iCurrentHP(currentHP), iMaxHP(maxHP),
 				iArrowDealPoint(arrowDealPoint), fAttackableRange(attackableRange), bStunned(stunned),
-				fRollCoolTimeRemain(rollCoolTimeRemain), fRollCoolTimeTotal(rollCoolTimeTotal), iArrowNum(arrowNum) {
+				fRollCoolTimeRemain(rollCoolTimeRemain), fRollCoolTimeTotal(rollCoolTimeTotal),
+				fHPCoolTimeRemain(HPCoolTimeRemain), fHPCoolTimeTotal(HPCoolTimeTotal), iArrowNum(arrowNum) {
 		}
 
 		~PLAYER_DESC() override = default;
@@ -42,15 +50,26 @@ public:
 		const _int&		Get_MaxHP()		const { return iMaxHP; }
 		const _int&		Get_Arrow_DealPoint() const { return iArrowDealPoint; }
 		const _float&	Get_AttackableRange() const { return fAttackableRange; }
+		_uint			Get_ArrowNum() const { return iArrowNum; }
 
 		_float	Get_RollCooldown_RemainTime() const { return fRollCoolTimeRemain; }
 		_float	Get_RollCooldown_TotalTime()  const { return fRollCoolTimeTotal; }
+
+		_float	Get_HPCooldown_RemainTime() const { return fHPCoolTimeRemain; }
+		_float	Get_HPCooldown_TotalTime()  const { return fHPCoolTimeTotal; }
 
 		_bool	Get_RollCoolDowning() const { return bRollCoolDowning; }
 		void	Start_RollCoolDown(_bool bStartCoolDown)
 		{
 			bRollCoolDowning = bStartCoolDown;
 			fRollCoolTimeRemain = fRollCoolTimeTotal;
+		}
+
+		_bool	Get_HPCoolDowning() const { return bHPCoolDowning; }
+		void	Start_HPCoolDown(_bool bStartCoolDown)
+		{
+			bHPCoolDowning = bStartCoolDown;
+			fHPCoolTimeRemain = fHPCoolTimeTotal;
 		}
 
 		void	Modify_CurrentHp(_int iDamageOrHeal)
@@ -83,6 +102,21 @@ public:
 				{
 					fRollCoolTimeRemain = 0.f;
 					bRollCoolDowning = false;
+				}
+			}
+		};
+
+		void	HP_CoolDown(_float fTimeDelta)
+		{
+			if (fHPCoolTimeRemain > 0.f)
+			{
+				fHPCoolTimeRemain = max(0.f, fHPCoolTimeRemain - fTimeDelta);
+
+				// 쿨타임이 0이 되면 즉시 알림 처리 등 추가 가능
+				if (fHPCoolTimeRemain <= 0.f)
+				{
+					fHPCoolTimeRemain = 0.f;
+					bHPCoolDowning = false;
 				}
 			}
 		};
@@ -212,9 +246,11 @@ private:
 
 	_float2				m_vFontStartScreenPos = {};   // 시작 위치
 	_float2				m_vFontOffset = {};           // 현재까지 올라온 오프셋
-	_float2				m_vFontCurrentScreenPos = {};  // 매 프레임 최종 위치 계산해놓는 변수
+	_float2				m_FontCurrentScreenPos = {};  // 매 프레임 최종 위치 계산해놓는 변수
 
 #pragma endregion
+
+	_float2				m_ArrowScreenPos = {};
 
 private:
 	

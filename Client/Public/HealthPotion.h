@@ -12,32 +12,32 @@ END
 BEGIN(Client)
 class CPlayer;
 
-class CRollIcon final : public CUIObject
+class CHealthPotion final : public CUIObject
 {
 public:
 
-	typedef struct ROLL_ICON_DESC : public CUIObject::UIOBJECT_DESC
+	typedef struct HEALTHPOTION_ICON_DESC : public CUIObject::UIOBJECT_DESC
 	{
 		_float			fPlayTime;
 
-		ROLL_ICON_DESC(const _tchar* GameObjectTag, UI_STATE uiState,
+		HEALTHPOTION_ICON_DESC(const _tchar* GameObjectTag, UI_STATE uiState,
 			_float x, _float y, _float z, _float sizeX, _float sizeY,
 			const wstring& textureTag, _bool alphaBlend = true, _float speedPerSec = 0.f, _float rotationPerSec = 0.f, _float playTime = 0.f)
 			: UIOBJECT_DESC(GameObjectTag, uiState, x, y, z, sizeX, sizeY, textureTag, alphaBlend, rotationPerSec, speedPerSec),
 			  fPlayTime(playTime) { }
 
 		//// 복사 생성자
-		//ROLL_ICON_DESC(const ROLL_ICON_DESC& other)
+		//HEALTHPOTION_ICON_DESC(const HEALTHPOTION_ICON_DESC& other)
 		//	: UIOBJECT_DESC(other), fPlayTime(other.fPlayTime) { }
 
-		~ROLL_ICON_DESC() override = default;
+		~HEALTHPOTION_ICON_DESC() override = default;
 
 	}ROLL_ICON_DESC;
 
 private:
-	CRollIcon(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CRollIcon(const CRollIcon& Prototype);
-	~CRollIcon() override = default;
+	CHealthPotion(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CHealthPotion(const CHealthPotion& Prototype);
+	~CHealthPotion() override = default;
 
 
 public:
@@ -66,7 +66,7 @@ private:
 	HRESULT		Ready_Components();
 
 public:
-	static	 CRollIcon*		Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static	 CHealthPotion*		Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CGameObject*			Clone(void* pArg)	override;
 	void					Free()				override;
 };

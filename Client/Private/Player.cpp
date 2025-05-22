@@ -40,7 +40,7 @@ HRESULT CPlayer::Initialize_Prototype()
 
 HRESULT CPlayer::Initialize(void* pArg)
 {
-	m_pPlayerInfo = new PLAYER_DESC(TEXT("GameObject_Player"), 1000, 1000, 15, 4.f, 0.f, 5.f, 100, false, 90.f, 7.f/*3.f*/);
+	m_pPlayerInfo = new PLAYER_DESC(TEXT("GameObject_Player"), 3000, 3000, 15, 4.f, 0.f, 5.f, 0.f, 40.f, 100, false, 90.f, 3.f);
 
 	if (FAILED(__super::Initialize(m_pPlayerInfo)))
 		return E_FAIL;
@@ -62,6 +62,8 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 	m_pTransformCom->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(180.f));
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMVectorSet(-11.f, 0.05f, -2.5f, 1.f));
+
+	m_ArrowScreenPos = { g_iWinSizeX * 0.5f + 217.f, g_iWinSizeY - 105.f * 0.5f - 23.f };
 
 	if (m_pNavigationCom)
 		m_pNavigationCom->SetUp_CurrentCellIndex(1);
@@ -86,6 +88,8 @@ void CPlayer::Update(_float fTimeDelta)
 	if (m_pPlayerInfo->Get_RollCoolDowning())
 		m_pPlayerInfo->Roll_CoolDown(fTimeDelta);
 
+	if (m_pPlayerInfo->Get_HPCoolDowning())
+		m_pPlayerInfo->HP_CoolDown(fTimeDelta);
 
 	if (m_bRenderDamageFont)
 	{
@@ -93,7 +97,7 @@ void CPlayer::Update(_float fTimeDelta)
 
 		// 오프셋 누적
 		m_vFontOffset.y -= 35.f * fTimeDelta;
-		m_vFontCurrentScreenPos.y = m_vFontStartScreenPos.y + m_vFontOffset.y;
+		m_FontCurrentScreenPos.y = m_vFontStartScreenPos.y + m_vFontOffset.y;
 
 		if (m_fFontRenderedTime >= 1.f)
 			m_bRenderDamageFont = false;
@@ -118,8 +122,11 @@ HRESULT CPlayer::Render()
 	if (m_bRenderDamageFont)
 	{
 		std::wstring strHP = std::to_wstring(m_iDealPoint);
-		m_pGameInstance->Draw_Text(TEXT("Font_Minecraft"), strHP.c_str(), m_vFontCurrentScreenPos);
+		m_pGameInstance->Draw_Text(TEXT("Font_Minecraft"), strHP.c_str(), m_FontCurrentScreenPos);
 	}
+
+	std::wstring strArrowNum = std::to_wstring(m_pPlayerInfo->Get_ArrowNum());
+	m_pGameInstance->Draw_Text(TEXT("Font_Minecraft"), strArrowNum.c_str(), m_ArrowScreenPos);
 
 #ifdef _DEBUG
 	if (m_pNavigationCom)
@@ -227,8 +234,8 @@ void CPlayer::Render_DamageFont(_int iDealPoint, _float fStartY)
 	uniform_real_distribution<_float> dist(-3.0f, 3.0f);
 	m_vFontOffset.x += dist(gen);
 
-	m_vFontCurrentScreenPos.x = m_vFontStartScreenPos.x + m_vFontOffset.x;
-	m_vFontCurrentScreenPos.y = m_vFontStartScreenPos.y + m_vFontOffset.y;
+	m_FontCurrentScreenPos.x = m_vFontStartScreenPos.x + m_vFontOffset.x;
+	m_FontCurrentScreenPos.y = m_vFontStartScreenPos.y + m_vFontOffset.y;
 }
 
 HRESULT CPlayer::Ready_Components()

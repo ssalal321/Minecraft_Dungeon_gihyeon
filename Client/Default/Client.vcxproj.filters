@@ -424,6 +424,9 @@
     <Filter Include="02.GameObjects\Trigger\MonsterRush_Trigger">
       <UniqueIdentifier>{8dc62904-9863-47ae-946f-b9849b9d756f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UIObjects\PlayerSlotIcon\HealthPotion">
+      <UniqueIdentifier>{d8654fc8-b8a6-4d34-8234-19206bce2c1f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -840,6 +843,9 @@
     <ClInclude Include="..\Public\MonsterRush_Trigger.h">
       <Filter>02.GameObjects\Trigger\MonsterRush_Trigger</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\HealthPotion.h">
+      <Filter>02.GameObjects\UIObjects\PlayerSlotIcon\HealthPotion</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1250,6 +1256,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\MonsterRush_Trigger.cpp">
       <Filter>02.GameObjects\Trigger\MonsterRush_Trigger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\HealthPotion.cpp">
+      <Filter>02.GameObjects\UIObjects\PlayerSlotIcon\HealthPotion</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

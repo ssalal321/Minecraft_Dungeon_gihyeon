@@ -1,27 +1,27 @@
-#include "RollIcon.h"
+#include "HealthPotion.h"
 #include "GameInstance.h"
 #include "Player.h"
 
-CRollIcon::CRollIcon(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CHealthPotion::CHealthPotion(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CUIObject(pDevice, pContext)
 {
 }
 
-CRollIcon::CRollIcon(const CRollIcon& Prototype)
+CHealthPotion::CHealthPotion(const CHealthPotion& Prototype)
 	: CUIObject(Prototype)
 {
 }
 
-HRESULT CRollIcon::Initialize_Prototype()
+HRESULT CHealthPotion::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CRollIcon::Initialize(void* pArg)
+HRESULT CHealthPotion::Initialize(void* pArg)
 {
 	if (nullptr != pArg)
 	{
-		m_pDesc = new ROLL_ICON_DESC(*static_cast<ROLL_ICON_DESC*>(pArg));
+		m_pDesc = new HEALTHPOTION_ICON_DESC(*static_cast<HEALTHPOTION_ICON_DESC*>(pArg));
 	}
 	else
 		return E_FAIL;
@@ -37,38 +37,37 @@ HRESULT CRollIcon::Initialize(void* pArg)
 	if (nullptr == m_pPlayerInfo)
 		return E_FAIL;
 
-
 	if (FAILED(Ready_Components()))
 			return E_FAIL;
 
 	return S_OK;
 }
 
-void CRollIcon::Priority_Update(_float fTimeDelta)
+void CHealthPotion::Priority_Update(_float fTimeDelta)
 {
 
 }
 
-void CRollIcon::Update(_float fTimeDelta)
+void CHealthPotion::Update(_float fTimeDelta)
 {
 	// 플레이어의 구르기 쿨타임 비율 가져오기
-	_float fRemainTime = m_pPlayerInfo->Get_RollCooldown_RemainTime(); // 남은 쿨타임
-	_float fTotalTime  = m_pPlayerInfo->Get_RollCooldown_TotalTime();   // 전체 쿨타임
+	_float fRemainTime = m_pPlayerInfo->Get_HPCooldown_RemainTime(); // 남은 쿨타임
+	_float fTotalTime  = m_pPlayerInfo->Get_HPCooldown_TotalTime();   // 전체 쿨타임
 
 	_float fRatio = fRemainTime / fTotalTime;
 	fRatio = max(0.f, min(1.f, fRatio)); // Clamp(0~1)
 
 	m_fCooldownRatio = fRatio;
 
-	m_pShaderCom->Bind_RawValue("g_fRollCooldownRatio", &m_fCooldownRatio, sizeof(_float));
+	m_pShaderCom->Bind_RawValue("g_fHPCooldownRatio", &m_fCooldownRatio, sizeof(_float));
 }
 
 
-void CRollIcon::Late_Update(_float fTimeDelta)
+void CHealthPotion::Late_Update(_float fTimeDelta)
 {
 }
 
-HRESULT CRollIcon::Render()
+HRESULT CHealthPotion::Render()
 {
 	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
@@ -80,7 +79,7 @@ HRESULT CRollIcon::Render()
 		return E_FAIL;
 
 	m_pVIBufferCom->Input_Assembler();
-	m_pShaderCom->Begin(0); // CooldownIconTechnique의 pass index
+	m_pShaderCom->Begin(1); // CooldownIconTechnique의 pass index
 
 	m_pVIBufferCom->Render();
 
@@ -88,7 +87,7 @@ HRESULT CRollIcon::Render()
 }
 
 
-HRESULT CRollIcon::Ready_Components()
+HRESULT CHealthPotion::Ready_Components()
 {
 	/* Com_Texture*/
 	if (nullptr == Add_Component(LEVEL_STATIC, m_pDesc->strTexPrototypeTag,
@@ -108,33 +107,33 @@ HRESULT CRollIcon::Ready_Components()
 	return S_OK;
 }
 
-CRollIcon* CRollIcon::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CHealthPotion* CHealthPotion::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	CRollIcon* pGameInstance = new CRollIcon(pDevice, pContext);
+	CHealthPotion* pGameInstance = new CHealthPotion(pDevice, pContext);
 
 	if (FAILED(pGameInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Create : CRollIcon");
+		MSG_BOX("Failed to Create : CHealthPotion");
 		Safe_Release(pGameInstance);
 	}
 
 	return pGameInstance;
 }
 
-CGameObject* CRollIcon::Clone(void* pArg)
+CGameObject* CHealthPotion::Clone(void* pArg)
 {
-	CRollIcon* pGameInstance = new CRollIcon(*this);
+	CHealthPotion* pGameInstance = new CHealthPotion(*this);
 
 	if (FAILED(pGameInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Clone : CRollIcon");
+		MSG_BOX("Failed to Clone : CHealthPotion");
 		Safe_Release(pGameInstance);
 	}
 
 	return pGameInstance;
 }
 
-void CRollIcon::Free()
+void CHealthPotion::Free()
 {
 	__super::Free();
 
