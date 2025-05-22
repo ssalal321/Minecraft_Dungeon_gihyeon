@@ -232,6 +232,8 @@ void CState_Player::Modify_HP(CCollider* pOther)
 	{
 		CMonster_Arrow* pMonsterArrow = dynamic_cast<CMonster_Arrow*>(pOther->Get_OwnerObject());
 		m_pPlayerInfo->Modify_CurrentHp(-pMonsterArrow->Get_DealPoint());
+
+		m_pPlayer->Render_DamageFont(pMonsterArrow->Get_DealPoint(), 4.f);
 	}
 
 	if (TEXT("Slime_Cauldron_Bullet") == pOther->Get_ColliderTag()
@@ -239,6 +241,8 @@ void CState_Player::Modify_HP(CCollider* pOther)
 	{
 		CSlime_Cauldron_Bullet* pMonsterBullet = dynamic_cast<CSlime_Cauldron_Bullet*>(pOther->Get_OwnerObject());
 		m_pPlayerInfo->Modify_CurrentHp(-pMonsterBullet->Get_DealPoint());
+
+		m_pPlayer->Render_DamageFont(pMonsterBullet->Get_DealPoint(), 4.f);
 	}
 
 	if (TEXT("Monster_Weapon") == pOther->Get_ColliderTag()
@@ -246,6 +250,8 @@ void CState_Player::Modify_HP(CCollider* pOther)
 	{
 		CItem* pItem = dynamic_cast<CItem*>(pOther->Get_OwnerObject());
 		m_pPlayerInfo->Modify_CurrentHp(-pItem->Get_DealPoint());
+
+		m_pPlayer->Render_DamageFont(pItem->Get_DealPoint(), 4.f);
 	}
 
 	if (TEXT("Monster_Body_Hit") == pOther->Get_ColliderTag()
@@ -255,6 +261,8 @@ void CState_Player::Modify_HP(CCollider* pOther)
 		CMonster* pMonster = dynamic_cast<CMonster*>(pMonsterBody->Get_ContainerObject());
 
 		m_pPlayerInfo->Modify_CurrentHp(-pMonster->Get_MonsterInfo()->Get_DealPoint());
+
+		m_pPlayer->Render_DamageFont(pMonster->Get_MonsterInfo()->Get_DealPoint(), 4.f);
 	}
 }
 

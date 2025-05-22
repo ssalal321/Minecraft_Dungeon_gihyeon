@@ -116,7 +116,7 @@ public:
 	_float		Length_To_Player() const;
 	_bool		Player_In_DetectRange() const;
 
-	void		Render_DamageFont(_int iDealPoint);
+	void		Render_DamageFont(_int iDealPoint, _float fStartY);
 
 protected:
 	_uint				m_iState = { static_cast<_uint>(ZOMBIE_STATE::STATE_END) };
@@ -134,14 +134,20 @@ protected:
 	_bool				m_bCanbeEaten = { false };
 	CMonster*			m_pBossMonster = { nullptr };
 
-	_float2				m_vScreenPos = {};
-
 	_bool				m_bIsJumping = { false };
 	_vector				m_vJumpTarget = {};
 
+#pragma region DAMAGE_FONT
 	_bool				m_bRenderDamageFont = { false };
-	_int				m_bDealPoint = {};
+	_int				m_iDealPoint = {};
 	_float				m_fFontRenderedTime = {};
+
+	_float2				m_vFontStartScreenPos = {};   // 시작 위치
+	_float2				m_vFontOffset = {};           // 현재까지 올라온 오프셋
+	_float2				m_vFontCurrentScreenPos = {};  // 매 프레임 최종 위치 계산해놓는 변수
+
+#pragma endregion
+
 
 protected:
 	HRESULT				Ready_Components();

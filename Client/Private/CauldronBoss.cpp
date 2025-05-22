@@ -52,7 +52,7 @@ HRESULT CCauldronBoss::Initialize(void* pArg)
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
 		XMLoadFloat4(&pDesc->slimeCauldronPosition));
 
-	m_pTransformCom->SetUp_Scale(0.8f, 0.8f, 0.8f);
+	m_pTransformCom->SetUp_Scale(0.7f, 0.7f, 0.7f);
 
 	if (m_pNavigationCom)
 		m_pNavigationCom->SetUp_CurrentCellIndex(869);
@@ -75,6 +75,8 @@ void CCauldronBoss::Update(_float fTimeDelta)
 {
 	if (!m_bActive)
 		return;
+
+	
 
 	__super::Update(fTimeDelta);
 }

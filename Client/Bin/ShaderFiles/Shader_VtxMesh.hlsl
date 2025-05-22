@@ -122,23 +122,54 @@ PS_OUT PS_AlphaBrown(PS_IN In)
     return Out;
 }
 
-// 등장 연출
+
 PS_OUT PS_Appear(PS_IN In)
 {
-    PS_OUT  Out     = PS_MAIN(In); // 공통 조명 계산 재사용
-    float   fAlpha  = saturate(g_fAppearTime / g_fAppearDuration);
+    PS_OUT Out = (PS_OUT) 0;
 
-	Out.vColor.a *= fAlpha;
-    return  Out;
+    vector vMtrlDiffuse = g_DiffuseTexture.Sample(g_LinearSampler, In.vTexcoord);
+    if (vMtrlDiffuse.a < 0.3f)
+        discard;
+
+    float fShade = max(dot(normalize(g_vLightDir) * -1.f, In.vNormal), 0.f);
+    vector vReflect = reflect(normalize(g_vLightDir), normalize(In.vNormal));
+    vector vLook = normalize(In.vWorldPos - g_vCamPosition);
+    float fSpecular = pow(max(dot(normalize(vReflect) * -1.f, vLook), 0.f), 50.f);
+
+    vector vLitColor = g_vLightDiffuse * vMtrlDiffuse * saturate(fShade + g_vLightAmbient * g_vMtrlAmbient)
+                     + g_vLightSpecular * g_vMtrlSpecular * fSpecular;
+
+    float fAppearAlpha = saturate(g_fAppearTime / g_fAppearDuration);
+    
+    // 핵심: RGB도 같이 어둡게 (곱셈 기반 블렌딩 효과)
+    vLitColor.rgb *= fAppearAlpha;
+    vLitColor.a = fAppearAlpha;
+
+    Out.vColor = vLitColor;
+    return Out;
 }
 
-// 사라짐 연출
+
 PS_OUT PS_Disappear(PS_IN In)
 {
-    PS_OUT Out      = PS_MAIN(In); // 공통 조명 계산 재사용
-    float fAlpha    = 1.f - saturate(g_fDeathTime / g_fDeathDuration);
+    PS_OUT Out = (PS_OUT) 0;
 
-	Out.vColor.a *= fAlpha;
+    vector vMtrlDiffuse = g_DiffuseTexture.Sample(g_LinearSampler, In.vTexcoord);
+
+    float fShade = max(dot(normalize(g_vLightDir) * -1.f, In.vNormal), 0.f);
+    vector vReflect = reflect(normalize(g_vLightDir), normalize(In.vNormal));
+    vector vLook = normalize(In.vWorldPos - g_vCamPosition);
+    float fSpecular = pow(max(dot(normalize(vReflect) * -1.f, vLook), 0.f), 50.f);
+
+    vector vLitColor = g_vLightDiffuse * vMtrlDiffuse * saturate(fShade + g_vLightAmbient * g_vMtrlAmbient)
+                     + g_vLightSpecular * g_vMtrlSpecular * fSpecular;
+
+    float fDisappearAlpha = 1.f - saturate(g_fDeathTime / g_fDeathDuration);
+
+    vLitColor.rgb *= fDisappearAlpha;
+    vLitColor.a = fDisappearAlpha;
+
+    Out.vColor = vLitColor;
     return Out;
 }
 

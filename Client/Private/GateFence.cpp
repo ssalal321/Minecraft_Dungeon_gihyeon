@@ -149,16 +149,14 @@ HRESULT CGateFence::Bind_ShaderResources(_uint iPassIndex)
 	case 3: // Appear
 		if (FAILED(m_pShaderCom->Bind_RawValue("g_fAppearTime", &m_fAppearTime, sizeof(_float)))) return E_FAIL;
 		if (FAILED(m_pShaderCom->Bind_RawValue("g_fAppearDuration", &m_fAppearDuration, sizeof(_float)))) return E_FAIL;
-		if (FAILED(m_pShaderCom->Bind_RawValue("g_bAppearing", &m_bAppearing, sizeof(_bool)))) return E_FAIL;
 		break;
 
 	case 4: // Disappear
-		if (FAILED(m_pShaderCom->Bind_RawValue("g_bDying", &m_bDying, sizeof(_bool)))) return E_FAIL;
 		if (FAILED(m_pShaderCom->Bind_RawValue("g_fDeathTime", &m_fDeathTime, sizeof(_float)))) return E_FAIL;
 		if (FAILED(m_pShaderCom->Bind_RawValue("g_fDeathDuration", &m_fDeathDuration, sizeof(_float)))) return E_FAIL;
 		break;
 
-	case 1: // Default
+	case 0: // Default
 	default:
 		// 아무것도 안 해도 됨 (g_bAppearing = false 상태가 기본)
 		break;

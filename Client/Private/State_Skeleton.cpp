@@ -145,6 +145,8 @@ _bool CState_Skeleton::Modify_HP(CCollider* pOther)
 		CItem* pItem = dynamic_cast<CItem*>(pOther->Get_OwnerObject());
 		m_pMonsterInfo->Modify_CurrentHp(-pItem->Get_DealPoint());
 
+		m_pSkeleton->Render_DamageFont(pItem->Get_DealPoint(), 4.f);
+
 		return true;
 	}
 
@@ -153,6 +155,8 @@ _bool CState_Skeleton::Modify_HP(CCollider* pOther)
 	{
 		CPlayer_Arrow* pPlayerArrow = dynamic_cast<CPlayer_Arrow*>(pOther->Get_OwnerObject());
 		m_pMonsterInfo->Modify_CurrentHp(-pPlayerArrow->Get_DealPoint());
+
+		m_pSkeleton->Render_DamageFont(pPlayerArrow->Get_DealPoint(), 4.f);
 
 		return true;
 	}

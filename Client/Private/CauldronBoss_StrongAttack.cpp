@@ -55,7 +55,7 @@ void CCauldronBoss_StrongAttack::State_Update(_float fTimeDelta)
     if (!m_bShot)
     {
         // 슬라임 발사
-        for (_int i = 0; i < 0; ++i)  // 한 번에 1마리 발사
+        for (_int i = 0; i < 0; ++i)  // 한 번에 3마리 발사
         {
             // 랜덤한 방향으로 발사
             _float angle = static_cast<_float>(rand() % 360);  // 0~360도 범위에서 랜덤 각도 생성

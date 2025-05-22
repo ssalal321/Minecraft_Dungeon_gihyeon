@@ -1,6 +1,7 @@
 #include "Player.h"
 
 #include <iostream>
+#include <random>
 
 #include "Armor.h"
 #include "ArrowPool_Player.h"
@@ -39,7 +40,7 @@ HRESULT CPlayer::Initialize_Prototype()
 
 HRESULT CPlayer::Initialize(void* pArg)
 {
-	m_pPlayerInfo = new PLAYER_DESC(TEXT("GameObject_Player"), 1000, 1000, 15, 3.5f, 0.f, 5.f, 100, false, 90.f, 3.f);
+	m_pPlayerInfo = new PLAYER_DESC(TEXT("GameObject_Player"), 1000, 1000, 15, 4.f, 0.f, 5.f, 100, false, 90.f, 3.f);
 
 	if (FAILED(__super::Initialize(m_pPlayerInfo)))
 		return E_FAIL;
@@ -85,6 +86,19 @@ void CPlayer::Update(_float fTimeDelta)
 	if (m_pPlayerInfo->Get_RollCoolDowning())
 		m_pPlayerInfo->Roll_CoolDown(fTimeDelta);
 
+
+	if (m_bRenderDamageFont)
+	{
+		m_fFontRenderedTime += fTimeDelta;
+
+		// 오프셋 누적
+		m_vFontOffset.y -= 35.f * fTimeDelta;
+		m_vFontCurrentScreenPos.y = m_vFontStartScreenPos.y + m_vFontOffset.y;
+
+		if (m_fFontRenderedTime >= 1.f)
+			m_bRenderDamageFont = false;
+	}
+
 	m_pPlayerFSM->Update_State(fTimeDelta);
 }
 
@@ -101,6 +115,12 @@ void CPlayer::Late_Update(_float fTimeDelta)
 
 HRESULT CPlayer::Render()
 {
+	if (m_bRenderDamageFont)
+	{
+		std::wstring strHP = std::to_wstring(m_iDealPoint);
+		m_pGameInstance->Draw_Text(TEXT("Font_Minecraft"), strHP.c_str(), m_vFontCurrentScreenPos);
+	}
+
 #ifdef _DEBUG
 	if (m_pNavigationCom)
 		m_pNavigationCom->Render();
@@ -178,6 +198,37 @@ void CPlayer::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eColli
 		m_pPlayerFSM->Collision_Exit(pOther);
 		break;
 	}
+}
+
+void CPlayer::Render_DamageFont(_int iDealPoint, _float fStartY)
+{
+	m_iDealPoint = iDealPoint;
+	m_bRenderDamageFont = true;
+	m_fFontRenderedTime = 0.f;
+
+	_vector vWorldPos = m_pTransformCom->Get_State(CTransform::STATE_POSITION) + XMVectorSet(0.f, fStartY, 0.f, 1.f);
+
+	XMStoreFloat2(&m_vFontStartScreenPos,
+		XMVector3Project(
+			vWorldPos,
+			0.f, 0.f,
+			static_cast<_float>(g_iWinSizeX),
+			static_cast<_float>(g_iWinSizeY),
+			0.f, 1.f,
+			m_pGameInstance->Get_Transform_Matrix(CPipeLine::D3DTS_PROJ),
+			m_pGameInstance->Get_Transform_Matrix(CPipeLine::D3DTS_VIEW),
+			XMMatrixIdentity()));
+
+	m_vFontOffset = { 0.f, 0.f };
+
+	// 더 정교한 랜덤 흔들림
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	uniform_real_distribution<_float> dist(-3.0f, 3.0f);
+	m_vFontOffset.x += dist(gen);
+
+	m_vFontCurrentScreenPos.x = m_vFontStartScreenPos.x + m_vFontOffset.x;
+	m_vFontCurrentScreenPos.y = m_vFontStartScreenPos.y + m_vFontOffset.y;
 }
 
 HRESULT CPlayer::Ready_Components()

@@ -130,6 +130,8 @@ _bool CState_BabyZombie::Modify_HP(CCollider* pOther)
 		CItem* pItem = dynamic_cast<CItem*>(pOther->Get_OwnerObject());
 		m_pMonsterInfo->Modify_CurrentHp(-pItem->Get_DealPoint());
 
+		m_pBabyZombie->Render_DamageFont(pItem->Get_DealPoint(), 3.f);
+
 		return true;
 	}
 
@@ -138,6 +140,8 @@ _bool CState_BabyZombie::Modify_HP(CCollider* pOther)
 	{
 		CPlayer_Arrow* pPlayerArrow = dynamic_cast<CPlayer_Arrow*>(pOther->Get_OwnerObject());
 		m_pMonsterInfo->Modify_CurrentHp(-pPlayerArrow->Get_DealPoint());
+
+		m_pBabyZombie->Render_DamageFont(pPlayerArrow->Get_DealPoint(), 3.f);
 
 		return true;
 	}
