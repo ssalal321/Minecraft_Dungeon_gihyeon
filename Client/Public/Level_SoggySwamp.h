@@ -6,12 +6,18 @@
 #include "Level.h"
 
 
+namespace Client
+{
+}
+
 BEGIN(Client)
 class CPlayer;
 class CMonster;
-class CBoss_Trigger;
+class CCauldronBoss_Trigger;
 class CCauldronBoss;
 class CCauldronBossHP;
+
+class CMonsterRush_Trigger;
 
 class CLevel_SoggySwamp final : public CLevel
 {
@@ -46,8 +52,10 @@ private:
 
 	CCauldronBoss*		m_pCauldronBoss = { nullptr };
 
-	CBoss_Trigger*		m_pBoss_Trigger = { nullptr };
-	CCauldronBossHP*	m_pCauldronBossHP = { nullptr };
+	CCauldronBoss_Trigger*		m_pBoss_Trigger = { nullptr };
+	CCauldronBossHP*			m_pCauldronBossHP = { nullptr };
+
+	CMonsterRush_Trigger*		m_pMonsterRush_Trigger = { nullptr };
 
 public:
 	static CLevel_SoggySwamp* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

@@ -82,7 +82,9 @@ void CCauldronBoss_StrongAttack::State_Update(_float fTimeDelta)
          
         	// 목표 위치로 점프 시작 신호 보내기
         	pSlimeCauldron->Jump_To_Target(vLandingPosition);
-            
+            CNavigation* pNavigation = dynamic_cast<CNavigation*>(pSlimeCauldron->Find_Component(TEXT("Com_Navigation")));
+            pNavigation->Lock_Cell(899);
+            pNavigation->Lock_Cell(900);
         }
 
         m_bShot = true;

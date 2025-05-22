@@ -190,9 +190,6 @@
     <Filter Include="01.Levels\03. SoggySwamp">
       <UniqueIdentifier>{9c0a999c-4f62-4586-9481-02340adabd81}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Level_Trigger">
-      <UniqueIdentifier>{1d042e17-86bc-427c-83ad-d4c6d8f4f3df}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\SoggySwampMap">
       <UniqueIdentifier>{2b962968-0e94-4a2e-ad56-4d850404631f}</UniqueIdentifier>
     </Filter>
@@ -391,9 +388,6 @@
     <Filter Include="02.GameObjects\Monster\BabyZombie\01. State\BabyZombie_Idle">
       <UniqueIdentifier>{76e92df8-fa7f-4785-8567-93a869c1e8f4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Boss_Trigger">
-      <UniqueIdentifier>{3c6d32c3-a20e-4b52-b246-181a5e98ed27}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss_Idle">
       <UniqueIdentifier>{d243c7c1-b145-4202-8737-cdeefed16b6c}</UniqueIdentifier>
     </Filter>
@@ -417,6 +411,18 @@
     </Filter>
     <Filter Include="02.GameObjects\GateFence">
       <UniqueIdentifier>{07f05a4f-8f36-453e-9665-4b403baaa055}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Trigger">
+      <UniqueIdentifier>{5cb2c143-71e2-4459-af4a-63699a94c49f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Trigger\Level_Trigger">
+      <UniqueIdentifier>{1d042e17-86bc-427c-83ad-d4c6d8f4f3df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Trigger\Boss_Trigger">
+      <UniqueIdentifier>{3c6d32c3-a20e-4b52-b246-181a5e98ed27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Trigger\MonsterRush_Trigger">
+      <UniqueIdentifier>{8dc62904-9863-47ae-946f-b9849b9d756f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -616,7 +622,7 @@
       <Filter>02.GameObjects\SoggySwampMap</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Level_Trigger.h">
-      <Filter>02.GameObjects\Level_Trigger</Filter>
+      <Filter>02.GameObjects\Trigger\Level_Trigger</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\BabyZombie.h">
       <Filter>02.GameObjects\Monster\BabyZombie</Filter>
@@ -816,8 +822,8 @@
     <ClInclude Include="..\Public\Skeleton_Dead.h">
       <Filter>02.GameObjects\Monster\Skeleton\01. State\Skeleton_Dead</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Boss_Trigger.h">
-      <Filter>02.GameObjects\Boss_Trigger</Filter>
+    <ClInclude Include="..\Public\CauldronBoss_Trigger.h">
+      <Filter>02.GameObjects\Trigger\Boss_Trigger</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CauldronBoss_TPose.h">
       <Filter>02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss_TPose</Filter>
@@ -830,6 +836,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\GateFence.h">
       <Filter>02.GameObjects\GateFence</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterRush_Trigger.h">
+      <Filter>02.GameObjects\Trigger\MonsterRush_Trigger</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1024,7 +1033,7 @@
       <Filter>02.GameObjects\SoggySwampMap</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_Trigger.cpp">
-      <Filter>02.GameObjects\Level_Trigger</Filter>
+      <Filter>02.GameObjects\Trigger\Level_Trigger</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BabyZombie.cpp">
       <Filter>02.GameObjects\Monster\BabyZombie</Filter>
@@ -1224,8 +1233,8 @@
     <ClCompile Include="..\Private\Skeleton_Dead.cpp">
       <Filter>02.GameObjects\Monster\Skeleton\01. State\Skeleton_Dead</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Boss_Trigger.cpp">
-      <Filter>02.GameObjects\Boss_Trigger</Filter>
+    <ClCompile Include="..\Private\CauldronBoss_Trigger.cpp">
+      <Filter>02.GameObjects\Trigger\Boss_Trigger</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CauldronBoss_TPose.cpp">
       <Filter>02.GameObjects\Monster\CauldronBoss\01. State\CauldronBoss_TPose</Filter>
@@ -1238,6 +1247,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\GateFence.cpp">
       <Filter>02.GameObjects\GateFence</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterRush_Trigger.cpp">
+      <Filter>02.GameObjects\Trigger\MonsterRush_Trigger</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

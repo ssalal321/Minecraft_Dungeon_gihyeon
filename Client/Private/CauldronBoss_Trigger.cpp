@@ -1,25 +1,25 @@
-#include "Boss_Trigger.h"
+#include "CauldronBoss_Trigger.h"
 #include "GameInstance.h"
 #include "GateFence.h"
 #include "Monster.h"
 #include "PartObject.h"
 
-CBoss_Trigger::CBoss_Trigger(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CCauldronBoss_Trigger::CCauldronBoss_Trigger(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject(pDevice, pContext)
 {
 }
 
-CBoss_Trigger::CBoss_Trigger(const CBoss_Trigger& Prototype)
+CCauldronBoss_Trigger::CCauldronBoss_Trigger(const CCauldronBoss_Trigger& Prototype)
 	: CGameObject(Prototype)
 {
 }
 
-HRESULT CBoss_Trigger::Initialize_Prototype()
+HRESULT CCauldronBoss_Trigger::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CBoss_Trigger::Initialize(void* pArg)
+HRESULT CCauldronBoss_Trigger::Initialize(void* pArg)
 {
 	BOSS_TRIGGER_DESC* pDesc = static_cast<BOSS_TRIGGER_DESC*>(pArg);
 	m_TriggerPosition = pDesc->triggerPosition;
@@ -34,25 +34,25 @@ HRESULT CBoss_Trigger::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CBoss_Trigger::Priority_Update(_float fTimeDelta)
+void CCauldronBoss_Trigger::Priority_Update(_float fTimeDelta)
 {
 	if (!m_bActive)
 		return;
 }
 
-void CBoss_Trigger::Update(_float fTimeDelta)
+void CCauldronBoss_Trigger::Update(_float fTimeDelta)
 {
 	if (!m_bActive)
 		return;
 }
 
-void CBoss_Trigger::Late_Update(_float fTimeDelta)
+void CCauldronBoss_Trigger::Late_Update(_float fTimeDelta)
 {
 	if (!m_bActive)
 		return;
 }
 
-HRESULT CBoss_Trigger::Render()
+HRESULT CCauldronBoss_Trigger::Render()
 {
 	if (!m_bActive)
 		return S_OK;
@@ -61,7 +61,7 @@ HRESULT CBoss_Trigger::Render()
 }
 
 
-void CBoss_Trigger::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)
+void CCauldronBoss_Trigger::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)
 {
 	if (CCollider::COLLISION_STATE::ENTER == eCollisionState &&
 		TEXT("Player_Body") == pOther->Get_ColliderTag())
@@ -82,7 +82,7 @@ void CBoss_Trigger::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE 
 	}
 }
 
-HRESULT CBoss_Trigger::Ready_Components()
+HRESULT CCauldronBoss_Trigger::Ready_Components()
 {
 	/* Com_Collider */
 	XMStoreFloat4x4(&m_IdentityWorldMatrix, XMMatrixIdentity());
@@ -107,33 +107,33 @@ HRESULT CBoss_Trigger::Ready_Components()
 	return S_OK;
 }
 
-CBoss_Trigger* CBoss_Trigger::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, void* pArg)
+CCauldronBoss_Trigger* CCauldronBoss_Trigger::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, void* pArg)
 {
-	CBoss_Trigger* pGameInstance = new CBoss_Trigger(pDevice, pContext);
+	CCauldronBoss_Trigger* pGameInstance = new CCauldronBoss_Trigger(pDevice, pContext);
 
 	if (FAILED(pGameInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Create : CBoss_Trigger");
+		MSG_BOX("Failed to Create : CCauldronBoss_Trigger");
 		Safe_Release(pGameInstance);
 	}
 
 	return pGameInstance;
 }
 
-CGameObject* CBoss_Trigger::Clone(void* pArg)
+CGameObject* CCauldronBoss_Trigger::Clone(void* pArg)
 {
-	CBoss_Trigger* pGameInstance = new CBoss_Trigger(*this);
+	CCauldronBoss_Trigger* pGameInstance = new CCauldronBoss_Trigger(*this);
 
 	if (FAILED(pGameInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Clone : CBoss_Trigger");
+		MSG_BOX("Failed to Clone : CCauldronBoss_Trigger");
 		Safe_Release(pGameInstance);
 	}
 
 	return pGameInstance;
 }
 
-void CBoss_Trigger::Free()
+void CCauldronBoss_Trigger::Free()
 {
 	__super::Free();
 

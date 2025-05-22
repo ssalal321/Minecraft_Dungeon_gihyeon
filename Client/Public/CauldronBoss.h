@@ -9,7 +9,7 @@ class CUIObject;
 END
 
 BEGIN(Client)
-class CBoss_Trigger;
+class CCauldronBoss_Trigger;
 class CBody_CauldronBoss;
 class CCauldronBossHP;
 class CState;

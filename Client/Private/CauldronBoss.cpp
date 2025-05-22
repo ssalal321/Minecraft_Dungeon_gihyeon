@@ -2,7 +2,7 @@
 #include "GameInstance.h"
 
 #include "Body_CauldronBoss.h"
-#include "Boss_Trigger.h"
+#include "CauldronBoss_Trigger.h"
 
 #include "FSM.h"
 #include "CauldronBoss_BasicAttack.h"

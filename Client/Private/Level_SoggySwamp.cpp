@@ -3,7 +3,7 @@
 #include <iostream>
 #include <UI_Image.h>
 
-#include "Boss_Trigger.h"
+#include "CauldronBoss_Trigger.h"
 #include "GameInstance.h"
 #include "PartObject.h"
 #include "Level_Loading.h"
@@ -14,6 +14,7 @@
 #include "InventoryBase.h"
 #include "InventoryData.h"
 #include "Item.h"
+#include "MonsterRush_Trigger.h"
 #include "Player.h"
 #include "Zombie.h"
 #include "PlayerHP.h"
@@ -300,12 +301,19 @@ HRESULT CLevel_SoggySwamp::Ready_Layer_Monster(const _wstring& strLayerTag)
 
 HRESULT CLevel_SoggySwamp::Ready_Layer_Trigger(const _wstring& strLayerTag)
 {
-    CBoss_Trigger::BOSS_TRIGGER_DESC   bossTriggerDesc = {};
-    bossTriggerDesc.triggerPosition = { -4.f, 0.f, 20.5 };
+    CCauldronBoss_Trigger::BOSS_TRIGGER_DESC   bossTriggerDesc = {};
+    bossTriggerDesc.triggerPosition = { -4.f, 0.f, 20.5f };
     bossTriggerDesc.pBoss = m_pCauldronBoss;
 
-    m_pBoss_Trigger = CBoss_Trigger::Create(m_pDevice, m_pContext, &bossTriggerDesc);
+    m_pBoss_Trigger = CCauldronBoss_Trigger::Create(m_pDevice, m_pContext, &bossTriggerDesc);
     if (nullptr == m_pBoss_Trigger)
+        return E_FAIL;
+
+    CMonsterRush_Trigger::MONSTERRUSH_TRIGGER_DESC   monsterTriggerDesc = {};
+    monsterTriggerDesc.triggerPosition = { 17.f, -5.f, 154.f };
+
+    m_pMonsterRush_Trigger = CMonsterRush_Trigger::Create(m_pDevice, m_pContext, &monsterTriggerDesc);
+    if (nullptr == m_pMonsterRush_Trigger)
         return E_FAIL;
 
     return S_OK;

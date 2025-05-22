@@ -115,12 +115,16 @@ void CCauldronBoss_BasicAttack::Spawn_Monsters(const _float4& playerPos)
             LEVEL_STATIC, TEXT("Prototype_GameObject_BabyZombie"),
             m_pGameInstance->Get_CurrentLevelIndex(), TEXT("Layer_Monster"), &desc);
 
-        if (nullptr == pZombieObj)
-            continue;
+        if (pZombieObj)
+        {
+            CMonster* pMonster = dynamic_cast<CMonster*>(pZombieObj);
+            pMonster->Set_Can_be_Eaten(true, m_pCauldronBoss);
+            pMonster->Jump_To_Target(vLandingPos);
 
-        CMonster* pMonster = dynamic_cast<CMonster*>(pZombieObj);
-        pMonster->Set_Can_be_Eaten(true, m_pCauldronBoss);
-        pMonster->Jump_To_Target(vLandingPos);
+            CNavigation* pNavigation = dynamic_cast<CNavigation*>(pMonster->Find_Component(TEXT("Com_Navigation")));
+            pNavigation->Lock_Cell(899);
+            pNavigation->Lock_Cell(900);
+        }        
     }
 
     // Vindicator 1마리 생성
@@ -142,6 +146,10 @@ void CCauldronBoss_BasicAttack::Spawn_Monsters(const _float4& playerPos)
         CMonster* pMonster = dynamic_cast<CMonster*>(pVindicatorObj);
         pMonster->Set_Can_be_Eaten(true, m_pCauldronBoss);
         pMonster->Jump_To_Target(vLandingPos);
+
+        CNavigation* pNavigation = dynamic_cast<CNavigation*>(pMonster->Find_Component(TEXT("Com_Navigation")));
+        pNavigation->Lock_Cell(899);
+        pNavigation->Lock_Cell(900);
     }
 }
 

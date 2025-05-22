@@ -4,6 +4,10 @@
 #include <process.h>
 #include <vector>
 
+#include "fmod.h"
+#include "fmod.hpp"
+#pragma comment(lib, "fmod_vc.lib")
+
 extern bool	bMouseClickLock;  // 전역 변수 선언
 
 namespace Client
