@@ -30,11 +30,16 @@ HRESULT CSky::Initialize(void* pArg)
 	Desc.fSpeedPerSec = 0.f;
 	Desc.fRotationPerSec = 0.f;
 
+	if (nullptr != pArg)
+		m_strTexPrototypeTag = static_cast<SKY_DESC*>(pArg)->strTexPrototypeTag;
+	
 	if (FAILED(__super::Initialize(&Desc)))
 		return E_FAIL;
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
+
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, { 0.f, -50.f, 0.f, 1.f });
 	
 	return S_OK;
 }
@@ -77,17 +82,17 @@ HRESULT CSky::Render()
 HRESULT CSky::Ready_Components()
 {
 	/* Com_Texture */
-	if (nullptr == Add_Component(LEVEL_LOUNGE, TEXT("Prototype_Component_Texture_Sky"),
+	if (nullptr == Add_Component(m_pGameInstance->Get_ChangedLevelIndex(), m_strTexPrototypeTag,
 		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom)))
 		return E_FAIL;
 
 	/* Com_Shader */
-	if (nullptr == Add_Component(LEVEL_LOUNGE, TEXT("Prototype_Component_Shader_VtxCube"),
+	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxCube"),
 		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom)))
 		return E_FAIL;
 
 	/* Com_VIBuffer */
-	if (nullptr == Add_Component(LEVEL_LOUNGE, TEXT("Prototype_Component_VIBuffer_Cube"),
+	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"),
 		TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom)))
 		return E_FAIL;
 
@@ -105,7 +110,7 @@ HRESULT CSky::Bind_ShaderResources()
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(CPipeLine::D3DTS_PROJ))))
 		return E_FAIL;
 
-	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_DiffuseTexture", 2)))
+	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_DiffuseTexture", 0)))
 		return E_FAIL;
 
 	return S_OK;

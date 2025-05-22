@@ -20,6 +20,7 @@
 #include "Zombie.h"
 #include "PlayerHP.h"
 #include "Skeleton.h"
+#include "Sky.h"
 #include "Slime_Large.h"
 #include "Vindicator.h"
 
@@ -203,6 +204,12 @@ HRESULT CLevel_SoggySwamp::Ready_Layer_BackGround(const _wstring& strLayerTag)
     CGameObject* pSoggySwampMap = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_SoggySwampMap"),
         LEVEL_SOGGYSWAMP, strLayerTag);
     if (nullptr == pSoggySwampMap)
+        return E_FAIL;
+
+    CSky::SKY_DESC desc = {};
+    desc.strTexPrototypeTag = TEXT("Prototype_Component_Texture_SoggySwampSky");
+    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_SOGGYSWAMP, TEXT("Prototype_GameObject_Sky"),
+        LEVEL_SOGGYSWAMP, strLayerTag, &desc)))
         return E_FAIL;
 
 

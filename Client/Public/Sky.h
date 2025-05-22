@@ -13,6 +13,12 @@ BEGIN(Client)
 
 class CSky final : public CGameObject
 {
+public:
+	struct SKY_DESC
+	{
+		_wstring	strTexPrototypeTag = {};
+	};
+
 private:
 	CSky(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CSky(const CSky& Prototype);
@@ -27,10 +33,11 @@ public:
 	HRESULT		Render()							override;
 
 private:	
-	
 	CShader*			m_pShaderCom = { nullptr };
 	CTexture*			m_pTextureCom = { nullptr };
 	CVIBuffer_Cube*		m_pVIBufferCom = { nullptr };
+
+	_wstring	m_strTexPrototypeTag = {};
 
 private:
 	HRESULT Ready_Components();

@@ -153,6 +153,11 @@ HRESULT CLoader::Loading_For_Static()
 		CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_VIBuffer_Cube */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"),
+		CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 
 	lstrcpy(m_szLoadingText, TEXT("모델 로딩 중"));
 	if (FAILED(Ready_Prototype_ModelCom_Static()))
@@ -202,11 +207,15 @@ HRESULT CLoader::Loading_For_Title()
 
 HRESULT CLoader::Loading_For_Lounge()
 {
-	///* For.Prototype_GameObject_Sky */
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOUNGE, TEXT("Prototype_GameObject_Sky"),
-	//	CSky::Create(m_pDevice, m_pContext))))
-	//	return E_FAIL;
+	/* For.Prototype_Component_Texture_LoungeSky */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOUNGE, TEXT("Prototype_Component_Texture_LoungeSky"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Sky/Sky_1.dds"), 1))))
+		return E_FAIL;
 
+	/* For.Prototype_GameObject_Sky */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOUNGE, TEXT("Prototype_GameObject_Sky"),
+		CSky::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
@@ -217,6 +226,16 @@ HRESULT CLoader::Loading_For_Lounge()
 
 HRESULT CLoader::Loading_For_SoggySwamp()
 {
+	/* For.Prototype_Component_Texture_SoggySwampSky */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_SOGGYSWAMP, TEXT("Prototype_Component_Texture_SoggySwampSky"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Sky/Sky_2.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Sky */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_SOGGYSWAMP, TEXT("Prototype_GameObject_Sky"),
+		CSky::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
@@ -325,6 +344,11 @@ HRESULT CLoader::Ready_Prototype_ShaderCom_Static()
 	/* For.Prototype_Component_Shader_VtxMesh */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxMesh"),
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxMesh.hlsl"), VTXMESH::Elements, VTXMESH::iNumElements))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Shader_VtxCube */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxCube"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxCube.hlsl"), VTXCUBE::Elements, VTXCUBE::iNumElements))))
 		return E_FAIL;
 
 	return S_OK;
