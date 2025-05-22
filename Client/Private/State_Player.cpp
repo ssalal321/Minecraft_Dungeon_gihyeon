@@ -65,6 +65,12 @@ void CState_Player::State_Update(_float fTimeDelta)
 {
 	m_bAnimationFinished = m_pActorModelCom->Play_Animation(fTimeDelta);
 
+	if (m_pGameInstance->Key_Down('E') && false == m_pPlayerInfo->Get_HPCoolDowning())
+	{
+		m_pPlayerInfo->Modify_CurrentHp(m_pPlayerInfo->Get_MaxHP());
+		m_pPlayerInfo->Start_HPCoolDown(true);
+	}
+
 	Check_Combo_Timeout(fTimeDelta);
 }
 

@@ -184,6 +184,7 @@
     <ClInclude Include="..\Public\CauldronBoss_TPose.h" />
     <ClInclude Include="..\Public\ChestIcon.h" />
     <ClInclude Include="..\Public\GateFence.h" />
+    <ClInclude Include="..\Public\HealthPotion.h" />
     <ClInclude Include="..\Public\MonsterRush_Trigger.h" />
     <ClInclude Include="..\Public\RollIcon.h" />
     <ClInclude Include="..\Public\Skeleton_Dead.h" />
@@ -324,6 +325,7 @@
     <ClCompile Include="..\Private\CauldronBoss_TPose.cpp" />
     <ClCompile Include="..\Private\ChestIcon.cpp" />
     <ClCompile Include="..\Private\GateFence.cpp" />
+    <ClCompile Include="..\Private\HealthPotion.cpp" />
     <ClCompile Include="..\Private\MonsterRush_Trigger.cpp" />
     <ClCompile Include="..\Private\RollIcon.cpp" />
     <ClCompile Include="..\Private\Skeleton_Dead.cpp" />

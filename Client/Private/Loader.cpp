@@ -19,6 +19,7 @@
 #include "CauldronBossHP.h"
 #include "ChestIcon.h"
 #include "GateFence.h"
+#include "HealthPotion.h"
 #include "InventoryBase.h"
 #include "InventoryGearSlot.h"
 #include "InventoryArtifactSlot.h"
@@ -259,6 +260,11 @@ HRESULT CLoader::Ready_Prototype_TextureCom_Static()
 	/* For.Prototype_Component_Texture_RollIcon */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_RollIcon"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/rolling_icon.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_HealthPotion */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_HealthPotion"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/HealthPotion.png"), 1))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_CauldronBossHP */
@@ -513,6 +519,11 @@ HRESULT CLoader::Ready_Prototype_GameObject_Static()
 	/* For.Prototype_GameObject_RollIcon */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_RollIcon"),
 		CRollIcon::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_HealthPotion */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_HealthPotion"),
+		CHealthPotion::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_CauldronBoss_HPbar */

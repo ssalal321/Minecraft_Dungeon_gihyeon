@@ -208,10 +208,10 @@ HRESULT CLevel_SoggySwamp::Ready_Layer_BackGround(const _wstring& strLayerTag)
 
     CSky::SKY_DESC desc = {};
     desc.strTexPrototypeTag = TEXT("Prototype_Component_Texture_SoggySwampSky");
-    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_SOGGYSWAMP, TEXT("Prototype_GameObject_Sky"),
-        LEVEL_SOGGYSWAMP, strLayerTag, &desc)))
+    CGameObject* pSky = m_pGameInstance->Add_GameObject(LEVEL_SOGGYSWAMP, TEXT("Prototype_GameObject_Sky"),
+									            LEVEL_SOGGYSWAMP, strLayerTag, &desc);
+    if (nullptr == pSky)
         return E_FAIL;
-
 
     CGateFence::GATEFENCE_DESC  gateFenceDesc0 = {};
     gateFenceDesc0.worldPosition = { 5.5f, 0.f, 51.75f, 1.f };

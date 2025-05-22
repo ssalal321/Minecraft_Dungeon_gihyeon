@@ -9,6 +9,7 @@
 #include "PartObject.h"
 #include "Level_Loading.h"
 #include "Camera_Free.h"
+#include "HealthPotion.h"
 #include "InventoryBase.h"
 #include "InventoryData.h"
 #include "Item.h"
@@ -305,8 +306,9 @@ HRESULT CLevel_Lounge::Ready_Layer_BackGround(const _wstring& strLayerTag)
 
     CSky::SKY_DESC desc = {};
     desc.strTexPrototypeTag = TEXT("Prototype_Component_Texture_LoungeSky");
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_LOUNGE, TEXT("Prototype_GameObject_Sky"),
-        LEVEL_LOUNGE, strLayerTag, &desc)))
+    CGameObject* pSky = m_pGameInstance->Add_GameObject(LEVEL_LOUNGE, TEXT("Prototype_GameObject_Sky"),
+												LEVEL_LOUNGE, strLayerTag, &desc);
+    if (nullptr == pSky)
         return E_FAIL;
 
     return S_OK;
@@ -364,7 +366,7 @@ HRESULT CLevel_Lounge::Ready_Layer_PlayerSlotUI(const _wstring& strLayerTag)
 
     CRollIcon::ROLL_ICON_DESC  RollIconDesc
     (TEXT("GameObject_RollIcon"), CUIObject::UNCLICKABLE,
-        fPlayerStateSlotX + 202.f, fPlayerStateSlotY + 7.f, 0.6f,32.f, 22.5f,
+        fPlayerStateSlotX + 202.f, fPlayerStateSlotY + 7.f, 0.6f, 32.f, 22.5f,
         L"Prototype_Component_Texture_RollIcon");
 
     CUIObject* pRollIcon = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_STATIC,
@@ -375,6 +377,19 @@ HRESULT CLevel_Lounge::Ready_Layer_PlayerSlotUI(const _wstring& strLayerTag)
         return E_FAIL;
     pRollIcon->Set_Parent(pPlayerStateSlot);
 
+
+    CHealthPotion::HEALTHPOTION_ICON_DESC  healthPotionDesc
+    (TEXT("GameObject_HealthPotion"), CUIObject::UNCLICKABLE,
+        fPlayerStateSlotX + 80.f, fPlayerStateSlotY - 7.f, 0.6f, 37.f, 37.f,
+        L"Prototype_Component_Texture_HealthPotion");
+
+    CUIObject* pHealthPotionIcon = m_pGameInstance->Add_UIObject(LEVEL_STATIC, LEVEL_STATIC,
+        TEXT("Prototype_GameObject_HealthPotion"),
+        CUI_Manager::PERSISTENT, &healthPotionDesc);
+
+    if (nullptr == pHealthPotionIcon)
+        return E_FAIL;
+    pHealthPotionIcon->Set_Parent(pPlayerStateSlot);
 
     return S_OK;
 }
