@@ -2,14 +2,16 @@
 #include "Client_Defines.h"
 #include "ContainerObject.h"
 
+
 BEGIN(Engine)
 class	CShader;
 class	CModel;
 END
 
 BEGIN(Client)
-	class CArrowPool_Monster;
-	class CState;
+class CArrowPool_Monster;
+class CState;
+class CMonsterRush_Trigger;
 
 class CMonster abstract : public CContainerObject
 {
@@ -83,6 +85,9 @@ public:
 	CMonster*	Get_Eating_BossMonster() { return m_pBossMonster; }
 
 	_bool		Get_Is_Jumping() const { return m_bIsJumping; }
+
+	CMonsterRush_Trigger*	Get_MonsterRush_Trigger() { return m_pMonsterRush_Trigger; }
+
 	_vector		Get_Jump_LandPos() const { return m_vJumpTarget; }
 
 	void		Set_Is_Jumping(_bool bJumping) { m_bIsJumping = bJumping; }
@@ -101,6 +106,8 @@ public:
 		m_bCanbeEaten = bCanbeEaten;
 		m_pBossMonster = pBossMonster;
 	}
+
+	void	Set_MyRushTrigger(CMonsterRush_Trigger* pTrigger) { m_pMonsterRush_Trigger = pTrigger; }
 
 	void	Jump_To_Target(_vector vTargetPos)
 	{
@@ -145,9 +152,9 @@ protected:
 	_float2				m_vFontStartScreenPos = {};   // 시작 위치
 	_float2				m_vFontOffset = {};           // 현재까지 올라온 오프셋
 	_float2				m_vFontCurrentScreenPos = {};  // 매 프레임 최종 위치 계산해놓는 변수
-
 #pragma endregion
 
+	CMonsterRush_Trigger*	m_pMonsterRush_Trigger = { nullptr };
 
 protected:
 	HRESULT				Ready_Components();

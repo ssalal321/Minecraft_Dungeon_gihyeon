@@ -36,9 +36,17 @@ public:
 	HRESULT		Ready_Layer_Camera(const _wstring& strLayerTag);
 	HRESULT		Ready_Layer_BackGround(const _wstring& strLayerTag);
 	HRESULT		Ready_Layer_Player(const _wstring& strLayerTag);
-	HRESULT		Ready_Layer_Monster(const _wstring& strLayerTag);
+	HRESULT		Ready_Layer_Boss(const _wstring& strLayerTag);
 	HRESULT		Ready_Layer_Trigger(const _wstring& strLayerTag);
+	HRESULT		Ready_Layer_MonsterRush(const _wstring& strLayerTag);
 	HRESULT		Ready_Layer_UI(const _wstring& strLayerTag);
+
+
+	HRESULT		Ready_BabyZombie(const _wstring& strLayerTag);
+	HRESULT		Ready_Slime(const _wstring& strLayerTag);
+	HRESULT		Ready_Skeleton(const _wstring& strLayerTag);
+	HRESULT		Ready_Vindicator(const _wstring& strLayerTag);
+	HRESULT		Ready_Zombie(const _wstring& strLayerTag);
 
 	CCollider*	Get_Closest_Collider(const _float4& mousePos, const _float3& mouseRay);
 	void		Click_Chase_Monster(CMonster* pMonster);

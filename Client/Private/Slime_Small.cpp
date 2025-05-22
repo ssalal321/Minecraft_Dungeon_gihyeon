@@ -53,6 +53,9 @@ HRESULT CSlime_Small::Initialize(void* pArg)
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
 								XMLoadFloat4(&pDesc->slimeSmallPosition));
 
+	if (m_pNavigationCom)
+		m_pNavigationCom->SetUp_CurrentCellIndex(pDesc->currentCellIndex);
+
 	return S_OK;
 }
 

@@ -43,9 +43,6 @@ HRESULT CMonster::Initialize(void* pArg)
 
 void CMonster::Priority_Update(_float fTimeDelta)
 {
-	if (!m_bActive)
-		return;
-
 	__super::Priority_Update(fTimeDelta);
 
 	m_pMonsterFSM->Priority_Update_State(fTimeDelta);
@@ -53,9 +50,6 @@ void CMonster::Priority_Update(_float fTimeDelta)
 
 void CMonster::Update(_float fTimeDelta)
 {
-	if (!m_bActive)
-		return;
-
 	__super::Update(fTimeDelta);
 
 	if (m_pNavigationCom && false == m_pTransformCom->Get_Is_Jumping())
@@ -81,9 +75,6 @@ void CMonster::Update(_float fTimeDelta)
 
 void CMonster::Late_Update(_float fTimeDelta)
 {
-	if (!m_bActive)
-		return;
-
 	__super::Late_Update(fTimeDelta);
 
 	m_pMonsterFSM->Late_Update_State(fTimeDelta);
@@ -93,9 +84,6 @@ void CMonster::Late_Update(_float fTimeDelta)
 
 HRESULT CMonster::Render()
 {
-	if (!m_bActive)
-		return S_OK;
-
 	if (m_bRenderDamageFont)
 	{
 		std::wstring strHP = std::to_wstring(m_iDealPoint);

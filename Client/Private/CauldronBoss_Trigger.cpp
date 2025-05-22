@@ -69,6 +69,13 @@ void CCauldronBoss_Trigger::Collided_With(CCollider* pOther, CCollider::COLLISIO
 		m_pMyBoss->Set_GameObject_Active(true);
 		m_pMyBoss->Find_PartObject(TEXT("Part_Body"))->Set_Appearing(true);
 
+		CCollider* pColliderBig = dynamic_cast<CCollider*>(m_pMyBoss->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_BigSphere")));
+		pColliderBig->Set_ColliderActive(true);
+
+		CCollider* pColliderSmall = dynamic_cast<CCollider*>(m_pMyBoss->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_SmallSphere")));
+		pColliderSmall->Set_ColliderActive(true);
+
+
 		CGameObject* pGateFence = m_pGameInstance->Find_GameObject(TEXT("GameObject_GateFence_0"),
 																	m_pGameInstance->Get_CurrentLevelIndex(), TEXT("Layer_BackGround"));
 		pGateFence->Set_GameObject_Active(true);

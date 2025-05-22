@@ -3,6 +3,7 @@
 
 #include <random>
 #include "Item.h"
+#include "MonsterRush_Trigger.h"
 #include "Player_Arrow.h"
 
 CState_Skeleton::CState_Skeleton(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATE_SKELETON_DESC* pDesc)
@@ -130,6 +131,9 @@ _bool CState_Skeleton::Change_State_To_Dead()
 {
 	if (m_pMonsterInfo->Get_CurrentHP() <= 0)
 	{
+		if (nullptr != m_pSkeleton->Get_MonsterRush_Trigger())
+			m_pSkeleton->Get_MonsterRush_Trigger()->Notify_Monster_Died(m_pSkeleton);
+
 		m_pSkeleton->Change_State(Make_SkeletonState(SKELETON_STATE::DEAD));
 		return true;
 	}

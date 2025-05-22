@@ -3,6 +3,7 @@
 
 #include "Player_Arrow.h"
 #include "Item.h"
+#include "MonsterRush_Trigger.h"
 
 
 CState_Slime_Small::CState_Slime_Small(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc)
@@ -34,6 +35,9 @@ void CState_Slime_Small::State_Update(_float fTimeDelta)
 
 	if (m_pMonsterInfo->Get_CurrentHP() <= 0)
 	{
+		if (nullptr != m_pSlime_Small->Get_MonsterRush_Trigger())
+			m_pSlime_Small->Get_MonsterRush_Trigger()->Notify_Monster_Died(m_pSlime_Small);
+
 		m_pActor->Set_GameObject_Active(false);
 		m_pBigColliderCom->Set_ColliderActive(false);
 		m_pSmallColliderCom->Set_ColliderActive(false);

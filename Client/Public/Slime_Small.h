@@ -13,6 +13,7 @@ public:
 	struct SLIME_SMALL_DESC
 	{
 		_float4  slimeSmallPosition = { 0.f, 0.f, 0.f, 1.f };
+		_int	 currentCellIndex = {};
 	};
 
 private:

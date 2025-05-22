@@ -10,6 +10,13 @@ BEGIN(Client)
 
 class CSkeleton final : public CMonster
 {
+public:
+	struct SKELETON_DESC
+	{
+		_float4  skeletonPosition = { 0.f, 0.f, 0.f, 1.f };
+		_int	 currentCellIndex = {};
+	};
+
 private:
 	CSkeleton(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CSkeleton(const CSkeleton& Prototype);

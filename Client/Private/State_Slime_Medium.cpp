@@ -3,6 +3,7 @@
 
 #include "Player_Arrow.h"
 #include "Item.h"
+#include "MonsterRush_Trigger.h"
 #include "Slime_Small.h"
 
 
@@ -35,6 +36,9 @@ void CState_Slime_Medium::State_Update(_float fTimeDelta)
 
 	if (m_pMonsterInfo->Get_CurrentHP() <= 0)
 	{
+		if (nullptr != m_pSlime_Medium->Get_MonsterRush_Trigger())
+			m_pSlime_Medium->Get_MonsterRush_Trigger()->Notify_Monster_Died(m_pSlime_Medium);
+
 		m_pActor->Set_GameObject_Active(false);
 		m_pBigColliderCom->Set_ColliderActive(false);
 		m_pSmallColliderCom->Set_ColliderActive(false);
@@ -55,14 +59,40 @@ void CState_Slime_Medium::State_Update(_float fTimeDelta)
 
 		// 4. float4로 변환해서 desc에 넣기
 		CSlime_Small::SLIME_SMALL_DESC  leftDesc{};
+		leftDesc.currentCellIndex = m_pNavigationCom->Get_CurrentCellIndex();
 		XMStoreFloat4(&leftDesc.slimeSmallPosition, vLeftPos);
 
-		m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Slime_Small"), m_pGameInstance->Get_CurrentLevelIndex(), TEXT("Layer_Monster"), &leftDesc);
+		CGameObject* pSlimeSmall0 = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Slime_Small"), m_pGameInstance->Get_CurrentLevelIndex(), TEXT("Layer_Monster"), &leftDesc);
+
+		if (nullptr != m_pSlime_Medium->Get_MonsterRush_Trigger())
+		{
+			CMonster* pMonster = dynamic_cast<CMonster*>(pSlimeSmall0);
+			pMonster->Set_MyRushTrigger(m_pSlime_Medium->Get_MonsterRush_Trigger());
+			pMonster->Get_MonsterRush_Trigger()->Add_Monster(pMonster);
+
+			CNavigation* pNavigation = dynamic_cast<CNavigation*>(pSlimeSmall0->Find_Component(TEXT("Com_Navigation")));
+			pNavigation->Lock_Cell(1569);  // 원래는 이것도 trigger에 저장해서 받아와야 하지만 시간 없으므로..
+			pNavigation->Lock_Cell(1688);
+		}
+			
 
 		CSlime_Small::SLIME_SMALL_DESC  rightDesc{};
 		XMStoreFloat4(&rightDesc.slimeSmallPosition, vRightPos);
+		rightDesc.currentCellIndex = m_pNavigationCom->Get_CurrentCellIndex();;
 
-		m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Slime_Small"), m_pGameInstance->Get_CurrentLevelIndex(), TEXT("Layer_Monster"), &rightDesc);
+		CGameObject* pSlimeSmall1 = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Slime_Small"), m_pGameInstance->Get_CurrentLevelIndex(), TEXT("Layer_Monster"), &rightDesc);
+
+		if (nullptr != m_pSlime_Medium->Get_MonsterRush_Trigger())
+		{
+			CMonster* pMonster = dynamic_cast<CMonster*>(pSlimeSmall1);
+			pMonster->Set_MyRushTrigger(m_pSlime_Medium->Get_MonsterRush_Trigger());
+			pMonster->Get_MonsterRush_Trigger()->Add_Monster(pMonster);
+
+			CNavigation* pNavigation = dynamic_cast<CNavigation*>(pMonster->Find_Component(TEXT("Com_Navigation")));
+			pNavigation->Lock_Cell(1569);  // 원래는 이것도 trigger에 저장해서 받아와야 하지만 시간 없으므로..
+			pNavigation->Lock_Cell(1688);
+		}
+			
 	}
 }
 

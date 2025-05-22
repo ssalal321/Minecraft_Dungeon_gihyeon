@@ -49,7 +49,7 @@ void CCauldronBoss_BasicAttack::State_Update(_float fTimeDelta)
 
     if (!m_bSummoned)
     {
-        //Spawn_Monsters(playerPos);
+        Spawn_Monsters(playerPos);
         m_bSummoned = true;
     }
 
