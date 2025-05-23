@@ -42,6 +42,10 @@ private:
 	_float4x4		m_IdentityWorldMatrix = {};
 
 	_float3			m_TriggerPosition = { 0.f, 0.f, 0.f };
+
+	_float2			m_vScreenPos = {};
+
+	_bool			m_bMonsterExists = { false };
 	
 private:
 	HRESULT		Ready_Components();

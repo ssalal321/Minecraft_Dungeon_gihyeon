@@ -34,6 +34,8 @@ HRESULT CMonsterRush_Trigger::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+	m_vScreenPos = { g_iWinSizeX * 0.5f  - 53.f, 78.f - 45.f };
+
 	return S_OK;
 }
 
@@ -60,6 +62,12 @@ HRESULT CMonsterRush_Trigger::Render()
 	if (!m_bActive)
 		return S_OK;
 
+	if (m_bMonsterExists)
+	{
+		std::wstring strFontText = L"몬스터 러쉬 (" + std::to_wstring(m_MonstersToActivate.size());
+		m_pGameInstance->Draw_Text(TEXT("Font_Interop"), strFontText.c_str(), m_vScreenPos, Colors::White, 0.f, { 0.f, 0.f }, 0.5f);
+	}
+
 	return S_OK;
 }
 
@@ -69,6 +77,8 @@ void CMonsterRush_Trigger::Collided_With(CCollider* pOther, CCollider::COLLISION
 	if (CCollider::COLLISION_STATE::ENTER == eCollisionState &&
 		TEXT("Player_Body") == pOther->Get_ColliderTag())
 	{
+		m_bMonsterExists = true;
+
 		CGameObject* pGateFence1 = m_pGameInstance->Find_GameObject(TEXT("GameObject_GateFence_1"),
 																	m_pGameInstance->Get_CurrentLevelIndex(), TEXT("Layer_BackGround"));
 		pGateFence1->Set_GameObject_Active(true);
@@ -138,6 +148,8 @@ void CMonsterRush_Trigger::Notify_Monster_Died(CMonster* pMonster)
 		CNavigation* pPlayerNav = dynamic_cast<CNavigation*>(pPlayer->Find_Component(TEXT("Com_Navigation")));
 		pPlayerNav->Unlock_Cell(1569);
 		pPlayerNav->Unlock_Cell(1688);
+
+		m_bMonsterExists = false;
 	}
 }
 
