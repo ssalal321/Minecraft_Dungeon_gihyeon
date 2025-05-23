@@ -22,6 +22,9 @@ private:
     ~CCamera_Target() override = default;
 
 public:
+    void        Set_FixedTargetY(_float y) { m_fFixedTargetY = y; }
+
+public:
     HRESULT		Initialize_Prototype() override;
     HRESULT		Initialize(void* pArg) override;
     void		Priority_Update(_float fTimeDelta) override;
@@ -29,11 +32,27 @@ public:
     void		Late_Update(_float fTimeDelta) override;
     HRESULT		Render() override;
 
+public:
+    _vector     SmoothFollow(_vector current, _vector target, _float smoothTime, _float deltaTime);
+    
 private:
-    CTransform* m_pTargetTransform = nullptr;   // 추적 대상 (플레이어 등)
-    _float3     m_vOffset = {};                                // 대상 기준의 상대적 위치
-    _float m_fLagSpeed = 5.f;                         // 보간 속도
+    CTransform*     m_pTargetTransform = nullptr;   // 추적 대상 (플레이어 등)
+    _float3         m_vOffset = {};                                // 대상 기준의 상대적 위치
+    _float          m_fLagSpeed = 5.f;                         // 보간 속도
 
+    _vector         m_vCameraVelocity = XMVectorZero();
+
+    _float          m_fFixedTargetY = 0.f;
+    _bool           m_bInitFixedY = false;
+
+    _float2         m_vSmoothedTargetXZ = { 0.f, 0.f };
+    _bool           m_bInitXZ = false;
+
+private:
+    _float Lerp(_float a, _float b, _float t)
+    {
+        return a + (b - a) * t;
+    }
 
 public:
     static  CCamera_Target* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

@@ -1,4 +1,6 @@
 #include "CauldronBoss_Trigger.h"
+
+#include "Camera_Target.h"
 #include "GameInstance.h"
 #include "GateFence.h"
 #include "Monster.h"
@@ -66,6 +68,20 @@ void CCauldronBoss_Trigger::Collided_With(CCollider* pOther, CCollider::COLLISIO
 	if (CCollider::COLLISION_STATE::ENTER == eCollisionState &&
 		TEXT("Player_Body") == pOther->Get_ColliderTag())
 	{
+		CContainerObject* pPlayer = dynamic_cast<CPartObject*>(pOther->Get_OwnerObject())->Get_ContainerObject();
+		CNavigation* pPlayerNav = dynamic_cast<CNavigation*>(pPlayer->Find_Component(TEXT("Com_Navigation")));
+		pPlayerNav->Lock_Cell(899);
+		pPlayerNav->Lock_Cell(900);
+
+
+		CGameObject* pCamera = m_pGameInstance->Find_GameObject(TEXT("GameObject_Camera_Target"),
+																m_pGameInstance->Get_CurrentLevelIndex(), TEXT("Layer_Camera"));
+		CTransform* pTransformCom = dynamic_cast<CTransform*>(pPlayer->Find_Component(TEXT("Com_Transform")));
+		_float4 playerPos = {};
+		XMStoreFloat4(&playerPos, pTransformCom->Get_State(CTransform::STATE_POSITION));
+
+		dynamic_cast<CCamera_Target*>(pCamera)->Set_FixedTargetY(playerPos.y);
+
 		m_pMyBoss->Set_GameObject_Active(true);
 		m_pMyBoss->Find_PartObject(TEXT("Part_Body"))->Set_Appearing(true);
 
@@ -82,10 +98,7 @@ void CCauldronBoss_Trigger::Collided_With(CCollider* pOther, CCollider::COLLISIO
 		dynamic_cast<CGateFence*>(pGateFence)->Set_Appearing(true);
 
 
-		CContainerObject* pPlayer = dynamic_cast<CPartObject*>(pOther->Get_OwnerObject())->Get_ContainerObject();
-		CNavigation* pPlayerNav = dynamic_cast<CNavigation*>(pPlayer->Find_Component(TEXT("Com_Navigation")));
-		pPlayerNav->Lock_Cell(899);
-		pPlayerNav->Lock_Cell(900);
+		
 	}
 }
 

@@ -8,7 +8,7 @@
 #include "GameInstance.h"
 #include "PartObject.h"
 #include "Level_Loading.h"
-#include "Camera_Free.h"
+#include "Camera_Target.h"
 #include "CauldronBoss.h"
 #include "CauldronBossHP.h"
 #include "GateFence.h"
@@ -180,21 +180,29 @@ HRESULT CLevel_SoggySwamp::Ready_Lights()
 
 HRESULT CLevel_SoggySwamp::Ready_Layer_Camera(const _wstring& strLayerTag)
 {
-    CCamera_Free::CAMERA_FREE_DESC            Desc{};
+    // 플레이어가 먼저 준비되어 있어야 함
+    if (!m_pPlayer)
+        return E_FAIL;
 
-    Desc.strGameObjectTag = TEXT("GameObject_Camera_Free");
-    Desc.vEye = _float3(0.f, 20.f, -15.f);
-    Desc.vAt = _float3(0.f, 0.f, 0.f);
-    Desc.fFov = XMConvertToRadians(60.f);
-    Desc.fNear = 0.01f;
-    Desc.fFar = 500.f;
-    Desc.fKeySensor = 0.03f;
-    Desc.fSpeedPerSec = 8.f;
-    Desc.fRotationPerSec = XMConvertToRadians(180.f);
+    CTransform* pTargetTransform = dynamic_cast<CTransform*>(m_pPlayer->Find_Component(TEXT("Com_Transform")));
+    if (!pTargetTransform)
+        return E_FAIL;
 
-    CGameObject* pCameraObject = m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Free"),
-        LEVEL_SOGGYSWAMP, strLayerTag, &Desc);
-    if (nullptr == pCameraObject)     return E_FAIL;
+    CCamera_Target::CAMERA_TARGET_DESC desc{};
+    desc.strGameObjectTag = TEXT("GameObject_Camera_Target");
+    desc.pTargetTransform = pTargetTransform;                   // 추적 대상 지정
+    desc.vOffset = _float3(-7.f, 13.f, -9.f);              // 뒤쪽 위에서 바라보게
+    desc.fLagSpeed = 5.f;
+    desc.fFov = XMConvertToRadians(60.f);
+    desc.fNear = 0.01f;
+    desc.fFar = 500.f;
+
+    CGameObject* pCamera = m_pGameInstance->Add_GameObject(
+        LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Target"),
+        LEVEL_SOGGYSWAMP, strLayerTag, &desc);
+
+    if (!pCamera)
+        return E_FAIL;
 
     return S_OK;
 }
@@ -919,7 +927,7 @@ HRESULT CLevel_SoggySwamp::Ready_Layer_MonsterRush(const _wstring& strLayerTag)
 HRESULT CLevel_SoggySwamp::Ready_Layer_Trigger(const _wstring& strLayerTag)
 {
     CCauldronBoss_Trigger::BOSS_TRIGGER_DESC   bossTriggerDesc = {};
-    bossTriggerDesc.triggerPosition = { -4.f, 0.f, 20.5f };
+    bossTriggerDesc.triggerPosition = { -4.f, 0.f, 22.5f };
     bossTriggerDesc.pBoss = m_pCauldronBoss;
 
     m_pBoss_Trigger = CCauldronBoss_Trigger::Create(m_pDevice, m_pContext, &bossTriggerDesc);

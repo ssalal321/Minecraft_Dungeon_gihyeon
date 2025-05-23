@@ -34,6 +34,7 @@ HRESULT CCamera_Target::Initialize(void* pArg)
     XMStoreFloat3(&at, pDesc->pTargetTransform->Get_State(CTransform::STATE_POSITION));
     CAMERA_DESC camDesc = {};
 
+    camDesc.strGameObjectTag = pDesc->strGameObjectTag;
     camDesc.vEye = eye;
     camDesc.vAt = at;
     camDesc.fFov = pDesc->fFov;
@@ -63,20 +64,47 @@ void CCamera_Target::Update(_float fTimeDelta)
     if (!m_pTargetTransform)
         return;
 
-    // 타겟 위치
     _vector vTargetPos = m_pTargetTransform->Get_State(CTransform::STATE_POSITION);
 
-    // 고정 오프셋 적용 (월드 기준)
-    _vector vDesiredPos = vTargetPos + XMVectorSet(m_vOffset.x, m_vOffset.y, m_vOffset.z, 0.f);
+    // 초기 Y 고정
+    if (!m_bInitFixedY)
+    {
+        m_fFixedTargetY = XMVectorGetY(vTargetPos);
+        m_bInitFixedY = true;
+    }
 
-    // 현재 위치 보간 이동
-    _vector vCurrentPos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
-    _vector vNewPos = XMVectorLerp(vCurrentPos, vDesiredPos, m_fLagSpeed * fTimeDelta);
-    m_pTransformCom->Set_State(CTransform::STATE_POSITION, vNewPos);
+    // 초기 XZ 고정
+    _float fTargetX = XMVectorGetX(vTargetPos);
+    _float fTargetZ = XMVectorGetZ(vTargetPos);
 
-    // 머리보다 살짝 낮고, 앞쪽을 바라보게
-    _vector vTargetLookPos = vTargetPos + XMVectorSet(0.f, 1.f, 1.f, 0.f);
-    m_pTransformCom->LookAt_Full(vTargetLookPos);
+    if (!m_bInitXZ)
+    {
+        m_vSmoothedTargetXZ = { fTargetX, fTargetZ };
+        m_bInitXZ = true;
+    }
+
+    // XZ 감쇠 (지수 보간)
+    _float smoothingXZ = 1.f - pow(0.005f, fTimeDelta);  // 낮을수록 더 부드러움
+    m_vSmoothedTargetXZ.x = Lerp(m_vSmoothedTargetXZ.x, fTargetX, smoothingXZ);
+    m_vSmoothedTargetXZ.y = Lerp(m_vSmoothedTargetXZ.y, fTargetZ, smoothingXZ);
+
+    // 최종 카메라 위치
+    _vector vCameraPos = XMVectorSet(
+        m_vSmoothedTargetXZ.x + m_vOffset.x,
+        m_fFixedTargetY + m_vOffset.y,
+        m_vSmoothedTargetXZ.y + m_vOffset.z,
+        1.f
+    );
+    m_pTransformCom->Set_State(CTransform::STATE_POSITION, vCameraPos);
+
+    // 시선도 감쇠된 위치 기준
+    _vector vLookTarget = XMVectorSet(
+        m_vSmoothedTargetXZ.x,
+        m_fFixedTargetY + 1.f,   // 플레이어보다 더 아래 지점을 바라보게
+        m_vSmoothedTargetXZ.y,
+        1.f
+    );
+    m_pTransformCom->LookAt_Full(vLookTarget);
 
     __super::Update_Camera();
 }
@@ -84,6 +112,20 @@ void CCamera_Target::Update(_float fTimeDelta)
 
 void CCamera_Target::Late_Update(_float fTimeDelta)
 {
+}
+
+
+_vector CCamera_Target::SmoothFollow(_vector current, _vector target, _float smoothTime, _float deltaTime)
+{
+    const float omega = 2.0f / smoothTime;
+    const float x = omega * deltaTime;
+    const float exp = 1.0f / (1.0f + x + 0.48f * x * x + 0.235f * x * x * x);
+
+    _vector change = current - target;
+    _vector temp = (m_vCameraVelocity + change * omega) * deltaTime;
+    m_vCameraVelocity = (m_vCameraVelocity - temp * omega) * exp;
+
+    return target + (change + temp) * exp;
 }
 
 

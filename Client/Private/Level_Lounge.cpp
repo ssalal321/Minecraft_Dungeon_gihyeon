@@ -143,7 +143,7 @@ HRESULT CLevel_Lounge::Initialize()
 
 
     CLevel_Trigger::LEVEL_TRIGGER_DESC   pLevelTriggerDesc = {};
-    pLevelTriggerDesc.triggerPosition = { 2.5f, 2.f, 15.f };
+    pLevelTriggerDesc.triggerPosition = { 2.5f, 5.f, 55.f };
     m_pLevel_Trigger = CLevel_Trigger::Create(m_pDevice, m_pContext, &pLevelTriggerDesc);
     if (nullptr == m_pLevel_Trigger)
         return E_FAIL;
@@ -256,7 +256,7 @@ HRESULT CLevel_Lounge::Ready_Layer_Camera(const _wstring& strLayerTag)
     CCamera_Target::CAMERA_TARGET_DESC desc{};
     desc.strGameObjectTag = TEXT("GameObject_Camera_Target");
     desc.pTargetTransform = pTargetTransform;                   // 추적 대상 지정
-    desc.vOffset    = _float3(-14.f, 18.f, -14.f);            // 뒤쪽 위에서 바라보게
+    desc.vOffset = _float3(-7.f, 13.f, -9.f);              // 뒤쪽 위에서 바라보게
     desc.fLagSpeed  = 5.f;
     desc.fFov       = XMConvertToRadians(60.f);
     desc.fNear      = 0.01f;

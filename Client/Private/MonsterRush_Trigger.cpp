@@ -1,5 +1,6 @@
 #include "MonsterRush_Trigger.h"
 
+#include "Camera_Target.h"
 #include "GameInstance.h"
 #include "GateFence.h"
 #include "Monster.h"
@@ -96,6 +97,15 @@ void CMonsterRush_Trigger::Collided_With(CCollider* pOther, CCollider::COLLISION
 		CNavigation* pPlayerNav = dynamic_cast<CNavigation*>(pPlayer->Find_Component(TEXT("Com_Navigation")));
 		pPlayerNav->Lock_Cell(1569);
 		pPlayerNav->Lock_Cell(1688);
+
+
+		CGameObject* pCamera = m_pGameInstance->Find_GameObject(TEXT("GameObject_Camera_Target"),
+			m_pGameInstance->Get_CurrentLevelIndex(), TEXT("Layer_Camera"));
+		CTransform* pTransformCom = dynamic_cast<CTransform*>(pPlayer->Find_Component(TEXT("Com_Transform")));
+		_float4 playerPos = {};
+		XMStoreFloat4(&playerPos, pTransformCom->Get_State(CTransform::STATE_POSITION));
+
+		dynamic_cast<CCamera_Target*>(pCamera)->Set_FixedTargetY(playerPos.y);
 	}
 }
 
