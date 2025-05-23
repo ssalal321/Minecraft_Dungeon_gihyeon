@@ -941,6 +941,8 @@ HRESULT CLevel_SoggySwamp::Ready_Layer_Trigger(const _wstring& strLayerTag)
     if (nullptr == m_pMonsterRush_Trigger)
         return E_FAIL;
 
+    m_pGameInstance->Add_To_Layer(m_pMonsterRush_Trigger, LEVEL_SOGGYSWAMP, strLayerTag, TEXT("GameObject_MonsterRush_Trigger"));
+
     return S_OK;
 }
 

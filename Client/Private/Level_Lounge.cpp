@@ -86,7 +86,7 @@ HRESULT CLevel_Lounge::Initialize()
     BowDesc.strObjectPrototypeTag    = TEXT("Prototype_GameObject_Bow");
     BowDesc.strIconTexPrototypeTag   = TEXT("Prototype_Component_Texture_Bow");
     BowDesc.strPartObjectTag         = TEXT("Part_Weapon_Ranged");
-    BowDesc.iDealPoint               = 10;
+    BowDesc.iDealPoint               = 50;  // 10
     BowDesc.eItemtype                = ITEM_TYPE::RANGED;
     BowDesc.strIconGameObjectTag     = TEXT("UIGameObject_Bow");
 
