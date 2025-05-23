@@ -255,6 +255,12 @@ CGameObject* CGameInstance::Find_GameObject(const _wstring& strGameObjectTag, _u
 	return m_pObject_Manager->Find_GameObject(strGameObjectTag, iLayerLevelIndex, strLayerTag);
 }
 
+CGameObject* CGameInstance::Add_To_Layer(CGameObject* pGameObject, _uint iLayerLevelIndex, const _wstring& strLayerTag,
+	const _wstring& strGameObjectTag)
+{
+	return m_pObject_Manager->Add_To_Layer(pGameObject, iLayerLevelIndex, strLayerTag, strGameObjectTag);
+}
+
 CLayer* CGameInstance::Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag)
 {
 	return m_pObject_Manager->Find_Layer(iLevelIndex, strLayerTag);

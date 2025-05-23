@@ -37,6 +37,9 @@ public:
 	HRESULT			Attach_Persistent_Layer_To_Level(_uint iTargetLevelIndex, const wstring& strLayerTag);
 	HRESULT			Attach_Persistent_Layers_To_Level(_uint iLevelIndex);
 
+
+	CGameObject* Add_To_Layer(CGameObject* pGameObject, _uint iLayerLevelIndex,
+		const _wstring& strLayerTag, const _wstring& strGameObjectTag);
 	//unordered_map<_wstring, CGameObject*>*	Get_LayerObjects(_uint iLayerLevelIndex, const _wstring& strLayerTag);
 
 public:
@@ -56,8 +59,7 @@ private:
 	OBJECT_BACKUP_DATA		m_tObjectDataBackup;
 
 private:
-	CGameObject*	Add_To_Layer(CGameObject* pGameObject, _uint iLayerLevelIndex,
-								 const _wstring& strLayerTag, const _wstring& strGameObjectTag);
+	
 
 public:
 	static CObject_Manager* Create(_uint iNumLevels);

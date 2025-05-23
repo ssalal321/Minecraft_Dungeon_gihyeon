@@ -65,6 +65,8 @@ public:
 	CGameObject* Find_GameObject(const _wstring& strGameObjectTag, _uint iLayerLevelIndex, const _wstring& strLayerTag);
 	//CComponent*  Get_Component(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strComponentTag, _uint iIndex = 0);
 
+	CGameObject* Add_To_Layer(CGameObject* pGameObject, _uint iLayerLevelIndex, const _wstring& strLayerTag, const _wstring& strGameObjectTag);
+
 	CLayer*		Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag);
 	HRESULT		Set_Layer_Persistent(_uint iLevelIndex, const wstring& strLayerTag);
 	CLayer*		Get_Persistent_Layer(const wstring& strLayerTag);
