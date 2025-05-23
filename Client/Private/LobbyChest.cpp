@@ -73,6 +73,8 @@ void CLobbyChest::Update(_float fTimeDelta)
 		m_bOpened = true;
 
 		Pop_Out_Items();
+
+		m_pColliderCom->Set_ColliderActive(false);
 	}
 
 	for (auto& chestIcon : m_pChestIcons)
@@ -273,7 +275,7 @@ HRESULT CLobbyChest::Ready_Components()
 	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereCollDesc{};
 
 	SphereCollDesc.fRadius = 2.f;
-	SphereCollDesc.vCenter = _float3(0.f, SphereCollDesc.fRadius, 0.f);
+	SphereCollDesc.vCenter = _float3(0.f, SphereCollDesc.fRadius - 0.5f, 0.f);
 	SphereCollDesc.pGameObject = this;
 	SphereCollDesc.CombinedWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	SphereCollDesc.pCollisionActivated = &m_bActivated;

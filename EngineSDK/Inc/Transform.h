@@ -101,6 +101,7 @@ public:
 	void	Turn_Around_Offset(_fvector vAxis, _float fRadian, _float fOffsetDistance);
 	void	Rotation(_fvector vAxis, _float fRadian);
 	void	LookAt(_fvector vAt);
+	void LookAt_Full(_fvector vAt);
 
 public:
 	void	Add_Momentum(_vector vImpulse);

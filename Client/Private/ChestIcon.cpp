@@ -62,6 +62,7 @@ void CChestIcon::Update(_float fTimeDelta)
 		// ÇÃ·¹ÀÌ¾îÇÑÅ× ²ø·Á°¡±â On!
 
 		// ¸ÔÇûÀ» ¶§
+		m_pColliderCom->Set_ColliderActive(false);
 
 		CPlayer* pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("GameObject_Player"), m_pGameInstance->Get_CurrentLevelIndex(), TEXT("Layer_Player")));
 		pPlayer->Get_InventoryData()->Add_Item_To_StoreSlot(m_pDesc->iPrototypeLevelIndex, m_pDesc->ItemDesc.strObjectPrototypeTag, m_pDesc->ItemDesc.strGameObjectTag, &m_pDesc->ItemDesc);
@@ -121,7 +122,7 @@ HRESULT CChestIcon::Ready_Components()
 	/* Com_Collider */
 	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereCollDesc{};
 
-	SphereCollDesc.fRadius = 0.3f;
+	SphereCollDesc.fRadius = 0.5f;
 	SphereCollDesc.vCenter = _float3(0.f, SphereCollDesc.fRadius, 0.f);
 	SphereCollDesc.pGameObject = this;
 	SphereCollDesc.CombinedWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();;

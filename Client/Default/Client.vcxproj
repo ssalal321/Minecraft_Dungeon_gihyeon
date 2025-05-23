@@ -173,6 +173,7 @@
     <ClInclude Include="..\Public\Body_Slime_Medium.h" />
     <ClInclude Include="..\Public\Body_Slime_Small.h" />
     <ClInclude Include="..\Public\Body_Vindicator.h" />
+    <ClInclude Include="..\Public\Camera_Target.h" />
     <ClInclude Include="..\Public\CauldronBossHP.h" />
     <ClInclude Include="..\Public\CauldronBoss_Trigger.h" />
     <ClInclude Include="..\Public\BulletPool_Monster.h" />
@@ -314,6 +315,7 @@
     <ClCompile Include="..\Private\Body_Slime_Medium.cpp" />
     <ClCompile Include="..\Private\Body_Slime_Small.cpp" />
     <ClCompile Include="..\Private\Body_Vindicator.cpp" />
+    <ClCompile Include="..\Private\Camera_Target.cpp" />
     <ClCompile Include="..\Private\CauldronBossHP.cpp" />
     <ClCompile Include="..\Private\CauldronBoss_Trigger.cpp" />
     <ClCompile Include="..\Private\BulletPool_Monster.cpp" />

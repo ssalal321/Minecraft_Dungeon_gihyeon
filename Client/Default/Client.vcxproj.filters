@@ -427,6 +427,9 @@
     <Filter Include="02.GameObjects\UIObjects\PlayerSlotIcon\HealthPotion">
       <UniqueIdentifier>{d8654fc8-b8a6-4d34-8234-19206bce2c1f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Camera\Target">
+      <UniqueIdentifier>{aa1935e3-fb1e-4e33-9151-de8f5ad9bc23}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -846,6 +849,9 @@
     <ClInclude Include="..\Public\HealthPotion.h">
       <Filter>02.GameObjects\UIObjects\PlayerSlotIcon\HealthPotion</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Camera_Target.h">
+      <Filter>02.GameObjects\Camera\Target</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1259,6 +1265,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\HealthPotion.cpp">
       <Filter>02.GameObjects\UIObjects\PlayerSlotIcon\HealthPotion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Target.cpp">
+      <Filter>02.GameObjects\Camera\Target</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
