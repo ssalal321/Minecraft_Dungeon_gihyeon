@@ -4,17 +4,18 @@
 #include "Base.h"
 
 BEGIN(Engine)
-class CGameInstance;
+	class CGameInstance;
 END
 
 
 BEGIN(Client)
+class CImGui_Manager;
 
 class CMainApp final : public CBase
 {
 private:
 	CMainApp();
-	virtual ~CMainApp() = default;
+	~CMainApp() override = default;
 
 public:
 	HRESULT Initialize();
@@ -23,6 +24,7 @@ public:
 
 private:
 	CGameInstance*			m_pGameInstance = { nullptr };
+	CImGui_Manager*			m_pImGui_Manager = { nullptr };
 	ID3D11Device*			m_pDevice = { nullptr };
 	ID3D11DeviceContext*	m_pContext = { nullptr };
 

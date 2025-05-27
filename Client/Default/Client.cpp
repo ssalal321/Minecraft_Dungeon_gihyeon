@@ -8,6 +8,7 @@
 
 #include "MainApp.h"
 #include "GameInstance.h"
+#include "ImGui_Manager.h"
 
 #define MAX_LOADSTRING 100
 
@@ -63,6 +64,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     /* 타이머 추가 한다. */
     CGameInstance* pGameInstance = CGameInstance::GetInstance();
     Safe_AddRef(pGameInstance);
+
+    CImGui_Manager* pImGuiManager = CImGui_Manager::GetInstance();
+    Safe_AddRef(pImGuiManager);
 
     if (FAILED(pGameInstance->Add_Timer(TEXT("Timer_Default"))))
         return FALSE;
@@ -199,8 +203,14 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //  WM_DESTROY  - 종료 메시지를 게시하고 반환합니다.
 //
 //
+
+extern  IMGUI_IMPL_API  LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    if (ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam))
+        return true;
+
     switch (message)
     {
     case WM_COMMAND:

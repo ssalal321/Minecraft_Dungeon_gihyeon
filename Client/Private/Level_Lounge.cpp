@@ -66,7 +66,7 @@ HRESULT CLevel_Lounge::Initialize()
     GlaiveDesc.strObjectPrototypeTag    = TEXT("Prototype_GameObject_Glaive_Steel");
     GlaiveDesc.strIconTexPrototypeTag   = TEXT("Prototype_Component_Texture_Glaive_Steel");
     GlaiveDesc.strPartObjectTag         = TEXT("Part_Weapon_Melee");
-	GlaiveDesc.iDealPoint               = /*10*/30;
+	GlaiveDesc.iDealPoint               = /*10*/10;
     GlaiveDesc.eItemtype                = ITEM_TYPE::MELEE;;
     GlaiveDesc.strIconGameObjectTag     = TEXT("UIGameObject_Glaive_Steel");
 

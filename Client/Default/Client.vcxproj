@@ -184,8 +184,18 @@
     <ClInclude Include="..\Public\CauldronBoss_StrongAttack.h" />
     <ClInclude Include="..\Public\CauldronBoss_TPose.h" />
     <ClInclude Include="..\Public\ChestIcon.h" />
+    <ClInclude Include="..\Public\ImGuiFileDialog.h" />
+    <ClInclude Include="..\Public\ImGui_Manager.h" />
     <ClInclude Include="..\Public\GateFence.h" />
     <ClInclude Include="..\Public\HealthPotion.h" />
+    <ClInclude Include="..\Public\imconfig.h" />
+    <ClInclude Include="..\Public\imgui.h" />
+    <ClInclude Include="..\Public\imgui_impl_dx11.h" />
+    <ClInclude Include="..\Public\imgui_impl_win32.h" />
+    <ClInclude Include="..\Public\imgui_internal.h" />
+    <ClInclude Include="..\Public\imstb_rectpack.h" />
+    <ClInclude Include="..\Public\imstb_textedit.h" />
+    <ClInclude Include="..\Public\imstb_truetype.h" />
     <ClInclude Include="..\Public\MonsterRush_Trigger.h" />
     <ClInclude Include="..\Public\RollIcon.h" />
     <ClInclude Include="..\Public\Skeleton_Dead.h" />
@@ -326,8 +336,17 @@
     <ClCompile Include="..\Private\CauldronBoss_StrongAttack.cpp" />
     <ClCompile Include="..\Private\CauldronBoss_TPose.cpp" />
     <ClCompile Include="..\Private\ChestIcon.cpp" />
+    <ClCompile Include="..\Private\ImGuiFileDialog.cpp" />
+    <ClCompile Include="..\Private\ImGui_Manager.cpp" />
     <ClCompile Include="..\Private\GateFence.cpp" />
     <ClCompile Include="..\Private\HealthPotion.cpp" />
+    <ClCompile Include="..\Private\imgui.cpp" />
+    <ClCompile Include="..\Private\imgui_demo.cpp" />
+    <ClCompile Include="..\Private\imgui_draw.cpp" />
+    <ClCompile Include="..\Private\imgui_impl_dx11.cpp" />
+    <ClCompile Include="..\Private\imgui_impl_win32.cpp" />
+    <ClCompile Include="..\Private\imgui_tables.cpp" />
+    <ClCompile Include="..\Private\imgui_widgets.cpp" />
     <ClCompile Include="..\Private\MonsterRush_Trigger.cpp" />
     <ClCompile Include="..\Private\RollIcon.cpp" />
     <ClCompile Include="..\Private\Skeleton_Dead.cpp" />
@@ -459,6 +478,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Bin\ShaderFiles\Engine_Shader_Defines.hlsli" />
+    <None Include="imgui.natstepfilter" />
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="imgui.natvis" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

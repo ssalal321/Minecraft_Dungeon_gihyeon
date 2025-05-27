@@ -430,6 +430,9 @@
     <Filter Include="02.GameObjects\Camera\Target">
       <UniqueIdentifier>{aa1935e3-fb1e-4e33-9151-de8f5ad9bc23}</UniqueIdentifier>
     </Filter>
+    <Filter Include="95. IMGUI">
+      <UniqueIdentifier>{0c9fca48-cfb1-4d78-8e4d-3c8cb0fd6ba2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -852,6 +855,36 @@
     <ClInclude Include="..\Public\Camera_Target.h">
       <Filter>02.GameObjects\Camera\Target</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\imconfig.h">
+      <Filter>95. IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imgui.h">
+      <Filter>95. IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imgui_internal.h">
+      <Filter>95. IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imstb_rectpack.h">
+      <Filter>95. IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imstb_textedit.h">
+      <Filter>95. IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imstb_truetype.h">
+      <Filter>95. IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imgui_impl_dx11.h">
+      <Filter>95. IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imgui_impl_win32.h">
+      <Filter>95. IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui_Manager.h">
+      <Filter>95. IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGuiFileDialog.h">
+      <Filter>95. IMGUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1269,6 +1302,33 @@
     <ClCompile Include="..\Private\Camera_Target.cpp">
       <Filter>02.GameObjects\Camera\Target</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\imgui.cpp">
+      <Filter>95. IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui_demo.cpp">
+      <Filter>95. IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui_draw.cpp">
+      <Filter>95. IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui_tables.cpp">
+      <Filter>95. IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui_widgets.cpp">
+      <Filter>95. IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui_impl_dx11.cpp">
+      <Filter>95. IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui_impl_win32.cpp">
+      <Filter>95. IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGui_Manager.cpp">
+      <Filter>95. IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGuiFileDialog.cpp">
+      <Filter>95. IMGUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">
@@ -1303,5 +1363,13 @@
     <None Include="..\Bin\ShaderFiles\Engine_Shader_Defines.hlsli">
       <Filter>97.ShaderFiles</Filter>
     </None>
+    <None Include="imgui.natstepfilter">
+      <Filter>95. IMGUI</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="imgui.natvis">
+      <Filter>95. IMGUI</Filter>
+    </Natvis>
   </ItemGroup>
 </Project>

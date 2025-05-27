@@ -65,7 +65,9 @@ private:
 
 	static const _float4x4*			m_pWorldMatrix;
 
+#ifdef _DEBUG
 	static	_bool					m_bLineRender;
+#endif
 	static	_uint					m_iShaderPass;  // ¼±¾ð
 
 	std::unordered_set<std::string>		m_TriangleSet = {};
