@@ -882,9 +882,6 @@
     <ClInclude Include="..\Public\ImGui_Manager.h">
       <Filter>95. IMGUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\ImGuiFileDialog.h">
-      <Filter>95. IMGUI</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1326,9 +1323,6 @@
     <ClCompile Include="..\Private\ImGui_Manager.cpp">
       <Filter>95. IMGUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\ImGuiFileDialog.cpp">
-      <Filter>95. IMGUI</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">
@@ -1366,6 +1360,7 @@
     <None Include="imgui.natstepfilter">
       <Filter>95. IMGUI</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="imgui.natvis">

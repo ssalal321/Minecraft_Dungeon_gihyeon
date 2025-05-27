@@ -88,7 +88,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>;../../FMod</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);fmod_vc.lib</AdditionalDependencies>
+      <AdditionalDependencies>DirectXTK.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -107,7 +107,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>;../../FMod</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);fmod_vc.lib</AdditionalDependencies>
+      <AdditionalDependencies>DirectXTK.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -122,7 +122,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>../../EngineSDK/Lib/;../../FMod</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Engine.lib;%(AdditionalDependencies);fmod_vc.lib</AdditionalDependencies>
+      <AdditionalDependencies>DirectXTK.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
       <ShaderType>Effect</ShaderType>
@@ -147,7 +147,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>../../EngineSDK/Lib/;../../FMod</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Engine.lib;%(AdditionalDependencies);fmod_vc.lib</AdditionalDependencies>
+      <AdditionalDependencies>DirectXTK.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
       <ShaderType>Effect</ShaderType>
@@ -184,7 +184,6 @@
     <ClInclude Include="..\Public\CauldronBoss_StrongAttack.h" />
     <ClInclude Include="..\Public\CauldronBoss_TPose.h" />
     <ClInclude Include="..\Public\ChestIcon.h" />
-    <ClInclude Include="..\Public\ImGuiFileDialog.h" />
     <ClInclude Include="..\Public\ImGui_Manager.h" />
     <ClInclude Include="..\Public\GateFence.h" />
     <ClInclude Include="..\Public\HealthPotion.h" />
@@ -336,7 +335,6 @@
     <ClCompile Include="..\Private\CauldronBoss_StrongAttack.cpp" />
     <ClCompile Include="..\Private\CauldronBoss_TPose.cpp" />
     <ClCompile Include="..\Private\ChestIcon.cpp" />
-    <ClCompile Include="..\Private\ImGuiFileDialog.cpp" />
     <ClCompile Include="..\Private\ImGui_Manager.cpp" />
     <ClCompile Include="..\Private\GateFence.cpp" />
     <ClCompile Include="..\Private\HealthPotion.cpp" />
@@ -479,11 +477,19 @@
   <ItemGroup>
     <None Include="..\Bin\ShaderFiles\Engine_Shader_Defines.hlsli" />
     <None Include="imgui.natstepfilter" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="imgui.natvis" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\..\packages\directxtk_desktop_win10.2025.3.21.2\build\native\directxtk_desktop_win10.targets" Condition="Exists('..\..\packages\directxtk_desktop_win10.2025.3.21.2\build\native\directxtk_desktop_win10.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>이 프로젝트는 이 컴퓨터에 없는 NuGet 패키지를 참조합니다. 해당 패키지를 다운로드하려면 NuGet 패키지 복원을 사용하십시오. 자세한 내용은 http://go.microsoft.com/fwlink/?LinkID=322105를 참조하십시오. 누락된 파일은 {0}입니다.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\directxtk_desktop_win10.2025.3.21.2\build\native\directxtk_desktop_win10.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\directxtk_desktop_win10.2025.3.21.2\build\native\directxtk_desktop_win10.targets'))" />
+  </Target>
 </Project>
