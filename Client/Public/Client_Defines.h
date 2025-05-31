@@ -6,6 +6,10 @@
 
 #include "fmod.h"
 #include "fmod.hpp"
+
+#include "imgui.h"
+#include "imgui_impl_win32.h"
+#include "imgui_impl_dx11.h"
 #pragma comment(lib, "fmod_vc.lib")
 
 extern bool	bMouseClickLock;  // 전역 변수 선언

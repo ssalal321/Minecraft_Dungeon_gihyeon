@@ -44,6 +44,7 @@ private:
 	HRESULT		Loading_For_Title();
 	HRESULT		Loading_For_Lounge();
 	HRESULT		Loading_For_SoggySwamp();
+	HRESULT		Loading_For_ImGui();
 
 
 	HRESULT		Ready_Prototype_TextureCom_Static();

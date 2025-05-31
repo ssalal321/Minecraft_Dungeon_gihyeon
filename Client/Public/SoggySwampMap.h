@@ -34,7 +34,9 @@ private:
 	_int			m_iPointNum		 = {};
 	_float3			m_fCellPoints[3] = {};
 
+#ifdef _DEBUG
 	static  _bool	m_bLineRender;
+#endif
 	static	_uint	m_iShaderPass;  // ¼±¾ð
 	static	_bool	m_bClickActive;;
 

@@ -119,6 +119,10 @@ HRESULT CLoader:: Loading()
 	case LEVEL_SOGGYSWAMP:
 		hr = Loading_For_SoggySwamp();
 		break;
+
+	case LEVEL_IMGUI:
+		hr = Loading_For_ImGui();
+		break;
 	}
 
 	if (FAILED(hr))
@@ -245,6 +249,16 @@ HRESULT CLoader::Loading_For_SoggySwamp()
 
 	return S_OK;
 }
+
+HRESULT CLoader::Loading_For_ImGui()
+{
+	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
+
+	m_isFinished = true;
+
+	return S_OK;
+}
+
 
 HRESULT CLoader::Ready_Prototype_TextureCom_Static()
 {

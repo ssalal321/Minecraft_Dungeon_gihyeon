@@ -1,5 +1,6 @@
 #include "Level_Loading.h"
 #include "GameInstance.h"
+#include "Level_ImGui.h"
 #include "Loader.h"
 
 #include "UI_Image.h"
@@ -49,6 +50,9 @@ void CLevel_Loading::Update(_float fTimeDelta)
         case LEVEL_SOGGYSWAMP:
             pNewLevel = CLevel_SoggySwamp::Create(m_pDevice, m_pContext);
             break;
+
+        case LEVEL_IMGUI:
+            pNewLevel = CLevel_ImGui::Create(m_pDevice, m_pContext);
         }
 
         if (nullptr == pNewLevel)

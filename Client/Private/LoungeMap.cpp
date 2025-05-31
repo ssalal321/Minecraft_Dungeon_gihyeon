@@ -12,6 +12,10 @@ _uint CLoungeMap::m_iShaderPass = 0;
 _bool CLoungeMap::m_bLineRender = false;
 #endif
 
+#ifdef _RELEASE
+_uint CLoungeMap::m_iShaderPass = 0;
+#endif
+
 CLoungeMap::CLoungeMap(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject ( pDevice, pContext )
 {

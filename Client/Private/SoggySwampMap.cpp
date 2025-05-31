@@ -14,6 +14,10 @@ _bool CSoggySwampMap::m_bLineRender = false;
 _bool CSoggySwampMap::m_bClickActive = false;
 #endif
 
+#ifdef _RELEASE
+_uint CSoggySwampMap::m_iShaderPass = 0;
+#endif
+
 CSoggySwampMap::CSoggySwampMap(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject ( pDevice, pContext )
 {

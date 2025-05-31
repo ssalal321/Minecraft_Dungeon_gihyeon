@@ -11,8 +11,9 @@
 
 // static 변수 초기화 중
 const _float4x4* CNavigation::m_pWorldMatrix = { nullptr };
-#ifdef _DEBUG
+
 _uint CNavigation::m_iShaderPass = 1;
+#ifdef _DEBUG
 _bool CNavigation::m_bLineRender = true;
 #endif
 

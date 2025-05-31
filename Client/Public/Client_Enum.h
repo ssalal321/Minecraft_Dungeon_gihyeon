@@ -10,6 +10,7 @@ namespace Client
 		LEVEL_TITLE,
 		LEVEL_LOUNGE,
 		LEVEL_SOGGYSWAMP,
+		LEVEL_IMGUI,
 		LEVEL_END
 	};
 	
