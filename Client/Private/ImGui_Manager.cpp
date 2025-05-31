@@ -3,24 +3,34 @@
 #include "imgui.h"
 #include "imgui_impl_dx11.h"
 #include "imgui_impl_win32.h"
+#include "UI_Image.h"
+#include "GameInstance.h"
 #include "DirectXTK/WICTextureLoader.h"
 #include "DirectXTK/DDSTextureLoader.h"
 
 IMPLEMENT_SINGLETON(CImGui_Manager)
 
+CImGui_Manager::CImGui_Manager() : m_pGameInstance(CGameInstance::GetInstance())
+{
+    Safe_AddRef(m_pGameInstance);
+}
+
 #include <windows.h>
 #include <fstream>
 #include <algorithm>
 
+
 void CImGui_Manager::Show_Multi_UIEditor()
 {
     ImGui::InputText("Folder Path", m_szFolderPath, IM_ARRAYSIZE(m_szFolderPath));
+    ImGui::SliderFloat("UI Scale", &m_fUIScale, 0.1f, 5.0f, "%.2fx");
+
     if (ImGui::Button("Load All Images"))
     {
         Load_Textures_From_Folder(m_szFolderPath);
     }
 
-    ImGui::SeparatorText("Loaded UI Elements");
+    ImGui::SeparatorText("Loaded Texture Assets");
 
     for (std::map<std::string, std::vector<UIElementData>>::iterator it = m_UIFolderMap.begin(); it != m_UIFolderMap.end(); ++it)
     {
@@ -35,10 +45,63 @@ void CImGui_Manager::Show_Multi_UIEditor()
 
                 UIElementData& ui = elements[i];
 
-                ImGui::Text("%s", ui.texturePath.c_str());
+                if (ImGui::Selectable(ui.texturePath.c_str()))
+                {
+                    ID3D11Resource* pResource = nullptr;
+                    D3D11_TEXTURE2D_DESC desc{};
 
-                if (ui.imguiTexture)
-                    ImGui::Image(ui.imguiTexture, ImVec2(100, 100));
+                    if (ui.pTextureSRV)
+                    {
+                        ui.pTextureSRV->GetResource(&pResource);
+                        if (pResource)
+                        {
+                            ID3D11Texture2D* pTexture2D = nullptr;
+                            if (SUCCEEDED(pResource->QueryInterface(&pTexture2D)))
+                            {
+                                pTexture2D->GetDesc(&desc);
+                                Safe_Release(pTexture2D);
+                            }
+                            Safe_Release(pResource);
+                        }
+                    }
+
+
+                    const float sizeX = static_cast<float>(desc.Width) * m_fUIScale;
+                    const float sizeY = static_cast<float>(desc.Height) * m_fUIScale;
+
+                    CUI_Image::UIIMAGE_DESC imageDesc{
+                        TEXT("GameObject_UIImage"),
+                        CUIObject::UI_STATE::UNCLICKABLE,
+                        ui.position.x, ui.position.y, 0.f,
+                        sizeX, sizeY,
+                        std::wstring(ui.texturePath.begin(), ui.texturePath.end()),
+                        LEVEL_STATIC, LEVEL_STATIC,
+                        true
+                    };
+                    // 지금 texPrototypeTag는 파일 경로를 저장 중임
+                    // 어차피 imgui에서 직접 불러올 거면 prototypetag 없으므로 imgui 전용 ui_image 만든다고 치고
+                    // 파일 경로로 바꾸든가 해야 함
+                    // 그리고 TextureCom - Add_Component 실패함(당연함 prototypeTag에 파일 경로 넣어버림)
+                    // 이것도 Create TextureCom으로 바꾸든가 해야 할 듯
+
+
+                    CUI_Image* pUIImage = CUI_Image::Create(m_pDevice, m_pContext);
+                    if (pUIImage && SUCCEEDED(pUIImage->Initialize(&imageDesc)))
+                    {
+                        m_PlacedInstances.push_back({
+                            "GameObject_UIImage", ui.texturePath,
+                            ui.position, ImVec2(sizeX, sizeY), ui.alpha, 0,
+                            ui.pTextureSRV, reinterpret_cast<ImTextureID>(ui.pTextureSRV)
+                            });
+                    }
+                    else
+                    {
+                        Safe_Release(pUIImage);
+                    }
+                }
+
+                if (ui.pTextureSRV)
+                    ImGui::Image(reinterpret_cast<ImTextureID>(ui.pTextureSRV), ImVec2(64, 64));
 
                 ImGui::Separator();
                 ImGui::PopID();
@@ -46,6 +109,22 @@ void CImGui_Manager::Show_Multi_UIEditor()
 
             ImGui::TreePop();
         }
+    }
+
+    ImGui::SeparatorText("Placed UI Elements");
+    for (size_t i = 0; i < m_PlacedInstances.size(); ++i)
+    {
+        ImGui::PushID(static_cast<_int>(i));
+        UIScreenInstance& inst = m_PlacedInstances[i];
+        ImGui::Text("%s", inst.texturePath.c_str());
+        ImGui::SliderFloat2("Pos", (_float*)&inst.position, 0.f, 1920.f);
+        ImGui::SliderFloat2("Size", (_float*)&inst.size, 0.f, 1080.f);
+        ImGui::SliderFloat("Alpha", &inst.alpha, 0.f, 1.f);
+        ImGui::SliderInt("Layer", &inst.layer, 0, 10);
+        if (inst.imguiTexture)
+            ImGui::Image(inst.imguiTexture, inst.size);
+        ImGui::Separator();
+        ImGui::PopID();
     }
 }
 
@@ -117,6 +196,7 @@ void CImGui_Manager::Load_Textures_From_Folder(const std::string& folder)
     FindClose(hFind);
 }
 
+
 _bool CImGui_Manager::Load_Texture_From_File(const std::string& path, ID3D11ShaderResourceView** outSRV)
 {
     std::wstring wpath(path.begin(), path.end());
@@ -145,38 +225,6 @@ _bool CImGui_Manager::Load_Texture_From_File(const std::string& path, ID3D11Shad
     return true;
 }
 
-ID3D11ShaderResourceView* CImGui_Manager::Create_Fallback_Purple_Texture()
-{
-    static ID3D11ShaderResourceView* s_pFallback = nullptr;
-
-    if (s_pFallback)
-        return s_pFallback;
-
-    uint32_t purplePixel = 0xFFFF00FF;
-
-    D3D11_TEXTURE2D_DESC desc = {};
-    desc.Width = 1;
-    desc.Height = 1;
-    desc.MipLevels = 1;
-    desc.ArraySize = 1;
-    desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-    desc.Usage = D3D11_USAGE_IMMUTABLE;
-    desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-    desc.SampleDesc.Count = 1;
-
-    D3D11_SUBRESOURCE_DATA initData = {};
-    initData.pSysMem = &purplePixel;
-    initData.SysMemPitch = sizeof(uint32_t);
-
-    ID3D11Texture2D* pTex = nullptr;
-    HRESULT hr = m_pDevice->CreateTexture2D(&desc, &initData, &pTex);
-    if (FAILED(hr)) return nullptr;
-
-    hr = m_pDevice->CreateShaderResourceView(pTex, nullptr, &s_pFallback);
-    Safe_Release(pTex);
-
-    return s_pFallback;
-}
 
 HRESULT CImGui_Manager::Initialize(HWND hwnd, ID3D11Device* device, ID3D11DeviceContext* context)
 {
@@ -227,5 +275,8 @@ void CImGui_Manager::Free()
 {
     Safe_Release(m_pDevice);
     Safe_Release(m_pContext);
+
+    Safe_Release(m_pGameInstance);
+
     __super::Free();
 }

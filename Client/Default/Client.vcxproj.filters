@@ -433,6 +433,9 @@
     <Filter Include="95. IMGUI">
       <UniqueIdentifier>{0c9fca48-cfb1-4d78-8e4d-3c8cb0fd6ba2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Levels\04. ImGui">
+      <UniqueIdentifier>{eca5de9f-0f18-44b3-827a-67115df61c38}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -882,6 +885,9 @@
     <ClInclude Include="..\Public\ImGui_Manager.h">
       <Filter>95. IMGUI</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Level_ImGui.h">
+      <Filter>01.Levels\04. ImGui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1322,6 +1328,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\ImGui_Manager.cpp">
       <Filter>95. IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_ImGui.cpp">
+      <Filter>01.Levels\04. ImGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

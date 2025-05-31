@@ -46,7 +46,7 @@ HRESULT CMainApp::Initialize()
     if (FAILED(Ready_Fonts()))
         return E_FAIL;
 
-    if (FAILED(Start_Level(LEVEL_TITLE)))
+    if (FAILED(Start_Level(LEVEL_IMGUI)))
         return E_FAIL;
 
     m_pImGui_Manager->Initialize(g_hWnd, m_pDevice, m_pContext);
