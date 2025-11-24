@@ -72,8 +72,7 @@ void CLoungeMap::Update(_float fTimeDelta)
 		if (m_pGameInstance->Picked_Vertex(fLocalPickedVertex, TEXT("GameObject_LoungeMap"), LEVEL_LOUNGE, TEXT("Layer_BackGround")))
 		{
 			
-			_vector vWorldPickedVertex = {};
-			vWorldPickedVertex = XMVector3TransformCoord(XMLoadFloat3(&fLocalPickedVertex), XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
+			_vector vWorldPickedVertex = XMVector3TransformCoord(XMLoadFloat3(&fLocalPickedVertex), XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
 			_float3  fWorldPickedVertex;
 			XMStoreFloat3(&fWorldPickedVertex, vWorldPickedVertex);
 

@@ -6,7 +6,6 @@
 BEGIN(Engine)
 class  CShader;
 class  CModel;
-
 class  CCollider;
 class  CNavigation;
 END

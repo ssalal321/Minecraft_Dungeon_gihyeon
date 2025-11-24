@@ -67,6 +67,21 @@ protected:
 	CComponent*		Add_Component(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag,
 								  const _wstring& strComponentTag, CComponent** ppOut, void* pArg = nullptr);
 
+	// Ÿ�� ������ ���ø� ���� (reinterpret_cast ���� ��� ����)
+	template<typename T>
+	T* Add_Component(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag,
+		const _wstring& strComponentTag, void* pArg = nullptr)
+	{
+		// static_assert ...
+		CComponent* pComponent = Add_Component(iPrototypeLevelIndex, strPrototypeTag,
+			strComponentTag, nullptr, pArg);
+		if (nullptr == pComponent)
+			return nullptr;
+
+		return dynamic_cast<T*>(pComponent);
+	}
+
+
 public:
 	virtual  CGameObject*	Clone(void* pArg) = 0;
 	virtual  void			Free()	override;

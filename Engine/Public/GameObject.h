@@ -67,6 +67,23 @@ protected:
 	CComponent*		Add_Component(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag,
 								  const _wstring& strComponentTag, CComponent** ppOut, void* pArg = nullptr);
 
+	// 타입 안전한 템플릿 버전 (reinterpret_cast 없이 사용 가능)
+	template<typename T>
+	T* Add_Component(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag,
+		const _wstring& strComponentTag, void* pArg = nullptr)
+	{
+		static_assert(std::is_base_of<CComponent, T>::value,
+			"T must be derived from CComponent");
+
+		CComponent* pComponent = Add_Component(iPrototypeLevelIndex, strPrototypeTag,
+			strComponentTag, nullptr, pArg);
+		if (nullptr == pComponent)
+			return nullptr;
+
+		return dynamic_cast<T*>(pComponent);
+	}
+
+
 public:
 	virtual  CGameObject*	Clone(void* pArg) = 0;
 	virtual  void			Free()	override;

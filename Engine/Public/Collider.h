@@ -22,7 +22,7 @@ private:
 
 public:
 	void	Set_ColliderRole(COLLIDER_ROLE eColliderRole) { m_eColliderRole = eColliderRole; }
-	void	Set_IsCollision(_bool bIsCollision) { m_bIsCollision = bIsCollision; }
+	void	Set_Collision(_bool bIsCollision) { m_bIsCollision = bIsCollision; }
 	void	Set_ColliderTag(const _wstring& strColliderTag) { m_strColliderTag = strColliderTag; }
 	void	Set_ColliderActive(_bool ColliderActive) { m_bColliderActive = ColliderActive; }
 	void	Set_MouseCollider(_bool ColliderForMouse) { m_bMouseCollider = ColliderForMouse; }
@@ -33,8 +33,8 @@ public:
 	COLLIDER_ROLE		Get_Role() const { return m_eColliderRole; }
 	const _wstring&		Get_ColliderTag() { return m_strColliderTag; }
 	CBounding*			Get_Bounding() const { return m_pBounding; }
-	_bool				Get_ColliderActive() const { return m_bColliderActive; }
-	_bool				Get_MouseCollider() const { return m_bMouseCollider; }
+	_bool				Is_ColliderActive() const { return m_bColliderActive; }
+	_bool				Is_MouseCollider() const { return m_bMouseCollider; }
 	_bool				Get_Other_Collision_Activated() const { return *m_bCollisionActivated; }
 	CGameObject*		Get_OwnerObject() const { return m_pOwnerGameObject; }
 	_bool				Get_AllowSameGroupCollision() const { return m_bAllowInGroupCollision; }
@@ -66,7 +66,7 @@ private:
 	_wstring			m_bTotalGroup		= {};
 
 	unordered_set<CCollider*>	m_prevCollisions;
-	unordered_set<CCollider*>	m_currCollisions;
+	unordered_set<CCollider*>	m_curCollisions;
 
 	CGameObject*		m_pOwnerGameObject	= { nullptr };
 	_float4x4*			m_CombinedWorldMatrix = { nullptr };

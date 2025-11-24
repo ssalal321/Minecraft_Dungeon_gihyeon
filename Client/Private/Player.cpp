@@ -136,6 +136,9 @@ HRESULT CPlayer::Render()
 	return S_OK;
 }
 
+// 생각해보면 원이 몬스터 자체보다 크기 때문에 겹쳐 있으면 뒤에 걸 클릭을 못한다..?
+// 그래서 지금은 이렇게 두더라도 나중에는 맵 피킹하듯이 마우스 레이가 통과한 구 충돌체들 중
+// 가장 가까운 폴리곤의 메시를 가져오는 방식으로 바꿔야 할 수도..
 void CPlayer::Hover_and_Chase_Monster()
 {
 	_float4     fWorldMousePos = {};
@@ -144,14 +147,14 @@ void CPlayer::Hover_and_Chase_Monster()
 
 	// 1. 현재 가장 가까운 Monster collider 찾기
 	CCollider* pClosestCollider = Get_Closest_Collider(fWorldMousePos, fWorldMouseRay);
-	if (nullptr == pClosestCollider || false == pClosestCollider->Get_ColliderActive())
+	if (nullptr == pClosestCollider || false == pClosestCollider->Is_ColliderActive())
 		return;
 
 	CMonster* pPrevMonster = m_pPickedMonster;
-	CMonster* pCurrMonster = dynamic_cast<CMonster*>(dynamic_cast<CPartObject*>(pClosestCollider->Get_OwnerObject())->Get_ContainerObject());
+	CMonster* pCurMonster = dynamic_cast<CMonster*>(dynamic_cast<CPartObject*>(pClosestCollider->Get_OwnerObject())->Get_ContainerObject());
 
 	// 2. 이전 Hovered 상태 해제
-	if (pPrevMonster && pPrevMonster != pCurrMonster)
+	if (pPrevMonster && pPrevMonster != pCurMonster)
 	{
 		pPrevMonster->Set_Hovered(false);
 
@@ -159,16 +162,16 @@ void CPlayer::Hover_and_Chase_Monster()
 	}
 
 	// 3. 현재 Hovered 상태 설정 및 클릭 처리
-	if (pCurrMonster)
+	if (pCurMonster)
 	{
-		pCurrMonster->Set_Hovered(true);
-		m_pPickedMonster = pCurrMonster;
+		pCurMonster->Set_Hovered(true);
+		m_pPickedMonster = pCurMonster;
 
 		//std::wcerr << "[휘바휘바]" << std::endl;
 
 		if (m_pGameInstance->Get_Key(VK_LBUTTON) && !bMouseClickLock)
 		{
-			Click_Chase_Monster(pCurrMonster);
+			Click_Chase_Monster(pCurMonster);
 		}
 	}
 
@@ -386,17 +389,16 @@ CCollider* CPlayer::Get_Closest_Collider(const _float4& mousePos, const _float3&
 		if (pCollider->Get_ColliderType() != COLLIDER_TYPE::TYPE_SPHERE || CCollider::COLLIDER_ROLE::BIG != pCollider->Get_Role())
 			continue;
 
-		_float fDist = 0.f;
 		CBounding_Sphere::RayDesc rayDesc = {};
 		rayDesc.MousePos = { mousePos.x, mousePos.y, mousePos.z };
 		rayDesc.MouseRay = mouseRay;
-		rayDesc.fDist = &fDist;
+		rayDesc.fDist = 0.f;
 
 		if (pCollider->Get_Bounding()->Intersect(COLLIDER_TYPE::TYPE_RAY, nullptr, &rayDesc))
 		{
-			if (fDist < minDist)
+			if (rayDesc.fDist < minDist)
 			{
-				minDist = fDist;
+				minDist = rayDesc.fDist;
 				pClosest = pCollider;
 			}
 		}

@@ -107,7 +107,9 @@ CComponent* CGameObject::Add_Component(_uint iPrototypeLevelIndex, const _wstrin
 
 	m_Components.emplace(strComponentTag, pComponent);
 
-	*ppOut = pComponent;	
+	// 템플릿 함수 쓸 때는 nullptr 받아오므로 이게 있어야 안 터진다..
+	if (ppOut)
+		*ppOut = pComponent;	
 
 	Safe_AddRef(pComponent);
 

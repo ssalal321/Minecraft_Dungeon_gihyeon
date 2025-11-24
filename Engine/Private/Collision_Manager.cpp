@@ -95,7 +95,7 @@ void CCollision_Manager::Update()
     // 1. Collider Update
     for (auto& group : colliderGroups)
     {
-        for (auto* collider : group.second)
+        for (auto& collider : group.second)
         {
             if (collider)
                 collider->Update();
@@ -116,11 +116,11 @@ void CCollision_Manager::Update()
 
             for (auto* pColliderA : groupA)
             {
-                if (!pColliderA || pColliderA->Get_MouseCollider()) continue;
+                if (!pColliderA || pColliderA->Is_MouseCollider()) continue;
 
                 for (auto* pColliderB : groupB)
                 {
-                    if (!pColliderB || pColliderB->Get_MouseCollider()) continue;
+                    if (!pColliderB || pColliderB->Is_MouseCollider()) continue;
 
                     if (pColliderA->Intersect(pColliderB))
                     {
@@ -128,6 +128,7 @@ void CCollision_Manager::Update()
                         pColliderB->Collided_With(pColliderA);
 
                         // 여기서 슬라이딩 처리
+                        // SMALL vs SMALL 충돌 시 자동으로 밀어내기 적용
                         if (pColliderA->Get_Role() == CCollider::SMALL && pColliderB->Get_Role() == CCollider::SMALL 
                             && pColliderA < pColliderB)
                         {
@@ -147,12 +148,12 @@ void CCollision_Manager::Update()
         for (size_t i = 0; i < colliders.size(); ++i)
         {
             CCollider* pColliderA = colliders[i];
-            if (!pColliderA || !pColliderA->Get_AllowSameGroupCollision() || pColliderA->Get_MouseCollider()) continue;
+            if (!pColliderA || !pColliderA->Get_AllowSameGroupCollision() || pColliderA->Is_MouseCollider()) continue;
 
             for (size_t j = i + 1; j < colliders.size(); ++j)
             {
                 CCollider* pColliderB = colliders[j];
-                if (!pColliderB || !pColliderB->Get_AllowSameGroupCollision() || pColliderB->Get_MouseCollider()) continue;
+                if (!pColliderB || !pColliderB->Get_AllowSameGroupCollision() || pColliderB->Is_MouseCollider()) continue;
 
                 if (pColliderA->Intersect(pColliderB))
                 {
@@ -160,6 +161,7 @@ void CCollision_Manager::Update()
                     pColliderB->Collided_With(pColliderA);
 
                     // 여기서 슬라이딩 처리
+                    // SMALL vs SMALL 충돌 시 자동으로 밀어내기 적용
                     if (pColliderA->Get_Role() == CCollider::SMALL && pColliderB->Get_Role() == CCollider::SMALL
                         && pColliderA < pColliderB)
                     {
@@ -252,7 +254,7 @@ void CCollision_Manager::Clear(_uint iLevelIndex)
 
 void CCollision_Manager::Resolve_Penetration_And_Slide(CCollider* pColA, CCollider* pColB, _float fForce)
 {
-    if (!pColA || !pColB || !pColA->Get_ColliderActive() || !pColB->Get_ColliderActive())
+    if (!pColA || !pColB || !pColA->Is_ColliderActive() || !pColB->Is_ColliderActive())
         return;
 
     CPartObject*    pPartObjA = dynamic_cast<CPartObject*>(pColA->Get_OwnerObject());
@@ -270,9 +272,11 @@ void CCollision_Manager::Resolve_Penetration_And_Slide(CCollider* pColA, CCollid
     if (!pA_TransformCom || !pB_TransformCom)
         return;
 
+    // 두 Sphere의 중심점 계산
     _vector     vPositionA = pA_TransformCom->Get_State(CTransform::STATE_POSITION);
     _vector     vPositionB = pB_TransformCom->Get_State(CTransform::STATE_POSITION);
 
+    // 충돌 방향 벡터 계산
     _vector     vAtoB  = vPositionB - vPositionA;
     _float      fLen    = XMVectorGetX(XMVector3Length(vAtoB));
     if (fLen < 0.0001f)

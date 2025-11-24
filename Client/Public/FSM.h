@@ -11,27 +11,27 @@ public:
 	~FSM() override = default;
 
 public:
-	void Init_State(CState* _pInitState)
+	void Init_State(CState* pInitState)
 	{
 		if (m_curState == nullptr)
 		{
-			m_curState = _pInitState;
+			m_curState = pInitState;
 			m_curState->State_Enter();
 		}
 	}
 
-	void Change_State(CState* _pNextState)
+	void Change_State(CState* pNextState)
 	{
-		if (_pNextState == nullptr)
+		if (pNextState == nullptr)
 			return;
 
-		if (_pNextState == m_curState)
+		if (pNextState == m_curState)
 			return;
 
 		if (m_curState != nullptr)
 			m_curState->State_Exit();
 
-		m_curState = _pNextState;
+		m_curState = pNextState;
 		m_curState->State_Enter();
 	}
 
@@ -53,22 +53,22 @@ public:
 			m_curState->State_Late_Update(fTimeDelta);
 	}
 
-	void Collision_Enter(CCollider* _other)
+	void Collision_Enter(CCollider* pOther)
 	{
 		if (m_curState != nullptr)
-			m_curState->Collision_Enter(_other);
+			m_curState->Collision_Enter(pOther);
 	}
 
-	void Collision_Stay(CCollider* _other)
+	void Collision_Stay(CCollider* pOther)
 	{
 		if (m_curState != nullptr)
-			m_curState->Collision_Stay(_other);
+			m_curState->Collision_Stay(pOther);
 	}
 
-	void Collision_Exit(CCollider* _other)
+	void Collision_Exit(CCollider* pOther)
 	{
 		if (m_curState != nullptr)
-			m_curState->Collision_Exit(_other);
+			m_curState->Collision_Exit(pOther);
 	}
 
 	CState*  Get_CurrentState() const { return m_curState; }

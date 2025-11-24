@@ -362,7 +362,7 @@ _bool CNavigation::Can_Move(_fvector vWorldPos)
 	_int iCellIndex = m_iCurrentCellIndex;
 	_int iNextNeighbor = -1;
 
-	for (_int depth = 0; depth < 10; ++depth)  // 8.........
+	for (_int depth = 0; depth < 10; ++depth)
 	{
 		CCell* pCurrent = m_Cells[iCellIndex];
 
@@ -371,32 +371,12 @@ _bool CNavigation::Can_Move(_fvector vWorldPos)
 			if (Is_Locked(iCellIndex))
 				return false;
 
-			_vector vNormal = XMLoadFloat3(&pCurrent->Get_PlaneNormal());
-
-			// 평면이 걷기에 적당한지 확인
-			if (XMVectorGetY(vNormal) < 0.5f)
-			{	// 현재 평면이 벽면임
-
-				if (iNextNeighbor != -1)
-				{
-					// 벽면과 인접한 셀 중 이동 가능한 평면 있는지 확인
-					CCell* pNext = m_Cells[iNextNeighbor];
-					_vector vNextNormal = XMLoadFloat3(&pNext->Get_PlaneNormal());
-
-					if (XMVectorGetY(vNextNormal) >= 0.5f)
-					{
-						m_iCurrentCellIndex = iNextNeighbor;
-						return true;
-					}
-				}
-
-				break; // 벽면이거나 더 갈 수 없음
-			}
-			else
+			_int iDecidedIndex = -1;
+			if (Decided_Next_Index(iCellIndex, iNextNeighbor, &iDecidedIndex))
 			{
-				m_iCurrentCellIndex = iCellIndex;
+				m_iCurrentCellIndex = iDecidedIndex;
 				return true;
-			}			
+			}
 		}
 		else
 		{
@@ -408,6 +388,39 @@ _bool CNavigation::Can_Move(_fvector vWorldPos)
 	}
 
 	return false;
+}
+
+_bool CNavigation::Decided_Next_Index(_int iCurIndex, _int iNeighborIndex, _int* pOutNextIndex)
+{
+	if (pOutNextIndex == nullptr)
+		return false;
+
+	CCell* pCurCell = m_Cells[iCurIndex];
+	CCell* pNextCell = (iNeighborIndex != -1) ? m_Cells[iNeighborIndex] : nullptr;
+
+	if (Classify_Cell(pCurCell) == WALKABLE)
+	{
+		*pOutNextIndex = iCurIndex;      // 현재 셀에서 OK
+		return true;
+	}
+
+	// 현재 셀은 벽 → 이웃 셀로 우회 가능한지 검사
+	if (iNeighborIndex != -1 && Classify_Cell(pNextCell) == WALKABLE)
+	{
+		*pOutNextIndex = iNeighborIndex; // 이웃으로 우회
+		return true;
+	}
+
+	// 막힘
+	return false;
+}
+
+CNavigation::WALKABLE_TYPE CNavigation::Classify_Cell(CCell* pCell) const
+{
+	if (pCell == nullptr) 
+		return INVALID;
+
+	return Is_Wall(pCell->Get_Plane_NormalY()) ? WALL : WALKABLE;
 }
 
 _bool CNavigation::Can_Slide(_fvector vPrevWorldPos, _fvector vMovingWorldPos, _vector& vSlidingPosition)
@@ -429,11 +442,11 @@ _bool CNavigation::Can_Slide(_fvector vPrevWorldPos, _fvector vMovingWorldPos, _
 			if (Is_Locked(iCellIndex))
 				return false;
 
-			_vector vMoveDir = XMVector3Normalize(vMovingLocalPos - vPrevLocalPos);
+			_vector vMoveDir = vMovingLocalPos - vPrevLocalPos;
 			_vector vEdgeNormal = pCurrent->Get_EdgeNormal(iHitEdgeIndex);
 
 			// 슬라이딩 벡터 계산
-			_vector vSlideDir = vMoveDir - XMVector3Dot(vMoveDir, vEdgeNormal) * vEdgeNormal;
+			_vector vSlideDir = vMoveDir + XMVector3Dot(-vMoveDir, vEdgeNormal) * vEdgeNormal;
 			vSlideDir = XMVector3Normalize(vSlideDir);  // ← 항상 정규화
 
 			// 속도 보정

@@ -28,18 +28,18 @@ _bool CBounding_Sphere::Intersect(COLLIDER_TYPE eColliderType, CBounding* pTarge
 	if (pTargetBounding)
 		pTargetDesc = pTargetBounding->Get_Desc();
 
-	_bool		isColl = { false };
+	_bool		bCollided = { false };
 
 	switch (eColliderType)
 	{
 	case COLLIDER_TYPE::TYPE_AABB:
-		isColl = m_pDesc->Intersects(*static_cast<BoundingBox*>(pTargetDesc));
+		bCollided = m_pDesc->Intersects(*static_cast<BoundingBox*>(pTargetDesc));
 		break;
 	case COLLIDER_TYPE::TYPE_OBB:
-		isColl = m_pDesc->Intersects(*static_cast<BoundingOrientedBox*>(pTargetDesc));
+		bCollided = m_pDesc->Intersects(*static_cast<BoundingOrientedBox*>(pTargetDesc));
 		break;
 	case COLLIDER_TYPE::TYPE_SPHERE:
-		isColl = m_pDesc->Intersects(*static_cast<BoundingSphere*>(pTargetDesc));
+		bCollided = m_pDesc->Intersects(*static_cast<BoundingSphere*>(pTargetDesc));
 		break;
 
 	case COLLIDER_TYPE::TYPE_RAY:
@@ -54,20 +54,12 @@ _bool CBounding_Sphere::Intersect(COLLIDER_TYPE eColliderType, CBounding* pTarge
 			if (XMVectorGetX(XMVector3Length(vMouseRay)) == 0.f)
 				return false;
 
-
-			_float dst = {};
-
-			if (nullptr == pRayDesc->fDist)
-			{
-				pRayDesc->fDist = &dst;
-			}
-
-			isColl = m_pDesc->Intersects(vMousePos, vMouseRay, *pRayDesc->fDist);
+			bCollided = m_pDesc->Intersects(vMousePos, vMouseRay, pRayDesc->fDist);
 		}
 		break;
 	}
 
-	return isColl;
+	return bCollided;
 }
 
 HRESULT CBounding_Sphere::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fvector vColor)

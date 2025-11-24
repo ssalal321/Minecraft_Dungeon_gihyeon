@@ -5,7 +5,8 @@
 #include "Component.h"
 
 BEGIN(Engine)
-class CTransform;
+	class CCell;
+	class CTransform;
 
 class ENGINE_DLL CNavigation final : public CComponent
 {
@@ -13,6 +14,13 @@ private:
 	CNavigation(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CNavigation(const CNavigation& Prototype);
 	~CNavigation() override = default;
+
+	enum WALKABLE_TYPE
+	{
+		WALKABLE = 0,
+		WALL = 1,
+		INVALID = 2
+	};
 
 public:
 	HRESULT		Initialize_Prototype(const _tchar* pNavigationDataFilePath);
@@ -57,6 +65,15 @@ public:
 public:
 	HRESULT		Render();
 #endif
+
+private:
+	_bool			Decided_Next_Index(_int iCurIndex, _int iNeighborIndex, _int* pOutNextIndex);
+	WALKABLE_TYPE	Classify_Cell(CCell* pCell) const;
+	_bool Is_Wall(_float normal) const 
+	{
+		return (normal < 0.5f);
+	}
+
 
 private:
 	_int							m_iPointNum = {};
