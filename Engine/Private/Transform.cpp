@@ -280,9 +280,9 @@ void CTransform::Update_Momentum(_float fTimeDelta)
 	if (XMVector3Equal(vVel, XMVectorZero()))
 		return;
 
-	_vector vCurrPos = Get_State(STATE_POSITION);
-	_vector vNextPos = vCurrPos + vVel * fTimeDelta;
-	_vector vSlidePos = vCurrPos;
+	_vector vCurPos = Get_State(STATE_POSITION);
+	_vector vNextPos = vCurPos + vVel * fTimeDelta;
+	_vector vSlidePos = vCurPos;
 
 	if (m_pNavigationCom)
 	{
@@ -290,7 +290,7 @@ void CTransform::Update_Momentum(_float fTimeDelta)
 		{
 			Set_State(STATE_POSITION, vNextPos);
 		}
-		else if (m_pNavigationCom->Can_Slide(vCurrPos, vNextPos, vSlidePos))
+		else if (m_pNavigationCom->Can_Slide(vCurPos, vNextPos, vSlidePos))
 		{
 			Set_State(STATE_POSITION, vSlidePos);
 		}

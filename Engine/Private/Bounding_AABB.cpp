@@ -17,14 +17,14 @@ HRESULT CBounding_AABB::Initialize(const BOUNDING_DESC* pArg)
 	return S_OK;
 }
 
-void CBounding_AABB::Update(_fmatrix WorldMatrix)
+void CBounding_AABB::Update(_fmatrix WorldMatrix)	// Collider¿¡¼­ CombinedWorldMatrix ¹Þ¾Æ¿È
 {
 	_matrix		TransformMatrix = WorldMatrix;
 
 	TransformMatrix.r[0] = XMVectorSet(1.f, 0.f, 0.f, 0.f) * XMVector3Length(TransformMatrix.r[0]);
 	TransformMatrix.r[1] = XMVectorSet(0.f, 1.f, 0.f, 0.f) * XMVector3Length(TransformMatrix.r[1]);
 	TransformMatrix.r[2] = XMVectorSet(0.f, 0.f, 1.f, 0.f) * XMVector3Length(TransformMatrix.r[2]);
-
+	
 	m_pLocalDesc->Transform(*m_pDesc, TransformMatrix);
 }
 

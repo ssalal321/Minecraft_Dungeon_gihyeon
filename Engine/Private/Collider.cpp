@@ -80,32 +80,32 @@ _bool CCollider::Intersect(CCollider* pTargetCollider)
 	if (false == *m_bCollisionActivated && false == pTargetCollider->Get_Other_Collision_Activated() || !m_bColliderActive)
 	{
 		m_bIsCollision = false;
-		pTargetCollider->Set_IsCollision(false);
+		pTargetCollider->Set_Collision(false);
 		return false;
 	}
 		
 	m_bIsCollision = m_pBounding->Intersect(pTargetCollider->m_eColliderType, pTargetCollider->m_pBounding);
 
-	pTargetCollider->Set_IsCollision(m_bIsCollision);
+	pTargetCollider->Set_Collision(m_bIsCollision);
 
 	return m_bIsCollision;
 }
 
 void CCollider::Collided_With(CCollider* pOther)
 {
-	m_currCollisions.insert(pOther);
+	m_curCollisions.insert(pOther);
 }
 
 void CCollider::Process_Collisions()
 {
+	if (nullptr == m_pOwnerGameObject)
+		return;
+
 	// Enter or Stay
-	for (auto* pOther : m_currCollisions)
+	for (auto* pOther : m_curCollisions)
 	{
 		if (m_prevCollisions.find(pOther) != m_prevCollisions.end())
 		{
-			if (nullptr == m_pOwnerGameObject)
-				return;
-
 			m_pOwnerGameObject->Collided_With(pOther, STAY);
 
 			/*std::wcerr << "[" << m_pOwnerGameObject->Get_GameObjectTag() << "]¿Í ["
@@ -114,8 +114,6 @@ void CCollider::Process_Collisions()
 
 		else
 		{
-			if (nullptr == m_pOwnerGameObject)
-				return;
 
 			m_pOwnerGameObject->Collided_With(pOther, ENTER);
 
@@ -127,7 +125,7 @@ void CCollider::Process_Collisions()
 	// Exit
 	for (auto* pOther : m_prevCollisions)
 	{
-		if (m_currCollisions.find(pOther) == m_currCollisions.end())
+		if (m_curCollisions.find(pOther) == m_curCollisions.end())
 		{
 			m_pOwnerGameObject->Collided_With(pOther, EXIT);
 
@@ -137,8 +135,8 @@ void CCollider::Process_Collisions()
 	}
 
 	// Prepare for next frame
-	m_prevCollisions = std::move(m_currCollisions);
-	m_currCollisions.clear();
+	m_prevCollisions = std::move(m_curCollisions);
+	m_curCollisions.clear();
 }
 
 
@@ -174,7 +172,7 @@ HRESULT CCollider::Render()
 void CCollider::Clear_Collision_State()
 {
 	m_prevCollisions.clear();
-	m_currCollisions.clear();
+	m_curCollisions.clear();
 }
 
 CCollider* CCollider::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, COLLIDER_TYPE eColliderType)

@@ -26,7 +26,7 @@ HRESULT CCell::Initialize(const _float3* pPoints, _int iIndex, std::string cellK
         m_vNormals[i] = _float3(-vLines[i].z, 0.f, vLines[i].x);
 
     /* XMPlaneFromPointNormal() */
-
+    // XMPlaneFromPoints()는 정규화된 단위 노말을 반환한다. (다시 정규화 안해도 된다는 뜻)
     XMStoreFloat4(&m_vPlane,
         XMPlaneFromPoints(
             XMVectorSetW(XMLoadFloat3(&m_vPoints[POINT_A]), 1.f),
@@ -40,7 +40,6 @@ HRESULT CCell::Initialize(const _float3* pPoints, _int iIndex, std::string cellK
     /*ax + by + cz + d = 0*/
 
     // m_vPlane = (a, b, c, d) -> normal = (a, b, c)
-    XMStoreFloat3(&m_vPlaneNormal, XMVector3Normalize(XMLoadFloat4(&m_vPlane)));
 
 #ifdef _DEBUG
     m_pVIBuffer = CVIBuffer_Cell::Create(m_pDevice, m_pContext, pPoints);
@@ -57,6 +56,21 @@ HRESULT CCell::Render()
         return E_FAIL;
 
     return m_pVIBuffer->Render();    
+}
+
+_bool CCell::Is_In(_fvector vPosition, _int* pNeighborIndex)
+{
+    for (size_t i = 0; i < LINE_END; i++)
+    {
+        _vector vDir = vPosition - XMLoadFloat3(&m_vPoints[i]);
+
+        if (0 < XMVectorGetX(XMVector3Dot(XMVector3Normalize(vDir), XMLoadFloat3(&m_vNormals[i]))))
+        {
+            *pNeighborIndex = m_iNeighborCellIndices[i];
+            return false;
+        }
+    }
+    return true;
 }
 
 _bool CCell::Is_In(_fvector vPosition, _int* pNeighborIndex, _int* pHitEdgeIndex)

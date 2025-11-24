@@ -145,7 +145,7 @@ void CPlayer_Arrow::Return_To_Pool()
 
 void CPlayer_Arrow::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)
 {
-	if (pOther->Get_ColliderActive() &&
+	if (pOther->Is_ColliderActive() &&
 		CCollider::COLLISION_STATE::ENTER == eCollisionState &&
 		(TEXT("Monster_Body_Small") == pOther->Get_ColliderTag() || TEXT("Boss_Body_Small") == pOther->Get_ColliderTag()))
 	{

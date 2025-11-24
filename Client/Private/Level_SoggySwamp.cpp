@@ -85,17 +85,16 @@ CCollider* CLevel_SoggySwamp::Get_Closest_Collider(const _float4& mousePos, cons
         if (pCollider->Get_ColliderType() != COLLIDER_TYPE::TYPE_SPHERE || pCollider->Get_Role() == CCollider::ETC || pCollider->Get_Role() == CCollider::SMALL)
             continue;
 
-        _float fDist = 0.f;
         CBounding_Sphere::RayDesc rayDesc = {};
         rayDesc.MousePos = { mousePos.x, mousePos.y, mousePos.z };
         rayDesc.MouseRay = mouseRay;
-        rayDesc.fDist = &fDist;
+        rayDesc.fDist = 0.f;
 
         if (pCollider->Get_Bounding()->Intersect(COLLIDER_TYPE::TYPE_RAY, nullptr, &rayDesc))
         {
-            if (fDist < minDist)
+            if (rayDesc.fDist < minDist)
             {
-                minDist = fDist;
+                minDist = rayDesc.fDist;
                 pClosest = pCollider;
             }
         }
@@ -143,7 +142,7 @@ HRESULT CLevel_SoggySwamp::Ready_PrePlayer()
 
     m_pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(TEXT("GameObject_Player"), m_pGameInstance->Get_ChangedLevelIndex(), TEXT("Layer_Player")));
     CCollider* pCollider = dynamic_cast<CCollider*>(m_pPlayer->Find_Part_Component(TEXT("Part_Body"), TEXT("Com_Collider_BigSphere")));
-    pCollider->Set_IsCollision(false);  // 이전 트리거와 부딪히고 남은 거 지워줌
+    pCollider->Set_Collision(false);  // 이전 트리거와 부딪히고 남은 거 지워줌
 
 	m_pPlayer->Erase_Component(TEXT("Com_Navigation"));
     m_pPlayer->Delete_NavigationCom();

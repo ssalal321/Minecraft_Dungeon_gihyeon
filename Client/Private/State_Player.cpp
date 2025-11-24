@@ -123,7 +123,7 @@ _bool CState_Player::Change_State_To_Walk()
 
 		// Map에 피킹(BoundingBox 충돌 체크)
 		if (m_pGameInstance->Picked_Model(fWorldPickedPos, mapTag,
-			m_pGameInstance->Get_CurrentLevelIndex(), TEXT("Layer_BackGround")))
+			currentLevel, TEXT("Layer_BackGround")))
 		{
 			m_pPlayer->Set_NextPosition(fWorldPickedPos);
 			m_pPlayer->Set_Chasing(false, nullptr);

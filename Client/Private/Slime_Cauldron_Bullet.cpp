@@ -145,7 +145,7 @@ void CSlime_Cauldron_Bullet::Return_To_Pool()
 
 void CSlime_Cauldron_Bullet::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE eCollisionState)
 {
-	if (pOther->Get_ColliderActive() &&
+	if (pOther->Is_ColliderActive() &&
 		CCollider::COLLISION_STATE::ENTER == eCollisionState &&
 		TEXT("Player_Body_Small") == pOther->Get_ColliderTag())
 	{

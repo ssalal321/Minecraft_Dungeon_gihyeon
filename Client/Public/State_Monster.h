@@ -8,15 +8,14 @@ BEGIN(Client)
 class CState_Monster abstract: public CState
 {
 public:
-    typedef struct tagStateMonster
+    struct STATEMONSTER_DESC
     {
         CModel*         pActorModelCom      = { nullptr };
         CCollider*      pBigColliderCom     = { nullptr };
         CCollider*      pSmallColliderCom   = { nullptr };
         CTransform*     pTransformCom       = { nullptr };
         CNavigation*    pNavigationCom      = { nullptr };
-
-    }STATEMONSTER_DESC;
+    };
 
 protected:
     CState_Monster(CGameObject* pActor, CGameObject::GAMEOBJECT_DESC* pGameObjectDesc, STATEMONSTER_DESC* pDesc);

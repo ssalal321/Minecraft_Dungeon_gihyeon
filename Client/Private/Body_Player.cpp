@@ -3,6 +3,10 @@
 #include "Monster.h"
 #include "Mesh.h"
 
+#include "Shader.h"
+#include "Model.h"
+#include "Collider.h"
+
 #include "Player.h"
 
 CBody_Player::CBody_Player(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -19,8 +23,6 @@ CBody_Player::CBody_Player(const CBody_Player& Prototype)
 
 HRESULT CBody_Player::Initialize_Prototype()
 {
-	/* 외부 데이터베이스를 통해서 값을 채운다. */
-
 	return S_OK;
 }
 
@@ -89,16 +91,18 @@ void CBody_Player::Collided_With(CCollider* pOther, CCollider::COLLISION_STATE e
 HRESULT CBody_Player::Ready_Components()
 {
 	/* Com_Shader */
-	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxAnimMesh"),
-		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom)))
+	m_pShaderCom = Add_Component<CShader>(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxAnimMesh"),
+		TEXT("Com_Shader"));
+	if (nullptr == m_pShaderCom)
 		return E_FAIL;
 
 	/* Com_Model */
 	/*CMesh::MESH_DESC pMeshDesc = {};
 	pMeshDesc.bPickable = true;*/
 
-	if (nullptr == Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Model_PlayerHex"),
-		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom)))
+	m_pModelCom = Add_Component<CModel>(LEVEL_STATIC, TEXT("Prototype_Component_Model_PlayerHex"),
+		TEXT("Com_Model"));
+	if (nullptr == m_pModelCom)
 		return E_FAIL;
 
 
@@ -111,14 +115,14 @@ HRESULT CBody_Player::Ready_Components()
 	SphereCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
 	SphereCollDesc.pCollisionActivated = m_pBigCollisionActivating;
 
-	CComponent* pColliderBigSphereCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
-		TEXT("Com_Collider_BigSphere"), reinterpret_cast<CComponent**>(&m_pBigColliderCom), &SphereCollDesc);
+	m_pBigColliderCom = Add_Component<CCollider>(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
+		TEXT("Com_Collider_BigSphere"), &SphereCollDesc);
 
-	if (nullptr == pColliderBigSphereCom)
+	if (nullptr == m_pBigColliderCom)
 		return E_FAIL;
 
-	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), pColliderBigSphereCom, TEXT("Player_Body"), TEXT("Player"), true);
-	dynamic_cast<CCollider*>(pColliderBigSphereCom)->Set_ColliderRole(CCollider::BIG);
+	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), m_pBigColliderCom, TEXT("Player_Body"), TEXT("Player"), true);
+	m_pBigColliderCom->Set_ColliderRole(CCollider::BIG);
 
 
 	/* Com_Collider Small*/
@@ -130,15 +134,15 @@ HRESULT CBody_Player::Ready_Components()
 	SphereSmallCollDesc.CombinedWorldMatrix = &m_CombinedWorldMatrix;
 	SphereSmallCollDesc.pCollisionActivated = m_pSmallCollisionActivating;
 
-	CComponent* pColliderSmallSphereCom = Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
-		TEXT("Com_Collider_SmallSphere"), reinterpret_cast<CComponent**>(&m_pSmallColliderCom), &SphereSmallCollDesc);
+	m_pSmallColliderCom = Add_Component<CCollider>(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
+		TEXT("Com_Collider_SmallSphere"), &SphereSmallCollDesc);
 
-	if (nullptr == pColliderSmallSphereCom)
+	if (nullptr == m_pSmallColliderCom)
 		return E_FAIL;
 
 	m_pGameInstance->Add_ColliderCom(m_pGameInstance->Get_ChangedLevelIndex(), m_pSmallColliderCom, TEXT("Player_Body_Small"), TEXT("Player"), true);
-	dynamic_cast<CCollider*>(pColliderSmallSphereCom)->Set_AllowSameGroupCollision(true);
-	dynamic_cast<CCollider*>(pColliderSmallSphereCom)->Set_ColliderRole(CCollider::SMALL);
+	m_pSmallColliderCom->Set_AllowSameGroupCollision(true);
+	m_pSmallColliderCom->Set_ColliderRole(CCollider::SMALL);
 
 	return S_OK;
 }

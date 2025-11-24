@@ -5,8 +5,8 @@
 /* 플레이어라는 객체를 구성하기위한 파츠들을 모아서 쥐고 있는 객체. */
 
 BEGIN(Client)
-	class CMonster;
-	class CState;
+class CMonster;
+class CState;
 class CInventoryData;
 class CArrowPool_Player;
 
