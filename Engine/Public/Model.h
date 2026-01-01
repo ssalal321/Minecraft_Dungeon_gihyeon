@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "Component.h"
 
@@ -24,6 +24,8 @@ private:
 
 public:
 	_uint	Get_NumMeshes() const { return m_iNumMeshes; }
+
+	void	Build_BVH();
 
 	const _float4x4*	Get_CombinedTransformationMatrix(const _char* pBoneName) const;
 
@@ -71,11 +73,11 @@ public:
 	HRESULT		Bind_BoneMatrices(class CShader* pShader, const _char* pConstantName, _uint iMeshIndex);
 	
 private:
-	/* aiScene : ÆÄÀÏÀ» ÀĞÀº °á°ú */
-	/* ¸ğµ¨ ·Îµå¿¡ ÇÊ¿äÇÑ ¸ğµç µ¥ÀÌÅÍ¸¦ ´Ù µé°í ÀÖ´Ù. */
+	/* aiScene : íŒŒì¼ì„ ì½ì€ ê²°ê³¼ */
+	/* ëª¨ë¸ ë¡œë“œì— í•„ìš”í•œ ëª¨ë“  ë°ì´í„°ë¥¼ ë‹¤ ë“¤ê³  ìˆë‹¤. */
 	const aiScene*				m_pAIScene = { nullptr };
 
-	/* ÆÄÀÏÀ» ÀĞ¾îÁØ´Ù. aiSceneÀ» ¸®ÅÏÇÑ´Ù. */
+	/* íŒŒì¼ì„ ì½ì–´ì¤€ë‹¤. aiSceneì„ ë¦¬í„´í•œë‹¤. */
 	Assimp::Importer			m_Importer = {};
 
 private:
@@ -87,8 +89,8 @@ private:
 	_uint						m_iNumMaterials = {};
 	vector<class CMaterial*>	m_Materials;
 
-	/* ³» ¸ğµ¨ ÀüÃ¼ÀÇ »À Á¤º¸ */
-	/* CBone : »ÀÀÇ ÀÌ¸§, »óÅÂ, ºÎ¸ğ, */
+	/* ë‚´ ëª¨ë¸ ì „ì²´ì˜ ë¼ˆ ì •ë³´ */
+	/* CBone : ë¼ˆì˜ ì´ë¦„, ìƒíƒœ, ë¶€ëª¨, */
 	vector<class CBone*>		m_Bones;
 
 	_uint						m_iCurrentAnimIndex = {};

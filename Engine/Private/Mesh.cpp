@@ -1,4 +1,4 @@
-#include "Mesh.h"
+ï»¿#include "Mesh.h"
 
 #include <set>
 
@@ -18,7 +18,7 @@ CMesh::CMesh(const CMesh& Prototype)
 
 HRESULT CMesh::Initialize_Prototype(CModel::TYPE eModelType, const vector<class CBone*>& Bones, const aiMesh* pAIMesh, _fmatrix PreTransformMatrix)
 {
-	/* ³×¸ğ¸¦ ±¸¼ºÇÏ±âÀ§ÇÑ Á¤Á¡°ú ÀÎµ¦½ºÀÇ Á¤º¸¸¦ Ã¤¿ì°í ¹öÆÛ¸¦ ÇÒ´çÇÒ ¼ö ÀÖµµ·Ï ÇÔ¼ö¸¦ È£ÃâÇØÁØ´Ù. */
+	/* ë„¤ëª¨ë¥¼ êµ¬ì„±í•˜ê¸°ìœ„í•œ ì •ì ê³¼ ì¸ë±ìŠ¤ì˜ ì •ë³´ë¥¼ ì±„ìš°ê³  ë²„í¼ë¥¼ í• ë‹¹í•  ìˆ˜ ìˆë„ë¡ í•¨ìˆ˜ë¥¼ í˜¸ì¶œí•´ì¤€ë‹¤. */
 	strcpy_s(m_szName, pAIMesh->mName.data);
 	m_iMaterialIndex = pAIMesh->mMaterialIndex;
 	m_iNumVertexBuffers = 1;
@@ -53,6 +53,7 @@ HRESULT CMesh::Initialize_Prototype(CModel::TYPE eModelType, const vector<class 
 
 	_uint		iNumIndices = {};
 
+	// m_pIndicesëŠ” ì´ ë©”ì‹œì˜ ì •ì ì„ ì–´ë–»ê²Œ ì½ì„ ê±´ì§€ ì €ì¥í•˜ëŠ” ì¸ë±ìŠ¤ ë°°ì—´
 	for (size_t i = 0; i < pAIMesh->mNumFaces; i++)
 	{
 		m_pIndices[iNumIndices++] = pAIMesh->mFaces[i].mIndices[0];
@@ -69,7 +70,7 @@ HRESULT CMesh::Initialize_Prototype(CModel::TYPE eModelType, const vector<class 
 #pragma endregion
 
 	Compute_BoundingBox();
-
+	
 	return S_OK;
 }
 
@@ -167,16 +168,16 @@ HRESULT CMesh::Ready_VertexBuffer_For_Anim(const aiMesh* pAIMesh, const vector<c
 		pVertices[i].vBlendWeight;*/
 	}
 
-	/* ÀÌ ¸Ş½Ã¿¡ ¿µÇâÀ» ÁÖ´Â »ÀÀÇ °¹¼ö */
+	/* ì´ ë©”ì‹œì— ì˜í–¥ì„ ì£¼ëŠ” ë¼ˆì˜ ê°¯ìˆ˜ */
 	m_iNumBones = pAIMesh->mNumBones;
 
 	m_OffsetMatrices.reserve(m_iNumBones);
 
-	/* »À¸¦ ±âÁØÀ¸·Î Á¤Á¡µé¿¡°Ô Á¤º¸¸¦ Ã¤¿öÁØ´Ù. */
+	/* ë¼ˆë¥¼ ê¸°ì¤€ìœ¼ë¡œ ì •ì ë“¤ì—ê²Œ ì •ë³´ë¥¼ ì±„ì›Œì¤€ë‹¤. */
 	for (size_t i = 0; i < m_iNumBones; i++)
 	{
-		/*0¹øÂ° »À´Â ¾î¶² Á¤Á¡¿¡°Ô ¿µÇâÀ» Áİ´Ï´Ù. 
-			¾ó¸¶³ª ¿µÇâÀ» Áİ´Ï´Ù. */
+		/*0ë²ˆì§¸ ë¼ˆëŠ” ì–´ë–¤ ì •ì ì—ê²Œ ì˜í–¥ì„ ì¤ë‹ˆë‹¤. 
+			ì–¼ë§ˆë‚˜ ì˜í–¥ì„ ì¤ë‹ˆë‹¤. */
 		aiBone*		pAIBone = pAIMesh->mBones[i];
 
 		_uint		iBoneIndex = {};
@@ -191,7 +192,7 @@ HRESULT CMesh::Ready_VertexBuffer_For_Anim(const aiMesh* pAIMesh, const vector<c
 				return false;			
 		});
 
-		/* ÀÌ ¸Ş½Ã¿¡ ¿µÇâÀ» ÁÖ´Â »À°¡ ¸ğµ¨ ÀüÃ¼ »À ±âÁØ ¸î¹øÂ°¿¡ µé¾î°¡ ÀÖ¾ú´ÂÁö(iIndex)¸¦ ¸ğ¾Æ³ù´Ù. */
+		/* ì´ ë©”ì‹œì— ì˜í–¥ì„ ì£¼ëŠ” ë¼ˆê°€ ëª¨ë¸ ì „ì²´ ë¼ˆ ê¸°ì¤€ ëª‡ë²ˆì§¸ì— ë“¤ì–´ê°€ ìˆì—ˆëŠ”ì§€(iIndex)ë¥¼ ëª¨ì•„ë†¨ë‹¤. */
 		m_Bones.push_back(iBoneIndex);
 
 		_float4x4		OffsetMatrix{};
@@ -201,19 +202,19 @@ HRESULT CMesh::Ready_VertexBuffer_For_Anim(const aiMesh* pAIMesh, const vector<c
 
 		m_OffsetMatrices.push_back(OffsetMatrix);
 
-		/* ÀÌ ¸Ş½Ã¿¡ ¿µÇâÀ» ÁÖ´Â i¹øÂ° »À´Â ¸î°³ÀÇ Á¤Á¡¿¡°Ô ¿µÇâÀ» ÁÖ´Â°¡? */
+		/* ì´ ë©”ì‹œì— ì˜í–¥ì„ ì£¼ëŠ” ië²ˆì§¸ ë¼ˆëŠ” ëª‡ê°œì˜ ì •ì ì—ê²Œ ì˜í–¥ì„ ì£¼ëŠ”ê°€? */
 		_uint		iNumWeights = pAIBone->mNumWeights;
 
 		for (size_t j = 0; j < iNumWeights; j++) 
 		{
-			/* i¹øÂ° »À°¡ ¿µÇâÀ» ÁÖ´Â j¹øÂ° Á¤Á¡ÀÇ ÀÎµ¦½º :  pAIBone->mWeights[j].mVertexId */
+			/* ië²ˆì§¸ ë¼ˆê°€ ì˜í–¥ì„ ì£¼ëŠ” jë²ˆì§¸ ì •ì ì˜ ì¸ë±ìŠ¤ :  pAIBone->mWeights[j].mVertexId */
 			_uint	iVertexIndex = pAIBone->mWeights[j].mVertexId;
 
-			/* Áßº¹µÈ »ÀÀÎÁö Ã¼Å©ÇÏ±â À§ÇÑ ¹è¿­ */
-			_uint	boneIndex	= static_cast<_uint>(i); // ÇöÀç Ã³¸® ÁßÀÎ »À ÀÎµ¦½º
+			/* ì¤‘ë³µëœ ë¼ˆì¸ì§€ ì²´í¬í•˜ê¸° ìœ„í•œ ë°°ì—´ */
+			_uint	boneIndex	= static_cast<_uint>(i); // í˜„ì¬ ì²˜ë¦¬ ì¤‘ì¸ ë¼ˆ ì¸ë±ìŠ¤
 
-			/* ÇöÀç Á¤Á¡ÀÇ ±âÁ¸ ºí·»µå ÀÎµ¦½ºµé°ú ºñ±³ */
-			// std::set -> Áßº¹À» ÀÚµ¿ Á¦°ÅÇÏ´Â ÄÁÅ×ÀÌ³Ê
+			/* í˜„ì¬ ì •ì ì˜ ê¸°ì¡´ ë¸”ë Œë“œ ì¸ë±ìŠ¤ë“¤ê³¼ ë¹„êµ */
+			// std::set -> ì¤‘ë³µì„ ìë™ ì œê±°í•˜ëŠ” ì»¨í…Œì´ë„ˆ
 			set<_uint> existingBones = 
 			{
 				pVertices[iVertexIndex].vBlendIndex.x,
@@ -222,11 +223,11 @@ HRESULT CMesh::Ready_VertexBuffer_For_Anim(const aiMesh* pAIMesh, const vector<c
 				pVertices[iVertexIndex].vBlendIndex.w
 			};
 
-			/* Áßº¹µÈ »À¶ó¸é Ãß°¡ÇÏÁö ¾ÊÀ½ */
+			/* ì¤‘ë³µëœ ë¼ˆë¼ë©´ ì¶”ê°€í•˜ì§€ ì•ŠìŒ */
 			if (existingBones.find(boneIndex) != existingBones.end())
 				continue;
 
-			/* ³×°³ Áß¿¡ ¾ÆÁ÷ °ªÀÌ Ã¤¿öÁöÁö ¾ÊÀº °ø°£À» Ã£´Â´Ù. */
+			/* ë„¤ê°œ ì¤‘ì— ì•„ì§ ê°’ì´ ì±„ì›Œì§€ì§€ ì•Šì€ ê³µê°„ì„ ì°¾ëŠ”ë‹¤. */
 			if (0.f == pVertices[iVertexIndex].vBlendWeight.x)
 			{
 				pVertices[iVertexIndex].vBlendIndex.x = static_cast<_uint>(i);
@@ -289,11 +290,11 @@ HRESULT CMesh::Ready_VertexBuffer_For_Anim(const aiMesh* pAIMesh, const vector<c
 
 void CMesh::Compute_BoundingBox()
 {
-	// ÃÖ¼Ò, ÃÖ´ë°ªÀ» Å« °ª°ú ÀÛÀº °ªÀ¸·Î ÃÊ±âÈ­
+	// ìµœì†Œ, ìµœëŒ€ê°’ì„ í° ê°’ê³¼ ì‘ì€ ê°’ìœ¼ë¡œ ì´ˆê¸°í™”
 	_float3 vMin = { FLT_MAX, FLT_MAX, FLT_MAX };
 	_float3 vMax = { -FLT_MAX, -FLT_MAX, -FLT_MAX };
 
-	// ¸ğµç Á¤Á¡À» ¼øÈ¸ÇÏ¸é¼­ AABB °è»ê
+	// ëª¨ë“  ì •ì ì„ ìˆœíšŒí•˜ë©´ì„œ AABB ê³„ì‚°
 	for (_uint i = 0; i < m_iNumVertices; ++i)
 	{
 		const _float3 vPos = { m_pVertices[i].x, m_pVertices[i].y, m_pVertices[i].z, };
@@ -311,6 +312,261 @@ void CMesh::Compute_BoundingBox()
 	m_vBoundingMax = vMax;
 }
 
+void CMesh::Build_BVH()
+{
+	const _uint iTriCount = m_iNumIndices / 3;
+
+	m_TriangleIDs.resize(iTriCount);
+	
+	for (_uint i = 0; i < iTriCount; ++i)
+		m_TriangleIDs[i] = i;
+
+	m_BVHNodes.clear();
+
+	Build_BVH_Node(0, iTriCount);	// ë£¨íŠ¸ ìƒì„± (start = 0, count = triCount)
+}
+
+_bool CMesh::Ray_Intersects_AABB(const _float3& rayOrigin, const _float3& rayDir,
+	const _float3& bmin, const _float3& bmax,
+	_float& tMinOut, _float& tMaxOut) const
+{
+	_float tMin = 0.0f;
+	_float tMax = FLT_MAX;
+
+	const _float o[3] = { rayOrigin.x, rayOrigin.y, rayOrigin.z };
+	const _float d[3] = { rayDir.x,    rayDir.y,    rayDir.z };
+	const _float mn[3] = { bmin.x,      bmin.y,      bmin.z };
+	const _float mx[3] = { bmax.x,      bmax.y,      bmax.z };
+
+	for (int axis = 0; axis < 3; ++axis)
+	{
+		if (fabsf(d[axis]) < 1e-6f)
+		{
+			if (o[axis] < mn[axis] || o[axis] > mx[axis])
+				return false;
+		}
+		else
+		{
+			_float t1 = (mn[axis] - o[axis]) / d[axis];
+			_float t2 = (mx[axis] - o[axis]) / d[axis];
+			if (t1 > t2) std::swap(t1, t2);
+
+			tMin = (t1 > tMin) ? t1 : tMin;
+			tMax = (t2 < tMax) ? t2 : tMax;
+
+			if (tMin > tMax)
+				return false;
+		}
+	}
+
+	tMinOut = tMin;
+	tMaxOut = tMax;
+	return true;
+}
+
+
+_int CMesh::Build_BVH_Node(_int iStart, _int iTriCount, _int depth)
+{
+	// ë””ë²„ê·¸ìš©
+	std::string indent(depth * 2, ' ');
+
+	// ì…ì¥ ë¡œê·¸
+	printf("%s[Enter] start=%d count=%d\n", indent.c_str(), iStart, iTriCount);
+
+	BVH_Node node{};
+	node.iTriStart = iStart;
+	node.iTriCount = iTriCount;
+	node.iLeft = -1;
+	node.iRight = -1;
+
+	// 1) bounds
+	Compute_Node_AABB(iStart, iTriCount, node.boundingMin, node.boundingMax);
+
+	// 2) centroid bounds
+	_float3 ctMin, ctMax;
+	Compute_Centroid_Bounds(iStart, iTriCount, ctMin, ctMax);
+
+	_float3 centroidExtent{ ctMax.x - ctMin.x, ctMax.y - ctMin.y, ctMax.z - ctMin.z };
+
+	// 3) ë¶„í•  ëê¹Œì§€ ì™”ëŠ”ê°€? ë¦¬í”„ë…¸ë“œì¸ê°€?
+	// Build_BVH_Node()ëŠ” ì¬ê·€í•¨ìˆ˜ì´ë‹¤
+	if (Should_Stop_Splitting(iTriCount, centroidExtent))
+	{
+		const _int idx = static_cast<_int>(m_BVHNodes.size());
+		m_BVHNodes.push_back(node);
+
+		// ë””ë²„ê·¸ìš©
+		printf("%s  [Leaf]  idx=%d  AABBMin(%.2f %.2f %.2f) Max(%.2f %.2f %.2f)\n",
+			indent.c_str(), idx,
+			node.boundingMin.x, node.boundingMin.y, node.boundingMin.z,
+			node.boundingMax.x, node.boundingMax.y, node.boundingMax.z);
+
+		return idx;
+	}
+
+	// 4) split
+	const _int axis = Choose_Split_Axis(ctMin, ctMax);
+	const _int mid = Partition_Median(iStart, iTriCount, axis);
+
+	// ë””ë²„ê·¸ìš©
+	const int leftCount = mid - iStart;
+	const int rightCount = (iStart + iTriCount) - mid;
+
+	printf("%s  [Split] axis=%c mid=%d  left=%d right=%d  extent(%.3g %.3g %.3g)\n",
+		indent.c_str(),
+		(axis == 0 ? 'X' : axis == 1 ? 'Y' : 'Z'),
+		mid, leftCount, rightCount,
+		centroidExtent.x, centroidExtent.y, centroidExtent.z);
+
+	if (leftCount == 0 || rightCount == 0)
+	{
+		printf("%s  [WARN] Degenerate split! axis=%c start=%d count=%d mid=%d\n",
+			indent.c_str(), (axis == 0 ? 'X' : axis == 1 ? 'Y' : 'Z'), iStart, iTriCount, mid);
+	}
+
+	// 5) push self, build children
+	const _int myIndex = (_int)m_BVHNodes.size();
+	m_BVHNodes.push_back(node);
+
+	// ë””ë²„ê·¸ìš©
+	printf("%s  [Push ] idx=%d\n", indent.c_str(), myIndex);
+
+	m_BVHNodes[myIndex].iLeft = Build_BVH_Node(iStart, mid - iStart);
+	m_BVHNodes[myIndex].iRight = Build_BVH_Node(mid, (iStart + iTriCount) - mid);
+
+	// ë””ë²„ê·¸ìš©
+	printf("%s[Exit ] idx=%d left=%d right=%d\n",
+		indent.c_str(), myIndex,
+		m_BVHNodes[myIndex].iLeft,
+		m_BVHNodes[myIndex].iRight);
+
+	return myIndex;
+}
+
+void CMesh::Compute_Node_AABB(_int iStart, _int iTriCount, _float3& boundingMin, _float3& boundingMax) const
+{
+	// iStart : m_TriOrdersì—ì„œ ëª‡ ë²ˆì§¸ë¶€í„°
+	// iTriCount : ì‚¼ê°í˜• ëª‡ ê°œë¥¼ ê³¨ë¼ì„œ
+	// ê·¸ ì‚¼ê°í˜•ë“¤ì„ ê°ì‹¸ëŠ” AABBë¥¼ boundingMin/Maxì— ì±„ìš´ë‹¤.
+
+	// m_TriOrders : ì‚¼ê°í˜• ID ëª©ë¡
+
+	boundingMin = { FLT_MAX, FLT_MAX, FLT_MAX };
+	boundingMax = { -FLT_MAX, -FLT_MAX, -FLT_MAX };
+
+	for (_int i = 0; i < iTriCount; ++i)
+	{
+		const _uint triangleID = m_TriangleIDs[iStart + i];
+		const _uint base = triangleID * 3;
+
+		// i0 ~ i2 : í•˜ë‚˜ì˜ ì‚¼ê°í˜•ì„ ì´ë£° ì •ì  ë²ˆí˜¸
+		// ì‚¼ê°í˜• êµ¬ì„±ì€ ì¸ë±ìŠ¤ê°€ ì •ì˜í•˜ë¯€ë¡œ ì¸ë±ìŠ¤ë¥¼ ë°›ê³  ê·¸ë¡œ ì •ì ì— ì ‘ê·¼í•´ì•¼ í•¨
+		const _uint i0 = m_pIndices[base + 0];
+		const _uint i1 = m_pIndices[base + 1];
+		const _uint i2 = m_pIndices[base + 2];
+
+		// m_pVertices[i0]ëŠ” : ì‹¤ì œ ì •ì  ë²ˆí˜¸ì„
+		Expand_AABB(boundingMin, boundingMax, m_pVertices[i0]);
+		Expand_AABB(boundingMin, boundingMax, m_pVertices[i1]);
+		Expand_AABB(boundingMin, boundingMax, m_pVertices[i2]);
+	}
+}
+
+inline void CMesh::Expand_AABB(_float3& mn, _float3& mx, const _float3& pVertice)
+{
+	mn.x = min(mn.x, pVertice.x);
+	mn.y = min(mn.y, pVertice.y);
+	mn.z = min(mn.z, pVertice.z);
+	
+	mx.x = max(mx.x, pVertice.x);
+	mx.y = max(mx.y, pVertice.y);
+	mx.z = max(mx.z, pVertice.z);
+}
+
+void CMesh::Compute_Centroid_Bounds(_int start, _int count, _float3& ctMin, _float3& ctMax) const
+{
+	ctMin = { FLT_MAX, FLT_MAX, FLT_MAX };
+	ctMax = { -FLT_MAX, -FLT_MAX, -FLT_MAX };
+
+	for (_int i = 0; i < count; ++i)
+	{
+		const _uint triangleID = m_TriangleIDs[start + i];
+		const _float3 centroid = Compute_Triangle_Centroid(triangleID);
+
+		Expand_AABB(ctMin, ctMax, centroid);
+	}
+}
+
+_int CMesh::Choose_Split_Axis(const _float3& cMin, const _float3& cMax) const
+{
+	const _float3 extent{ cMax.x - cMin.x, cMax.y - cMin.y, cMax.z - cMin.z };
+
+	_int axis = 0;
+	if (extent.y > extent.x) axis = 1;
+	if (extent.z > (axis == 0 ? extent.x : extent.y)) axis = 2;
+	return axis;
+}
+
+_int CMesh::Partition_Median(_int iStart, _int iTriCount, _int iAxis)
+{
+	// m_TriOrders[start ~ start + count) êµ¬ê°„ì„
+	// centroidì˜ axis ê°’ ê¸°ì¤€ìœ¼ë¡œ ë°˜ìœ¼ë¡œ ë‚˜ëˆ ë†“ê¸°
+	const _int mid = iStart + iTriCount / 2;
+
+	auto key = [&](const _uint triangleID) -> _float
+		{
+			const _float3 centroid = Compute_Triangle_Centroid(triangleID);
+			return (iAxis == 0) ? centroid.x : (iAxis == 1 ? centroid.y : centroid.z);
+		};
+
+	// nthëŠ” : ì •ë ¬í–ˆì„ ë•Œ ê·¸ ìë¦¬ì— ì˜¬ ì›ì†Œ
+	// first ~ nth êµ¬ê°„ì€ nthë³´ë‹¤ ì‘ì€ ê²ƒë“¤
+	// nth ~ last êµ¬ê°„ì€ nthë³´ë‹¤ í° ê²ƒë“¤
+	// ë‹¨, ê° êµ¬ê°„ ë‚´ë¶€ê°€ ì •ë ¬ë˜ì–´ ìˆì§„ ì•ŠìŒ
+	std::nth_element(
+		m_TriangleIDs.begin() + iStart,
+		m_TriangleIDs.begin() + mid,
+		m_TriangleIDs.begin() + (iStart + iTriCount),
+		[&](const _uint a, const _uint b) { return key(a) < key(b); }
+	);
+
+	return mid;
+}
+
+_float3 CMesh::Compute_Triangle_Centroid(_uint iTriangleID) const
+{
+	const _uint base = iTriangleID * 3;
+	const _uint i0 = m_pIndices[base + 0];
+	const _uint i1 = m_pIndices[base + 1];
+	const _uint i2 = m_pIndices[base + 2];
+
+	const _float3& vA = m_pVertices[i0];
+	const _float3& vB = m_pVertices[i1];
+	const _float3& vC = m_pVertices[i2];
+
+	return { (vA.x + vB.x + vC.x) * 0.333333f,
+			 (vA.y + vB.y + vC.y) * 0.333333f,
+			 (vA.z + vB.z + vC.z) * 0.333333f };
+}
+
+bool CMesh::Should_Stop_Splitting(_int count, const _float3& centroidExtent) const
+{
+	// í•¨ìˆ˜ê°€ trueë¥¼ ë°˜í™˜í•˜ë©´:
+	// ì´ ë…¸ë“œëŠ” ë” ì´ìƒ ë¶„í• í•˜ì§€ ì•ŠëŠ”ë‹¤
+	// = leaf ë…¸ë“œê°€ ëœë‹¤
+
+	constexpr int LEAF_TRI_MAX = 8;	// consteval ì¨ë„ ë  ë“¯?
+	if (count <= LEAF_TRI_MAX)
+		return true;
+
+	// ë” ìª¼ê°œë„ ì˜ë¯¸ ì—†ëŠ” ê²½ìš°(centroidê°€ ê±°ì˜ ë™ì¼í•  ë•Œ)
+	// ì´ë•Œ ë‚˜ëˆ„ë©´ ì˜¤íˆë ¤ ë°˜ìœ¼ë¡œ ì˜ ì•ˆë‚˜ë‰˜ì–´ì„œ ì¬ê·€ë§Œ ê¹Šì–´ì§
+	const float eps = 1e-6f;
+	if (centroidExtent.x < eps && centroidExtent.y < eps && centroidExtent.z < eps)
+		return true;
+
+	return false;
+}
 
 _bool CMesh::Check_BoundingBox_AABB(const _float3& localMousePos, const _float3& localMouseRay)
 {
@@ -319,18 +575,13 @@ _bool CMesh::Check_BoundingBox_AABB(const _float3& localMousePos, const _float3&
 
 	_float tMin = 0.0f, tMax = FLT_MAX;
 
-	/*if ( -56.f > m_vBoundingMin.x || m_vBoundingMax.x > 59.f ||
-		  11.f > m_vBoundingMin.y || m_vBoundingMax.y > 89.f ||
-		 -74.f > m_vBoundingMin.z || m_vBoundingMax.z > 75.f )
-		return false;*/
-
 	_float rayOrigin[3] = { localMousePos.x, localMousePos.y, localMousePos.z };
 	_float rayDir[3] = { localMouseRay.x, localMouseRay.y, localMouseRay.z };
 	_float fLocalMin[3] = { m_vBoundingMin.x, m_vBoundingMin.y, m_vBoundingMin.z };
 	_float fLocalMax[3] = { m_vBoundingMax.x, m_vBoundingMax.y, m_vBoundingMax.z };
 
-	// rayDir´Â Á¤±ÔÈ­µÈ »óÅÂ
-	for (int i = 0; i < 3; i++)  // X, Y, Z Ãà¿¡ ´ëÇØ °Ë»ç
+	// rayDirëŠ” ì •ê·œí™”ëœ ìƒíƒœ
+	for (int i = 0; i < 3; i++)  // X, Y, Z ì¶•ì— ëŒ€í•´ ê²€ì‚¬
 	{
 		if (abs(rayDir[i]) < 1e-6f)
 		{
@@ -356,7 +607,6 @@ _bool CMesh::Check_BoundingBox_AABB(const _float3& localMousePos, const _float3&
 	return true;
 }
 
-
 _bool CMesh::Picking_In_Mesh(const _float3& localMousePos, const _float3& localMouseRay,
 							_float3& vOutLocalPickedPos, _float& fOutDist) const
 {
@@ -372,21 +622,6 @@ _bool CMesh::Picking_In_Mesh(const _float3& localMousePos, const _float3& localM
 		_float3 vA = m_pVertices[m_pIndices[i + 0]];
 		_float3 vB = m_pVertices[m_pIndices[i + 1]];
 		_float3 vC = m_pVertices[m_pIndices[i + 2]];
-
-		///*_float minX = min(vA.x, min(vB.x, vC.x));
-		//_float maxX = max(vA.x, max(vB.x, vC.x));*/
-		//if (vA.x < -40.f || vA.x > 40.f)
-		//	continue;
-
-		///*_float minZ = min(vA.z, min(vB.z, vC.z));
-		//_float maxZ = max(vA.z, max(vB.z, vC.z));*/
-		//if (vA.z < -50.f || vA.z > 55.f)
-		//	continue;
-
-		///*_float centerY = (vA.y + vB.y + vC.y) * 0.3333f;*/
-		//if (vA.y < 45.f || vA.y > 65.f)
-		//	continue;	
-
 
 		_vector v0 = XMLoadFloat3(&vA);
 		_vector v1 = XMLoadFloat3(&vB);
@@ -408,6 +643,149 @@ _bool CMesh::Picking_In_Mesh(const _float3& localMousePos, const _float3& localM
 
 	return bHit;
 }
+
+_bool CMesh::Picking_In_Mesh_with_BVH(const _float3& localMousePos, const _float3& localMouseRay,
+	_float3& vOutLocalPickedPos, _float& fOutDist) const
+{
+	if (!m_bPickable)
+		return false;
+
+	if (m_BVHNodes.empty())
+		return Picking_In_Mesh(localMousePos, localMouseRay, vOutLocalPickedPos, fOutDist); // fallback
+
+	_vector vOrigin = XMLoadFloat3(&localMousePos);
+	_vector vDir = XMVector3Normalize(XMLoadFloat3(&localMouseRay));
+
+	_float bestDist = FLT_MAX;
+	_bool  hit = false;
+
+	// ë£¨íŠ¸ AABBë¶€í„° ë¹ ë¥´ê²Œ ì»· (ëª¨ë¸ ìª½ì—ì„œ ì´ë¯¸ BB ì²´í¬í•˜ì§€ë§Œ ì•ˆì „í•˜ê²Œ í•œ ë²ˆ ë” ê°€ëŠ¥)
+	_float tminRoot = 0.f, tmaxRoot = FLT_MAX;
+	if (!Ray_Intersects_AABB(localMousePos, localMouseRay,
+		m_BVHNodes[0].boundingMin, m_BVHNodes[0].boundingMax,
+		tminRoot, tmaxRoot))
+		return false;
+
+	// ìŠ¤íƒ: (nodeIndex, tMin) ì •ë„ë§Œ ë“¤ê³  ê°€ë„ ë˜ì§€ë§Œ ë‹¨ìˆœí™”
+	std::vector<_int> stack;
+	stack.reserve(64);
+	stack.push_back(0);
+
+	while (!stack.empty())
+	{
+		const _int nodeIdx = stack.back();
+		stack.pop_back();
+
+		const BVH_Node& node = m_BVHNodes[nodeIdx];
+
+		_float tmin = 0.f, tmax = FLT_MAX;
+		if (!Ray_Intersects_AABB(localMousePos, localMouseRay,
+			node.boundingMin, node.boundingMax,
+			tmin, tmax))
+			continue;
+
+		// ì´ë¯¸ ë” ê°€ê¹Œìš´ hitë¥¼ ì°¾ì•˜ìœ¼ë©´, ê·¸ë³´ë‹¤ ë¨¼ ë…¸ë“œëŠ” ë³¼ í•„ìš” ì—†ìŒ
+		// (tminì´ bestDistë³´ë‹¤ í¬ë©´ ì´ ë…¸ë“œ ì•ˆì—ì„œ ë” ê°€ê¹Œìš´ hitê°€ ë‚˜ì˜¬ ìˆ˜ ì—†ìŒ)
+		if (hit && tmin > bestDist)
+			continue;
+
+		const _bool isLeaf = (node.iLeft < 0 && node.iRight < 0);
+
+		if (isLeaf)
+		{
+			_float3 picked = {};
+			if (Intersect_Leaf_Triangles(node.iTriStart, node.iTriCount, vOrigin, vDir, bestDist, picked))
+			{
+				hit = true;
+				vOutLocalPickedPos = picked;
+			}
+		}
+		else
+		{
+			// ìì‹ ë‘˜ ë‹¤ ë„£ë˜, "ê°€ê¹Œìš´ ìª½ì„ ë¨¼ì €" ì²˜ë¦¬í•˜ë©´ ë” ë¹¨ë¦¬ bestDistê°€ ì¤„ì–´ì„œ pruningì´ ì¢‹ì•„ì§
+			// ê·¸ë˜ì„œ ê° ìì‹ì˜ tminì„ êµ¬í•´ ì •ë ¬ ë¹„ìŠ·í•˜ê²Œ ì²˜ë¦¬
+			_int left = node.iLeft;
+			_int right = node.iRight;
+
+			if (left >= 0 && right >= 0)
+			{
+				_float lmin = 0.f, lmax = FLT_MAX, rmin = 0.f, rmax = FLT_MAX;
+				_bool lhit = Ray_Intersects_AABB(localMousePos, localMouseRay,
+					m_BVHNodes[left].boundingMin, m_BVHNodes[left].boundingMax,
+					lmin, lmax);
+				_bool rhit = Ray_Intersects_AABB(localMousePos, localMouseRay,
+					m_BVHNodes[right].boundingMin, m_BVHNodes[right].boundingMax,
+					rmin, rmax);
+
+				if (lhit && rhit)
+				{
+					// ìŠ¤íƒì€ LIFOë¼ "ë¨¼ ìª½ ë¨¼ì € push"í•˜ë©´ ê°€ê¹Œìš´ ìª½ì´ ë¨¼ì € popë¨
+					if (lmin < rmin)
+					{
+						stack.push_back(right);
+						stack.push_back(left);
+					}
+					else
+					{
+						stack.push_back(left);
+						stack.push_back(right);
+					}
+				}
+				else
+				{
+					if (lhit) stack.push_back(left);
+					if (rhit) stack.push_back(right);
+				}
+			}
+			else
+			{
+				if (left >= 0)  stack.push_back(left);
+				if (right >= 0) stack.push_back(right);
+			}
+		}
+	}
+
+	if (hit)
+	{
+		fOutDist = bestDist;
+		return true;
+	}
+	return false;
+}
+
+_bool CMesh::Intersect_Leaf_Triangles(_int triStart, _int triCount,
+	const _vector& vOrigin, const _vector& vDir,
+	_float& ioBestDist, _float3& outPicked) const
+{
+	_bool hit = false;
+
+	for (_int k = 0; k < triCount; ++k)
+	{
+		const _uint triId = m_TriangleIDs[triStart + k];
+		const _uint base = triId * 3;
+
+		const _uint i0 = m_pIndices[base + 0];
+		const _uint i1 = m_pIndices[base + 1];
+		const _uint i2 = m_pIndices[base + 2];
+
+		const _vector v0 = XMLoadFloat3(&m_pVertices[i0]);
+		const _vector v1 = XMLoadFloat3(&m_pVertices[i1]);
+		const _vector v2 = XMLoadFloat3(&m_pVertices[i2]);
+
+		_float dist = 0.f;
+		if (TriangleTests::Intersects(vOrigin, vDir, v0, v1, v2, dist))
+		{
+			if (dist < ioBestDist)
+			{
+				ioBestDist = dist;
+				XMStoreFloat3(&outPicked, vOrigin + vDir * dist);
+				hit = true;
+			}
+		}
+	}
+	return hit;
+}
+
 
 _bool CMesh::Picking_Vertex(const _float3& localMousePos, const _float3& localMouseRay,
 							_float3& vOutPickedVertex, _float& fOutDist, _float fThresholdRadius) const
@@ -438,34 +816,35 @@ _bool CMesh::Picking_Vertex(const _float3& localMousePos, const _float3& localMo
 	return bHit;
 }
 
+
 _bool CMesh::Ray_Intersects_Sphere(const _float3& localMousePos, const _float3& localMouseRay, const _float3& sphereCenter,
 									_float sphereRadius, _float& outDistance) const 
 {
-	// ·¹ÀÌ ½ÃÀÛÁ¡¿¡¼­ ±³Â÷ ÁöÁ¡±îÁöÀÇ °Å¸®
+	// ë ˆì´ ì‹œì‘ì ì—ì„œ êµì°¨ ì§€ì ê¹Œì§€ì˜ ê±°ë¦¬
 	_vector  localMouseOrigin = XMLoadFloat3(&localMousePos);
 	_vector  localRayDir = XMVector3Normalize(XMLoadFloat3(&localMouseRay));
 	_vector  center = XMLoadFloat3(&sphereCenter);
 
 	_vector  toCenter = center - localMouseOrigin;
 
-	// ·¹ÀÌ ¹æÇâÀ¸·Î Áß½É±îÁö Á¤»ç¿µÇÑ ±æÀÌ (t)
+	// ë ˆì´ ë°©í–¥ìœ¼ë¡œ ì¤‘ì‹¬ê¹Œì§€ ì •ì‚¬ì˜í•œ ê¸¸ì´ (t)
 	_float  projectionLength = XMVectorGetX(XMVector3Dot(toCenter, localRayDir));
 
-	// sphere°¡ ray ¹æÇâ°ú ¹İ´ëÀÏ °æ¿ì
+	// sphereê°€ ray ë°©í–¥ê³¼ ë°˜ëŒ€ì¼ ê²½ìš°
 	if (projectionLength < 0.f)
 		return false;
 
 	_vector  closestPoint	= localMouseOrigin + localRayDir * projectionLength;
-	_vector  diff			= center - closestPoint; // °¡Àå °¡±î¿î Á¡°ú Áß½É »çÀÌ °Å¸®
+	_vector  diff			= center - closestPoint; // ê°€ì¥ ê°€ê¹Œìš´ ì ê³¼ ì¤‘ì‹¬ ì‚¬ì´ ê±°ë¦¬
 
-	_float	sqDistToCenter = XMVectorGetX(XMVector3LengthSq(diff)); // diff ±æÀÌ ±¸ÇÏ´Â °ø½Ä, LengthSq = (x©÷ + y©÷ + z©÷) ÇüÅÂ(·çÆ® X)
-	_float	radiusSquared  = sphereRadius * sphereRadius; // ¹İÁö¸§ Á¦°ö
+	_float	sqDistToCenter = XMVectorGetX(XMVector3LengthSq(diff)); // diff ê¸¸ì´ êµ¬í•˜ëŠ” ê³µì‹, LengthSq = (xÂ² + yÂ² + zÂ²) í˜•íƒœ(ë£¨íŠ¸ X)
+	_float	radiusSquared  = sphereRadius * sphereRadius; // ë°˜ì§€ë¦„ ì œê³±
 
-	if (sqDistToCenter > radiusSquared)  // ·çÆ®º¸´Ù Á¦°öÀÌ ¿¬»êÀÌ ´ú °É¸®¹Ç·Î ÀÌ·¸°Ô..
+	if (sqDistToCenter > radiusSquared)  // ë£¨íŠ¸ë³´ë‹¤ ì œê³±ì´ ì—°ì‚°ì´ ëœ ê±¸ë¦¬ë¯€ë¡œ ì´ë ‡ê²Œ..
 		return false;
 
-	// ±³Â÷ È®ÀÎ, ±³Â÷ °Å¸® ¹İÈ¯
-	outDistance = projectionLength;  // ray »ó¿¡¼­ ¾ó¸¶³ª ¾Õ¿¡ ÀÖ³ª¸¦ ÆÇ´Ü
+	// êµì°¨ í™•ì¸, êµì°¨ ê±°ë¦¬ ë°˜í™˜
+	outDistance = projectionLength;  // ray ìƒì—ì„œ ì–¼ë§ˆë‚˜ ì•ì— ìˆë‚˜ë¥¼ íŒë‹¨
 	return true;
 }
 

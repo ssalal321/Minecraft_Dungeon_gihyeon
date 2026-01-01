@@ -33,7 +33,7 @@ HRESULT CCollision_Manager::Add_ColliderCom(_uint iLevelIndex, CComponent* pColl
 
     // Collider로 캐스팅
     CCollider* pColliderComponent = dynamic_cast<CCollider*>(pColliderCom);
-    if (!pColliderCom)
+    if (!pColliderComponent)
         return E_FAIL;
 
     pColliderComponent->Set_ColliderTag(ColliderTag);

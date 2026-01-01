@@ -555,6 +555,7 @@ _bool CNavigation::Check_If_Grounded(CTransform* pObjectTransformCom)
 #ifdef _DEBUG
 HRESULT CNavigation::Render()
 {
+	//return S_OK;
 	if (nullptr == m_pWorldMatrix)
 		return S_OK;
 
@@ -596,7 +597,8 @@ HRESULT CNavigation::Render()
 		if (FAILED(m_pShader->Bind_RawValue("g_vColor", &vColor, sizeof(_float4))))
 			return E_FAIL;
 
-		m_pShader->Begin(m_iShaderPass);
+		//m_pShader->Begin(m_iShaderPass);
+		m_pShader->Begin(0);
 
 		m_Cells[m_iCurrentCellIndex]->Render();
 	}

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Model.h"
 #include "VIBuffer.h"
 
@@ -8,6 +8,20 @@ class CVIBuffer_Cube;
 class ENGINE_DLL CMesh final : public CVIBuffer
 {
 private:
+	// BVH_NodeëŠ” m_TriOrder[iTriStart ... iTriStart + iTriCount - 1]ì— ë“¤ì–´ìˆëŠ” ì‚¼ê°í˜•ë§Œ ë‹´ë‹¹í•œë‹¤!
+	struct BVH_Node
+	{
+		_float3		boundingMin;	// ì´ ë…¸ë“œì— ì†í•œ ì‚¼ê°í˜•ë“¤ì„ ëª¨ë‘ ê°ì‹¸ëŠ” AABB
+		_float3		boundingMax;
+
+		_int		iLeft;			// ì™¼ìª½ ìì‹ ë…¸ë“œ ì¸ë±ìŠ¤ (-1ì´ë©´ leaf)
+		_int		iRight;			// ì˜¤ë¥¸ìª½ ìì‹ ë…¸ë“œ ì¸ë±ìŠ¤ (-1ì´ë©´ leaf)
+
+		_int		iTriStart;		// m_TriOrderì—ì„œ ì´ ë…¸ë“œê°€ ë‹´ë‹¹í•˜ëŠ” ì²« ì‚¼ê°í˜• ìœ„ì¹˜
+		_int		iTriCount;		// ì´ ë…¸ë“œê°€ ë‹´ë‹¹í•˜ëŠ” ì‚¼ê°í˜• ê°œìˆ˜
+	};
+
+
 	CMesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CMesh(const CMesh& Prototype);
 	~CMesh() override = default;
@@ -24,15 +38,22 @@ public:
 public:
 	HRESULT Bind_BoneMatrices(class CShader* pShader, const _char* pConstantName, const vector<class CBone*>& Bones);
 
-	// Local »óÅÂÀÇ min, max¸¦ ¿ùµå »óÅÂ·Î º¯È¯, Collision_AABB È£ÃâÇØ Ãæµ¹ ¿©ºÎ ¹İÈ¯
+	void	Build_BVH();
+
+	// Local ìƒíƒœì˜ min, maxë¥¼ ì›”ë“œ ìƒíƒœë¡œ ë³€í™˜, Collision_AABB í˜¸ì¶œí•´ ì¶©ëŒ ì—¬ë¶€ ë°˜í™˜
 	_bool	Check_BoundingBox_AABB(const _float3& localMousePos, const _float3& localMouseRay);
 
-	//// Á¤Àû ¸ğµ¨ ÇÇÅ·¿ë (Picking_Triangle È£Ãâ)
+	// ì •ì  ëª¨ë¸ í”¼í‚¹ìš© (Picking_Triangle í˜¸ì¶œ)
 	//_bool	Picking_In_World(const _float3& vMousePos, const _float3& vMouseRay, _float3& vPickedPos) const;
 
-	// µ¿Àû ¸ğµ¨ ÇÇÅ·¿ë (Picking_Triangle È£Ãâ)
+	// ë™ì  ëª¨ë¸ í”¼í‚¹ìš© (Picking_Triangle í˜¸ì¶œ)
 	_bool	Picking_In_Mesh(const _float3& localMousePos, const _float3& localMouseRay,
 							_float3& vOutLocalPickedPos, _float& fOutDist) const;
+
+	_bool	Picking_In_Mesh_with_BVH(const _float3& localMousePos, const _float3& localMouseRay,
+							_float3& vOutLocalPickedPos, _float& fOutDist) const;
+
+	_bool Intersect_Leaf_Triangles(_int triStart, _int triCount, const _vector& vOrigin, const _vector& vDir, _float& ioBestDist, _float3& outPicked) const;
 
 	_bool	Picking_Vertex(const _float3& localMousePos, const _float3& localMouseRay,
 							_float3& vOutPickedVertex, _float& fOutDist, _float fThreshold = 0.3f) const;
@@ -46,7 +67,7 @@ private:
 	_uint				m_iNumBones = {};
 	_uint				m_iNumFaces = {};
 
-	/* ÇÇÅ·¿¡ »ç¿ëµÇ´Â º¯¼öµé */
+	/* í”¼í‚¹ì— ì‚¬ìš©ë˜ëŠ” ë³€ìˆ˜ë“¤ */
 
 	_float3				m_vBoundingMin = {};
 	_float3				m_vBoundingMax = {};
@@ -54,8 +75,8 @@ private:
 
 	_uint*				m_pIndices = { nullptr };
 
-	/* ÀÌ ¸Ş½Ã¿¡ ¿µÇâÀ» ÁÖ´Â »ÀµéÀ» ¸ğ¾Æ³õÀº ÄÁÅ×ÀÌ³Ê .*/
-	/* »À : ¸ğµ¨À» ±¸¼ºÇÏ´Â ÀüÃ¼ »À Áß, ¸î¹øÂ° */
+	/* ì´ ë©”ì‹œì— ì˜í–¥ì„ ì£¼ëŠ” ë¼ˆë“¤ì„ ëª¨ì•„ë†“ì€ ì»¨í…Œì´ë„ˆ */
+	/* ë¼ˆ : ëª¨ë¸ì„ êµ¬ì„±í•˜ëŠ” ì „ì²´ ë¼ˆ ì¤‘, ëª‡ë²ˆì§¸ */
 	vector<_uint>		m_Bones;
 
 	_float4x4			m_BoneMatrices[g_iMaxNumBones] = {};
@@ -63,10 +84,33 @@ private:
 
 	_bool				m_bPickable = { false };
 
+#pragma region
+	vector<BVH_Node>	m_BVHNodes;
+	vector<_uint>		m_TriangleIDs;
+
+#pragma endregion
+
 private:
 	HRESULT		Ready_VertexBuffer_For_NonAnim(const aiMesh* pAIMesh, _fmatrix PreTransformMatrix);
 	HRESULT		Ready_VertexBuffer_For_Anim(const aiMesh* pAIMesh, const vector<class CBone*>& Bones);
 	void		Compute_BoundingBox();
+
+
+#pragma region BVH
+	_bool	Ray_Intersects_AABB(const _float3& rayOrigin, const _float3& rayDir,
+		const _float3& bmin, const _float3& bmax,
+		_float& tMinOut, _float& tMaxOut) const;
+
+	_int		Build_BVH_Node(_int start, _int count, _int depth = 0);
+	void		Compute_Node_AABB(_int start, _int count, _float3& outMin, _float3& outMax) const;
+	static inline	void	Expand_AABB(_float3& mn, _float3& mx, const _float3& p);
+
+	void		Compute_Centroid_Bounds(_int start, _int count, _float3& outMin, _float3& outMax) const;
+	_int		Choose_Split_Axis(const _float3& cMin, const _float3& cMax) const;
+	_int		Partition_Median(_int start, _int count, _int axis);
+	_float3		Compute_Triangle_Centroid(_uint triId) const;
+	_bool		Should_Stop_Splitting(_int count, const _float3& centroidExtent) const;
+#pragma endregion
 
 public:
 	static	CMesh* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CModel::TYPE eModelType, 

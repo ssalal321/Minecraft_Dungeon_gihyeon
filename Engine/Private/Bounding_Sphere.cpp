@@ -64,11 +64,11 @@ _bool CBounding_Sphere::Intersect(COLLIDER_TYPE eColliderType, CBounding* pTarge
 
 HRESULT CBounding_Sphere::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fvector vColor)
 {
-	pBatch->Begin();
+	/*pBatch->Begin();
 
 	DX::Draw(pBatch, *m_pDesc, vColor);
 
-	pBatch->End();
+	pBatch->End();*/
 
 	return S_OK;
 }

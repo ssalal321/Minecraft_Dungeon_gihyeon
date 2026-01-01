@@ -1,4 +1,4 @@
-#include "LoungeMap.h"
+ï»¿#include "LoungeMap.h"
 
 #include <iostream>
 
@@ -28,15 +28,15 @@ CLoungeMap::CLoungeMap(const CLoungeMap& Prototype)
 
 HRESULT CLoungeMap::Initialize_Prototype()
 {
-	/* ¿ÜºÎ µ¥ÀÌÅÍº£ÀÌ½º¸¦ ÅëÇØ¼­ °ªÀ» Ã¤¿î´Ù. */
+	/* ì™¸ë¶€ ë°ì´í„°ë² ì´ìŠ¤ë¥¼ í†µí•´ì„œ ê°’ì„ ì±„ìš´ë‹¤. */
 
 	return S_OK;
 }
 
 HRESULT CLoungeMap::Initialize(void* pArg)
 {
-	/* ¿øÇüÀÇ µ¥ÀÌÅÍ¸¦ º¹Á¦ÇÏ¿© »çº»À» ¸¸µé°í. */
-	/* Ãß°¡ÀûÀ¸·Î ÇÊ¿äÇÑ µ¥ÀÌÅÍ¸¦ Arg·Î ¹Þ¾Æ¿Í ½Ç »ç¿ëÇÏ±âÀ§ÇÑ °´Ã¼ÀÇ Á¤º¸¸¦ »ý¼ºÇØÁØ´Ù. */	
+	/* ì›í˜•ì˜ ë°ì´í„°ë¥¼ ë³µì œí•˜ì—¬ ì‚¬ë³¸ì„ ë§Œë“¤ê³ . */
+	/* ì¶”ê°€ì ìœ¼ë¡œ í•„ìš”í•œ ë°ì´í„°ë¥¼ Argë¡œ ë°›ì•„ì™€ ì‹¤ ì‚¬ìš©í•˜ê¸°ìœ„í•œ ê°ì²´ì˜ ì •ë³´ë¥¼ ìƒì„±í•´ì¤€ë‹¤. */	
 	CGameObject::GAMEOBJECT_DESC		Desc{};
 
 	Desc.strGameObjectTag = TEXT("GameObject_LoungeMap");
@@ -51,6 +51,8 @@ HRESULT CLoungeMap::Initialize(void* pArg)
 
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
 		XMVectorSet(0.f, -54.95f, 0.f, 1.f));	// -54.95f
+
+	m_pModelCom->Build_BVH();
 
 	m_pNavigationCom->Update(m_pTransformCom->Get_WorldMatrix_Ptr());
 
@@ -76,7 +78,7 @@ void CLoungeMap::Update(_float fTimeDelta)
 			_float3  fWorldPickedVertex;
 			XMStoreFloat3(&fWorldPickedVertex, vWorldPickedVertex);
 
-			std::cerr << "[ÇÇÅ·µÈ Á¤Á¡] X: " << fWorldPickedVertex.x
+			std::cerr << "[í”¼í‚¹ëœ ì •ì ] X: " << fWorldPickedVertex.x
 								 << " Y: " << fWorldPickedVertex.y
 								 << " Z: " << fWorldPickedVertex.z << std::endl;
 			
@@ -84,7 +86,7 @@ void CLoungeMap::Update(_float fTimeDelta)
 			//m_fCellPoints[m_iPointNum] = fLocalPickedVertex;
 			//++m_iPointNum;
 
-			//// Navigation¿¡ Àü´Þ
+			//// Navigationì— ì „ë‹¬
 			//if (m_iPointNum == 3 && m_pNavigationCom)
 			//{
 			//	m_pNavigationCom->Make_Cell(m_fCellPoints);

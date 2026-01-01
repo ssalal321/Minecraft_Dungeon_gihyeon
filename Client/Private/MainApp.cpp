@@ -49,7 +49,7 @@ HRESULT CMainApp::Initialize()
     if (FAILED(Start_Level(LEVEL_TITLE)))
         return E_FAIL;
 
-    m_pImGui_Manager->Initialize(g_hWnd, m_pDevice, m_pContext);
+    //m_pImGui_Manager->Initialize(g_hWnd, m_pDevice, m_pContext);
 
     return S_OK;
 }
@@ -61,14 +61,14 @@ void CMainApp::Update(_float fTimeDelta)
 
 HRESULT CMainApp::Render()
 {
-    m_pImGui_Manager->Bind();
+    //m_pImGui_Manager->Bind();
 
     m_pGameInstance->Clear_BackBuffer_View(_float4(0.2f, 0.0f, 0.3f, 1.0f));
     m_pGameInstance->Clear_DepthStencil_View();
 
     m_pGameInstance->Draw();
 
-    m_pImGui_Manager->Render();
+    //m_pImGui_Manager->Render();
 
     m_pGameInstance->Present();
 
@@ -121,6 +121,6 @@ void CMainApp::Free()
     m_pGameInstance->Release_Engine();
     Safe_Release(m_pGameInstance);
 
-    m_pImGui_Manager->Release_ImGui();
-    Safe_Release(m_pImGui_Manager);
+    /*m_pImGui_Manager->Release_ImGui();
+    Safe_Release(m_pImGui_Manager);*/
 }

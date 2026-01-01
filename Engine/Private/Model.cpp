@@ -1,4 +1,4 @@
-#include "Model.h"
+ï»¿#include "Model.h"
 #include "Mesh.h"
 #include "Shader.h"
 #include "Bone.h"
@@ -37,6 +37,17 @@ CModel::CModel(const CModel& Prototype)
 
 }
 
+void CModel::Build_BVH()
+{
+	for (auto& pMesh : m_Meshes)
+	{
+		if (pMesh != nullptr)
+		{
+			pMesh->Build_BVH();
+		}
+	}
+}
+
 const _float4x4* CModel::Get_CombinedTransformationMatrix(const _char* pBoneName) const
 {
 	auto	iter = find_if(m_Bones.begin(), m_Bones.end(), [&](CBone* pBone)
@@ -65,8 +76,8 @@ void CModel::Set_AnimCurrentTrackPosition(_float fAnimCurTrackPos)
 
 HRESULT CModel::Initialize_Prototype(TYPE eModelType, const _char* pModelFilePath, _fmatrix PreTransformMatrix)
 {
-	/* ¾î¶² ¼³Á¤? */
-	/* µ¥ÀÌÅÍ¸¦ ÀÐÀ» ¶§ ¼³Á¤°ª¿¡ µû¶ó¼­ µ¥ÀÌÅÍ¸¦ Á¶ÀÛÇÏ¿© ·ÎµåÇØÁØ´Ù. */
+	/* ì–´ë–¤ ì„¤ì •? */
+	/* ë°ì´í„°ë¥¼ ì½ì„ ë•Œ ì„¤ì •ê°’ì— ë”°ë¼ì„œ ë°ì´í„°ë¥¼ ì¡°ìž‘í•˜ì—¬ ë¡œë“œí•´ì¤€ë‹¤. */
 	_uint	iFlag = /*aiProcess_PreTransformVertices | */aiProcess_ConvertToLeftHanded | aiProcessPreset_TargetRealtime_Fast;	
 
 	if (TYPE_NONANIM == eModelType)
@@ -132,10 +143,10 @@ _bool CModel::Play_Animation(_float fTimeDelta)
 		m_iCurrentAnimIndex = m_iNextAnimIndex;
 	}
 
-	/* »ÀµéÀÇ m_TransformationMatrix¸¦ ¾Ö´Ï¸ÞÀÌÅÍºÐµéÀÌ Á¦°øÇØÁØ ½Ã°£¿¡ ¸Â´Â »ÀÀÇ »óÅÂ·Î °»½ÅÇØÁØ´Ù. */
+	/* ë¼ˆë“¤ì˜ m_TransformationMatrixë¥¼ ì• ë‹ˆë©”ì´í„°ë¶„ë“¤ì´ ì œê³µí•´ì¤€ ì‹œê°„ì— ë§žëŠ” ë¼ˆì˜ ìƒíƒœë¡œ ê°±ì‹ í•´ì¤€ë‹¤. */
 	isFinished = m_Animations[m_iCurrentAnimIndex]->Update_TransformationMatrices(fTimeDelta, m_Bones, m_isLoop, m_fSpeedFactor, animationChanged);
 
-	/* ¸ðµç »ÀµéÀÇ CombinedTransformationMatrix¸¦ ¼ÂÇÑ´Ù. */
+	/* ëª¨ë“  ë¼ˆë“¤ì˜ CombinedTransformationMatrixë¥¼ ì…‹í•œë‹¤. */
 	for (auto& pBone : m_Bones)
 		pBone->Update_CombinedTransformationMatrix(m_Bones, XMLoadFloat4x4(&m_PreTransformMatrix));
 
@@ -170,8 +181,6 @@ _bool CModel::Picking_Model(const _float4& worldMousePos, const _float3& worldMo
 
 		if (bMeshHit)
 		{
-			//pMesh->Check_BoundingBox_AABB(localMousePos, localMouseRay);
-
 			if (fOutDist < fMinDist)
 			{
 				fMinDist = fOutDist;
@@ -190,7 +199,7 @@ _bool CModel::Picking_Vertex(const _float4& worldMousePos, const _float3& worldM
 	_float		fMinDist = FLT_MAX;
 	_bool		bHit = false;
 
-	// ¿ùµå -> ·ÎÄÃ ÁÂÇ¥·Î ¸¶¿ì½º Á¤º¸ º¯È¯
+	// ì›”ë“œ -> ë¡œì»¬ ì¢Œí‘œë¡œ ë§ˆìš°ìŠ¤ ì •ë³´ ë³€í™˜
 	_matrix		matInvWorld = XMMatrixInverse(nullptr, XMLoadFloat4x4(&WorldMatrix));
 	_vector		vLocalOrigin = XMVector3TransformCoord(XMLoadFloat4(&worldMousePos), matInvWorld);
 	_vector		vLocalDir = XMVector3TransformNormal(XMLoadFloat3(&worldMouseRay), matInvWorld);
@@ -234,7 +243,7 @@ HRESULT CModel::Bind_Material(CShader* pShader, const _char* pConstantName, _uin
 		return E_FAIL;
 
 
-	/* ÇöÀç ·»´õ¸µÇÏ°íÀÚÇÏ´Â ¸Þ½ÃÀÇ ¸ÓÅ×¸®¾ó Á¤º¸¸¦ ¾ò¾î¿Â´Ù. */
+	/* í˜„ìž¬ ë Œë”ë§í•˜ê³ ìží•˜ëŠ” ë©”ì‹œì˜ ë¨¸í…Œë¦¬ì–¼ ì •ë³´ë¥¼ ì–»ì–´ì˜¨ë‹¤. */
 	_uint		iMaterialIndex = m_Meshes[iMeshIndex]->Get_MaterialIndex();
 	if (iMaterialIndex >= m_iNumMaterials)
 		return E_FAIL;
@@ -250,7 +259,7 @@ HRESULT CModel::Bind_BoneMatrices(CShader* pShader, const _char* pConstantName, 
 
 HRESULT CModel::Ready_Meshes()
 {
-	/* ¸Þ½Ã ÆÄÃ÷ÀÇ ±³Ã¼¸¦ ¿ëÀÌÇÏ°Ô ¸¸µé¾îÁÖ±âÀ§ÇØ¼­. */
+	/* ë©”ì‹œ íŒŒì¸ ì˜ êµì²´ë¥¼ ìš©ì´í•˜ê²Œ ë§Œë“¤ì–´ì£¼ê¸°ìœ„í•´ì„œ. */
 	m_iNumMeshes = m_pAIScene->mNumMeshes;
 
 	for (size_t i = 0; i < m_iNumMeshes; i++)
